@@ -1,5 +1,5 @@
-import type { App, Repr } from "@561-group/webserver";
-import { linkHeader, send } from "@561-group/webserver";
+import type { App, Repr } from "@561-group/web-server";
+import { linkHeader, send } from "@561-group/web-server";
 import {
   logFor,
   settle,
@@ -7,7 +7,7 @@ import {
   type FoldOptions,
   type Row,
   type WorldInput,
-} from "@561-group/memetic-federation";
+} from "@561-group/memetics-federation";
 import {
   toJsonLd,
   toTurtle,
