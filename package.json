@@ -1,0 +1,25 @@
+{
+  "name": "@561-group/web-triple-pattern-fragments",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Triple Pattern Fragment query helpers and @561-group/webserver resources over four-valued memetic rows.",
+  "scripts": {
+    "test": "node --test \"src/**/*.test.ts\"",
+    "check": "tsc --noEmit"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@561-group/memetic-federation": "workspace:*",
+    "@561-group/web-linked-data": "workspace:*",
+    "@561-group/webserver": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0"
+  },
+  "sideEffects": false
+}
