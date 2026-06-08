@@ -1,5 +1,5 @@
 import type { App, Repr } from "@561-group/web-server";
-import { linkHeader, send } from "@561-group/web-server";
+import { linkHeader } from "@561-group/web-server";
 import {
   logFor,
   settle,
@@ -336,7 +336,7 @@ export function fragmentTurtle(page: FragmentPage, opts: { base?: string; subjec
   return bodies.join("\n");
 }
 
-function repr(type: string, body: string): Repr {
+function repr(type: string, body: string, headers: Record<string, string> = {}): Repr {
   return {
     type,
     cacheControl: { visibility: "public", maxAge: 60 },
@@ -344,6 +344,7 @@ function repr(type: string, body: string): Repr {
       Vary: "Accept",
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+      ...headers,
     },
     body,
   };
@@ -381,6 +382,9 @@ export function tpfApp(opts: TpfAppOptions): App {
     resources: [
       {
         match: path,
+        route: path,
+        id: "triple-pattern-fragments.query",
+        name: "Triple Pattern Fragments Query",
         methods: ["GET"],
         produces: ["application/ld+json", "application/json", "text/turtle"],
         handler: async (ctx) => {
@@ -388,8 +392,10 @@ export function tpfApp(opts: TpfAppOptions): App {
           try {
             pattern = patternFrom(ctx.url);
           } catch (error) {
-            ctx.res.writeHead(400, { "Content-Type": "text/plain; charset=utf-8" }).end(error instanceof Error ? error.message : String(error));
-            return;
+            return {
+              ...repr("text/plain; charset=utf-8", error instanceof Error ? error.message : String(error)),
+              status: 400,
+            };
           }
           const world = await worldFor(opts);
           const fragmentOpts: {
@@ -407,19 +413,18 @@ export function tpfApp(opts: TpfAppOptions): App {
           if (requestedLimit !== undefined) fragmentOpts.limit = requestedLimit;
           if (opts.maxLimit !== undefined) fragmentOpts.maxLimit = opts.maxLimit;
           const page = queryTriples(world, pattern, fragmentOpts);
-          ctx.res.setHeader("Link", linkHeader([
+          const headers = { Link: linkHeader([
             { href: page.links.first, rel: "first" },
             { href: page.links.last, rel: "last" },
             ...(page.links.previous ? [{ href: page.links.previous, rel: "prev" }] : []),
             ...(page.links.next ? [{ href: page.links.next, rel: "next" }] : []),
-          ]));
+          ]) };
           if (ctx.negotiatedType === "text/turtle") {
-            await send(ctx.req, ctx.res, repr(TURTLE_TYPE, fragmentTurtle(page, { base, subjects: subjects(world) })));
+            return repr(TURTLE_TYPE, fragmentTurtle(page, { base, subjects: subjects(world) }), headers);
           } else if (ctx.negotiatedType === "application/ld+json") {
-            await send(ctx.req, ctx.res, repr(JSONLD_TYPE, `${JSON.stringify(fragmentJsonLd(page, { base }), null, 2)}\n`));
-          } else {
-            await send(ctx.req, ctx.res, repr(JSON_TYPE, `${JSON.stringify(fragmentJson(page), null, 2)}\n`));
+            return repr(JSONLD_TYPE, `${JSON.stringify(fragmentJsonLd(page, { base }), null, 2)}\n`, headers);
           }
+          return repr(JSON_TYPE, `${JSON.stringify(fragmentJson(page), null, 2)}\n`, headers);
         },
       },
     ],

@@ -81,6 +81,11 @@ test("Turtle fragment regroups records through linked-data serializers", () => {
 
 test("tpfApp serves JSON JSON-LD Turtle and negotiation failures", async () => {
   const app = tpfApp({ world, fold, base: "https://example.org/", limit: 2 });
+  const resource = app.resources?.[0];
+  assert.equal(resource?.route, "/query");
+  assert.equal(resource?.id, "triple-pattern-fragments.query");
+  assert.equal(resource?.name, "Triple Pattern Fragments Query");
+
   const server = createServer(handler(app));
   await new Promise<void>((resolve) => server.listen(0, resolve));
   const address = server.address();
@@ -109,6 +114,7 @@ test("tpfApp serves JSON JSON-LD Turtle and negotiation failures", async () => {
 
     const badState = await fetch(`${base}/query?state=nope`, { headers: { accept: "application/json" } });
     assert.equal(badState.status, 400);
+    assert.equal(await badState.text(), "state must be affirmed, denied, or contradicted");
   } finally {
     await new Promise<void>((resolve, reject) => {
       server.close((error) => error ? reject(error) : resolve());
