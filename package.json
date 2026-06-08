@@ -1,0 +1,23 @@
+{
+  "name": "@561-group/web-taxonomy",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Taxonomy indexes, archive pages, related-content scoring, and @561-group/web-server resources.",
+  "scripts": {
+    "test": "node --test \"src/**/*.test.ts\"",
+    "check": "tsc --noEmit"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@561-group/web-server": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0"
+  },
+  "sideEffects": false
+}
