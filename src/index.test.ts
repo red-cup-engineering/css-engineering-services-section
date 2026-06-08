@@ -6,6 +6,7 @@ import { handler } from "@561-group/web-server";
 
 import {
   authorizeBearer,
+  authorizeBearerReport,
   bearerToken,
   createRateLimiter,
   syncGuardApp,
@@ -32,6 +33,29 @@ test("bearerToken and authorizeBearer bind tokens to sources", () => {
     source: "peer-a",
   });
   assert.equal(authorizeBearer({ authorization: "Bearer nope" }, { secret: "peer-a" }).status, 403);
+});
+
+test("authorizeBearerReport exposes MEMETICS admission evidence while preserving decisions", () => {
+  const open = authorizeBearerReport({}, undefined);
+  assert.equal(open.ok, true);
+  assert.equal(open.report.value, "potential");
+
+  const missing = authorizeBearerReport({}, { secret: "peer-a" });
+  assert.equal(missing.ok, false);
+  assert.equal(missing.status, 401);
+  assert.equal(missing.report.value, "active");
+  assert.deepEqual(missing.report.judgments.map((judgment) => [judgment.name, judgment.value]), [["auth", "active"]]);
+
+  const accepted = authorizeBearerReport({ authorization: "Bearer secret" }, { secret: "peer-a" });
+  assert.equal(accepted.ok, true);
+  assert.equal(accepted.source, "peer-a");
+  assert.equal(accepted.report.value, "potential");
+  assert.deepEqual(accepted.report.claims, { token: "secret", source: "peer-a" });
+
+  const denied = authorizeBearerReport({ authorization: "Bearer nope" }, { secret: "peer-a" });
+  assert.equal(denied.status, 403);
+  assert.equal(denied.reason, "bearer token is not authorized");
+  assert.equal(denied.report.value, "active");
 });
 
 test("validateSyncRows rejects malformed, unprovenanced, or unauthorized rows", () => {
@@ -71,7 +95,7 @@ test("createRateLimiter admits only a bounded number of calls per window", () =>
 
 test("syncGuardApp serves GET deltas and guarded POST imports", async () => {
   const imported: unknown[] = [];
-  const server = createServer(handler(syncGuardApp({
+  const app = syncGuardApp({
     exportRows: () => rows,
     importRows: (accepted) => {
       imported.push(...accepted);
@@ -80,7 +104,14 @@ test("syncGuardApp serves GET deltas and guarded POST imports", async () => {
     tokens: { secret: "peer-a" },
     recognize: ["peer-a"],
     rateLimit: { limit: 2, windowMs: 60_000 },
-  })));
+  });
+  const resource = app.resources?.[0];
+  assert.ok(resource);
+  assert.equal(resource.route, "/sync");
+  assert.equal(resource.id, "sync-guard.sync");
+  assert.equal(resource.name, "Sync Guard");
+
+  const server = createServer(handler(app));
   await new Promise<void>((resolve) => server.listen(0, resolve));
   const address = server.address();
   assert.ok(address && typeof address === "object");
@@ -108,6 +139,8 @@ test("syncGuardApp serves GET deltas and guarded POST imports", async () => {
       body: JSON.stringify({ rows }),
     });
     assert.equal(accepted.status, 200);
+    assert.equal(accepted.headers.get("ratelimit-limit"), "2");
+    assert.equal(accepted.headers.get("ratelimit-remaining"), "1");
     assert.equal((await accepted.json() as { imported?: number }).imported, 2);
     assert.equal(imported.length, 2);
 
@@ -121,7 +154,23 @@ test("syncGuardApp serves GET deltas and guarded POST imports", async () => {
       body: JSON.stringify({ rows: [{ e: "claims/beta", a: "title", v: "Beta", source: "peer-b" }] }),
     });
     assert.equal(rejected.status, 400);
+    assert.equal(rejected.headers.get("ratelimit-limit"), "2");
+    assert.equal(rejected.headers.get("ratelimit-remaining"), "0");
     assert.match(await rejected.text(), /row-source-mismatch/);
+
+    const limited = await fetch(`${base}/sync`, {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        authorization: "Bearer secret",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ rows }),
+    });
+    assert.equal(limited.status, 429);
+    assert.equal(limited.headers.get("ratelimit-limit"), "2");
+    assert.equal(limited.headers.get("ratelimit-remaining"), "0");
+    assert.ok(limited.headers.get("retry-after"));
   } finally {
     await new Promise<void>((resolve, reject) => {
       server.close((error) => error ? reject(error) : resolve());

@@ -1,6 +1,6 @@
 import type { IncomingHttpHeaders } from "node:http";
-import type { App, Context, Repr } from "@561-group/web-server";
-import { readBody, send } from "@561-group/web-server";
+import type { App, AuthAdmissionReport, AuthEvidence, Context, Repr } from "@561-group/web-server";
+import { authAdmissionReport, readJsonBody } from "@561-group/web-server";
 import {
   assertRow,
   provenanceOf,
@@ -16,6 +16,10 @@ export type AuthDecision = {
   token?: string;
   reason?: string;
 };
+
+export type SyncAuthReport = AuthDecision & Readonly<{
+  report: AuthAdmissionReport;
+}>;
 
 export type TokenPolicy =
   | readonly string[]
@@ -101,12 +105,34 @@ function sourceForToken(token: string, policy: TokenPolicy): string | undefined 
 }
 
 export function authorizeBearer(headers: IncomingHttpHeaders, policy?: TokenPolicy): AuthDecision {
-  if (!policy) return { ok: true, status: 200 };
+  const { report, ...decision } = authorizeBearerReport(headers, policy);
+  return decision;
+}
+
+export function authorizeBearerReport(headers: IncomingHttpHeaders, policy?: TokenPolicy): SyncAuthReport {
+  const process = { id: "sync-guard.auth", rows: [] };
+  if (!policy) {
+    const report = authAdmissionReport({
+      process,
+      evidence: [{ source: "verify", admitted: true }],
+    });
+    return { ok: true, status: 200, report };
+  }
   const token = bearerToken(headers);
-  if (!token) return { ok: false, status: 401, reason: "missing bearer token" };
+  if (!token) {
+    const evidence: readonly AuthEvidence[] = [{ source: "missing", admitted: false, reason: "missing bearer token" }];
+    const report = authAdmissionReport({ process, evidence });
+    return { ok: false, status: 401, reason: report.reason, report };
+  }
   const source = sourceForToken(token, policy);
-  if (!source) return { ok: false, status: 403, token, reason: "bearer token is not authorized" };
-  return { ok: true, status: 200, token, source };
+  if (!source) {
+    const evidence: readonly AuthEvidence[] = [{ source: "api-key", admitted: false, reason: "bearer token is not authorized" }];
+    const report = authAdmissionReport({ process, evidence });
+    return { ok: false, status: 403, token, reason: report.reason, report };
+  }
+  const evidence: readonly AuthEvidence[] = [{ source: "api-key", admitted: true, claims: { token, source } }];
+  const report = authAdmissionReport({ process, evidence });
+  return { ok: true, status: 200, token, source, report };
 }
 
 function rowFault(index: number, code: RowFault["code"], reason: string): RowFault {
@@ -224,6 +250,15 @@ function methodRequiresAuth(method: string, methods: readonly string[]): boolean
   return methods.map((item) => item.toUpperCase()).includes(method.toUpperCase());
 }
 
+function rateLimitHeaders(decision: RateLimitDecision): Record<string, string> {
+  return {
+    "RateLimit-Limit": String(decision.limit),
+    "RateLimit-Remaining": String(decision.remaining),
+    "RateLimit-Reset": String(Math.ceil(decision.resetAt / 1000)),
+    ...(decision.retryAfter !== undefined ? { "Retry-After": String(decision.retryAfter) } : {}),
+  };
+}
+
 export function syncGuardApp(options: SyncGuardAppOptions): App {
   const path = options.path ?? "/sync";
   const requireAuthFor = options.requireAuthFor ?? ["POST"];
@@ -232,6 +267,9 @@ export function syncGuardApp(options: SyncGuardAppOptions): App {
   return {
     resources: [
       {
+        id: "sync-guard.sync",
+        name: "Sync Guard",
+        route: path,
         match: path,
         methods: ["GET", "POST"],
         produces: ["application/json"],
@@ -241,35 +279,29 @@ export function syncGuardApp(options: SyncGuardAppOptions): App {
             : { ok: true, status: 200 } satisfies AuthDecision;
           if (!auth.ok) {
             const headers = auth.status === 401 ? { "WWW-Authenticate": "Bearer" } : {};
-            await send(ctx.req, ctx.res, repr(auth.status, { error: auth.reason }, headers));
-            return;
+            return repr(auth.status, { error: auth.reason }, headers);
           }
 
+          let headers: Record<string, string> = {};
           if (limiter) {
             const key = options.rateLimitKey?.(ctx, auth)
               ?? auth.source
               ?? ctx.req.socket.remoteAddress
               ?? "anonymous";
             const decision = limiter(key);
-            ctx.res.setHeader("RateLimit-Limit", String(decision.limit));
-            ctx.res.setHeader("RateLimit-Remaining", String(decision.remaining));
-            ctx.res.setHeader("RateLimit-Reset", String(Math.ceil(decision.resetAt / 1000)));
+            headers = rateLimitHeaders(decision);
             if (!decision.ok) {
-              if (decision.retryAfter !== undefined) ctx.res.setHeader("Retry-After", String(decision.retryAfter));
-              await send(ctx.req, ctx.res, repr(429, { error: "rate limit exceeded" }));
-              return;
+              return repr(429, { error: "rate limit exceeded" }, headers);
             }
           }
 
           if (ctx.req.method === "GET" || ctx.req.method === "HEAD") {
             const subject = ctx.url.searchParams.get("subject") ?? undefined;
             const rows = await options.exportRows(subject);
-            await send(ctx.req, ctx.res, repr(200, { rows }));
-            return;
+            return repr(200, { rows }, headers);
           }
 
-          const bodyText = (await readBody(ctx.req, maxBodyBytes)).toString("utf8");
-          const body = bodyText ? JSON.parse(bodyText) as { rows?: unknown } : {};
+          const body = await readJsonBody(ctx.req, { maxBytes: maxBodyBytes, empty: {} }) as { rows?: unknown };
           const validationOptions: RowValidationOptions = {
             ...(options.maxRows !== undefined ? { maxRows: options.maxRows } : {}),
             ...(options.maxRowBytes !== undefined ? { maxRowBytes: options.maxRowBytes } : {}),
@@ -279,11 +311,10 @@ export function syncGuardApp(options: SyncGuardAppOptions): App {
           };
           const validation = validateSyncRows(body.rows, validationOptions);
           if (!validation.ok) {
-            await send(ctx.req, ctx.res, repr(400, { error: "invalid sync rows", faults: validation.faults }));
-            return;
+            return repr(400, { error: "invalid sync rows", faults: validation.faults }, headers);
           }
           const imported = await options.importRows(validation.rows);
-          await send(ctx.req, ctx.res, repr(200, { imported, accepted: validation.rows.length }));
+          return repr(200, { imported, accepted: validation.rows.length }, headers);
         },
       },
     ],
