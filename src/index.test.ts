@@ -7,10 +7,16 @@ import { handler } from "@561-group/web-server";
 import {
   archiveHtml,
   archivePage,
+  buildTaxonomy,
+  members,
+  membersWithContested,
+  related,
   relatedItems,
   slugTerm,
   taxonomyApp,
   taxonomyIndex,
+  termsByPredicate,
+  termsOf,
   type TaxonomyItem,
 } from "./index.ts";
 
@@ -78,6 +84,51 @@ test("relatedItems ranks by shared taxonomy terms", () => {
   assert.deepEqual(related.map((item) => item.id), ["b", "c"]);
 });
 
+test("buildTaxonomy preserves four-valued relation reads from finite algebras", () => {
+  const taxonomy = buildTaxonomy([
+    {
+      subject: "post-a",
+      affirmed: [
+        { predicate: "tag", object: "web" },
+        { predicate: "category", object: "notes" },
+      ],
+    },
+    {
+      subject: "post-b",
+      affirmed: [
+        { predicate: "tag", object: "web" },
+        { predicate: "author", object: "avery" },
+      ],
+      denied: [{ predicate: "category", object: "notes" }],
+    },
+    {
+      subject: "post-c",
+      contradicted: [{ predicate: "tag", object: "web" }],
+      affirmed: [{ predicate: "author", object: "avery" }],
+    },
+  ]);
+
+  assert.deepEqual(taxonomy.subjects, ["post-a", "post-b", "post-c"]);
+  assert.equal(taxonomy.at("post-b", { predicate: "category", object: "notes" }), "denied");
+  assert.equal(taxonomy.at("post-c", { predicate: "tag", object: "web" }), "contested");
+  assert.equal(taxonomy.at("post-c", { predicate: "category", object: "notes" }), "unmentioned");
+  assert.deepEqual(members(taxonomy, { predicate: "tag", object: "web" }), ["post-a", "post-b"]);
+  assert.deepEqual(membersWithContested(taxonomy, { predicate: "tag", object: "web" }), [
+    { subject: "post-a", contested: false },
+    { subject: "post-b", contested: false },
+    { subject: "post-c", contested: true },
+  ]);
+  assert.deepEqual(termsOf(taxonomy, "post-b"), [
+    { predicate: "author", object: "avery" },
+    { predicate: "tag", object: "web" },
+  ]);
+  assert.deepEqual(termsByPredicate(taxonomy).get("tag"), [{ predicate: "tag", object: "web" }]);
+  assert.deepEqual(related(taxonomy, "post-b"), [
+    { subject: "post-a", shared: 1 },
+    { subject: "post-c", shared: 1 },
+  ]);
+});
+
 test("archiveHtml emits archive and pagination markup", () => {
   const page = archivePage(taxonomyIndex(items), "tag", "web", {
     baseUrl: "https://example.org/",
@@ -94,11 +145,16 @@ test("archiveHtml emits archive and pagination markup", () => {
 });
 
 test("taxonomyApp serves taxonomy index and negotiated archive resources", async () => {
-  const server = createServer(handler(taxonomyApp({
+  const app = taxonomyApp({
     baseUrl: "https://example.org/",
     items,
     pageSize: 1,
-  })));
+  });
+  const byId = new Map((app.resources ?? []).map((resource) => [resource.id, resource]));
+  assert.equal(byId.get("taxonomy.index")?.route, "/taxonomy.json");
+  assert.equal(byId.get("taxonomy.archive")?.route, "/taxonomy/:scheme/:term");
+
+  const server = createServer(handler(app));
   await new Promise<void>((resolve) => server.listen(0, resolve));
   const address = server.address();
   assert.ok(address && typeof address === "object");
@@ -119,6 +175,10 @@ test("taxonomyApp serves taxonomy index and negotiated archive resources", async
 
     const rejected = await fetch(`${base}/taxonomy/tag/linked-data`, { headers: { accept: "application/xml" } });
     assert.equal(rejected.status, 406);
+
+    const missing = await fetch(`${base}/taxonomy/tag/missing`, { headers: { accept: "text/html" } });
+    assert.equal(missing.status, 404);
+    assert.equal(await missing.text(), "Not Found");
   } finally {
     await new Promise<void>((resolve, reject) => {
       server.close((error) => error ? reject(error) : resolve());

@@ -1,5 +1,4 @@
 import type { App, Repr, Resource } from "@561-group/web-server";
-import { send } from "@561-group/web-server";
 
 export type TaxonomyItem = {
   id: string;
@@ -9,6 +8,43 @@ export type TaxonomyItem = {
   published?: string;
   updated?: string;
   terms: Record<string, readonly string[]>;
+};
+
+export type TaxonomyPredicate = "category" | "tag" | "author" | "p-category" | (string & {});
+
+export type TaxonomyCellValue = "affirmed" | "denied" | "contested" | "unmentioned";
+
+export type PredicateObject = {
+  predicate: string;
+  object: string;
+};
+
+export type FiniteAlgebra = {
+  subject: string;
+  affirmed?: readonly PredicateObject[];
+  denied?: readonly PredicateObject[];
+  contradicted?: readonly PredicateObject[];
+};
+
+export type TaxonomyRelationTerm = {
+  predicate: string;
+  object: string;
+};
+
+export type TaxonomyRelation = {
+  subjects: readonly string[];
+  terms: readonly TaxonomyRelationTerm[];
+  at(subject: string, term: TaxonomyRelationTerm): TaxonomyCellValue;
+};
+
+export type TaxonomyMember = {
+  subject: string;
+  contested: boolean;
+};
+
+export type RelatedSubject = {
+  subject: string;
+  shared: number;
 };
 
 export type TaxonomyTerm = {
@@ -81,8 +117,36 @@ export function slugTerm(term: string): string {
   return encodeURIComponent(term.trim().toLowerCase().replace(/\s+/g, "-"));
 }
 
-function termKey(scheme: string, slug: string): string {
+function indexTermKey(scheme: string, slug: string): string {
   return `${scheme}\u0000${slug}`;
+}
+
+const DEFAULT_TAXONOMY_PREDICATES = Object.freeze(["category", "tag", "author", "p-category"] as const);
+const RELATION_SEPARATOR = "\u0001";
+
+function relationTermKey(predicate: string, object: string): string {
+  return `${predicate}${RELATION_SEPARATOR}${object}`;
+}
+
+function splitRelationTermKey(key: string): TaxonomyRelationTerm {
+  const index = key.indexOf(RELATION_SEPARATOR);
+  return index === -1
+    ? { predicate: key, object: "" }
+    : { predicate: key.slice(0, index), object: key.slice(index + 1) };
+}
+
+function normalizeRelationTerm(term: TaxonomyRelationTerm): TaxonomyRelationTerm {
+  return {
+    predicate: term.predicate,
+    object: String(term.object),
+  };
+}
+
+function mergeCell(current: TaxonomyCellValue | undefined, incoming: TaxonomyCellValue): TaxonomyCellValue {
+  if (incoming === "contested" || current === "contested") return "contested";
+  if (current === undefined || current === "unmentioned") return incoming;
+  if (incoming === "unmentioned") return current;
+  return current === incoming ? current : "contested";
 }
 
 function sortedItems(items: readonly TaxonomyItem[]): TaxonomyItem[] {
@@ -104,7 +168,7 @@ export function taxonomyIndex(items: readonly TaxonomyItem[]): TaxonomyIndex {
       for (const term of values) {
         if (!term) continue;
         const slug = slugTerm(term);
-        const key = termKey(scheme, slug);
+        const key = indexTermKey(scheme, slug);
         const existing = terms.get(key) ?? { scheme, term, slug, items: [] };
         existing.items.push(item);
         terms.set(key, existing);
@@ -123,6 +187,89 @@ export function taxonomyIndex(items: readonly TaxonomyItem[]): TaxonomyIndex {
       }))
       .sort((a, b) => a.scheme === b.scheme ? a.term.localeCompare(b.term) : a.scheme.localeCompare(b.scheme)),
   };
+}
+
+export function buildTaxonomy(
+  algebras: readonly FiniteAlgebra[],
+  options: { predicates?: readonly string[] } = {},
+): TaxonomyRelation {
+  const predicates = new Set(options.predicates?.length ? options.predicates : DEFAULT_TAXONOMY_PREDICATES);
+  const subjects: string[] = [];
+  const termMeta = new Map<string, TaxonomyRelationTerm>();
+  const rows = new Map<string, Map<string, TaxonomyCellValue>>();
+
+  const put = (subject: string, cell: PredicateObject, value: TaxonomyCellValue): void => {
+    if (!predicates.has(cell.predicate)) return;
+    const term = normalizeRelationTerm(cell);
+    const key = relationTermKey(term.predicate, term.object);
+    termMeta.set(key, term);
+    const row = rows.get(subject) ?? new Map<string, TaxonomyCellValue>();
+    row.set(key, mergeCell(row.get(key), value));
+    rows.set(subject, row);
+  };
+
+  for (const algebra of algebras) {
+    if (!algebra.subject) throw new TypeError("finite algebra subject is required");
+    subjects.push(algebra.subject);
+    rows.set(algebra.subject, rows.get(algebra.subject) ?? new Map());
+    for (const cell of algebra.affirmed ?? []) put(algebra.subject, cell, "affirmed");
+    for (const cell of algebra.denied ?? []) put(algebra.subject, cell, "denied");
+    for (const cell of algebra.contradicted ?? []) put(algebra.subject, cell, "contested");
+  }
+
+  const relationTerms = [...termMeta.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([, term]) => term);
+
+  return Object.freeze({
+    subjects: Object.freeze([...subjects]),
+    terms: Object.freeze(relationTerms),
+    at(subject: string, term: TaxonomyRelationTerm): TaxonomyCellValue {
+      const normalized = normalizeRelationTerm(term);
+      return rows.get(subject)?.get(relationTermKey(normalized.predicate, normalized.object)) ?? "unmentioned";
+    },
+  });
+}
+
+export function members(taxonomy: TaxonomyRelation, term: TaxonomyRelationTerm): string[] {
+  return taxonomy.subjects.filter((subject) => taxonomy.at(subject, term) === "affirmed");
+}
+
+export function membersWithContested(taxonomy: TaxonomyRelation, term: TaxonomyRelationTerm): TaxonomyMember[] {
+  return taxonomy.subjects.flatMap<TaxonomyMember>((subject) => {
+    const value = taxonomy.at(subject, term);
+    if (value === "affirmed") return [{ subject, contested: false }];
+    if (value === "contested") return [{ subject, contested: true }];
+    return [];
+  });
+}
+
+export function termsOf(taxonomy: TaxonomyRelation, subject: string): TaxonomyRelationTerm[] {
+  return taxonomy.terms.filter((term) => taxonomy.at(subject, term) === "affirmed");
+}
+
+export function termsByPredicate(taxonomy: TaxonomyRelation): Map<string, TaxonomyRelationTerm[]> {
+  const out = new Map<string, TaxonomyRelationTerm[]>();
+  for (const term of taxonomy.terms) {
+    const terms = out.get(term.predicate) ?? [];
+    terms.push(term);
+    out.set(term.predicate, terms);
+  }
+  return out;
+}
+
+export function related(taxonomy: TaxonomyRelation, subject: string): RelatedSubject[] {
+  const mine = new Set(termsOf(taxonomy, subject).map((term) => relationTermKey(term.predicate, term.object)));
+  return taxonomy.subjects
+    .filter((candidate) => candidate !== subject)
+    .map((candidate) => {
+      const shared = termsOf(taxonomy, candidate)
+        .filter((term) => mine.has(relationTermKey(term.predicate, term.object)))
+        .length;
+      return { subject: candidate, shared };
+    })
+    .filter((entry) => entry.shared > 0)
+    .sort((a, b) => b.shared - a.shared || a.subject.localeCompare(b.subject));
 }
 
 function findTerm(index: TaxonomyIndex, scheme: string, termOrSlug: string): TaxonomyTerm | undefined {
@@ -176,12 +323,12 @@ export function archivePage(
 export function relatedItems(target: TaxonomyItem, items: readonly TaxonomyItem[], limit = 5): readonly TaxonomyItem[] {
   requireItem(target);
   requireItems(items);
-  const targetTerms = new Set(Object.entries(target.terms).flatMap(([scheme, values]) => values.map((value) => termKey(scheme, slugTerm(value)))));
+  const targetTerms = new Set(Object.entries(target.terms).flatMap(([scheme, values]) => values.map((value) => indexTermKey(scheme, slugTerm(value)))));
   return items
     .filter((item) => item.id !== target.id)
     .map((item) => {
       const score = Object.entries(item.terms).reduce((total, [scheme, values]) => {
-        return total + values.filter((value) => targetTerms.has(termKey(scheme, slugTerm(value)))).length;
+        return total + values.filter((value) => targetTerms.has(indexTermKey(scheme, slugTerm(value)))).length;
       }, 0);
       return { item, score };
     })
@@ -244,9 +391,12 @@ export function taxonomyApp(options: TaxonomyAppOptions): App {
   const index = taxonomyIndex(options.items);
   const archiveResource: Resource = {
     match: paths.archive,
+    route: paths.archive,
+    id: "taxonomy.archive",
+    name: "Taxonomy Archive",
     methods: ["GET"],
     produces: ["text/html", "application/json"],
-    handler: async (ctx) => {
+    handler: (ctx) => {
       const parsedPage = Number.parseInt(ctx.url.searchParams.get("page") ?? "1", 10);
       const archiveOptions: { baseUrl: string; archivePath?: string; page?: number; pageSize?: number } = {
         baseUrl: options.baseUrl,
@@ -256,23 +406,24 @@ export function taxonomyApp(options: TaxonomyAppOptions): App {
       if (options.pageSize !== undefined) archiveOptions.pageSize = options.pageSize;
       const page = archivePage(index, ctx.params.scheme ?? "", ctx.params.term ?? "", archiveOptions);
       if (!page) {
-        await send(ctx.req, ctx.res, repr("text/plain; charset=utf-8", "Not Found"));
-        return;
+        return { ...repr("text/plain; charset=utf-8", "Not Found"), status: 404 };
       }
       if (ctx.negotiatedType === "application/json") {
-        await send(ctx.req, ctx.res, repr("application/json; charset=utf-8", `${JSON.stringify(page, null, 2)}\n`));
-        return;
+        return repr("application/json; charset=utf-8", `${JSON.stringify(page, null, 2)}\n`);
       }
-      await send(ctx.req, ctx.res, repr("text/html; charset=utf-8", archiveHtml(page)));
+      return repr("text/html; charset=utf-8", archiveHtml(page));
     },
   };
   return {
     resources: [
       {
         match: paths.index,
+        route: paths.index,
+        id: "taxonomy.index",
+        name: "Taxonomy Index",
         methods: ["GET"],
         produces: ["application/json"],
-        handler: async (ctx) => send(ctx.req, ctx.res, repr("application/json; charset=utf-8", `${JSON.stringify(index, null, 2)}\n`)),
+        handler: () => repr("application/json; charset=utf-8", `${JSON.stringify(index, null, 2)}\n`),
       },
       archiveResource,
     ],
