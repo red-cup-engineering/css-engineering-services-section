@@ -13,7 +13,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@561-group/web-server": "workspace:*"
+    "@561-group/web-server": "0.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
