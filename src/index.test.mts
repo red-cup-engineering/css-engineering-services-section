@@ -18,7 +18,7 @@ import {
   termsByPredicate,
   termsOf,
   type TaxonomyItem,
-} from "./index.ts";
+} from "./index.mjs";
 
 const items: TaxonomyItem[] = [
   {
