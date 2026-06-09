@@ -13,9 +13,9 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@561-group/memetics-federation": "0.0.1",
-    "@561-group/web-linked-data": "0.0.1",
-    "@561-group/web-server": "0.0.1"
+    "@561-group/memetics-federation": "workspace:*",
+    "@561-group/web-linked-data": "workspace:*",
+    "@561-group/web-server": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
