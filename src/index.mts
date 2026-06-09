@@ -5,7 +5,7 @@ import {
   settle,
   subjects,
   type FoldOptions,
-  type Row,
+  type AssertionTrace,
   type WorldInput,
 } from "@561-group/memetics-federation";
 import {

@@ -11,24 +11,24 @@ import {
   tpfApp,
 } from "./index.mjs";
 
-const row = (e: string, a: string, v: unknown, by: string) => Object.freeze({ e, a, v, t: { by } });
+const assertion = (e: string, a: string, v: unknown, by: string) => Object.freeze({ e, a, v, t: { by } });
 
 const world = {
   chanterelle: [
-    row("chanterelle", "edible", true, "field-guide"),
-    row("chanterelle", "poisonous", true, "skeptic"),
-    row("chanterelle", "resembles", "false-morel", "field-guide"),
-    row("chanterelle", "status", "published", "editor"),
+    assertion("chanterelle", "edible", true, "field-guide"),
+    assertion("chanterelle", "poisonous", true, "skeptic"),
+    assertion("chanterelle", "resembles", "false-morel", "field-guide"),
+    assertion("chanterelle", "status", "published", "editor"),
   ],
   morel: [
-    row("morel", "edible", true, "field-guide"),
-    row("morel", "status", "draft", "editor"),
+    assertion("morel", "edible", true, "field-guide"),
+    assertion("morel", "status", "draft", "editor"),
   ],
 };
 
 const fold = { converse: { poisonous: "edible" } };
 
-test("allTriples flattens settled rows and preserves contradiction witnesses", () => {
+test("allTriples flattens settled assertions and preserves contradiction witnesses", () => {
   const triples = allTriples(world, { fold });
   const disputed = triples.find((triple) => triple.subject === "chanterelle" && triple.predicate === "edible");
 
