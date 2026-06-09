@@ -196,22 +196,22 @@ export function buildTaxonomy(
   const predicates = new Set(options.predicates?.length ? options.predicates : DEFAULT_TAXONOMY_PREDICATES);
   const subjects: string[] = [];
   const termMeta = new Map<string, TaxonomyRelationTerm>();
-  const rows = new Map<string, Map<string, TaxonomyCellValue>>();
+  const subjectFibers = new Map<string, Map<string, TaxonomyCellValue>>();
 
   const put = (subject: string, cell: PredicateObject, value: TaxonomyCellValue): void => {
     if (!predicates.has(cell.predicate)) return;
     const term = normalizeRelationTerm(cell);
     const key = relationTermKey(term.predicate, term.object);
     termMeta.set(key, term);
-    const row = rows.get(subject) ?? new Map<string, TaxonomyCellValue>();
-    row.set(key, mergeCell(row.get(key), value));
-    rows.set(subject, row);
+    const subjectFiber = subjectFibers.get(subject) ?? new Map<string, TaxonomyCellValue>();
+    subjectFiber.set(key, mergeCell(subjectFiber.get(key), value));
+    subjectFibers.set(subject, subjectFiber);
   };
 
   for (const algebra of algebras) {
     if (!algebra.subject) throw new TypeError("finite algebra subject is required");
     subjects.push(algebra.subject);
-    rows.set(algebra.subject, rows.get(algebra.subject) ?? new Map());
+    subjectFibers.set(algebra.subject, subjectFibers.get(algebra.subject) ?? new Map());
     for (const cell of algebra.affirmed ?? []) put(algebra.subject, cell, "affirmed");
     for (const cell of algebra.denied ?? []) put(algebra.subject, cell, "denied");
     for (const cell of algebra.contradicted ?? []) put(algebra.subject, cell, "contested");
@@ -226,7 +226,7 @@ export function buildTaxonomy(
     terms: Object.freeze(relationTerms),
     at(subject: string, term: TaxonomyRelationTerm): TaxonomyCellValue {
       const normalized = normalizeRelationTerm(term);
-      return rows.get(subject)?.get(relationTermKey(normalized.predicate, normalized.object)) ?? "unmentioned";
+      return subjectFibers.get(subject)?.get(relationTermKey(normalized.predicate, normalized.object)) ?? "unmentioned";
     },
   });
 }
