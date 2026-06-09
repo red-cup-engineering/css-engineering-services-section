@@ -9,7 +9,7 @@ import {
   fragmentTurtle,
   queryTriples,
   tpfApp,
-} from "./index.ts";
+} from "./index.mjs";
 
 const row = (e: string, a: string, v: unknown, by: string) => Object.freeze({ e, a, v, t: { by } });
 
