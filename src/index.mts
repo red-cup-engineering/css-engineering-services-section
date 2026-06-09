@@ -1,5 +1,5 @@
 import type { IncomingHttpHeaders } from "node:http";
-import type { App, AuthAdmissionReport, AuthEvidence, Context, Repr } from "@561-group/web-server";
+import type { App, AuthAdmissionReport, AuthEvidence, Context, Repr, RequestTrace } from "@561-group/web-server";
 import { authAdmissionReport, readJsonBody } from "@561-group/web-server";
 import {
   assertRow,
@@ -19,6 +19,11 @@ export type AuthDecision = {
 
 export type SyncAuthReport = AuthDecision & Readonly<{
   report: AuthAdmissionReport;
+}>;
+
+export type SyncAuthTraceOptions = Readonly<{
+  id?: string;
+  now?: unknown;
 }>;
 
 export type TokenPolicy =
@@ -90,6 +95,25 @@ export function bearerToken(headers: IncomingHttpHeaders): string | undefined {
   return match?.[1]?.trim() || undefined;
 }
 
+export function syncAuthTrace(headers: IncomingHttpHeaders, options: SyncAuthTraceOptions = {}): RequestTrace {
+  const id = options.id ?? "sync-guard.auth";
+  const t = options.now ?? String(Date.now());
+  const datoms = Object.freeze(Object.entries(headers).flatMap(([key, value]) => {
+    if (value == null) return [];
+    return [{
+      e: id,
+      a: `header.${key.toLowerCase()}`,
+      v: Array.isArray(value) ? value.join(", ") : String(value),
+      t,
+    }];
+  }));
+  return Object.freeze({
+    kind: "web-server.request-trace" as const,
+    id,
+    datoms,
+  });
+}
+
 function sourceForToken(token: string, policy: TokenPolicy): string | undefined {
   if (Array.isArray(policy)) return policy.includes(token) ? token : undefined;
   if (policy instanceof Set) return policy.has(token) ? token : undefined;
@@ -109,11 +133,14 @@ export function authorizeBearer(headers: IncomingHttpHeaders, policy?: TokenPoli
   return decision;
 }
 
-export function authorizeBearerReport(headers: IncomingHttpHeaders, policy?: TokenPolicy): SyncAuthReport {
-  const process = { id: "sync-guard.auth", rows: [] };
+export function authorizeBearerReport(
+  headers: IncomingHttpHeaders,
+  policy?: TokenPolicy,
+  trace: RequestTrace = syncAuthTrace(headers),
+): SyncAuthReport {
   if (!policy) {
     const report = authAdmissionReport({
-      process,
+      trace,
       evidence: [{ source: "verify", admitted: true }],
     });
     return { ok: true, status: 200, report };
@@ -121,17 +148,17 @@ export function authorizeBearerReport(headers: IncomingHttpHeaders, policy?: Tok
   const token = bearerToken(headers);
   if (!token) {
     const evidence: readonly AuthEvidence[] = [{ source: "missing", admitted: false, reason: "missing bearer token" }];
-    const report = authAdmissionReport({ process, evidence });
+    const report = authAdmissionReport({ trace, evidence });
     return { ok: false, status: 401, reason: report.reason, report };
   }
   const source = sourceForToken(token, policy);
   if (!source) {
     const evidence: readonly AuthEvidence[] = [{ source: "api-key", admitted: false, reason: "bearer token is not authorized" }];
-    const report = authAdmissionReport({ process, evidence });
+    const report = authAdmissionReport({ trace, evidence });
     return { ok: false, status: 403, token, reason: report.reason, report };
   }
   const evidence: readonly AuthEvidence[] = [{ source: "api-key", admitted: true, claims: { token, source } }];
-  const report = authAdmissionReport({ process, evidence });
+  const report = authAdmissionReport({ trace, evidence });
   return { ok: true, status: 200, token, source, report };
 }
 
@@ -274,8 +301,8 @@ export function syncGuardApp(options: SyncGuardAppOptions): App {
         methods: ["GET", "POST"],
         produces: ["application/json"],
         handler: async (ctx) => {
-          const auth = methodRequiresAuth(ctx.req.method ?? "GET", requireAuthFor)
-            ? authorizeBearer(ctx.req.headers, options.tokens)
+          const auth: AuthDecision = methodRequiresAuth(ctx.req.method ?? "GET", requireAuthFor)
+            ? authorizeBearerReport(ctx.req.headers, options.tokens, ctx.trace)
             : { ok: true, status: 200 } satisfies AuthDecision;
           if (!auth.ok) {
             const headers = auth.status === 401 ? { "WWW-Authenticate": "Bearer" } : {};

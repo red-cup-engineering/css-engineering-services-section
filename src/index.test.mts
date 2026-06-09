@@ -9,10 +9,11 @@ import {
   authorizeBearerReport,
   bearerToken,
   createRateLimiter,
+  syncAuthTrace,
   syncGuardApp,
   validateSyncRows,
   type RowFault,
-} from "./index.ts";
+} from "./index.mjs";
 
 const rows = [
   { e: "claims/alpha", a: "title", v: "Alpha", t: { by: "peer-a" } },
@@ -36,6 +37,13 @@ test("bearerToken and authorizeBearer bind tokens to sources", () => {
 });
 
 test("authorizeBearerReport exposes MEMETICS admission evidence while preserving decisions", () => {
+  const trace = syncAuthTrace({ authorization: "Bearer secret" }, { id: "req-sync-auth", now: "1" });
+  assert.equal(trace.kind, "web-server.request-trace");
+  assert.equal(trace.id, "req-sync-auth");
+  assert.deepEqual(trace.datoms.map((datom) => [datom.e, datom.a, datom.v, datom.t]), [
+    ["req-sync-auth", "header.authorization", "Bearer secret", "1"],
+  ]);
+
   const open = authorizeBearerReport({}, undefined);
   assert.equal(open.ok, true);
   assert.equal(open.report.value, "potential");
@@ -46,11 +54,13 @@ test("authorizeBearerReport exposes MEMETICS admission evidence while preserving
   assert.equal(missing.report.value, "active");
   assert.deepEqual(missing.report.judgments.map((judgment) => [judgment.name, judgment.value]), [["auth", "active"]]);
 
-  const accepted = authorizeBearerReport({ authorization: "Bearer secret" }, { secret: "peer-a" });
+  const accepted = authorizeBearerReport({ authorization: "Bearer secret" }, { secret: "peer-a" }, trace);
   assert.equal(accepted.ok, true);
   assert.equal(accepted.source, "peer-a");
+  assert.equal(accepted.report.trace.id, "req-sync-auth");
   assert.equal(accepted.report.value, "potential");
   assert.deepEqual(accepted.report.claims, { token: "secret", source: "peer-a" });
+  assert.equal(accepted.report.settled.datoms.some((datom) => datom[0] === "req-sync-auth" && datom[1] === "judgment:auth"), true);
 
   const denied = authorizeBearerReport({ authorization: "Bearer nope" }, { secret: "peer-a" });
   assert.equal(denied.status, 403);

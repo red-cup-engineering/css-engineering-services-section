@@ -5,11 +5,25 @@
   "type": "module",
   "description": "Guarded /sync resources for authenticated, rate-limited, validated memetic row exchange.",
   "scripts": {
-    "test": "node --test \"src/**/*.test.ts\"",
-    "check": "tsc --noEmit"
+    "clean": "rm -rf dist .tmp/test-dist",
+    "check": "tsc --noEmit",
+    "build": "pnpm run clean && tsc -p tsconfig.build.json && node ../../scripts/package-boundary/copy-dmts-to-dts.mjs dist",
+    "test": "pnpm run build && tsc -p tsconfig.test.json && node --test \".tmp/test-dist/**/*.test.mjs\"",
+    "audit:boundary": "node ../../scripts/package-boundary/audit-package-boundary.mjs .",
+    "prepack": "pnpm run build"
   },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
   "exports": {
-    ".": "./src/index.ts",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    },
     "./package.json": "./package.json"
   },
   "dependencies": {

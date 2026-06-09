@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2023",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "lib": ["es2023"],
+    "target": "ES2024",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2024"],
     "types": ["node"],
 
     "strict": true,
@@ -12,7 +12,6 @@
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
 
-    "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
@@ -20,5 +19,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.mts"]
 }
