@@ -11,11 +11,11 @@ import {
   createRateLimiter,
   syncAuthTrace,
   syncGuardApp,
-  validateSyncRows,
-  type RowFault,
+  validateSyncAssertions,
+  type AssertionFault,
 } from "./index.mjs";
 
-const rows = [
+const assertions = [
   { e: "claims/alpha", a: "title", v: "Alpha", t: { by: "peer-a" } },
   { e: "claims/alpha", a: "status", v: "published", source: "peer-a" },
 ];
@@ -40,7 +40,7 @@ test("authorizeBearerReport exposes MEMETICS admission evidence while preserving
   const trace = syncAuthTrace({ authorization: "Bearer secret" }, { id: "req-sync-auth", now: "1" });
   assert.equal(trace.kind, "web-server.request-trace");
   assert.equal(trace.id, "req-sync-auth");
-  assert.deepEqual(trace.datoms.map((datom) => [datom.e, datom.a, datom.v, datom.t]), [
+  assert.deepEqual(trace.entries.map((entry) => [entry.e, entry.a, entry.v, entry.t]), [
     ["req-sync-auth", "header.authorization", "Bearer secret", "1"],
   ]);
 
@@ -68,28 +68,28 @@ test("authorizeBearerReport exposes MEMETICS admission evidence while preserving
   assert.equal(denied.report.value, "active");
 });
 
-test("validateSyncRows rejects malformed, unprovenanced, or unauthorized rows", () => {
-  const malformed = validateSyncRows([{ e: "x" }]);
-  const noProvenance = validateSyncRows([{ e: "x", a: "p", v: 1 }]);
-  const wrongSource = validateSyncRows(rows, { expectedSource: "peer-b" });
-  const unrecognized = validateSyncRows(rows, { recognize: ["peer-b"] });
+test("validateSyncAssertions rejects malformed, unprovenanced, or unauthorized assertions", () => {
+  const malformed = validateSyncAssertions([{ e: "x" }]);
+  const noProvenance = validateSyncAssertions([{ e: "x", a: "p", v: 1 }]);
+  const wrongSource = validateSyncAssertions(assertions, { expectedSource: "peer-b" });
+  const unrecognized = validateSyncAssertions(assertions, { recognize: ["peer-b"] });
 
   assert.equal(malformed.ok, false);
-  assert.equal((malformed.faults[0] as RowFault | undefined)?.code, "row-shape");
+  assert.equal((malformed.faults[0] as AssertionFault | undefined)?.code, "assertion-shape");
   assert.equal(noProvenance.ok, false);
-  assert.equal(noProvenance.faults[0]?.code, "row-no-provenance");
-  assert.equal(wrongSource.faults[0]?.code, "row-source-mismatch");
-  assert.equal(unrecognized.faults[0]?.code, "row-source-unrecognized");
+  assert.equal(noProvenance.faults[0]?.code, "assertion-no-provenance");
+  assert.equal(wrongSource.faults[0]?.code, "assertion-source-mismatch");
+  assert.equal(unrecognized.faults[0]?.code, "assertion-source-unrecognized");
 });
 
-test("validateSyncRows accepts recognized provenanced rows", () => {
-  const validation = validateSyncRows(rows, {
+test("validateSyncAssertions accepts recognized provenanced assertions", () => {
+  const validation = validateSyncAssertions(assertions, {
     expectedSource: "peer-a",
     recognize: new Set(["peer-a"]),
   });
 
   assert.equal(validation.ok, true);
-  assert.equal(validation.rows.length, 2);
+  assert.equal(validation.assertions.length, 2);
 });
 
 test("createRateLimiter admits only a bounded number of calls per window", () => {
@@ -103,11 +103,11 @@ test("createRateLimiter admits only a bounded number of calls per window", () =>
   assert.equal(check("peer-a").ok, true);
 });
 
-test("syncGuardApp serves GET deltas and guarded POST imports", async () => {
+test("syncGuardApp serves GET assertion traces and guarded POST imports", async () => {
   const imported: unknown[] = [];
   const app = syncGuardApp({
-    exportRows: () => rows,
-    importRows: (accepted) => {
+    exportAssertions: () => assertions,
+    importAssertions: (accepted) => {
       imported.push(...accepted);
       return accepted.length;
     },
@@ -130,12 +130,12 @@ test("syncGuardApp serves GET deltas and guarded POST imports", async () => {
   try {
     const delta = await fetch(`${base}/sync`, { headers: { accept: "application/json" } });
     assert.equal(delta.status, 200);
-    assert.equal((await delta.json() as { rows?: unknown[] }).rows?.length, 2);
+    assert.equal((await delta.json() as { assertions?: unknown[] }).assertions?.length, 2);
 
     const unauthorized = await fetch(`${base}/sync`, {
       method: "POST",
       headers: { accept: "application/json", "content-type": "application/json" },
-      body: JSON.stringify({ rows }),
+      body: JSON.stringify({ assertions }),
     });
     assert.equal(unauthorized.status, 401);
 
@@ -146,7 +146,7 @@ test("syncGuardApp serves GET deltas and guarded POST imports", async () => {
         authorization: "Bearer secret",
         "content-type": "application/json",
       },
-      body: JSON.stringify({ rows }),
+      body: JSON.stringify({ assertions }),
     });
     assert.equal(accepted.status, 200);
     assert.equal(accepted.headers.get("ratelimit-limit"), "2");
@@ -161,12 +161,12 @@ test("syncGuardApp serves GET deltas and guarded POST imports", async () => {
         authorization: "Bearer secret",
         "content-type": "application/json",
       },
-      body: JSON.stringify({ rows: [{ e: "claims/beta", a: "title", v: "Beta", source: "peer-b" }] }),
+      body: JSON.stringify({ assertions: [{ e: "claims/beta", a: "title", v: "Beta", source: "peer-b" }] }),
     });
     assert.equal(rejected.status, 400);
     assert.equal(rejected.headers.get("ratelimit-limit"), "2");
     assert.equal(rejected.headers.get("ratelimit-remaining"), "0");
-    assert.match(await rejected.text(), /row-source-mismatch/);
+    assert.match(await rejected.text(), /assertion-source-mismatch/);
 
     const limited = await fetch(`${base}/sync`, {
       method: "POST",
@@ -175,7 +175,7 @@ test("syncGuardApp serves GET deltas and guarded POST imports", async () => {
         authorization: "Bearer secret",
         "content-type": "application/json",
       },
-      body: JSON.stringify({ rows }),
+      body: JSON.stringify({ assertions }),
     });
     assert.equal(limited.status, 429);
     assert.equal(limited.headers.get("ratelimit-limit"), "2");

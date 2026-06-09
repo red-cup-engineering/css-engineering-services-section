@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
-  "description": "Guarded /sync resources for authenticated, rate-limited, validated memetic row exchange.",
+  "description": "Guarded /sync resources for authenticated, rate-limited, validated memetic assertion-trace exchange.",
   "scripts": {
     "clean": "rm -rf dist .tmp/test-dist",
     "check": "tsc --noEmit",

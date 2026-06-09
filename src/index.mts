@@ -2,11 +2,12 @@ import type { IncomingHttpHeaders } from "node:http";
 import type { App, AuthAdmissionReport, AuthEvidence, Context, Repr, RequestTrace } from "@561-group/web-server";
 import { authAdmissionReport, readJsonBody } from "@561-group/web-server";
 import {
-  assertRow,
+  assertAssertion,
   provenanceOf,
   recognizerFrom,
   type RecognitionInput,
-  type Row,
+  type Assertion,
+  type AssertionTrace,
 } from "@561-group/memetics-federation";
 
 export type AuthDecision = {
@@ -32,32 +33,32 @@ export type TokenPolicy =
   | Record<string, string>
   | ((token: string) => boolean | string | undefined);
 
-export type RowFault = {
+export type AssertionFault = {
   index: number;
   code:
-    | "row-shape"
-    | "row-empty-field"
-    | "row-field-too-long"
-    | "row-too-large"
-    | "row-no-provenance"
-    | "row-source-mismatch"
-    | "row-source-unrecognized";
+    | "assertion-shape"
+    | "assertion-empty-field"
+    | "assertion-field-too-long"
+    | "assertion-too-large"
+    | "assertion-no-provenance"
+    | "assertion-source-mismatch"
+    | "assertion-source-unrecognized";
   reason: string;
 };
 
-export type RowValidationOptions = {
-  maxRows?: number;
-  maxRowBytes?: number;
+export type AssertionValidationOptions = {
+  maxAssertions?: number;
+  maxAssertionBytes?: number;
   maxFieldLength?: number;
   requireProvenance?: boolean;
   expectedSource?: string;
   recognize?: RecognitionInput;
 };
 
-export type RowValidation = {
+export type AssertionValidation = {
   ok: boolean;
-  rows: readonly Row[];
-  faults: readonly RowFault[];
+  assertions: AssertionTrace;
+  faults: readonly AssertionFault[];
 };
 
 export type RateLimitOptions = {
@@ -75,15 +76,15 @@ export type RateLimitDecision = {
 };
 
 export type SyncGuardAppOptions = {
-  exportRows: (subject?: string) => readonly Row[] | Promise<readonly Row[]>;
-  importRows: (rows: readonly Row[]) => number | Promise<number>;
+  exportAssertions: (subject?: string) => AssertionTrace | Promise<AssertionTrace>;
+  importAssertions: (assertions: AssertionTrace) => number | Promise<number>;
   path?: string;
   tokens?: TokenPolicy;
   requireAuthFor?: readonly string[];
   recognize?: RecognitionInput;
-  maxRows?: number;
+  maxAssertions?: number;
   maxBodyBytes?: number;
-  maxRowBytes?: number;
+  maxAssertionBytes?: number;
   maxFieldLength?: number;
   rateLimit?: RateLimitOptions;
   rateLimitKey?: (ctx: Context, auth: AuthDecision) => string;
@@ -98,7 +99,7 @@ export function bearerToken(headers: IncomingHttpHeaders): string | undefined {
 export function syncAuthTrace(headers: IncomingHttpHeaders, options: SyncAuthTraceOptions = {}): RequestTrace {
   const id = options.id ?? "sync-guard.auth";
   const t = options.now ?? String(Date.now());
-  const datoms = Object.freeze(Object.entries(headers).flatMap(([key, value]) => {
+  const entries = Object.freeze(Object.entries(headers).flatMap(([key, value]) => {
     if (value == null) return [];
     return [{
       e: id,
@@ -110,7 +111,7 @@ export function syncAuthTrace(headers: IncomingHttpHeaders, options: SyncAuthTra
   return Object.freeze({
     kind: "web-server.request-trace" as const,
     id,
-    datoms,
+    entries,
   });
 }
 
@@ -162,81 +163,81 @@ export function authorizeBearerReport(
   return { ok: true, status: 200, token, source, report };
 }
 
-function rowFault(index: number, code: RowFault["code"], reason: string): RowFault {
+function assertionFault(index: number, code: AssertionFault["code"], reason: string): AssertionFault {
   return { index, code, reason };
 }
 
-function rowSize(row: unknown): number {
-  return Buffer.byteLength(JSON.stringify(row) ?? "null", "utf8");
+function assertionSize(assertion: unknown): number {
+  return Buffer.byteLength(JSON.stringify(assertion) ?? "null", "utf8");
 }
 
-export function validateSyncRows(input: unknown, options: RowValidationOptions = {}): RowValidation {
-  const maxRows = options.maxRows ?? 1000;
-  const maxRowBytes = options.maxRowBytes ?? 32_768;
+export function validateSyncAssertions(input: unknown, options: AssertionValidationOptions = {}): AssertionValidation {
+  const maxAssertions = options.maxAssertions ?? 1000;
+  const maxAssertionBytes = options.maxAssertionBytes ?? 32_768;
   const maxFieldLength = options.maxFieldLength ?? 512;
   const requireProvenance = options.requireProvenance ?? true;
-  const rows = Array.isArray(input) ? input : [];
-  const faults: RowFault[] = [];
-  const accepted: Row[] = [];
+  const assertions = Array.isArray(input) ? input : [];
+  const faults: AssertionFault[] = [];
+  const accepted: Assertion[] = [];
   const recognizes = options.recognize !== undefined ? recognizerFrom(options.recognize) : undefined;
 
   if (!Array.isArray(input)) {
     return {
       ok: false,
-      rows: [],
-      faults: [rowFault(-1, "row-shape", "rows must be an array")],
+      assertions: [],
+      faults: [assertionFault(-1, "assertion-shape", "assertions must be an array")],
     };
   }
-  if (rows.length > maxRows) {
+  if (assertions.length > maxAssertions) {
     return {
       ok: false,
-      rows: [],
-      faults: [rowFault(-1, "row-shape", `rows exceeds maxRows ${maxRows}`)],
+      assertions: [],
+      faults: [assertionFault(-1, "assertion-shape", `assertions exceeds maxAssertions ${maxAssertions}`)],
     };
   }
 
-  rows.forEach((candidate, index) => {
-    let row: Row;
+  assertions.forEach((candidate, index) => {
+    let assertion: Assertion;
     try {
-      row = assertRow(candidate as Row);
+      assertion = assertAssertion(candidate as Assertion);
     } catch (error) {
-      faults.push(rowFault(index, "row-shape", error instanceof Error ? error.message : String(error)));
+      faults.push(assertionFault(index, "assertion-shape", error instanceof Error ? error.message : String(error)));
       return;
     }
-    if (!row.e || !row.a) {
-      faults.push(rowFault(index, "row-empty-field", "row.e and row.a must be non-empty strings"));
+    if (!assertion.e || !assertion.a) {
+      faults.push(assertionFault(index, "assertion-empty-field", "assertion.e and assertion.a must be non-empty strings"));
       return;
     }
-    if (row.e.length > maxFieldLength || row.a.length > maxFieldLength) {
-      faults.push(rowFault(index, "row-field-too-long", `row.e and row.a must be at most ${maxFieldLength} characters`));
+    if (assertion.e.length > maxFieldLength || assertion.a.length > maxFieldLength) {
+      faults.push(assertionFault(index, "assertion-field-too-long", `assertion.e and assertion.a must be at most ${maxFieldLength} characters`));
       return;
     }
-    if (rowSize(row) > maxRowBytes) {
-      faults.push(rowFault(index, "row-too-large", `row exceeds maxRowBytes ${maxRowBytes}`));
+    if (assertionSize(assertion) > maxAssertionBytes) {
+      faults.push(assertionFault(index, "assertion-too-large", `assertion exceeds maxAssertionBytes ${maxAssertionBytes}`));
       return;
     }
-    const provenance = provenanceOf(row);
+    const provenance = provenanceOf(assertion);
     if (requireProvenance && !provenance) {
-      faults.push(rowFault(index, "row-no-provenance", "row must carry source, signature.by, or t.by provenance"));
+      faults.push(assertionFault(index, "assertion-no-provenance", "assertion must carry source, signature.by, or t.by provenance"));
       return;
     }
     if (options.expectedSource && provenance?.source !== options.expectedSource) {
-      faults.push(rowFault(index, "row-source-mismatch", `row source must match authenticated source '${options.expectedSource}'`));
+      faults.push(assertionFault(index, "assertion-source-mismatch", `assertion source must match authenticated source '${options.expectedSource}'`));
       return;
     }
     if (recognizes && provenance) {
       const standing = recognizes(provenance.source);
       if (standing !== "potential" && standing !== "stable") {
-        faults.push(rowFault(index, "row-source-unrecognized", `row source '${provenance.source}' is not recognized (${standing})`));
+        faults.push(assertionFault(index, "assertion-source-unrecognized", `assertion source '${provenance.source}' is not recognized (${standing})`));
         return;
       }
     }
-    accepted.push(row);
+    accepted.push(assertion);
   });
 
   return {
     ok: faults.length === 0,
-    rows: accepted,
+    assertions: accepted,
     faults,
   };
 }
@@ -324,24 +325,24 @@ export function syncGuardApp(options: SyncGuardAppOptions): App {
 
           if (ctx.req.method === "GET" || ctx.req.method === "HEAD") {
             const subject = ctx.url.searchParams.get("subject") ?? undefined;
-            const rows = await options.exportRows(subject);
-            return repr(200, { rows }, headers);
+            const assertions = await options.exportAssertions(subject);
+            return repr(200, { assertions }, headers);
           }
 
-          const body = await readJsonBody(ctx.req, { maxBytes: maxBodyBytes, empty: {} }) as { rows?: unknown };
-          const validationOptions: RowValidationOptions = {
-            ...(options.maxRows !== undefined ? { maxRows: options.maxRows } : {}),
-            ...(options.maxRowBytes !== undefined ? { maxRowBytes: options.maxRowBytes } : {}),
+          const body = await readJsonBody(ctx.req, { maxBytes: maxBodyBytes, empty: {} }) as { assertions?: unknown };
+          const validationOptions: AssertionValidationOptions = {
+            ...(options.maxAssertions !== undefined ? { maxAssertions: options.maxAssertions } : {}),
+            ...(options.maxAssertionBytes !== undefined ? { maxAssertionBytes: options.maxAssertionBytes } : {}),
             ...(options.maxFieldLength !== undefined ? { maxFieldLength: options.maxFieldLength } : {}),
             ...(auth.source ? { expectedSource: auth.source } : {}),
             ...(options.recognize !== undefined ? { recognize: options.recognize } : {}),
           };
-          const validation = validateSyncRows(body.rows, validationOptions);
+          const validation = validateSyncAssertions(body.assertions, validationOptions);
           if (!validation.ok) {
-            return repr(400, { error: "invalid sync rows", faults: validation.faults }, headers);
+            return repr(400, { error: "invalid sync assertions", faults: validation.faults }, headers);
           }
-          const imported = await options.importRows(validation.rows);
-          return repr(200, { imported, accepted: validation.rows.length }, headers);
+          const imported = await options.importAssertions(validation.assertions);
+          return repr(200, { imported, accepted: validation.assertions.length }, headers);
         },
       },
     ],

@@ -1,9 +1,9 @@
 # web-sync-guard
 
 `@561-group/web-sync-guard` mounts guarded `/sync` resources for authenticated,
-rate-limited, validated memetic federation row exchange.
+rate-limited, validated memetic federation assertion-trace exchange.
 
-The package validates `@561-group/memetics-federation` rows, binds bearer tokens
+The package validates `@561-group/memetics-federation` assertions, binds bearer tokens
 to recognized sources, applies optional rate limits, and exposes a
 `@561-group/web-server` app resource. Authentication admission is settled over a
 `web-server` `RequestTrace`, so guard decisions participate in the same trace
@@ -17,8 +17,8 @@ importing source files.
 ## Public Surface
 
 - `syncGuardApp()` mounts a GET/POST sync resource for exporting and importing
-  federation rows.
-- `validateSyncRows()` validates row shape, size, provenance, authenticated
+  federation assertions.
+- `validateSyncAssertions()` validates assertion shape, size, provenance, authenticated
   source alignment, and source recognition.
 - `authorizeBearerReport()` and `syncAuthTrace()` expose trace-settled bearer
   admission for code that needs the guard decision outside the app resource.
