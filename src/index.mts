@@ -1,5 +1,5 @@
 import type { App, Repr } from "@561-group/web-server";
-import { linkHeader } from "@561-group/web-server";
+import { linkHeader } from "@emsenn/web-codecs-http";
 import {
   logFor,
   settle,
