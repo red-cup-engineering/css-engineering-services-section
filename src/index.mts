@@ -2,20 +2,20 @@ import type { App, Repr } from "@561-group/web-server";
 import { linkHeader } from "@emsenn/web-codecs-http";
 import {
   logFor,
-  settle,
   subjects,
-  type FoldOptions,
-  type AssertionTrace,
   type WorldInput,
 } from "@561-group/memetics-federation";
 import {
+  linkedDataSubject,
   toJsonLd,
   toTurtle,
   type LinkedDataCell,
+  type LinkedDataSettleOptions,
   type LinkedDataSubject,
+  type ProvenanceValue,
 } from "@561-group/web-linked-data";
 
-export type TripleState = "affirmed" | "denied" | "contradicted";
+export type TripleState = "potential" | "active" | "stable";
 export type WitnessValue = string | readonly string[] | null;
 
 export type TripleRecord = Readonly<{
@@ -24,8 +24,8 @@ export type TripleRecord = Readonly<{
   object: unknown;
   state: TripleState;
   witness: WitnessValue;
-  affirmedBy?: WitnessValue;
-  deniedBy?: WitnessValue;
+  claimedBy?: WitnessValue;
+  contraryClaimedBy?: WitnessValue;
 }>;
 
 export type TriplePattern = Readonly<{
@@ -45,7 +45,7 @@ export type PageOptions = Readonly<{
 export type FragmentOptions = PageOptions & Readonly<{
   base?: string;
   path?: string;
-  fold?: FoldOptions;
+  fold?: LinkedDataSettleOptions;
 }>;
 
 export type FragmentPage = Readonly<{
@@ -77,9 +77,8 @@ const JSON_TYPE = "application/json; charset=utf-8";
 const JSONLD_TYPE = "application/ld+json; charset=utf-8";
 const TURTLE_TYPE = "text/turtle; charset=utf-8";
 
-function provenance(value: ReadonlySet<string>): WitnessValue {
-  const out = [...value].filter(Boolean).sort();
-  return out.length === 0 ? null : out.length === 1 ? out[0]! : Object.freeze(out);
+function witnessValue(value: ProvenanceValue | undefined): WitnessValue {
+  return value === undefined ? null : value;
 }
 
 function cell(predicate: string, object: unknown, witness: WitnessValue): LinkedDataCell {
@@ -88,57 +87,58 @@ function cell(predicate: string, object: unknown, witness: WitnessValue): Linked
   return Object.freeze(out);
 }
 
-function contradictedCell(record: TripleRecord): LinkedDataCell {
+function stableCell(record: TripleRecord): LinkedDataCell {
   const out: {
     predicate: string;
     object: unknown;
-    affirmedBy?: string | readonly string[];
-    deniedBy?: string | readonly string[];
+    claimedBy?: string | readonly string[];
+    contraryClaimedBy?: string | readonly string[];
   } = {
     predicate: record.predicate,
     object: record.object,
   };
-  if (typeof record.affirmedBy === "string" || Array.isArray(record.affirmedBy)) out.affirmedBy = record.affirmedBy;
-  if (typeof record.deniedBy === "string" || Array.isArray(record.deniedBy)) out.deniedBy = record.deniedBy;
+  if (typeof record.claimedBy === "string" || Array.isArray(record.claimedBy)) out.claimedBy = record.claimedBy;
+  if (typeof record.contraryClaimedBy === "string" || Array.isArray(record.contraryClaimedBy)) out.contraryClaimedBy = record.contraryClaimedBy;
   return Object.freeze(out);
 }
 
-export function allTriples(world: WorldInput, opts: { fold?: FoldOptions } = {}): readonly TripleRecord[] {
+// The states are the measured charge value names: every admitted claim is a
+// potential cell; active and stable are derived reads across declared
+// contrary predicate pairs (see @561-group/web-linked-data).
+export function allTriples(world: WorldInput, opts: { fold?: LinkedDataSettleOptions } = {}): readonly TripleRecord[] {
   const out: TripleRecord[] = [];
   for (const subject of subjects(world)) {
-    const folded = settle(subject, logFor(world, subject), opts.fold ?? {});
-    for (const foldedCell of folded.fiber) {
-      if (foldedCell.value === "potential") {
-        out.push(Object.freeze({
-          subject,
-          predicate: foldedCell.predicate,
-          object: foldedCell.object,
-          state: "affirmed" as const,
-          witness: provenance(foldedCell.positiveBy),
-        }));
-      } else if (foldedCell.value === "active") {
-        const deniedBy = provenance(foldedCell.negativeBy);
-        out.push(Object.freeze({
-          subject,
-          predicate: foldedCell.predicate,
-          object: foldedCell.object,
-          state: "denied" as const,
-          witness: deniedBy,
-          deniedBy,
-        }));
-      } else if (foldedCell.value === "stable") {
-        const affirmedBy = provenance(foldedCell.positiveBy);
-        const deniedBy = provenance(foldedCell.negativeBy);
-        out.push(Object.freeze({
-          subject,
-          predicate: foldedCell.predicate,
-          object: foldedCell.object,
-          state: "contradicted" as const,
-          witness: Object.freeze([...witnessItems(affirmedBy), ...witnessItems(deniedBy)]),
-          affirmedBy,
-          deniedBy,
-        }));
-      }
+    const derived = linkedDataSubject(subject, logFor(world, subject), opts.fold ?? {});
+    for (const derivedCell of derived.potential) {
+      out.push(Object.freeze({
+        subject,
+        predicate: derivedCell.predicate,
+        object: derivedCell.object,
+        state: "potential" as const,
+        witness: witnessValue(derivedCell.citation),
+      }));
+    }
+    for (const derivedCell of derived.active) {
+      out.push(Object.freeze({
+        subject,
+        predicate: derivedCell.predicate,
+        object: derivedCell.object,
+        state: "active" as const,
+        witness: witnessValue(derivedCell.citation),
+      }));
+    }
+    for (const derivedCell of derived.stable) {
+      const claimedBy = witnessValue(derivedCell.claimedBy);
+      const contraryClaimedBy = witnessValue(derivedCell.contraryClaimedBy);
+      out.push(Object.freeze({
+        subject,
+        predicate: derivedCell.predicate,
+        object: derivedCell.object,
+        state: "stable" as const,
+        witness: Object.freeze([...witnessItems(claimedBy), ...witnessItems(contraryClaimedBy)]),
+        ...(claimedBy !== null ? { claimedBy } : {}),
+        ...(contraryClaimedBy !== null ? { contraryClaimedBy } : {}),
+      }));
     }
   }
   return Object.freeze(out.sort((left, right) => JSON.stringify([left.subject, left.predicate, left.object, left.state])
@@ -152,8 +152,8 @@ function witnessItems(value: WitnessValue | undefined): readonly string[] {
 
 function witnessMatches(record: TripleRecord, wanted: string): boolean {
   return witnessItems(record.witness).includes(wanted)
-    || witnessItems(record.affirmedBy).includes(wanted)
-    || witnessItems(record.deniedBy).includes(wanted);
+    || witnessItems(record.claimedBy).includes(wanted)
+    || witnessItems(record.contraryClaimedBy).includes(wanted);
 }
 
 export function tripleMatches(record: TripleRecord, pattern: TriplePattern = {}): boolean {
@@ -299,20 +299,20 @@ function tripleJsonLd(record: TripleRecord, base: string): Record<string, unknow
     object: record.object,
     state: record.state,
     witness: record.witness,
-    ...(record.affirmedBy !== undefined ? { affirmedBy: record.affirmedBy } : {}),
-    ...(record.deniedBy !== undefined ? { deniedBy: record.deniedBy } : {}),
+    ...(record.claimedBy !== undefined ? { claimedBy: record.claimedBy } : {}),
+    ...(record.contraryClaimedBy !== undefined ? { contraryClaimedBy: record.contraryClaimedBy } : {}),
   };
 }
 
 export function fragmentTurtle(page: FragmentPage, opts: { base?: string; subjects?: readonly string[] } = {}): string {
   const base = opts.base ?? "http://localhost/";
   const subjects = new Set(opts.subjects ?? page.triples.map((record) => record.subject));
-  const bySubject = new Map<string, { affirmed: LinkedDataCell[]; denied: LinkedDataCell[]; contradicted: LinkedDataCell[] }>();
+  const bySubject = new Map<string, { potential: LinkedDataCell[]; active: LinkedDataCell[]; stable: LinkedDataCell[] }>();
   for (const record of page.triples) {
-    const group = bySubject.get(record.subject) ?? { affirmed: [], denied: [], contradicted: [] };
-    if (record.state === "affirmed") group.affirmed.push(cell(record.predicate, record.object, record.witness));
-    else if (record.state === "denied") group.denied.push(cell(record.predicate, record.object, record.deniedBy ?? record.witness));
-    else group.contradicted.push(contradictedCell(record));
+    const group = bySubject.get(record.subject) ?? { potential: [], active: [], stable: [] };
+    if (record.state === "potential") group.potential.push(cell(record.predicate, record.object, record.witness));
+    else if (record.state === "active") group.active.push(cell(record.predicate, record.object, record.witness));
+    else group.stable.push(stableCell(record));
     bySubject.set(record.subject, group);
   }
   const bodies: string[] = [
@@ -327,9 +327,9 @@ export function fragmentTurtle(page: FragmentPage, opts: { base?: string; subjec
   for (const [subject, group] of [...bySubject.entries()].sort(([left], [right]) => left.localeCompare(right))) {
     const algebra: LinkedDataSubject = Object.freeze({
       subject,
-      affirmed: Object.freeze(group.affirmed),
-      denied: Object.freeze(group.denied),
-      contradicted: Object.freeze(group.contradicted),
+      potential: Object.freeze(group.potential),
+      active: Object.freeze(group.active),
+      stable: Object.freeze(group.stable),
     });
     bodies.push(toTurtle(algebra, { base, subjects }));
   }
@@ -356,8 +356,8 @@ async function worldFor(opts: TpfAppOptions): Promise<WorldInput> {
 
 function patternFrom(url: URL): TriplePattern {
   const state = url.searchParams.get("state") || undefined;
-  if (state !== undefined && state !== "affirmed" && state !== "denied" && state !== "contradicted") {
-    throw new TypeError("state must be affirmed, denied, or contradicted");
+  if (state !== undefined && state !== "potential" && state !== "active" && state !== "stable") {
+    throw new TypeError("state must be potential, active, or stable");
   }
   return {
     ...(url.searchParams.get("s") ? { s: url.searchParams.get("s")! } : {}),
@@ -401,7 +401,7 @@ export function tpfApp(opts: TpfAppOptions): App {
           const fragmentOpts: {
             base?: string;
             path?: string;
-            fold?: FoldOptions;
+            fold?: LinkedDataSettleOptions;
             page?: number;
             limit?: number;
             maxLimit?: number;

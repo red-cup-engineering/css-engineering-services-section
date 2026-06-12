@@ -26,30 +26,30 @@ const world = {
   ],
 };
 
-const fold = { converse: { poisonous: "edible" } };
+const fold = { contrary: { poisonous: "edible" } };
 
-test("allTriples flattens settled assertions and preserves contradiction witnesses", () => {
+test("allTriples flattens settled assertions and preserves held-contradiction witnesses", () => {
   const triples = allTriples(world, { fold });
   const disputed = triples.find((triple) => triple.subject === "chanterelle" && triple.predicate === "edible");
 
-  assert.equal(disputed?.state, "contradicted");
+  assert.equal(disputed?.state, "stable");
   assert.deepEqual(disputed?.witness, ["field-guide", "skeptic"]);
-  assert.deepEqual(disputed?.affirmedBy, "field-guide");
-  assert.deepEqual(disputed?.deniedBy, "skeptic");
+  assert.deepEqual(disputed?.claimedBy, "field-guide");
+  assert.deepEqual(disputed?.contraryClaimedBy, "skeptic");
   assert.ok(triples.some((triple) => triple.subject === "morel" && triple.predicate === "status" && triple.object === "draft"));
 });
 
 test("queryTriples filters by pattern state and witness and emits page links", () => {
-  const contradicted = queryTriples(world, { state: "contradicted", witness: "skeptic" }, {
+  const held = queryTriples(world, { state: "stable", witness: "skeptic" }, {
     base: "https://example.org/",
     path: "/query",
     fold,
     limit: 1,
   });
 
-  assert.equal(contradicted.totalItems, 1);
-  assert.equal(contradicted.triples[0]?.predicate, "edible");
-  assert.equal(contradicted.links.self, "https://example.org/query?state=contradicted&witness=skeptic&page=1&limit=1");
+  assert.equal(held.totalItems, 1);
+  assert.equal(held.triples[0]?.predicate, "edible");
+  assert.equal(held.links.self, "https://example.org/query?state=stable&witness=skeptic&page=1&limit=1");
 
   const paged = queryTriples(world, {}, { base: "https://example.org/", path: "/query", fold, limit: 2, page: 2 });
   assert.equal(paged.page, 2);
@@ -70,13 +70,13 @@ test("JSON-LD fragment carries Hydra controls and void:triples", () => {
 });
 
 test("Turtle fragment regroups records through linked-data serializers", () => {
-  const page = queryTriples(world, { state: "contradicted" }, { base: "https://example.org/", path: "/query", fold });
+  const page = queryTriples(world, { state: "stable" }, { base: "https://example.org/", path: "/query", fold });
   const turtle = fragmentTurtle(page, { base: "https://example.org/", subjects: ["chanterelle", "false-morel", "morel"] });
 
   assert.match(turtle, /hydra:totalItems 1/);
   assert.match(turtle, /void:triples 1/);
-  assert.match(turtle, /ws:ContradictedClaim/);
-  assert.match(turtle, /ws:affirmedBy \[ a prov:Entity ; rdfs:label "field-guide" \]/);
+  assert.match(turtle, /ws:StableClaim/);
+  assert.match(turtle, /ws:claimedBy \[ a prov:Entity ; rdfs:label "field-guide" \]/);
 });
 
 test("tpfApp serves JSON JSON-LD Turtle and negotiation failures", async () => {
@@ -101,20 +101,20 @@ test("tpfApp serves JSON JSON-LD Turtle and negotiation failures", async () => {
     assert.equal(body.totalItems, 2);
     assert.equal(body.triples?.length, 1);
 
-    const jsonld = await fetch(`${base}/query?state=contradicted`, { headers: { accept: "application/ld+json" } });
+    const jsonld = await fetch(`${base}/query?state=stable`, { headers: { accept: "application/ld+json" } });
     assert.equal(jsonld.status, 200);
     assert.equal((await jsonld.json() as Record<string, unknown>)["void:triples"], 1);
 
-    const turtle = await fetch(`${base}/query?state=contradicted`, { headers: { accept: "text/turtle" } });
+    const turtle = await fetch(`${base}/query?state=stable`, { headers: { accept: "text/turtle" } });
     assert.equal(turtle.status, 200);
-    assert.match(await turtle.text(), /ws:ContradictedClaim/);
+    assert.match(await turtle.text(), /ws:StableClaim/);
 
     const rejected = await fetch(`${base}/query`, { headers: { accept: "text/html" } });
     assert.equal(rejected.status, 406);
 
     const badState = await fetch(`${base}/query?state=nope`, { headers: { accept: "application/json" } });
     assert.equal(badState.status, 400);
-    assert.equal(await badState.text(), "state must be affirmed, denied, or contradicted");
+    assert.equal(await badState.text(), "state must be potential, active, or stable");
   } finally {
     await new Promise<void>((resolve, reject) => {
       server.close((error) => error ? reject(error) : resolve());

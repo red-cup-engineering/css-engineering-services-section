@@ -3,8 +3,8 @@
 Triple Pattern Fragment helpers and web resources over four-valued memetic assertion
 worlds.
 
-The package settles memetic federation assertions into affirmed, denied, and
-contradicted triples, filters them by triple pattern and witness, paginates the
+The package settles memetic federation assertions into potential, active, and
+stable triples, filters them by triple pattern and witness, paginates the
 result, and renders JSON, JSON-LD/Hydra, and Turtle fragments through
 `@561-group/web-server`.
 
