@@ -88,30 +88,30 @@ test("buildTaxonomy preserves four-valued relation reads from finite algebras", 
   const taxonomy = buildTaxonomy([
     {
       subject: "post-a",
-      affirmed: [
+      potential: [
         { predicate: "tag", object: "web" },
         { predicate: "category", object: "notes" },
       ],
     },
     {
       subject: "post-b",
-      affirmed: [
+      potential: [
         { predicate: "tag", object: "web" },
         { predicate: "author", object: "avery" },
       ],
-      denied: [{ predicate: "category", object: "notes" }],
+      active: [{ predicate: "category", object: "notes" }],
     },
     {
       subject: "post-c",
-      contradicted: [{ predicate: "tag", object: "web" }],
-      affirmed: [{ predicate: "author", object: "avery" }],
+      stable: [{ predicate: "tag", object: "web" }],
+      potential: [{ predicate: "author", object: "avery" }],
     },
   ]);
 
   assert.deepEqual(taxonomy.subjects, ["post-a", "post-b", "post-c"]);
-  assert.equal(taxonomy.at("post-b", { predicate: "category", object: "notes" }), "denied");
-  assert.equal(taxonomy.at("post-c", { predicate: "tag", object: "web" }), "contested");
-  assert.equal(taxonomy.at("post-c", { predicate: "category", object: "notes" }), "unmentioned");
+  assert.equal(taxonomy.at("post-b", { predicate: "category", object: "notes" }), "active");
+  assert.equal(taxonomy.at("post-c", { predicate: "tag", object: "web" }), "stable");
+  assert.equal(taxonomy.at("post-c", { predicate: "category", object: "notes" }), "absurd");
   assert.deepEqual(members(taxonomy, { predicate: "tag", object: "web" }), ["post-a", "post-b"]);
   assert.deepEqual(membersWithContested(taxonomy, { predicate: "tag", object: "web" }), [
     { subject: "post-a", contested: false },

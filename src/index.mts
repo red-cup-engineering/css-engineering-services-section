@@ -12,7 +12,7 @@ export type TaxonomyItem = {
 
 export type TaxonomyPredicate = "category" | "tag" | "author" | "p-category" | (string & {});
 
-export type TaxonomyCellValue = "affirmed" | "denied" | "contested" | "unmentioned";
+export type TaxonomyCellValue = "potential" | "active" | "stable" | "absurd";
 
 export type PredicateObject = {
   predicate: string;
@@ -21,9 +21,9 @@ export type PredicateObject = {
 
 export type FiniteAlgebra = {
   subject: string;
-  affirmed?: readonly PredicateObject[];
-  denied?: readonly PredicateObject[];
-  contradicted?: readonly PredicateObject[];
+  potential?: readonly PredicateObject[];
+  active?: readonly PredicateObject[];
+  stable?: readonly PredicateObject[];
 };
 
 export type TaxonomyRelationTerm = {
@@ -143,10 +143,10 @@ function normalizeRelationTerm(term: TaxonomyRelationTerm): TaxonomyRelationTerm
 }
 
 function mergeCell(current: TaxonomyCellValue | undefined, incoming: TaxonomyCellValue): TaxonomyCellValue {
-  if (incoming === "contested" || current === "contested") return "contested";
-  if (current === undefined || current === "unmentioned") return incoming;
-  if (incoming === "unmentioned") return current;
-  return current === incoming ? current : "contested";
+  if (incoming === "stable" || current === "stable") return "stable";
+  if (current === undefined || current === "absurd") return incoming;
+  if (incoming === "absurd") return current;
+  return current === incoming ? current : "stable";
 }
 
 function sortedItems(items: readonly TaxonomyItem[]): TaxonomyItem[] {
@@ -212,9 +212,9 @@ export function buildTaxonomy(
     if (!algebra.subject) throw new TypeError("finite algebra subject is required");
     subjects.push(algebra.subject);
     subjectFibers.set(algebra.subject, subjectFibers.get(algebra.subject) ?? new Map());
-    for (const cell of algebra.affirmed ?? []) put(algebra.subject, cell, "affirmed");
-    for (const cell of algebra.denied ?? []) put(algebra.subject, cell, "denied");
-    for (const cell of algebra.contradicted ?? []) put(algebra.subject, cell, "contested");
+    for (const cell of algebra.potential ?? []) put(algebra.subject, cell, "potential");
+    for (const cell of algebra.active ?? []) put(algebra.subject, cell, "active");
+    for (const cell of algebra.stable ?? []) put(algebra.subject, cell, "stable");
   }
 
   const relationTerms = [...termMeta.entries()]
@@ -226,26 +226,26 @@ export function buildTaxonomy(
     terms: Object.freeze(relationTerms),
     at(subject: string, term: TaxonomyRelationTerm): TaxonomyCellValue {
       const normalized = normalizeRelationTerm(term);
-      return subjectFibers.get(subject)?.get(relationTermKey(normalized.predicate, normalized.object)) ?? "unmentioned";
+      return subjectFibers.get(subject)?.get(relationTermKey(normalized.predicate, normalized.object)) ?? "absurd";
     },
   });
 }
 
 export function members(taxonomy: TaxonomyRelation, term: TaxonomyRelationTerm): string[] {
-  return taxonomy.subjects.filter((subject) => taxonomy.at(subject, term) === "affirmed");
+  return taxonomy.subjects.filter((subject) => taxonomy.at(subject, term) === "potential");
 }
 
 export function membersWithContested(taxonomy: TaxonomyRelation, term: TaxonomyRelationTerm): TaxonomyMember[] {
   return taxonomy.subjects.flatMap<TaxonomyMember>((subject) => {
     const value = taxonomy.at(subject, term);
-    if (value === "affirmed") return [{ subject, contested: false }];
-    if (value === "contested") return [{ subject, contested: true }];
+    if (value === "potential") return [{ subject, contested: false }];
+    if (value === "stable") return [{ subject, contested: true }];
     return [];
   });
 }
 
 export function termsOf(taxonomy: TaxonomyRelation, subject: string): TaxonomyRelationTerm[] {
-  return taxonomy.terms.filter((term) => taxonomy.at(subject, term) === "affirmed");
+  return taxonomy.terms.filter((term) => taxonomy.at(subject, term) === "potential");
 }
 
 export function termsByPredicate(taxonomy: TaxonomyRelation): Map<string, TaxonomyRelationTerm[]> {
