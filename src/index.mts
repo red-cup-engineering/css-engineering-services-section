@@ -1,4 +1,4 @@
-import type { App, Repr } from "@561-group/web-server";
+import type { App, Repr } from "@emsenn/http-holography";
 import { linkHeader } from "@emsenn/web-codecs-http";
 import {
   logFor,

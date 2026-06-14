@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
-  "description": "Triple Pattern Fragment query helpers and @561-group/web-server resources over four-valued memetic assertions.",
+  "description": "Triple Pattern Fragment query helpers and @emsenn/http-holography resources over four-valued memetic assertions.",
   "scripts": {
     "clean": "rm -rf dist .tmp/test-dist",
     "check": "tsc --noEmit",
@@ -29,7 +29,7 @@
   "dependencies": {
     "@561-group/memetics-federation": "workspace:*",
     "@561-group/web-linked-data": "workspace:*",
-    "@561-group/web-server": "workspace:*",
+    "@emsenn/http-holography": "workspace:*",
     "@emsenn/web-codecs-http": "workspace:*"
   },
   "devDependencies": {
