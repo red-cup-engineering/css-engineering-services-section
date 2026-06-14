@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
 
-import { handler } from "@emsenn/http-holography";
+import { handler } from "@emsenn/web-server";
 
 import {
   archiveHtml,

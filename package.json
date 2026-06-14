@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
-  "description": "Taxonomy indexes, archive pages, related-content scoring, and @emsenn/http-holography resources.",
+  "description": "Taxonomy indexes, archive pages, related-content scoring, and @emsenn/web-server resources.",
   "scripts": {
     "clean": "rm -rf dist .tmp/test-dist",
     "check": "tsc --noEmit",
@@ -27,7 +27,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@emsenn/http-holography": "workspace:*"
+    "@emsenn/web-server": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
