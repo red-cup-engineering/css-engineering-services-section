@@ -1,6 +1,6 @@
 import type { IncomingHttpHeaders } from "node:http";
-import type { App, AuthAdmissionReport, AuthEvidence, Context, Repr, RequestTrace } from "@emsenn/http-holography";
-import { authAdmissionReport, readJsonBody } from "@emsenn/http-holography";
+import type { App, AuthAdmissionReport, AuthEvidence, Context, Repr, RequestTrace } from "@emsenn/web-server";
+import { authAdmissionReport, readJsonBody } from "@emsenn/web-server";
 import {
   assertAssertion,
   provenanceOf,

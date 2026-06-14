@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@561-group/memetics-federation": "workspace:*",
-    "@emsenn/http-holography": "workspace:*"
+    "@emsenn/web-server": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
