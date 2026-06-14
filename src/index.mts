@@ -1,4 +1,4 @@
-import type { App, Repr, Resource } from "@561-group/web-server";
+import type { App, Repr, Resource } from "@emsenn/http-holography";
 
 export type TaxonomyItem = {
   id: string;
