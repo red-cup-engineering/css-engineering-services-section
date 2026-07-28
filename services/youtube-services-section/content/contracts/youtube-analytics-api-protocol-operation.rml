@@ -1,0 +1,10 @@
+#lang rmn/v2
+(map
+  ("type" "YouTubeAnalyticsApiProtocolOperationLaw")
+  ("version" 1)
+  ("provider" "urn:ame:youtube-services-section")
+  ("precondition" "One sovereign channel customer supplies a credential-blind authorizedFetch capability and a closed civil-date window for a bounded channel==MINE per-video attention report.")
+  ("operation" "Construct only GET https://youtubeanalytics.googleapis.com/v2/reports with video, views, estimatedMinutesWatched, and averageViewDuration, cap maxResults at 200, omit authorization from provider input, and return one bounded valid JSON response to the invoking customer.")
+  ("postcondition" "The customer receives protocol response material for its own acceptance and custody; the provider retains no token, raw report, observation, interpretation, channel authority, or future-feed authority.")
+  ("refusal" "Refuse malformed or open windows, more than 200 rows requested, absent attenuated capability, caller-supplied authorization, malformed or oversized JSON, credential custody, customer record writes, analytics interpretation, publication, or customer-acceptance claims.")
+  ("protocol" "YouTube-Analytics-API-v2"))

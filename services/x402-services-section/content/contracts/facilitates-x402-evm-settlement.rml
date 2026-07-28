@@ -1,0 +1,4 @@
+#lang rmn/v2
+(predicate "facilitates-x402-evm-settlement"
+  (base "X402SettlementRequest")
+  (base "EvmSettlementReceipt"))

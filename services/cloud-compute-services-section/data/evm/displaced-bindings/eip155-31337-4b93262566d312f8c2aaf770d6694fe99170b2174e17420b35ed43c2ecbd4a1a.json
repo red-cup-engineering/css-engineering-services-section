@@ -1,0 +1,28 @@
+{
+  "profile": "org.emsenn.evm.sovereign-enterprise-account.v3",
+  "enterprise": {
+    "nodeId": "free-compute-dev",
+    "urn": "urn:ame:free-compute-dev",
+    "enterpriseId": "0x3169483b52422b1362c2cfcb8cb90d9e78e6026bf5d1c3db9474ad2dbe9414f0"
+  },
+  "chain": {
+    "chainId": 31337,
+    "caip2": "eip155:31337"
+  },
+  "account": {
+    "address": "0x17c3b49e04497875119af5fd39aedd8da124dea6",
+    "caip10": "eip155:31337:0x17c3b49e04497875119af5fd39aedd8da124dea6"
+  },
+  "factory": {
+    "address": "0xb334795bf50e4943d076dfb38d8c1a50f9f5a101",
+    "userSalt": "0x4ca09bcd0ccaf011100b65bc3fe16e6665516fc665bb80fba88ddaab445fa60d"
+  },
+  "policy": {
+    "signer": "0x4e3c253390b8f41a21ba5f20fb71788ea868eb8b",
+    "custody": "settlement-private"
+  },
+  "deployment": {
+    "transaction": "0x6904fced7c04aa02c987f97eb185e78037a5e25e9f5be47c4c52b58a9998e08c",
+    "block": 1258
+  }
+}

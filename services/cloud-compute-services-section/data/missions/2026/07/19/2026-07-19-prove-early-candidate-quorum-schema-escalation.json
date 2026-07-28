@@ -1,0 +1,28 @@
+{
+  "id": "urn:ame:free-compute-dev:mission:2026-07-19:prove-early-candidate-quorum:schema-escalation",
+  "objective": "Add a deterministic regression test proving that runMission stops contracting later inference waves as soon as minVerifiedCandidates is satisfied. The injected dispatch must return an exact edit action that changes calc.mjs from subtraction to addition in the first wave, allowing automatic verification to mark the candidate verified. Configure maxRounds well above one, then assert exactly one round or dispatch call and a verified candidate. This is a test-only change.",
+  "taskClass": "inference-spend-regression-test",
+  "territory": "/home/emsenn/info/lib/emsenn/services/561-group/services/free-compute-dev",
+  "verifyCommand": "node --test test/mission-runtime.test.mjs",
+  "constraints": [
+    "Change test/mission-runtime.test.mjs only.",
+    "Do not weaken or remove existing assertions.",
+    "Use an injected dispatch function; the test itself must make no provider calls.",
+    "The mock actor must edit calc.mjs so it becomes a verified candidate in the first wave.",
+    "Assert that no inference wave after the first verified candidate is dispatched."
+  ],
+  "actors": 1,
+  "maxRounds": 5,
+  "minVerifiedCandidates": 1,
+  "maxConsecutiveRefusals": 2,
+  "maxTokens": 1200,
+  "difficulty": 0.72,
+  "fabricAttempts": 1,
+  "fabricConcurrency": 2,
+  "enforceProviderSchema": true,
+  "providerTimeoutMs": 120000,
+  "endpointShards": [
+    "claude-code-claude-sonnet-4-6"
+  ],
+  "apply": true
+}

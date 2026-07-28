@@ -1,0 +1,81 @@
+{
+  "name": "@red-cup-engineering/operations-manifold-forest-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Autonomous Actor purchasing atomic carrier judgments to derive an operations-manifold bond forest.",
+  "exports": {
+    ".": "./src/client.mjs",
+    "./forest": "./src/forest.mjs",
+    "./executor": "./src/a2a-executor.mjs"
+  },
+  "bin": {
+    "execute-operations-manifold-forest-a2a-message": "./bin/execute-a2a-message.mjs",
+    "serve-operations-manifold-forest-a2a": "./bin/serve-a2a.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/forest.mjs && node --check src/a2a-executor.mjs && node --check src/client.mjs && node --check bin/execute-a2a-message.mjs && node --check bin/serve-a2a.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@a2a-js/sdk": "1.0.0-beta.0",
+    "@red-cup-engineering/a2a-contracted-agent-service": "2.0.4",
+    "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
+    "@red-cup-engineering/a2a-rmn-task-client-service": "1.1.0",
+    "@red-cup-engineering/carrier-composition-judgment-service": "0.1.0",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0",
+    "@lenticule-science/rwil-rdf-projection-service": "1.0.2"
+  },
+  "x-agentic-metro-enterprise": {
+    "node-id": "operations-manifold-forest-service",
+    "actor": "urn:ame:operations-manifold-forest-service",
+    "organizational-kind": "capability-cell",
+    "owners": [
+      "relating"
+    ],
+    "admission": "one exact provider-addressed canonical RMN operation carrying package operation manifolds",
+    "refusal": "ambient carrier equality, action execution, path selection, rigidity claims, or customer acceptance",
+    "operation-catalog": {
+      "derive-operations-manifold-forest": {
+        "contract": "content/contracts/derive-operations-manifold-forest.rml",
+        "protocols": [
+          "RMN",
+          "A2A 1.0"
+        ],
+        "returns": "OperationsManifoldBondForest"
+      }
+    },
+    "x-foam-locus": {
+      "address": [
+        "relating",
+        "running",
+        "operations-manifold",
+        "forest"
+      ],
+      "proposition": "A cross-package bond forest is the witnessed carrier-composition judgments among package extrema, with unbonded extrema retained as pressure frontiers.",
+      "actor": "urn:ame:operations-manifold-forest-service"
+    }
+  },
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "red-cup-engineering",
+    "kind": "capability-cell",
+    "actor": "urn:ame:operations-manifold-forest-service",
+    "operations": [
+      "derive-operations-manifold-forest"
+    ],
+    "capabilities": [
+      {
+        "capability": "operations-manifold-forest-service",
+        "faces": [
+          "derive-operations-manifold-forest"
+        ]
+      }
+    ],
+    "package": "@red-cup-engineering/operations-manifold-forest-service"
+  }
+}

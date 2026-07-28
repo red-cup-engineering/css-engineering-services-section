@@ -1,0 +1,68 @@
+{
+  "id": "urn:ame:free-compute-dev:mission:2026-07-19:audited-context-readable-path-confinement",
+  "objective": "Repair the post-integration semantic-audit residue in src/agent-tools.mjs and test/readable-paths-complete.test.mjs. Keep the correct root traversal and readAdmitted filtering. Complete the regression suite so list_files, search, and direct read are exercised wherever each test vector requires them. Explicit in-territory out-of-scope list/search bases must return structured refusals without echoing the requested private base or exposing protected names, lines, or bytes. Source and tests must settle together.",
+  "taskClass": "readable-path-confinement-with-regression",
+  "territory": "/home/emsenn/info/lib/emsenn/services/561-group/services/free-compute-dev",
+  "focusPaths": ["src/agent-tools.mjs", "test/readable-paths-complete.test.mjs"],
+  "writablePaths": ["src/agent-tools.mjs", "test/readable-paths-complete.test.mjs"],
+  "readablePaths": [],
+  "verifyCommand": "node --test",
+  "acceptanceCommand": "node --test test/readable-paths-complete.test.mjs",
+  "constraints": [
+    "For omitted-path and dot-root traversal, assert both list_files and search succeed, return admitted public observations, and omit every private observation.",
+    "For directory admission and exact-file admission, construct separate toolsets and assert list_files, search, and direct read expose exactly the admitted descendants or file.",
+    "For an explicit private base, call both list_files and search; assert each response is structured JSON and contains neither the requested base name nor any protected filename, matching line, or bytes.",
+    "For unrestricted compatibility, exercise readablePaths omitted and readablePaths empty with list_files, search, and direct read.",
+    "Use a unique temporary directory and always retire it with test cleanup.",
+    "Do not edit outside the two focus paths."
+  ],
+  "testVectors": [
+    {
+      "id": "omitted-root-traversal",
+      "given": ["public/match.txt and private/secret.txt contain the same search token", "readablePaths is [public]"],
+      "when": "list_files and search run with path omitted",
+      "then": ["both return successful structured observations", "list and hits contain public/match.txt"],
+      "forbidden": ["private/secret.txt", "the private matching line", "a root-base refusal"]
+    },
+    {
+      "id": "dot-root-traversal",
+      "given": ["the same mixed public/private fixture", "readablePaths is [public]"],
+      "when": "list_files and search run with path dot",
+      "then": ["dot is accepted as root traversal", "list and hits contain only admitted descendants"],
+      "forbidden": ["private filenames", "private matching lines", "private bytes"]
+    },
+    {
+      "id": "directory-and-file-admission",
+      "given": ["public/a.txt and public/nested/b.txt exist", "one toolset admits public and another admits exact file public/a.txt"],
+      "when": "list_files, search, and direct read exercise both toolsets",
+      "then": ["directory admission exposes both descendants", "exact-file admission exposes and reads only public/a.txt", "direct read rejects public/nested/b.txt under exact-file admission"],
+      "forbidden": ["exact-file admission exposing a sibling, descendant, or ancestor"]
+    },
+    {
+      "id": "explicit-private-base-refusal",
+      "given": ["private/secret.txt exists and contains a matching token", "readablePaths is [public]"],
+      "when": "list_files and search use explicit base private",
+      "then": ["both return structured JSON errors stating only that the path is outside declared readable scope"],
+      "forbidden": ["the word private", "secret.txt", "the matching line", "secret bytes", "files or hits payloads"]
+    },
+    {
+      "id": "unrestricted-compatibility",
+      "given": ["public and private files exist", "one toolset omits readablePaths and another supplies an empty array"],
+      "when": "list_files, search, and direct read execute through both toolsets",
+      "then": ["both toolsets preserve unrestricted legacy behavior for all three operations"],
+      "forbidden": ["an accidental deny-all interpretation", "different behavior between omitted and empty readablePaths"]
+    }
+  ],
+  "workType": "software-engineering",
+  "requiredCapabilities": ["software-engineering", "json-schema-output"],
+  "endpointShards": ["gemini-3.1-flash-lite", "gemini-3.1-flash-lite"],
+  "enforceProviderSchema": true,
+  "providerTimeoutMs": 30000,
+  "maxConsecutiveRefusals": 2,
+  "actors": 2,
+  "maxRounds": 6,
+  "maxTokens": 1800,
+  "minVerifiedCandidates": 1,
+  "autoEscalate": false,
+  "apply": true
+}

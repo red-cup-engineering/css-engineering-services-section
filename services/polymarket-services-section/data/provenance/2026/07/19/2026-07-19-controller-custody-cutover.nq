@@ -1,0 +1,4 @@
+<urn:ame:polymarket-venue-access-enterprise> <urn:emsenn:evm:retired-controller-artifact> <ni:///sha-256;oTAHh0CTxz7PP0psL7uJfGv8dXwqC-QZDeAc4kb_BHM> <urn:ame:polymarket-venue-access-enterprise:controller-custody-cutover:eip155-31337> .
+<ni:///sha-256;oTAHh0CTxz7PP0psL7uJfGv8dXwqC-QZDeAc4kb_BHM> <urn:emsenn:evm:retired-path> "data/evm/controller-eip155-31337.env" <urn:ame:polymarket-venue-access-enterprise:controller-custody-cutover:eip155-31337> .
+<urn:ame:polymarket-venue-access-enterprise> <urn:emsenn:evm:controller-keystore-format> "Ethereum Secret Storage v3" <urn:ame:polymarket-venue-access-enterprise:controller-custody-cutover:eip155-31337> .
+<urn:ame:polymarket-venue-access-enterprise> <urn:emsenn:evm:controller-chain> <eip155:31337> <urn:ame:polymarket-venue-access-enterprise:controller-custody-cutover:eip155-31337> .

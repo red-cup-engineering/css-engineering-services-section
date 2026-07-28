@@ -1,0 +1,50 @@
+{
+  "id": "urn:ame:free-compute-dev:program:2026-07-19:independent-coupled-readable-path-confinement",
+  "objective": "Complete readablePaths confinement across every read-like agent tool. Direct read must refuse out-of-scope files without revealing bytes. list_files at the territory root must return only admitted exact files and descendants of admitted directories; an explicitly out-of-scope list base must return a structured refusal without filenames. search at the territory root must inspect only admitted files; an explicitly out-of-scope search base must return a structured refusal without matching lines. Preserve unrestricted behavior when readablePaths is absent. Implement the source and comprehensive deterministic regression test as one coupled accepted mission.",
+  "territory": "/home/emsenn/info/lib/emsenn/services/561-group/services/free-compute-dev",
+  "verifyCommand": "node --test",
+  "acceptanceCommand": "node --test test/readable-paths-complete.test.mjs",
+  "acceptanceCatalog": {
+    "complete-readable-scope": {
+      "description": "The implementation and its coupled test prove exact-file and directory admission, root-level filtering for list and search, structured explicit-base refusals with no protected bytes or names, unrestricted compatibility, and the full existing suite remains green.",
+      "command": "node --test test/readable-paths-complete.test.mjs"
+    }
+  },
+  "requiredAcceptanceKeys": [
+    "complete-readable-scope"
+  ],
+  "requiredFocusPaths": [
+    "src/agent-tools.mjs",
+    "test/readable-paths-complete.test.mjs"
+  ],
+  "requiredMissionBundles": [
+    {
+      "acceptanceKey": "complete-readable-scope",
+      "focusPaths": [
+        "src/agent-tools.mjs",
+        "test/readable-paths-complete.test.mjs"
+      ]
+    }
+  ],
+  "constraints": [
+    "Keep confinement logic inside src/agent-tools.mjs.",
+    "The same mission must edit source and create test/readable-paths-complete.test.mjs.",
+    "At root, list_files and search must filter each walked file through readAdmitted rather than refusing the empty relative root.",
+    "A non-root requested base is admissible only when that base itself is read-admitted.",
+    "Do not weaken direct read or writablePaths enforcement.",
+    "No out-of-scope filename, matching line, or file bytes may appear in a refusal or filtered result.",
+    "All existing tests must remain green.",
+    "Use structured refusals rather than throwing for model-selected out-of-readable-scope list and search bases."
+  ],
+  "plannerCount": 4,
+  "missionWorkType": "software-engineering",
+  "missionRequiredCapabilities": [
+    "software-engineering",
+    "json-schema-output"
+  ],
+  "maxMissions": 1,
+  "actorsPerMission": 4,
+  "maxRoundsPerMission": 12,
+  "maxPlanningCycles": 2,
+  "enforcePlannerFocusWrites": true
+}

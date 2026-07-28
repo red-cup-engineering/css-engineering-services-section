@@ -1,0 +1,53 @@
+{
+  "name": "@red-cup-engineering/cloudflare-tunnel-ingress-verification-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Verify that a named tunnel's route binding and systemd unit conform to the fixed laptop-owned token-file ingress shape.",
+  "scripts": {
+    "verify-ingress": "node src/verify-cloudflare-ingress.mjs",
+    "check": "node --check src/verify-cloudflare-ingress.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "x-agentic-metro-enterprise": {
+    "node-id": "cloudflare-tunnel-ingress-verification-service",
+    "organizational-kind": "service",
+    "owners": [
+      "561-group",
+      "red-cup-engineering"
+    ],
+    "membrane": {
+      "law": "src/"
+    },
+    "admission": "no writes; reads one route-binding JSON and one systemd unit and reports ACCEPT or REJECT against caller-declared --expect-* values",
+    "refusal": "VPS application execution, Cloudflare Access substitution for Google Leader identity, any hostname/service/fallback not matching the caller's declared expectation, and any credential-file interface",
+    "operation-catalog": {
+      "verify-ingress": {
+        "effects": [],
+        "network": false
+      }
+    }
+  },
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "red-cup-engineering",
+    "kind": "capability-cell",
+    "actor": "urn:ame:cloudflare-tunnel-ingress-verification-service",
+    "operations": [
+      "verify-ingress"
+    ],
+    "capabilities": [
+      {
+        "capability": "cloudflare-tunnel-ingress-verification-service",
+        "faces": [
+          "verify-ingress"
+        ]
+      }
+    ],
+    "package": "@red-cup-engineering/cloudflare-tunnel-ingress-verification-service"
+  }
+}

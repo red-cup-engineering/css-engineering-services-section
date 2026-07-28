@@ -1,0 +1,78 @@
+{
+  "name": "@red-cup-engineering/c2pa-services-section",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Independently hireable C2PA 2.4 provenance and EU AI Act Article 50 disclosure binding service.",
+  "exports": {
+    ".": {
+      "types": "./types/client.d.mts",
+      "import": "./src/client.mjs"
+    },
+    "./client": {
+      "types": "./types/client.d.mts",
+      "import": "./src/client.mjs"
+    },
+    "./rmn": "./src/c2pa-rmn.mjs"
+  },
+  "bin": {
+    "serve-c2pa-provenance-a2a": "./bin/server.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/c2pa-rmn.mjs && node --check src/client.mjs && node --check bin/execute-a2a-task.mjs && node --check bin/server.mjs && node --check test/c2pa-provenance.test.mjs",
+    "test": "node --test test/c2pa-provenance.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@a2a-js/sdk": "1.0.0-beta.0",
+    "@contentauth/c2pa-node": "0.6.3",
+    "@red-cup-engineering/a2a-agent-card-key-service": "1.0.0",
+    "@red-cup-engineering/a2a-contracted-agent-service": "2.0.4",
+    "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
+    "@red-cup-engineering/a2a-rmn-task-client-service": "1.1.0",
+    "@red-cup-engineering/ethereum-services-section": "0.7.0",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0",
+    "@lenticule-science/rwil-rdf-projection-service": "1.0.2",
+    "@lenticule-science/wit-transition-assay": "1.0.0"
+  },
+  "x-agentic-metro-enterprise": {
+    "node-id": "c2pa-services-section",
+    "actor": "urn:ame:c2pa-services-section",
+    "organizational-kind": "public-protocol-provider",
+    "owners": [
+      "web-services-section"
+    ],
+    "admission": "one typed RMN effect whose exact asset bytes, C2PA creation intent, accessible disclosure, model provenance, human-oversight status, and accountable CAIP-10 enterprise are authorized by the caller",
+    "refusal": "untyped assets, unsupported media, absent signing custody, hidden AI provenance, unverifiable C2PA output, EOA callers, raw model keys, or claims that a C2PA signature proves truth or legal adequacy",
+    "operation-catalog": {
+      "serve-c2pa-provenance-a2a": {
+        "protocol": "A2A 1.0",
+        "standard": "C2PA 2.4",
+        "accepts": "application/rmn+cbor typed provenance effect",
+        "returns": "application/rmn+cbor signed asset and validation receipt",
+        "legacyCompatibility": false
+      }
+    }
+  },
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "red-cup-engineering",
+    "kind": "actor",
+    "actor": "urn:ame:c2pa-services-section",
+    "operations": [
+      "serve-c2pa-provenance-a2a"
+    ],
+    "capabilities": [
+      {
+        "capability": "c2pa-services-section",
+        "faces": [
+          "serve-c2pa-provenance-a2a"
+        ]
+      }
+    ],
+    "package": "@red-cup-engineering/c2pa-services-section"
+  }
+}

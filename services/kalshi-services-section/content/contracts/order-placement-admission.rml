@@ -1,0 +1,12 @@
+#lang rmn/v2
+(map
+  ("type" "KalshiOrderPlacementLaw")
+  ("version" 1)
+  ("provider" "urn:ame:kalshi-venue-access-enterprise")
+  ("precondition" "The desk supplies an exact qualified-pair digest, bounded order, live execution-policy digest, exact law identity, and authority through its smart account while this provider is activated.")
+  ("operation" "The provider validates the request under its own custody policy, submits the admitted order to Kalshi, and records the venue response through its hired RWIL/RDF provider.")
+  ("postcondition" "The customer receives the venue-issued receipt or an explicit refusal bound to this law; credentials and venue custody remain solely provider-controlled.")
+  ("refusal" "Refuse absent activation or credentials, unqualified pairs, unbounded size, self-matching, credential disclosure, unauthorized withdrawal, changed law identity, or customer interior writes.")
+  ("protocol" "ActivityStreams-2.0")
+  ("consensus" "EVM-when-custody-or-atomic-payment-is-shared")
+  ("evidence" "RWIL-RDF"))

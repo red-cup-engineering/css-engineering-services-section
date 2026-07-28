@@ -1,0 +1,45 @@
+{
+  "name": "@red-cup-engineering/public-https-url-admission-service",
+  "version": "0.1.0",
+  "description": "Admit one credential-free public HTTPS URL before network use.",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/admit-public-https-url.mjs"
+  },
+  "files": [
+    "content/",
+    "src/",
+    "test/"
+  ],
+  "scripts": {
+    "check": "node --check src/admit-public-https-url.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test && npm pack --dry-run"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/red-cup-engineering/public-https-url-admission-service.git"
+  },
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "red-cup-engineering",
+    "kind": "capability-cell",
+    "actor": "urn:ame:public-https-url-admission-service",
+    "operations": [
+      "public-https-url-admission-service"
+    ],
+    "capabilities": [
+      {
+        "capability": "public-https-url-admission-service",
+        "faces": [
+          "public-https-url-admission-service"
+        ]
+      }
+    ],
+    "package": "@red-cup-engineering/public-https-url-admission-service"
+  }
+}

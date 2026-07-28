@@ -1,0 +1,16 @@
+{
+  "type": "A2ASovereignOperationBoundaryServiceDeployment",
+  "version": 1,
+  "status": "software-only",
+  "requiredBindings": {
+    "a2aTransportProvider": "urn:ame:a2a-contracted-agent-service",
+    "rmnConformanceProvider": "urn:ame:rmn-semantic-conformance",
+    "rwilRdfProvider": null,
+    "payoutAccount": null
+  },
+  "forbiddenClaims": [
+    "customer runtime authority belongs to this protocol provider",
+    "a refused message is billable revenue",
+    "software tests prove external settlement"
+  ]
+}

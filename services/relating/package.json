@@ -1,0 +1,296 @@
+{
+  "name": "@red-cup-engineering/relating",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "keywords": [
+    "relational-computing",
+    "relational-computing-kernel"
+  ],
+  "description": "Relating: one boundary system where actions project to CLI, HTTP, OpenAPI, MCP, and docs from one registry, and each carrier is one JSON-Schema literal interpreted by FromSchema and the runtime validator.",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "clean": "rm -rf dist .tmp",
+    "check": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.services.json && node copy-dist-assets.mjs && chmod +x dist/services/cli/main.mjs dist/services/http/main.mjs",
+    "test": "node --test \"test/**/*.test.mjs\"",
+    "examples": "node examples/material/camera-exposure.mjs && node examples/package/package-phase.mjs && node examples/package/action-projection.mjs && node examples/services/cli-exposure.mjs",
+    "verify": "npm run check && npm run build && npm test && npm run examples",
+    "docs:api": "typedoc",
+    "prepack": "npm run rebuild",
+    "rebuild": "npm run clean && npm run build"
+  },
+  "main": "./dist/src/index.mjs",
+  "types": "./dist/src/index.d.mts",
+  "bin": {
+    "relate": "./dist/services/cli/main.mjs",
+    "relate-serve": "./dist/services/http/main.mjs"
+  },
+  "files": [
+    "dist",
+    "docs",
+    "examples",
+    "LICENSE",
+    "README.md",
+    "typedoc.json",
+    "package.json"
+  ],
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "fast-check": "^4.8.0",
+    "typedoc": "^0.28.19",
+    "typescript": "^5.8.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.mts",
+      "import": "./dist/src/index.mjs"
+    },
+    "./articulating": {
+      "types": "./dist/lib/articulating/index.d.mts",
+      "import": "./dist/lib/articulating/index.mjs"
+    },
+    "./notating": {
+      "types": "./dist/lib/notating/index.d.mts",
+      "import": "./dist/lib/notating/index.mjs"
+    },
+    "./analysis": {
+      "types": "./dist/lib/articulating/predicating/positing/settling/analysis/index.d.mts",
+      "import": "./dist/lib/articulating/predicating/positing/settling/analysis/index.mjs"
+    },
+    "./geometry": {
+      "types": "./dist/lib/articulating/predicating/geometry/spatial/index.d.mts",
+      "import": "./dist/lib/articulating/predicating/geometry/spatial/index.mjs"
+    },
+    "./settling": {
+      "types": "./dist/lib/articulating/predicating/positing/settling/index.d.mts",
+      "import": "./dist/lib/articulating/predicating/positing/settling/index.mjs"
+    },
+    "./articulating/predicating/positing/settling": {
+      "types": "./dist/lib/articulating/predicating/positing/settling/index.d.mts",
+      "import": "./dist/lib/articulating/predicating/positing/settling/index.mjs"
+    },
+    "./dynamics": {
+      "types": "./dist/lib/articulating/predicating/positing/settling/dynamics/index.d.mts",
+      "import": "./dist/lib/articulating/predicating/positing/settling/dynamics/index.mjs"
+    },
+    "./carriers": {
+      "types": "./dist/src/carriers/index.d.mts",
+      "import": "./dist/src/carriers/index.mjs"
+    },
+    "./actions": {
+      "types": "./dist/src/actions/index.d.mts",
+      "import": "./dist/src/actions/index.mjs"
+    },
+    "./codecs": {
+      "types": "./dist/src/codecs/index.d.mts",
+      "import": "./dist/src/codecs/index.mjs"
+    },
+    "./writing": {
+      "types": "./dist/src/writing/index.d.mts",
+      "import": "./dist/src/writing/index.mjs"
+    },
+    "./typing": {
+      "types": "./dist/src/writing/print.d.mts",
+      "import": "./dist/src/writing/print.mjs"
+    },
+    "./projections": {
+      "types": "./dist/src/projections/index.d.mts",
+      "import": "./dist/src/projections/index.mjs"
+    },
+    "./writing/http": {
+      "types": "./dist/src/writing/http/index.d.mts",
+      "import": "./dist/src/writing/http/index.mjs"
+    },
+    "./writing/http/cookie": {
+      "types": "./dist/src/writing/http/cookie/index.d.mts",
+      "import": "./dist/src/writing/http/cookie/index.mjs"
+    },
+    "./writing/http/multipart": {
+      "types": "./dist/src/writing/http/multipart/index.d.mts",
+      "import": "./dist/src/writing/http/multipart/index.mjs"
+    },
+    "./writing/http/negotiation": {
+      "types": "./dist/src/writing/http/negotiation/index.d.mts",
+      "import": "./dist/src/writing/http/negotiation/index.mjs"
+    },
+    "./writing/http/sse": {
+      "types": "./dist/src/writing/http/sse/index.d.mts",
+      "import": "./dist/src/writing/http/sse/index.mjs"
+    },
+    "./writing/http/ws": {
+      "types": "./dist/src/writing/http/ws/index.d.mts",
+      "import": "./dist/src/writing/http/ws/index.mjs"
+    },
+    "./writing/http/mcp": {
+      "types": "./dist/src/writing/http/mcp/index.d.mts",
+      "import": "./dist/src/writing/http/mcp/index.mjs"
+    },
+    "./running": {
+      "types": "./dist/src/running/index.d.mts",
+      "import": "./dist/src/running/index.mjs"
+    },
+    "./services/http": {
+      "types": "./dist/services/http/index.d.mts",
+      "import": "./dist/services/http/index.mjs"
+    },
+    "./services/filesystem-store": {
+      "types": "./dist/services/filesystem-store/index.d.mts",
+      "import": "./dist/services/filesystem-store/index.mjs"
+    },
+    "./ledger": {
+      "types": "./dist/src/ledger/index.d.mts",
+      "import": "./dist/src/ledger/index.mjs"
+    },
+    "./evaluating": {
+      "types": "./dist/src/evaluating/index.d.mts",
+      "import": "./dist/src/evaluating/index.mjs"
+    },
+    "./evaluating/projecting": {
+      "types": "./dist/src/evaluating/projecting/index.d.mts",
+      "import": "./dist/src/evaluating/projecting/index.mjs"
+    },
+    "./evaluating/descending": {
+      "types": "./dist/src/evaluating/descending/index.d.mts",
+      "import": "./dist/src/evaluating/descending/index.mjs"
+    },
+    "./evaluating/reading": {
+      "types": "./dist/src/evaluating/reading/index.d.mts",
+      "import": "./dist/src/evaluating/reading/index.mjs"
+    },
+    "./evaluating/measuring": {
+      "types": "./dist/src/evaluating/measuring/index.d.mts",
+      "import": "./dist/src/evaluating/measuring/index.mjs"
+    },
+    "./evaluating/counting": {
+      "types": "./dist/src/evaluating/counting/index.d.mts",
+      "import": "./dist/src/evaluating/counting/index.mjs"
+    },
+    "./evaluating/pairing": {
+      "types": "./dist/src/evaluating/pairing/index.d.mts",
+      "import": "./dist/src/evaluating/pairing/index.mjs"
+    },
+    "./evaluating/connecting": {
+      "types": "./dist/src/evaluating/connecting/index.d.mts",
+      "import": "./dist/src/evaluating/connecting/index.mjs"
+    },
+    "./evaluating/settling": {
+      "types": "./dist/src/evaluating/settling/index.d.mts",
+      "import": "./dist/src/evaluating/settling/index.mjs"
+    },
+    "./package.json": "./package.json",
+    "./codecs/text": {
+      "types": "./dist/src/codecs/text/index.d.mts",
+      "import": "./dist/src/codecs/text/index.mjs"
+    },
+    "./codecs/text/json": {
+      "types": "./dist/src/codecs/text/json/index.d.mts",
+      "import": "./dist/src/codecs/text/json/index.mjs"
+    },
+    "./codecs/text/json/jsonl": {
+      "types": "./dist/src/codecs/text/json/jsonl/index.d.mts",
+      "import": "./dist/src/codecs/text/json/jsonl/index.mjs"
+    },
+    "./codecs/text/json/jsonl/eavt": {
+      "types": "./dist/src/codecs/text/json/jsonl/eavt/index.d.mts",
+      "import": "./dist/src/codecs/text/json/jsonl/eavt/index.mjs"
+    },
+    "./codecs/text/json/jsonl/eavt/datom": {
+      "types": "./dist/src/codecs/text/json/jsonl/eavt/datom/index.d.mts",
+      "import": "./dist/src/codecs/text/json/jsonl/eavt/datom/index.mjs"
+    },
+    "./codecs/text/json/jsonl/eavt/triple": {
+      "types": "./dist/src/codecs/text/json/jsonl/eavt/triple/index.d.mts",
+      "import": "./dist/src/codecs/text/json/jsonl/eavt/triple/index.mjs"
+    },
+    "./codecs/text/json/jsonl/eavt/lean": {
+      "types": "./dist/src/codecs/text/json/jsonl/eavt/lean/index.d.mts",
+      "import": "./dist/src/codecs/text/json/jsonl/eavt/lean/index.mjs"
+    },
+    "./codecs/path/object/attribute/file/flatfile/serialization/json/jsonl": {
+      "types": "./dist/src/codecs/text/json/core.d.mts",
+      "import": "./dist/src/codecs/text/json/core.mjs"
+    },
+    "./codecs/path/object/attribute/file/flatfile/serialization/json": {
+      "types": "./dist/src/codecs/text/json/index.d.mts",
+      "import": "./dist/src/codecs/text/json/index.mjs"
+    },
+    "./codecs/path/object/attribute/file/flatfile/serialization/json/jsonl/eavt": {
+      "types": "./dist/src/codecs/text/json/jsonl/eavt/index.d.mts",
+      "import": "./dist/src/codecs/text/json/jsonl/eavt/index.mjs"
+    },
+    "./codecs/path": {
+      "types": "./dist/src/codecs/index.d.mts",
+      "import": "./dist/src/codecs/index.mjs"
+    },
+    "./codecs/text/xml": {
+      "types": "./dist/src/codecs/text/xml/index.d.mts",
+      "import": "./dist/src/codecs/text/xml/index.mjs"
+    },
+    "./codecs/text/xml/html": {
+      "types": "./dist/src/codecs/text/xml/html/index.d.mts",
+      "import": "./dist/src/codecs/text/xml/html/index.mjs"
+    },
+    "./codecs/text/xml/svg": {
+      "types": "./dist/src/codecs/text/xml/svg/index.d.mts",
+      "import": "./dist/src/codecs/text/xml/svg/index.mjs"
+    },
+    "./codecs/xml": {
+      "types": "./dist/src/codecs/text/xml/index.d.mts",
+      "import": "./dist/src/codecs/text/xml/index.mjs"
+    },
+    "./codecs/svg": {
+      "types": "./dist/src/codecs/text/xml/svg/index.d.mts",
+      "import": "./dist/src/codecs/text/xml/svg/index.mjs"
+    },
+    "./codecs/text/xml/svg/radial": {
+      "types": "./dist/src/codecs/text/xml/svg/radial/index.d.mts",
+      "import": "./dist/src/codecs/text/xml/svg/radial/index.mjs"
+    },
+    "./codecs/boundary": {
+      "types": "./dist/src/codecs/boundary/index.d.mts",
+      "import": "./dist/src/codecs/boundary/index.mjs"
+    },
+    "./codecs/boundary/wire": {
+      "types": "./dist/src/codecs/boundary/wire/index.d.mts",
+      "import": "./dist/src/codecs/boundary/wire/index.mjs"
+    },
+    "./codecs/host": {
+      "types": "./dist/src/codecs/host/index.d.mts",
+      "import": "./dist/src/codecs/host/index.mjs"
+    },
+    "./codecs/host/javascript": {
+      "types": "./dist/src/codecs/host/javascript/index.d.mts",
+      "import": "./dist/src/codecs/host/javascript/index.mjs"
+    },
+    "./codecs/host/javascript/crypto": {
+      "types": "./dist/src/codecs/host/javascript/crypto/index.d.mts",
+      "import": "./dist/src/codecs/host/javascript/crypto/index.mjs"
+    },
+    "./codecs/host/javascript/numbers": {
+      "types": "./dist/src/codecs/host/javascript/numbers/index.d.mts",
+      "import": "./dist/src/codecs/host/javascript/numbers/index.mjs"
+    }
+  },
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "red-cup-engineering",
+    "kind": "capability-cell",
+    "actor": "urn:ame:relating",
+    "operations": [
+      "relating"
+    ],
+    "capabilities": [
+      {
+        "capability": "relating",
+        "faces": [
+          "relating"
+        ]
+      }
+    ],
+    "package": "@red-cup-engineering/relating"
+  }
+}

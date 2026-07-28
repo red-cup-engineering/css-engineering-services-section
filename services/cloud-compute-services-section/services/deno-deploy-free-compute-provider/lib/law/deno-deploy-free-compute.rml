@@ -1,0 +1,8 @@
+#lang rmn/v2
+(map
+  ("type" "DenoDeployFreeComputeProviderLaw")
+  ("version" 2)
+  ("precondition" "Deno's live organization record identifies the owning organization plan exactly as free_verified; the request body is canonical JSON within 6144 bytes; and a settlement-owned Ed25519 key signs the exact method, path, UTC second no more than 900 seconds old, and body digest.")
+  ("operation" "Compute either SHA-256 over at most 4096 UTF-8 bytes or PBKDF2-HMAC-SHA256 using the public domain salt, 120000 fixed iterations, and 32 fixed output bytes. Hold no application secret and make no subrequest.")
+  ("postcondition" "Return one deterministic JSON result or refusal. Deno may pause the application when the Free allowance is exhausted; no overage is accepted. Retain no request, credential, database, queue, upload, fetched resource, or caller program.")
+  ("refusal" "Refuse Pro or unknown plan evidence; an unsigned, future, or stale request; noncanonical or oversized input; duplicate or extra fields; a variable work factor; arbitrary code; URL fetch; upload; shell; package dependency; durable state; or any operation outside the exact contract."))

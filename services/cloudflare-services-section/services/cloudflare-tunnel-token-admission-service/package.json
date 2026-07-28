@@ -1,0 +1,59 @@
+{
+  "name": "@red-cup-engineering/cloudflare-tunnel-token-admission-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Admit one named Cloudflare tunnel token to its fixed protected laptop path after offline structural validation.",
+  "exports": {
+    ".": "./src/admit-tunnel-token.mjs",
+    "./src/admit-tunnel-token.mjs": "./src/admit-tunnel-token.mjs"
+  },
+  "scripts": {
+    "admit-token": "node src/admit-tunnel-token.mjs",
+    "check": "node --check src/admit-tunnel-token.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "x-agentic-metro-enterprise": {
+    "node-id": "cloudflare-tunnel-token-admission-service",
+    "organizational-kind": "service",
+    "owners": [
+      "561-group",
+      "red-cup-engineering"
+    ],
+    "membrane": {
+      "law": "src/"
+    },
+    "admission": "one remotely managed tunnel token, named by --tunnel-name, admitted to its fixed protected laptop path after offline structural validation",
+    "refusal": "any token not addressed to a named tunnel, any write outside the fixed per-tunnel token path, and any token disclosure to stdout/stderr",
+    "operation-catalog": {
+      "admit-tunnel-token": {
+        "effects": [
+          "fixed protected local token file for the named tunnel only"
+        ],
+        "network": false
+      }
+    }
+  },
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "red-cup-engineering",
+    "kind": "capability-cell",
+    "actor": "urn:ame:cloudflare-tunnel-token-admission-service",
+    "operations": [
+      "admit-tunnel-token"
+    ],
+    "capabilities": [
+      {
+        "capability": "cloudflare-tunnel-token-admission-service",
+        "faces": [
+          "admit-tunnel-token"
+        ]
+      }
+    ],
+    "package": "@red-cup-engineering/cloudflare-tunnel-token-admission-service"
+  }
+}

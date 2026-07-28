@@ -1,0 +1,26 @@
+[
+  "law",
+  ["name", "discover-federated-capability-offers"],
+  ["version", 1],
+  ["admit", [
+    "and",
+    ["canonical-rmn", "request"],
+    ["exact-operation", "request.operation"],
+    ["bounded", "request.maximumCandidates"],
+    ["addressed-or-public-activitypub-visibility", "request.observer"]
+  ]],
+  ["effect", [
+    "observe-activitypub-outboxes",
+    "preserve-provider-and-offer-identities",
+    "return-bounded-candidates"
+  ]],
+  ["refuse", [
+    "private-foreign-activity",
+    "unbounded-discovery",
+    "identity-only-authority",
+    "implicit-acceptance",
+    "implicit-payment",
+    "implicit-invocation"
+  ]]
+]
+

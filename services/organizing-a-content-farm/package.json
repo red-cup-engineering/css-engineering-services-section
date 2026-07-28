@@ -1,0 +1,52 @@
+{
+  "name": "@red-cup-engineering/organizing-a-content-farm",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "description": "Organizing a content farm: a knowledge-vault specialization irrigated by newscables and cultivating producing-content farm outputs.",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "check": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json",
+    "rebuild": "npm run clean && npm run build",
+    "verify": "npm run check && npm run build"
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
+  "dependencies": {
+    "@red-cup-engineering/organizing-a-newscable": "0.0.0",
+    "@red-cup-engineering/organizing-a-knowledge-vault": "0.0.0",
+    "@red-cup-engineering/producing-content": "0.0.1",
+    "@red-cup-engineering/relating": "0.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "red-cup-engineering",
+    "kind": "inert-material",
+    "actor": "urn:ame:organizing-a-content-farm",
+    "operations": [],
+    "capabilities": [],
+    "package": "@red-cup-engineering/organizing-a-content-farm"
+  }
+}

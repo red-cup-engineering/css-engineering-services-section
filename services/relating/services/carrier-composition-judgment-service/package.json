@@ -1,0 +1,80 @@
+{
+  "name": "@red-cup-engineering/carrier-composition-judgment-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Autonomous Actor judging one codomain-domain carrier bond between two morphisms.",
+  "exports": {
+    ".": "./src/client.mjs",
+    "./judgment": "./src/judgment.mjs",
+    "./executor": "./src/a2a-executor.mjs"
+  },
+  "bin": {
+    "execute-carrier-composition-judgment-a2a-message": "./bin/execute-a2a-message.mjs",
+    "serve-carrier-composition-judgment-a2a": "./bin/serve-a2a.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/judgment.mjs && node --check src/a2a-executor.mjs && node --check src/client.mjs && node --check bin/execute-a2a-message.mjs && node --check bin/serve-a2a.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@a2a-js/sdk": "1.0.0-beta.0",
+    "@red-cup-engineering/a2a-contracted-agent-service": "2.0.4",
+    "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
+    "@red-cup-engineering/a2a-rmn-task-client-service": "1.1.0",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0",
+    "@lenticule-science/rwil-rdf-projection-service": "1.0.2"
+  },
+  "x-agentic-metro-enterprise": {
+    "node-id": "carrier-composition-judgment-service",
+    "actor": "urn:ame:carrier-composition-judgment-service",
+    "organizational-kind": "capability-cell",
+    "owners": [
+      "relating"
+    ],
+    "admission": "one exact provider-addressed canonical RMN operation carrying producer and consumer morphism faces",
+    "refusal": "execution, planning, registry mutation, alternate-carrier search, or identity inferred from names or codecs",
+    "operation-catalog": {
+      "judge-carrier-composition": {
+        "contract": "content/contracts/judge-carrier-composition.rml",
+        "protocols": [
+          "RMN",
+          "A2A 1.0"
+        ],
+        "returns": "CarrierCompositionWitness|CarrierCompositionObstruction"
+      }
+    },
+    "x-foam-locus": {
+      "address": [
+        "relating",
+        "running",
+        "category",
+        "composition-judgment"
+      ],
+      "proposition": "A producer morphism composes with a consumer morphism exactly when the producer codomain carrier identity equals the consumer domain carrier identity.",
+      "actor": "urn:ame:carrier-composition-judgment-service"
+    }
+  },
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "red-cup-engineering",
+    "kind": "capability-cell",
+    "actor": "urn:ame:carrier-composition-judgment-service",
+    "operations": [
+      "judge-carrier-composition"
+    ],
+    "capabilities": [
+      {
+        "capability": "carrier-composition-judgment-service",
+        "faces": [
+          "judge-carrier-composition"
+        ]
+      }
+    ],
+    "package": "@red-cup-engineering/carrier-composition-judgment-service"
+  }
+}

@@ -1,0 +1,11 @@
+#lang rmn/v2
+(map
+  ("type" "PublicServiceMarketListingAdmissionLaw")
+  ("version" 1)
+  ("provider" "urn:ame:x402-services-section")
+  ("precondition" "A sovereign customer supplies one public HTTPS signed A2A 1.0 Agent Card URL, one public HTTPS x402 v2 resource URL, an exact skill and circuit-law identity, and one exact EVM seller settlement policy.")
+  ("operation" "The provider verifies the Agent Card JWS through its same-origin public JWKS, observes the unpaid x402 challenge, validates Bazaar metadata, binds exactly one signed skill and sovereign circuit law, and selects exactly one payment alternative equal to the declared seller policy.")
+  ("postcondition" "Return one deterministic admitted listing binding signed provider identity, public interfaces, service law, Bazaar resource metadata, exact payment acceptance, seller policy, evidence digests, and explicit read-only authority.")
+  ("refusal" "Refuse secrets, environment-derived payout addresses, unsafe or non-HTTPS URLs, unsigned or ambiguous identities, law or skill drift, missing or path-inconsistent Bazaar metadata, absent or ambiguous payment-policy matches, payment, signing, settlement, protected-resource consumption, deployment, or marketplace authority aggregation.")
+  ("protocols" (array "A2A-1.0" "x402-v2"))
+  ("evidence" "deterministic-public-market-listing"))

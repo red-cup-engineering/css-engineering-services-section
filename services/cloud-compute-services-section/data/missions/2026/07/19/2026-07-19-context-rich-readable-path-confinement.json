@@ -1,0 +1,34 @@
+{
+  "id": "urn:ame:free-compute-dev:mission:2026-07-19:context-rich-readable-path-confinement",
+  "objective": "Complete readablePaths confinement in src/agent-tools.mjs and create test/readable-paths-complete.test.mjs in the same candidate. list_files and search must allow the empty relative root as a traversal base, refuse an out-of-scope non-root base, and filter every walked file with readAdmitted. Direct read remains confined. Preserve unrestricted behavior when readablePaths is empty. The exact source form is: list/search base refusal only when relativePath !== empty-string and !readAdmitted(relativePath); list_files filters walk results with readAdmitted; search continues before reading any file for which readAdmitted(file) is false.",
+  "taskClass": "readable-path-confinement-with-regression",
+  "territory": "/home/emsenn/info/lib/emsenn/services/561-group/services/free-compute-dev",
+  "focusPaths": [
+    "src/agent-tools.mjs",
+    "test/readable-paths-complete.test.mjs"
+  ],
+  "writablePaths": [
+    "src/agent-tools.mjs",
+    "test/readable-paths-complete.test.mjs"
+  ],
+  "readablePaths": [],
+  "verifyCommand": "node --test",
+  "acceptanceCommand": "node --test test/readable-paths-complete.test.mjs",
+  "constraints": [
+    "Test omitted path and explicit dot root traversal.",
+    "Test exact-file and directory admission.",
+    "Test explicit out-of-scope bases return structured refusals without protected names, matching lines, or bytes.",
+    "Test unrestricted behavior with no readablePaths.",
+    "Do not edit outside the two focus paths."
+  ],
+  "workType": "software-engineering",
+  "requiredCapabilities": ["software-engineering", "json-schema-output"],
+  "endpointShards": ["gemini-3.1-flash-lite", "claude-code-claude-sonnet-4-6"],
+  "enforceProviderSchema": true,
+  "providerTimeoutMs": 60000,
+  "maxConsecutiveRefusals": 2,
+  "actors": 2,
+  "maxRounds": 6,
+  "minVerifiedCandidates": 1,
+  "apply": true
+}

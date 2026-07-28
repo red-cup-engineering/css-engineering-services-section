@@ -1,0 +1,10 @@
+#lang rmn/v2
+(map
+  ("type" "CapabilityLaw")
+  ("version" 1)
+  ("provider" "urn:ame:operations-manifold-forest-service")
+  ("operation" "derive-operations-manifold-forest")
+  ("precondition" "Receive one exact provider-addressed canonical RMN operation carrying one or more package operations manifolds and a bound carrier-composition judgment provider.")
+  ("effect" "Purchase a carrier-composition judgment for every cross-package producer-consumer action pair and retain all witnesses and obstructions.")
+  ("postcondition" "Return the witnessed bond edges, purchased judgment receipts, and every unbonded incoming or outgoing extremum as a pressure frontier.")
+  ("refusal" "Never compare carrier identities ambiently, execute a path, claim strategy legality or rigidity, erase an obstruction, or claim customer acceptance."))

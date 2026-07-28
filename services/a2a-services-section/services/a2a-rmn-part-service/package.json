@@ -1,0 +1,48 @@
+{
+  "name": "@red-cup-engineering/a2a-rmn-part-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/rmn-part.mjs"
+  },
+  "bin": {
+    "materialize-a2a-rmn-user-message": "./src/materialize-user-message.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/rmn-part.mjs && node --check src/materialize-user-message.mjs",
+    "test": "node --test",
+    "verify": "npm run check && npm test"
+  },
+  "dependencies": {
+    "@a2a-js/sdk": "1.0.0-beta.0"
+  },
+  "x-agentic-metro-enterprise": {
+    "node-id": "a2a-rmn-part-service",
+    "organizational-kind": "public-protocol-provider",
+    "operation-catalog": {
+      "form-canonical-rmn-a2a-part": {
+        "protocol": "A2A 1.0",
+        "legacyCompatibility": false
+      }
+    }
+  },
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "red-cup-engineering",
+    "kind": "capability-cell",
+    "actor": "urn:ame:a2a-rmn-part-service",
+    "operations": [
+      "form-canonical-rmn-a2a-part"
+    ],
+    "capabilities": [
+      {
+        "capability": "a2a-rmn-part-service",
+        "faces": [
+          "form-canonical-rmn-a2a-part"
+        ]
+      }
+    ],
+    "package": "@red-cup-engineering/a2a-rmn-part-service"
+  }
+}

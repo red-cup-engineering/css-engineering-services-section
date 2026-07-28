@@ -1,0 +1,26 @@
+{
+  "name": "Operations Manifold Forest Service",
+  "description": "Purchases atomic carrier-composition judgments to derive cross-package molecular bonds and unbonded pressure frontiers.",
+  "supportedInterfaces": [
+    { "url": "${BASE_URL}/a2a/jsonrpc", "protocolBinding": "JSONRPC", "protocolVersion": "1.0" },
+    { "url": "${BASE_URL}/a2a/rest", "protocolBinding": "HTTP+JSON", "protocolVersion": "1.0" }
+  ],
+  "provider": { "url": "https://emsenn.net/", "organization": "Relating" },
+  "version": "0.1.0",
+  "capabilities": { "streaming": false, "pushNotifications": false, "extendedAgentCard": false },
+  "securitySchemes": {},
+  "securityRequirements": [],
+  "defaultInputModes": ["application/rmn+cbor"],
+  "defaultOutputModes": ["application/rmn+cbor"],
+  "skills": [{
+    "id": "derive-operations-manifold-forest",
+    "name": "Derive operations manifold forest",
+    "description": "Purchase atomic bond judgments and return witnessed edges, obstructions, and pressure frontiers.",
+    "tags": ["relating", "operations-manifold", "forest", "market", "rmn"],
+    "examples": [],
+    "inputModes": ["application/rmn+cbor"],
+    "outputModes": ["application/rmn+cbor"],
+    "securityRequirements": []
+  }],
+  "signatures": []
+}

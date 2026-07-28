@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://red-cup-engineering.github.io/public-https-url-admission-service/schemas/public-https-url.schema.json",
+  "title": "Admitted public HTTPS URL",
+  "type": "string",
+  "format": "uri",
+  "maxLength": 4096,
+  "pattern": "^https://"
+}

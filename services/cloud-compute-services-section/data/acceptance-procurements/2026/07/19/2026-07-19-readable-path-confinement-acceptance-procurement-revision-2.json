@@ -1,0 +1,12 @@
+{
+  "extends": "2026-07-19-readable-path-confinement-acceptance-procurement.json",
+  "id": "urn:ame:free-compute-dev:acceptance-capsule:2026-07-19:readable-path-confinement:revision-2",
+  "priorReviewResidue": {
+    "global": "The first supplier artifact was rejected because vector names and partial assertions did not prove every forbidden clause.",
+    "omitted-root-traversal": ["Assert list and search results omit private/secret.txt, the private matching line, and private bytes; assert neither operation returns a root-base error."],
+    "dot-root-traversal": ["Assert list and search results omit private filenames, matching lines, and bytes, not merely that returned paths start with public."],
+    "directory-and-file-admission": ["Exercise list_files, search, and direct read for both directory and exact-file toolsets; prove exact-file admission excludes sibling, descendant, and ancestor observations."],
+    "explicit-private-base-refusal": ["Exercise both list_files and search with path private; prove each is an error-only object with no files or hits and serialized output omits private, secret.txt, needle, and protected content."],
+    "unrestricted-compatibility": ["For both omitted readablePaths and an empty array, exercise list_files, search, and direct read; prove equivalent unrestricted visibility including private content."]
+  }
+}

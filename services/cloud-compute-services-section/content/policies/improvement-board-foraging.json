@@ -1,0 +1,102 @@
+{
+  "type": "IndependentImprovementBoardForagingPolicy",
+  "capabilityGapFoldback": {
+    "type": "SupplierCapabilityGapFoldbackPolicy",
+    "enabled": true,
+    "investableCapabilities": ["activitypub", "code-review", "distributed-systems", "repository-analysis"],
+    "founderAudience": { "settlement": "561-group", "office": "founder" },
+    "investmentDecision": "separate-supplier-local-decision",
+    "protectedOracleRequired": true
+  },
+  "founderFormationDemandBoundary": {
+    "actor": "urn:ame:561-group:founder-enterprise-formation-demand-service",
+    "activityPubActor": "https://bare-cedar-fog.561.group/actors/founder-enterprise-formation-demand",
+    "activityPubInbox": "https://bare-cedar-fog.561.group/actors/founder-enterprise-formation-demand/inbox",
+    "agentCard": "https://bare-cedar-fog.561.group/a2a/founder-enterprise-formation-demand"
+  },
+  "supplierInvestmentDemand": {
+    "type": "SupplierSelfInvestmentDemandPolicy",
+    "enabled": true,
+    "authoredBy": "urn:ame:cloud-compute-services-section",
+    "standingDecision": "publish-provider-neutral-proposal-lot",
+    "admittedOpportunityTypes": ["SupplierCapacityInvestmentOpportunity", "SupplierCapabilityInvestmentOpportunity"],
+    "maximumProposalConsideration": {"amount": 103, "unit": "relative-resolution-milliquanta-v1"},
+    "protectedAcceptanceAssertions": [
+      "the proposal addresses the exact capability or capacity opportunity",
+      "the route tries smaller models and deterministic scripts before any stronger model",
+      "the candidate passes the supplier's existing test suite in isolated staging",
+      "the customer-owned behavioral assay binds the exact candidate regardless of provider identity",
+      "a settled dependency or customer incitement, rather than a clock, causes continuation",
+      "only the supplier-local admission die may mutate this supplier's territory or capability claims"
+    ],
+    "publicationAuthority": {
+      "proposalInquiryOnly": true,
+      "spendAuthorized": false,
+      "customerMutationAuthorized": false,
+      "capacityChangeAuthorized": false,
+      "capabilityClaimAuthorized": false,
+      "providerSelectionAuthorized": false
+    }
+  },
+  "supplierSelfImprovementExecution": {
+    "type": "SupplierSelfImprovementExecutionPolicy",
+    "enabled": true,
+    "customer": "urn:ame:cloud-compute-services-section",
+    "spendAuthorized": true,
+    "refusalDisposition": "terminal",
+    "acceptanceConsiderationPolicy": {
+      "type": "ConsiderationPolicy",
+      "acceptableAlternatives": [{
+        "id": "resolution-credit",
+        "obligations": [{
+          "kind": "credit",
+          "asset": "urn:union:credit:relative-resolution-milliquanta-v1",
+          "unit": "relative-resolution-milliquanta-v1",
+          "settlementCapabilities": ["urn:union:settlement-capability:direct-witness-v1"]
+        }]
+      }]
+    },
+    "implementationConsiderationPolicy": {
+      "type": "ConsiderationPolicy",
+      "acceptableAlternatives": [{
+        "id": "resolution-credit",
+        "obligations": [{
+          "kind": "credit",
+          "asset": "urn:union:credit:relative-resolution-milliquanta-v1",
+          "unit": "relative-resolution-milliquanta-v1",
+          "settlementCapabilities": ["urn:union:settlement-capability:direct-witness-v1"]
+        }]
+      }]
+    },
+    "capacityInvestmentDisposition": "typed-residue-until-distinct-capacity-oracle",
+    "recipes": {
+      "code-review": {
+        "type": "SupplierCapabilityImplementationRecipe",
+        "capability": "code-review",
+        "objective": "Enable the distributed-compute supplier to qualify exact code-review-bearing customer lots through its existing proposal-only route and executable behavioral acceptance.",
+        "focusPaths": ["src/improvement-board-forager.mjs", "test/improvement-board-forager.test.mjs"],
+        "writablePaths": ["src/improvement-board-forager.mjs"],
+        "acceptanceArtifactPath": "union-acceptance/supplier-code-review-capability.test.mjs",
+        "testVectors": ["supplier-code-review-capability"],
+        "given": ["The incumbent FreeCompute policy does not claim code-review and exact customer work lots may require it.", "The software mission provider already returns proposal-only bytes with independent semantic review evidence."],
+        "when": "FreeCompute evaluates and fulfills an exact customer lot whose required capabilities include code-review.",
+        "then": ["The default supplier policy explicitly includes code-review.", "The exact code-review-bearing lot qualifies through the normal capacity-bound bid route.", "The resulting mission remains proposal-only.", "Delivery accepts or refuses from executable customer behavior while retaining provider identities only as provenance."],
+        "forbidden": ["A stronger model is authorized.", "An external provider mutates FreeCompute territory.", "An implementation author reviews its own candidate.", "A capability claim bypasses protected acceptance."],
+      "constraints": ["Change only src/improvement-board-forager.mjs.", "Preserve proposal-only customer delivery and customerMutation false.", "Bind acceptance to executable behavior and the exact candidate, never author identity.", "Let provider bids and observed obstructions determine execution pressure."]
+      }
+    }
+  },
+  "boards": [
+    {
+      "actor": "urn:ame:executive-office:sovereign-improvement-board-service",
+      "transport": "activitypub",
+      "activityPubActor": "https://bare-cedar-fog.561.group/actors/sovereign-improvement-board",
+      "activityPubOutbox": "http://127.0.0.1:8787/actors/sovereign-improvement-board/outbox",
+      "activityPubInbox": "http://127.0.0.1:8787/actors/sovereign-improvement-board/inbox",
+      "a2aAgentCard": "https://bare-cedar-fog.561.group/a2a/sovereign-improvement-board",
+      "supplierActivityPubActor": "https://bare-cedar-fog.561.group/actors/cloud-compute-services-section",
+      "listOperation": "list-board-outbox",
+      "submitOperation": "submit-board-activity"
+    }
+  ]
+}

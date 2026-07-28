@@ -1,0 +1,70 @@
+{
+  "name": "@red-cup-engineering/a2a-sovereign-operation-boundary-service",
+  "version": "1.0.0",
+  "description": "Separately hireable A2A 1.0 boundary machinery for canonical typed-RMN sovereign operations with fail-closed runtime admission.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "files": [
+    "content",
+    "src"
+  ],
+  "exports": {
+    ".": "./src/boundary.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/boundary.mjs && node --check test/boundary.test.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test",
+    "pack:check": "npm pack --dry-run"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@a2a-js/sdk": "1.0.0-beta.0",
+    "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0"
+  },
+  "x-agentic-metro-enterprise": {
+    "node-id": "a2a-sovereign-operation-boundary-service",
+    "actor": "urn:ame:a2a-sovereign-operation-boundary-service",
+    "organizational-kind": "public-protocol-provider",
+    "owners": [
+      "a2a-services-section"
+    ],
+    "membrane": {
+      "law": "src/",
+      "lasting-instances": "content/",
+      "append-only-instances": "data/"
+    },
+    "admission": "one customer-supplied operation catalog, typed relational request and response kinds, and exact customer-owned deployment boundary",
+    "refusal": "noncanonical RMN, non-user A2A role, unknown operation, inactive customer deployment, missing runtime adapter, or missing adapter factory",
+    "operation-catalog": {
+      "execute-sovereign-operation-boundary": {
+        "lawSource": "content/contracts/execute-sovereign-operation-boundary.rml",
+        "protocol": "A2A 1.0",
+        "input": "application/rmn+cbor",
+        "output": "application/rmn+cbor",
+        "effects": []
+      }
+    }
+  },
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "red-cup-engineering",
+    "kind": "capability-cell",
+    "actor": "urn:ame:a2a-sovereign-operation-boundary-service",
+    "operations": [
+      "execute-sovereign-operation-boundary"
+    ],
+    "capabilities": [
+      {
+        "capability": "a2a-sovereign-operation-boundary-service",
+        "faces": [
+          "execute-sovereign-operation-boundary"
+        ]
+      }
+    ],
+    "package": "@red-cup-engineering/a2a-sovereign-operation-boundary-service"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "profile": "org.emsenn.evm.sovereign-enterprise-account.v3",
+  "enterprise": {
+    "nodeId": "polymarket-venue-access-enterprise",
+    "urn": "urn:ame:polymarket-venue-access-enterprise",
+    "enterpriseId": "0x9f20090b99df0201ca302568110506c9078e7bbf53cc78bf90fb9c78b6920160"
+  },
+  "chain": {
+    "chainId": 31337,
+    "caip2": "eip155:31337"
+  },
+  "account": {
+    "address": "0xe01c56c08f23aa713c7008925d89f237edc7f453",
+    "caip10": "eip155:31337:0xe01c56c08f23aa713c7008925d89f237edc7f453"
+  },
+  "factory": {
+    "address": "0x7bf3cf1176c4a037d3ea2a5ff3d480359ac65ecd",
+    "userSalt": "0xaf68b16df04c1a18be75621dd0abc32fb550b97e85322eb30bd2d33465308b39"
+  },
+  "policy": {
+    "signer": "0x9c555386aadf8a8e197385f5970f58e3a3dc6c39",
+    "custody": "settlement-private"
+  },
+  "deployment": {
+    "transaction": "0xd56af47ca1987fa6dbfd44f14a7f9c615fe39b9bc5a717f843120abd8b7b354f",
+    "block": 1472
+  }
+}

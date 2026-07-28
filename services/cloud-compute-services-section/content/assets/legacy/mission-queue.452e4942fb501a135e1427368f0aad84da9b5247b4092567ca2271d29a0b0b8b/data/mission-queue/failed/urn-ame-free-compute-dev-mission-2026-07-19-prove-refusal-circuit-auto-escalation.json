@@ -1,0 +1,251 @@
+{
+  "mission": {
+    "id": "urn:ame:free-compute-dev:mission:2026-07-19:prove-refusal-circuit:auto-escalation",
+    "objective": "Add a deterministic test to test/mission-runtime.test.mjs proving that an actor receiving invalid or refused inference records opens its circuit after maxConsecutiveRefusals, stops before maxRounds, and produces no verified candidate. Use an injected dispatch function and assert the exact dispatch-wave count and terminal actor status.",
+    "taskClass": "mission-refusal-circuit-regression",
+    "territory": "/home/emsenn/info/lib/emsenn/services/561-group/services/free-compute-dev",
+    "verifyCommand": "node --test test/mission-runtime.test.mjs",
+    "constraints": [
+      "Change test/mission-runtime.test.mjs only.",
+      "Do not weaken or remove existing assertions.",
+      "The test itself must make no provider calls.",
+      "Use a deterministic injected dispatch returning records with no valid action text.",
+      "Configure maxRounds above maxConsecutiveRefusals and prove the circuit prevents the extra waves."
+    ],
+    "workType": "classification",
+    "requiredCapabilities": [
+      "classification",
+      "json-output",
+      "software-engineering"
+    ],
+    "endpointShards": [
+      "groq-llama-3.1-8b-instant"
+    ],
+    "actors": 1,
+    "maxRounds": 8,
+    "maxConsecutiveRefusals": 2,
+    "maxTokens": 700,
+    "difficulty": 0.45,
+    "fabricAttempts": 1,
+    "fabricConcurrency": 2,
+    "apply": true,
+    "queuedAt": "2026-07-19T07:15:51.137Z",
+    "_queueClaim": {
+      "workerId": "worker-2",
+      "claimedAt": "2026-07-19T07:15:52.674Z"
+    }
+  },
+  "settledAt": "2026-07-19T07:15:53.645Z",
+  "result": {
+    "type": "FreeComputeDevelopmentTrajectory",
+    "id": "urn:ame:free-compute-dev:mission:2026-07-19:prove-refusal-circuit:auto-escalation:escalation:1:software-engineering",
+    "objective": "Add a deterministic test to test/mission-runtime.test.mjs proving that an actor receiving invalid or refused inference records opens its circuit after maxConsecutiveRefusals, stops before maxRounds, and produces no verified candidate. Use an injected dispatch function and assert the exact dispatch-wave count and terminal actor status.\n\nPRIOR VERIFIED-EXECUTION RESIDUE: {\"classification\":\"unresolved\",\"summary\":\"no actor produced a verification-passing candidate\",\"metrics\":{\"actors\":1,\"rounds\":2,\"inferenceAttempts\":0,\"usefulCompletions\":0,\"verifiedCandidates\":0,\"directInteractiveModelCalls\":0},\"actors\":[{\"id\":1,\"status\":\"refused\",\"observations\":[\"Inference refusal or invalid action: no-feasible-endpoint\",\"Inference refusal or invalid action: no-feasible-endpoint\"]}]}",
+    "taskClass": "mission-refusal-circuit-regression",
+    "startedAt": "2026-07-19T07:15:53.167Z",
+    "finishedAt": "2026-07-19T07:15:53.641Z",
+    "territory": {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/free-compute-dev",
+      "filesObserved": 44,
+      "baselineVerificationPassed": true
+    },
+    "outcome": {
+      "verified": false,
+      "integrated": false,
+      "classification": "unresolved",
+      "changedPaths": [],
+      "selectedActorId": null,
+      "selectedActions": [],
+      "trajectoryFingerprint": null,
+      "summary": "no actor produced a verification-passing candidate",
+      "integration": {
+        "integrated": false,
+        "classification": "unresolved"
+      }
+    },
+    "metrics": {
+      "actors": 1,
+      "rounds": 2,
+      "inferenceAttempts": 0,
+      "usefulCompletions": 0,
+      "verifiedCandidates": 0,
+      "directInteractiveModelCalls": 0
+    },
+    "actors": [
+      {
+        "id": 1,
+        "status": "refused",
+        "actions": [],
+        "observations": [
+          "Inference refusal or invalid action: no-feasible-endpoint",
+          "Inference refusal or invalid action: no-feasible-endpoint"
+        ]
+      }
+    ],
+    "ledgerPath": "/home/emsenn/info/lib/emsenn/services/561-group/services/free-compute-dev/data/trajectories/2026/07/19/2026-07-19-free-compute-dev-trajectories.jsonl",
+    "promotion": {
+      "eligible": false,
+      "attempts": 2,
+      "verified": 0,
+      "verifiedFraction": 0,
+      "dominantFingerprint": null,
+      "dominantCount": 0,
+      "threshold": 5
+    },
+    "phases": [
+      {
+        "kind": "base",
+        "result": {
+          "type": "FreeComputeDevelopmentTrajectory",
+          "id": "urn:ame:free-compute-dev:mission:2026-07-19:prove-refusal-circuit:auto-escalation",
+          "objective": "Add a deterministic test to test/mission-runtime.test.mjs proving that an actor receiving invalid or refused inference records opens its circuit after maxConsecutiveRefusals, stops before maxRounds, and produces no verified candidate. Use an injected dispatch function and assert the exact dispatch-wave count and terminal actor status.",
+          "taskClass": "mission-refusal-circuit-regression",
+          "startedAt": "2026-07-19T07:15:52.675Z",
+          "finishedAt": "2026-07-19T07:15:53.164Z",
+          "territory": {
+            "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/free-compute-dev",
+            "filesObserved": 44,
+            "baselineVerificationPassed": true
+          },
+          "outcome": {
+            "verified": false,
+            "integrated": false,
+            "classification": "unresolved",
+            "changedPaths": [],
+            "selectedActorId": null,
+            "selectedActions": [],
+            "trajectoryFingerprint": null,
+            "summary": "no actor produced a verification-passing candidate",
+            "integration": {
+              "integrated": false,
+              "classification": "unresolved"
+            }
+          },
+          "metrics": {
+            "actors": 1,
+            "rounds": 2,
+            "inferenceAttempts": 0,
+            "usefulCompletions": 0,
+            "verifiedCandidates": 0,
+            "directInteractiveModelCalls": 0
+          },
+          "actors": [
+            {
+              "id": 1,
+              "status": "refused",
+              "actions": [],
+              "observations": [
+                "Inference refusal or invalid action: no-feasible-endpoint",
+                "Inference refusal or invalid action: no-feasible-endpoint"
+              ]
+            }
+          ],
+          "ledgerPath": "/home/emsenn/info/lib/emsenn/services/561-group/services/free-compute-dev/data/trajectories/2026/07/19/2026-07-19-free-compute-dev-trajectories.jsonl",
+          "promotion": {
+            "eligible": false,
+            "attempts": 1,
+            "verified": 0,
+            "verifiedFraction": 0,
+            "dominantFingerprint": null,
+            "dominantCount": 0,
+            "threshold": 5
+          }
+        }
+      },
+      {
+        "kind": "escalation",
+        "stageIndex": 0,
+        "stage": {
+          "name": "software-engineering",
+          "workType": "software-engineering",
+          "requiredCapabilities": [
+            "software-engineering",
+            "json-schema-output"
+          ],
+          "endpointShards": [],
+          "enforceProviderSchema": true,
+          "difficulty": 0.72,
+          "actors": 1,
+          "maxRounds": 6,
+          "maxTokens": 1400,
+          "fabricAttempts": 2,
+          "fabricConcurrency": 2,
+          "providerTimeoutMs": 180000,
+          "maxConsecutiveRefusals": 2,
+          "minVerifiedCandidates": 1
+        },
+        "result": {
+          "type": "FreeComputeDevelopmentTrajectory",
+          "id": "urn:ame:free-compute-dev:mission:2026-07-19:prove-refusal-circuit:auto-escalation:escalation:1:software-engineering",
+          "objective": "Add a deterministic test to test/mission-runtime.test.mjs proving that an actor receiving invalid or refused inference records opens its circuit after maxConsecutiveRefusals, stops before maxRounds, and produces no verified candidate. Use an injected dispatch function and assert the exact dispatch-wave count and terminal actor status.\n\nPRIOR VERIFIED-EXECUTION RESIDUE: {\"classification\":\"unresolved\",\"summary\":\"no actor produced a verification-passing candidate\",\"metrics\":{\"actors\":1,\"rounds\":2,\"inferenceAttempts\":0,\"usefulCompletions\":0,\"verifiedCandidates\":0,\"directInteractiveModelCalls\":0},\"actors\":[{\"id\":1,\"status\":\"refused\",\"observations\":[\"Inference refusal or invalid action: no-feasible-endpoint\",\"Inference refusal or invalid action: no-feasible-endpoint\"]}]}",
+          "taskClass": "mission-refusal-circuit-regression",
+          "startedAt": "2026-07-19T07:15:53.167Z",
+          "finishedAt": "2026-07-19T07:15:53.641Z",
+          "territory": {
+            "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/free-compute-dev",
+            "filesObserved": 44,
+            "baselineVerificationPassed": true
+          },
+          "outcome": {
+            "verified": false,
+            "integrated": false,
+            "classification": "unresolved",
+            "changedPaths": [],
+            "selectedActorId": null,
+            "selectedActions": [],
+            "trajectoryFingerprint": null,
+            "summary": "no actor produced a verification-passing candidate",
+            "integration": {
+              "integrated": false,
+              "classification": "unresolved"
+            }
+          },
+          "metrics": {
+            "actors": 1,
+            "rounds": 2,
+            "inferenceAttempts": 0,
+            "usefulCompletions": 0,
+            "verifiedCandidates": 0,
+            "directInteractiveModelCalls": 0
+          },
+          "actors": [
+            {
+              "id": 1,
+              "status": "refused",
+              "actions": [],
+              "observations": [
+                "Inference refusal or invalid action: no-feasible-endpoint",
+                "Inference refusal or invalid action: no-feasible-endpoint"
+              ]
+            }
+          ],
+          "ledgerPath": "/home/emsenn/info/lib/emsenn/services/561-group/services/free-compute-dev/data/trajectories/2026/07/19/2026-07-19-free-compute-dev-trajectories.jsonl",
+          "promotion": {
+            "eligible": false,
+            "attempts": 2,
+            "verified": 0,
+            "verifiedFraction": 0,
+            "dominantFingerprint": null,
+            "dominantCount": 0,
+            "threshold": 5
+          }
+        }
+      }
+    ],
+    "route": {
+      "type": "FreeComputeDevelopmentRouteObservation",
+      "id": "urn:ame:free-compute-dev:mission:2026-07-19:prove-refusal-circuit:auto-escalation",
+      "taskClass": "mission-refusal-circuit-regression",
+      "finishedAt": "2026-07-19T07:15:53.643Z",
+      "baseVerified": false,
+      "finalVerified": false,
+      "learnedRouteUsed": false,
+      "priorRoute": null,
+      "successfulStageIndex": null,
+      "phaseCount": 2,
+      "inferenceAttempts": 0,
+      "usefulCompletions": 0,
+      "directInteractiveModelCalls": 0,
+      "routeLedgerPath": "/home/emsenn/info/lib/emsenn/services/561-group/services/free-compute-dev/data/route-observations/2026/07/19/2026-07-19-free-compute-dev-route-observations.jsonl"
+    }
+  }
+}

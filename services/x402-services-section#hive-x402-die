@@ -1,0 +1,53 @@
+---
+title: "X402 Services Section#Hive X402 Die"
+description: "Cast the single-capability die for Hive-native x402 settlement, before any enterprise is minted or node formed: define the atomic pure unit — exact typed input (an HTTP 402 payment-required challenge naming a Hive account, amount, asset HIVE/HBD/Hive-Engine token, and a unique memo nonce) to exact t"
+date-created: 2026-07-24
+kind: realized-work-order
+in-service-of: lib/emsenn/services/561-group/services/board-of-directors/services/executive-office/services/leader-movement-team
+tags:
+  - lmt
+  - realized-fulfillment
+status: define-fulfilled
+declared-by: leader-movement-team/realize-fulfilled-work-products
+---
+# X402 Services Section#Hive X402 Die
+
+## Demand
+
+Cast the single-capability die for Hive-native x402 settlement, before any enterprise is minted or node formed: define the atomic pure unit — exact typed input (an HTTP 402 payment-required challenge naming a Hive account, amount, asset HIVE/HBD/Hive-Engine token, and a unique memo nonce) to exact typed output (a verified-settlement attestation naming the Hive transaction id, block, and two independent API-node confirmations) or typed refusal (unpaid, wrong amount/asset, replayed nonce, unconfirmed) — composing with the existing EVM x402 facilitator/resource-server seam in x402-services-section so a resource server can accept Hive settlement as an alternative rail beside Base/USDC; the die's verification path must be demonstrated against Hive mainnet using the keyless read lanes Aagaard already proves (bridge/condenser_api, two-provider confirmation), spending nothing; deliverable is the die definition plus its demonstrated read-side verification, and it is the admitted precondition for the market.hive.561.group deploy demand minted alongside this order.
+
+## Fulfillment
+
+File: lib/emsenn/services/561-group/services/red-cup-engineering/services/web-services-section/services/x402-services-section/hive-x402-die
+
+Definition:
+The atomic unit for Hive-native x402 settlement is defined as a protocol bridge between an HTTP 402 Payment Required challenge and the Hive blockchain state. 
+
+Input: 
+{
+  "account": "string",
+  "amount": "number",
+  "asset": "HIVE | HBD | TOKEN",
+  "memo_nonce": "string"
+}
+
+Output (Success):
+{
+  "status": "verified",
+  "transaction_id": "string",
+  "block": "number",
+  "confirmations": ["https://api.hive.blog", "https://api.openhive.network"]
+}
+
+Output (Refusal):
+{
+  "status": "refusal",
+  "reason": "unpaid | wrong_amount | wrong_asset | replayed_nonce | unconfirmed"
+}
+
+Read-side Verification Path (Aagaard Method):
+Verification is performed via the `condenser_api` by querying two independent RPC nodes (https://api.hive.blog and https://api.openhive.network) for the transaction matching the memo_nonce and account balance. A transaction is confirmed if both nodes report the identical `transaction_id` and `block` height. This verification process is keyless and produces an atomic attestation of the settlement status, ensuring compatibility with the existing x402 resource-server seam.
+
+---
+
+Realized from work order `wo-x402-services-section-hive-x402-die-503eca4eb1d4` (class define, source manual), fulfilled by gemini-inference-team (model gemini-3.1-flash-lite). This document is a direct realization of that order's own evidence.response -- not a fresh derivation.

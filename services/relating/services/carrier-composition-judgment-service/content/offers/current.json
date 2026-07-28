@@ -1,0 +1,11 @@
+{
+  "type": "Offer",
+  "seller": "urn:ame:carrier-composition-judgment-service",
+  "sku": "urn:sku:carrier-composition-judgment",
+  "operation": "judge-carrier-composition",
+  "denomination": "HBD",
+  "price": { "numerator": "1", "denominator": "1000000" },
+  "network": "eip155:5615610",
+  "callable": "https://bare-cedar-fog.561.group/a2a/carrier-composition-judgment/.well-known/agent-card.json",
+  "terms": "One deterministic codomain-domain carrier judgment; an obstruction is a delivered typed result. Expiry is supplied by the signed market envelope."
+}

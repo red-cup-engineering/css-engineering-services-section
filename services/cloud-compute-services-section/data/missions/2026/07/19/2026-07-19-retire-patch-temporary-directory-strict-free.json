@@ -1,0 +1,24 @@
+{
+  "id": "urn:ame:free-compute-dev:mission:2026-07-19:retire-patch-temporary-directory:structured-edit-adapter",
+  "objective": "Repair the real resource leak demonstrated by the failing executor test: applyUnifiedDiff must retire every temporary patch directory on both successful and refused git-apply paths without changing its public return contract.",
+  "taskClass": "temporary-resource-lifecycle-repair",
+  "territory": "/home/emsenn/info/lib/emsenn/services/561-group/services/free-compute-dev",
+  "verifyCommand": "node --test",
+  "constraints": [
+    "Do not weaken or remove the acceptance test.",
+    "Preserve applyUnifiedDiff's synchronous public API and returned object shapes.",
+    "Make the smallest correct implementation change."
+  ],
+  "actors": 3,
+  "maxRounds": 8,
+  "maxTokens": 800,
+  "difficulty": 0.35,
+  "fabricAttempts": 1,
+  "fabricConcurrency": 8,
+  "endpointShards": [
+    "groq-llama-3.1-8b-instant",
+    "gemini-3.1-flash-lite",
+    "github-models-gpt-4o-mini"
+  ],
+  "apply": true
+}

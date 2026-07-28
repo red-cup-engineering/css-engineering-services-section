@@ -1,0 +1,16 @@
+{
+  "extends": "2026-07-19-readable-path-confinement-acceptance-procurement-revision-3.json",
+  "id": "urn:ame:free-compute-dev:acceptance-capsule:2026-07-19:readable-path-confinement:revision-4",
+  "contextPaths": ["src/agent-tools.mjs"],
+  "maxTokens": 5000,
+  "providerTimeoutMs": 360000,
+  "priorReviewResidue": {
+    "transportHistory": "Two free-Gemini rounds returned schema-valid but incomplete artifacts. The first Claude escalation produced no artifact because the live outer harness bound killed its 300-second provider-local exchange after 180 seconds. The runtime bound is now aligned at 330 seconds; this is one transport retry, not a new capability escalation.",
+    "instruction": "Return the complete artifact. It is incomplete unless its executable source contains every required call and assertion in this exact matrix.",
+    "omitted-root-traversal": {"requiredCalls": ["list_files with omitted path", "search with omitted path"], "requiredAssertions": ["public list member", "exactly one public search hit", "no error", "serialized list and hits omit private filename, token, and bytes"]},
+    "dot-root-traversal": {"requiredCalls": ["list_files with path dot", "search with path dot"], "requiredAssertions": ["public list member", "exactly one public search hit", "no error", "serialized list and hits omit private filename, token, and bytes"]},
+    "directory-and-file-admission": {"requiredCalls": ["directory list_files", "directory search", "directory read a.txt", "directory read nested/b.txt", "exact-file list_files from root", "exact-file search from root", "exact-file read a.txt", "exact-file rejected read nested/b.txt"], "requiredAssertions": ["directory sees both descendants", "exact-file sees only a.txt", "rejected direct read has error and no text/path payload"]},
+    "explicit-private-base-refusal": {"requiredCalls": ["list_files with path private", "search with path private"], "requiredAssertions": ["both are error-only objects", "neither has files or hits", "both serialized objects omit private, secret.txt, needle, and protected bytes"]},
+    "unrestricted-compatibility": {"requiredCalls": ["omitted-scope list_files, search, and direct read", "empty-scope list_files, search, and direct read"], "requiredAssertions": ["both modes see the same public and private files", "both modes return the same public and private search hits", "both modes read private bytes"]}
+  }
+}
