@@ -60,9 +60,10 @@ export async function main() {
   const chain = `eip155:${required("EVM_CHAIN_ID")}`;
   const client = new OnchainResourceClient({ contractAddress: required("ONCHAIN_RESOURCE_CONTRACT"), wallet });
   const adapters = createOnchainActivityPubAdapters({ client, actor });
+  const announceSettlementPulse = process.env.ACTIVITYPUB_ANNOUNCE_SETTLEMENT_PULSE !== "false";
   return serveActivityPubProvider({
     ...adapters,
-    onActivity: async (arrival) => {
+    ...(announceSettlementPulse ? { onActivity: async (arrival) => {
       await adapters.outbox.publish(settlementPulseActivity({
         origin,
         actor,
@@ -70,7 +71,7 @@ export async function main() {
         settlement: arrival.settlement,
         announced: arrival.jsonLd?.id ?? null,
       }));
-    },
+    } } : {}),
     listOutbox: async ({ cursor }) => {
       const listed = await adapters.outbox.list({ cursor: cursor ?? undefined, limit: 100 });
       return {
@@ -84,8 +85,10 @@ export async function main() {
     summary: required("ACTIVITYPUB_ACTOR_SUMMARY"),
     keyPath: required("ACTIVITYPUB_KEYS_PATH"),
     bearerTokenPath: required("ACTIVITYPUB_INBOX_BEARER_TOKEN_FILE"),
-    cell: required("ACTIVITYPUB_CELL_ID"),
-    controller: `did:pkh:eip155:${required("EVM_CHAIN_ID")}:${wallet.address}`,
+    ...(process.env.ACTIVITYPUB_CELL_ID ? {
+      cell: process.env.ACTIVITYPUB_CELL_ID,
+      controller: `did:pkh:eip155:${required("EVM_CHAIN_ID")}:${wallet.address}`,
+    } : {}),
     hostname: process.env.HOST ?? "127.0.0.1",
     port: Number(process.env.PORT ?? "15625"),
   });

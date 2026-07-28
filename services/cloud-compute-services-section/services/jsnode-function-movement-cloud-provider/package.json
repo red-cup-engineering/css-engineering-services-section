@@ -1,0 +1,30 @@
+{
+  "name": "@free-compute/jsnode-function-movement-cloud-provider",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Ephemeral Deno edge provider for deterministic JavaScript function movement; no customer bytes are persisted.",
+  "scripts": {
+    "test": "deno test test/main.test.ts"
+  },
+  "x-agentic-metro-enterprise": {
+    "node-id": "jsnode-function-movement-cloud-provider",
+    "owners": ["cloud-compute-services-section", "software-development-services-section"],
+    "admission": "short-lived signed canonical request to the deployed Deno edge actor",
+    "refusal": "unsigned or stale request, noncanonical JSON, oversized source, absent exact function, absent target marker, or same source and target",
+    "operation-catalog": {
+      "prepare-function-movement": {
+        "protocol": "HTTPS signed JSON",
+        "returns": "deterministic changed source/target bytes and SHA-256 digests"
+      }
+    }
+  },
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "free-compute",
+    "kind": "capability-cell",
+    "actor": "urn:ame:jsnode-function-movement-cloud-provider",
+    "operations": ["prepare-function-movement"],
+    "capabilities": [{"capability": "jsnode-function-movement-cloud-provider", "faces": ["prepare-function-movement"]}],
+    "package": "@free-compute/jsnode-function-movement-cloud-provider"
+  }
+}

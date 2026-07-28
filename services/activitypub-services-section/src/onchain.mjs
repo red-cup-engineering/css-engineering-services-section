@@ -64,7 +64,10 @@ export class OnchainResourceClient {
   put(resource, value, mediaType = "application/json") {
     const operation = async () => {
       const price = await this.contract.writePrice();
-      const transaction = await this.contract.publishInline(pathOf(resource), requiredText(mediaType, "media type"), value, { value: price });
+      const runner = this.contract.runner;
+      const address = await runner.getAddress();
+      const nonce = await runner.provider.getTransactionCount(address, "pending");
+      const transaction = await this.contract.publishInline(pathOf(resource), requiredText(mediaType, "media type"), value, { value: price, nonce });
       const receipt = await transaction.wait();
       if (receipt?.status !== 1) throw new Error("ERC-5219 write did not finalize successfully");
       return Object.freeze({

@@ -1,0 +1,17 @@
+{
+  "tasks": {"start": "deno run --allow-net main.ts", "test": "deno test test/main.test.ts"},
+  "deploy": {
+    "org": "emsenn",
+    "app": "union-jsnode-function-movement"
+  }
+}
+
+
+
+
+
+
+
+
+
+

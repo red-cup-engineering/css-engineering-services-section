@@ -1,0 +1,71 @@
+{
+  "name": "@red-cup-engineering/google-drive-use-team",
+  "version": "0.2.0",
+  "type": "module",
+  "private": true,
+  "description": "Purpose-bound Google Drive v3 die with canonical RMN/A2A, customer-custodied credentials, and RWIL/RDF evidence.",
+  "exports": {
+    ".": "./src/client.mjs",
+    "./client": "./src/client.mjs",
+    "./executor": "./src/a2a-executor.mjs"
+  },
+  "bin": {
+    "execute-google-drive-use-a2a-message": "./bin/execute-a2a-message.mjs",
+    "serve-google-drive-use-a2a": "./bin/serve-a2a.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/law.mjs && node --check src/records.mjs && node --check src/contract-google-drive-use.mjs && node --check src/google-oauth-refresh.mjs && node --check src/client.mjs && node --check src/a2a-executor.mjs && node --check bin/execute-a2a-message.mjs && node --check bin/serve-a2a.mjs && node --check examples/use-google-drive.mjs && node --check test/google-drive-use.test.mjs && node --check test/google-oauth-refresh.test.mjs",
+    "test": "node --test --test-isolation=none test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@a2a-js/sdk": "1.0.0-beta.0",
+    "@red-cup-engineering/a2a-contracted-agent-service": "2.0.4",
+    "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
+    "@red-cup-engineering/a2a-rmn-task-client-service": "1.1.0",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0",
+    "@lenticule-science/rwil-rdf-projection-service": "1.0.2"
+  },
+  "x-agentic-metro-enterprise": {
+    "node-id": "google-drive-use-team",
+    "actor": "urn:ame:google-drive-use-team",
+    "owner": "software-development-services-section",
+    "admission": "one provider-addressed canonical RMN solicitation or invocation through the hired A2A 1.0 provider plus exact single-use purpose-bound capability",
+    "refusal": "untyped purpose, caller-selected provider mechanics, capability drift or replay, credential-grant mismatch, absent credential, provider refusal, timeout, or bounded response refusal",
+    "operation-catalog": {
+      "use-google-drive": {
+        "contract": "ni:///sha-256;vSGQcIBcOLnJ1jnUunAkJ8_UPEh_qA_1cJU6zNKRCxw",
+        "protocols": [
+          "RMN",
+          "A2A 1.0",
+          "Google Drive API v3",
+          "OAuth 2.0",
+          "RWIL/RDF"
+        ],
+        "accepts": "GoogleDriveUseOperation",
+        "returns": "GoogleDriveUseOperationResult|Reject",
+        "legacyCompatibility": false
+      }
+    }
+  },
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "red-cup-engineering",
+    "kind": "actor",
+    "actor": "urn:ame:google-drive-use-team",
+    "operations": [
+      "use-google-drive"
+    ],
+    "capabilities": [
+      {
+        "capability": "google-drive-use-team",
+        "faces": [
+          "use-google-drive"
+        ]
+      }
+    ],
+    "package": "@red-cup-engineering/google-drive-use-team"
+  }
+}

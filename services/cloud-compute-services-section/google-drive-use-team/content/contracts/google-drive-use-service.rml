@@ -1,0 +1,7 @@
+#lang rmn/v2
+(map
+  ("type" "GoogleDriveUseServiceLaw") ("version" 2) ("provider" "urn:ame:google-drive-use-team")
+  ("precondition" "The hired A2A provider delivers one provider-addressed canonical RMN solicitation or invocation; a purpose-bearing customer supplies one typed GoogleDriveUseRequest, receives the exact provider offer, and invokes it with an expiring single-use capability bound to the request, non-secret credential-grant identity, effects, provider, and customer.")
+  ("operation" "Let the declared purpose select exactly one fixed bounded Google Drive v3 operation: create one new file, retrieve one file through fixed metadata and bounded media requests, or list one bounded page; perform no retry or fallback and append the normalized effect through the hired RWIL/RDF provider.")
+  ("postcondition" "Return one canonical RMN product or typed refusal, append the provider act through RWIL/RDF, consume the capability at most once, report provider requests and elapsed time, preserve unknown costs as unknown-not-zero, and never record credential material or claim customer usefulness.")
+  ("refusal" "Refuse a foreign provider, noncanonical operation, untyped or unsupported purpose, caller-selected executable, endpoint, method, header, environment, retry, fallback, or generic operation, capability or credential-grant drift or replay, absent live credential, provider or bounded response failure, delete, share, permission change, update, customer-territory mutation, credential record, or unknown resource use represented as zero."))

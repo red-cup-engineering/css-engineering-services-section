@@ -55,3 +55,14 @@ A customer that is a Capability Cell also supplies `ACTIVITYPUB_CELL_ID` and
 `ACTIVITYPUB_CONTROLLER`. The provider projects both into standard
 `PropertyValue` actor attachments so an independent observer can bind the
 federated face to the stable cell identity and its sovereign controller.
+# Canonical Union transport
+
+This service is the public transport membrane for every Union autonomic actor.
+
+One actor has one public ActivityPub face. Its ActivityStreams activities carry one
+canonical CloudEvents envelope; the CloudEvent data carries the A2A/RMN operation and
+its UCAN, CapTP, x402, and EVM references. A2A is an operation language inside the
+federated ActivityPub carrier, not a second public transport or a neighboring server.
+
+The shared `projectRmnActivity` and `extractRmnActivity` functions enforce that nesting
+for every caller. A direct public `/a2a` listener is not a valid Union deployment.

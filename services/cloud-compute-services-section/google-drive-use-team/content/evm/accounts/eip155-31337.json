@@ -1,0 +1,28 @@
+{
+  "profile": "org.emsenn.evm.sovereign-enterprise-account.v3",
+  "enterprise": {
+    "nodeId": "google-drive-use-team",
+    "urn": "urn:ame:google-drive-use-team",
+    "enterpriseId": "0x5e9b01a49e4eec89e0aa5e9d7424d447e7d042df2b3e55af015a6cfbfd525cfc"
+  },
+  "chain": {
+    "chainId": 31337,
+    "caip2": "eip155:31337"
+  },
+  "account": {
+    "address": "0xe1ef206b567ddef67511f87d892a2d5f6a3c9b46",
+    "caip10": "eip155:31337:0xe1ef206b567ddef67511f87d892a2d5f6a3c9b46"
+  },
+  "factory": {
+    "address": "0x7bf3cf1176c4a037d3ea2a5ff3d480359ac65ecd",
+    "userSalt": "0x64ee7f9923e752614f839409f2315d6030bd236f7e5e3bfd836d98dcda7594b6"
+  },
+  "policy": {
+    "signer": "0xd98b96b18af5ada4a3fa36cda2529951b683ac83",
+    "custody": "settlement-private"
+  },
+  "deployment": {
+    "transaction": "0x4e22abfac0428b72b248c48c2c00a8a7370a00657f7dff6cdaf1d69df8f7e45c",
+    "block": 1399
+  }
+}

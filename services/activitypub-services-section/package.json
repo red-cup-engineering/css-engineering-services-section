@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Independently hireable standards-conforming ActivityPub, ActivityStreams, WebFinger, and NodeInfo service.",
+  "description": "The Union's canonical public transport: ActivityPub federation carrying CloudEvents whose A2A/RMN payloads reach UCAN, CapTP, x402, and EVM boundaries.",
   "exports": {
     ".": {
       "types": "./types/provider.d.mts",
@@ -38,7 +38,8 @@
     "@fedify/fedify": "2.3.1",
     "@fedify/vocab": "2.3.1",
     "@hono/node-server": "1.19.14",
-    "ethers": "6.17.0"
+    "ethers": "6.17.0",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0"
   },
   "engines": {
     "node": ">=22"
@@ -80,13 +81,14 @@
       "project-rmn-activity": {
         "contract": "activitypub-services-section/rmn-link/v1",
         "accepts": "one standard Activity type, canonical RMN CBOR object, recipient, and A2A Agent Card",
-        "returns": "one standard ActivityStreams act containing an RFC 6920 named application/rmn+cbor Link",
+        "returns": "one standard ActivityStreams act containing one CloudEvents/A2A/RMN membrane carrier as an RFC 6920 named application/rmn+cbor Link",
         "effects": [
           "deterministic-projection-only"
         ],
         "customerAdmissionRequired": true,
         "semanticAuthorshipPreserved": true,
-        "legacyCompatibility": false
+        "legacyCompatibility": false,
+        "carrierStack": ["ActivityPub", "ActivityStreams", "CloudEvents", "A2A", "UCAN", "CapTP", "x402", "EVM", "RMN"]
       },
       "observe-addressed-rmn-outbox": {
         "contract": "activitypub-services-section/rmn-outbox-observation/v1",
