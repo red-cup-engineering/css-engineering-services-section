@@ -18,7 +18,7 @@ Cast the single-capability die for Hive-native x402 settlement, before any enter
 
 ## Fulfillment
 
-File: lib/emsenn/services/561-group/services/red-cup-engineering/services/web-services-section/services/x402-services-section/hive-x402-die
+File: lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/web-services-section/services/x402-services-section/hive-x402-die
 
 Definition:
 The atomic unit for Hive-native x402 settlement is defined as a protocol bridge between an HTTP 402 Payment Required challenge and the Hive blockchain state. 

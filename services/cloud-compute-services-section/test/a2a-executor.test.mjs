@@ -28,7 +28,7 @@ test("the long-running supplier die carries every explicit contract needed after
     "Environment=CLOUD_COMPUTE_ACTIVITYPUB_ORIGIN=https://bare-cedar-fog.561.group",
     "Environment=CLOUD_COMPUTE_ACTIVITYPUB_IDENTIFIER=cloud-compute-services-section",
     "Environment=CLOUD_COMPUTE_A2A_AGENT_CARD=https://bare-cedar-fog.561.group/a2a/improvement-market-supplier/.well-known/agent-card.json",
-    "Environment=CLOUD_COMPUTE_ACTIVITYPUB_KEYS_PATH=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/web-services-section/services/cloud-compute-services-section/data/activitypub/keys.json",
+    "Environment=CLOUD_COMPUTE_ACTIVITYPUB_KEYS_PATH=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/web-services-section/services/cloud-compute-services-section/data/activitypub/keys.json",
     "Environment=ACCEPTANCE_CAPSULE_PROCUREMENT_AGENT_CARD_URL=http://127.0.0.1:19842/.well-known/agent-card.json",
     "Environment=SOFTWARE_MISSION_EXECUTION_AGENT_CARD_URL=https://bare-cedar-fog.561.group/a2a/software-mission-execution/.well-known/agent-card.json",
   ]) assert.ok(unit.split("\n").includes(exactLine), `missing exact supplier contract: ${exactLine}`);
