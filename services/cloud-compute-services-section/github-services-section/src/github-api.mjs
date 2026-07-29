@@ -66,6 +66,18 @@ export function githubApi({ fetchImpl = fetch } = {}) {
       return destination;
     },
     async getRepo(repo) { return j("GET", `/repos/${repo}`); },
+    async getActionsPermissions(repo) {
+      if (!REPOSITORY.test(repo ?? "")) throw new TypeError("GitHub repository must be owner/name");
+      return j("GET", `/repos/${repo}/actions/permissions`);
+    },
+    async getTagRef(repo, tag) {
+      if (!REPOSITORY.test(repo ?? "") || typeof tag !== "string" || tag.length === 0) throw new TypeError("GitHub repository and tag are required");
+      return j("GET", `/repos/${repo}/git/ref/tags/${encodeURIComponent(tag)}`);
+    },
+    async getReleaseByTag(repo, tag) {
+      if (!REPOSITORY.test(repo ?? "") || typeof tag !== "string" || tag.length === 0) throw new TypeError("GitHub repository and tag are required");
+      return j("GET", `/repos/${repo}/releases/tags/${encodeURIComponent(tag)}`);
+    },
     async getIssue(repo, n) { const i = await j("GET", `/repos/${repo}/issues/${n}`); return { title: i.title, body: i.body || "" }; },
     // --- posting surface (used only by the gated post-attempt path) ---
     async getAuthUser() { return j("GET", `/user`); },
@@ -109,8 +121,12 @@ export function githubApi({ fetchImpl = fetch } = {}) {
       return (t.tree || []).filter((entry) => entry.type === "blob")
         .map(({ path, mode, sha }) => ({ path, mode, sha }));
     },
+    async getContentRecord(repo, ref, path) {
+      if (!REPOSITORY.test(repo ?? "") || typeof ref !== "string" || ref.length === 0 || typeof path !== "string" || path.length === 0) throw new TypeError("GitHub repository, ref, and path are required");
+      return j("GET", `/repos/${repo}/contents/${path.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(ref)}`);
+    },
     async getContent(repo, ref, path) {
-      const c = await j("GET", `/repos/${repo}/contents/${path.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(ref)}`);
+      const c = await this.getContentRecord(repo, ref, path);
       return c.content ? Buffer.from(c.content, "base64").toString("utf8") : "";
     },
     async getContentBytes(repo, ref, path) {

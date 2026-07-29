@@ -33,3 +33,34 @@ test("tarball transport refuses foreign redirects and over-limit bodies", async 
   await assert.rejects(oversized.getRepositoryTarball("acme/widgets", undefined, { maximumBytes: 3 }), /exceeds 3 bytes/);
   await assert.rejects(oversized.getRepositoryTarball("../etc/passwd"), /must be owner\/name/);
 });
+
+test("bounded public-compute GitHub observations and dispatch stay on the provider face", async () => {
+  const prior = process.env.GITHUB_SERVICES_TOKEN;
+  process.env.GITHUB_SERVICES_TOKEN = "provider-owned-secret";
+  const requests = [];
+  try {
+    const api = githubApi({ fetchImpl: async (url, init) => {
+      requests.push({ url: String(url), init });
+      return init.method === "POST"
+        ? new Response(null, { status: 204 })
+        : new Response(JSON.stringify({ ok: true }), { status: 200 });
+    } });
+    await api.getActionsPermissions("union/public-runner");
+    await api.getTagRef("union/public-runner", "bounded-public-test-v1");
+    await api.getReleaseByTag("union/public-runner", "bounded-public-test-v1");
+    await api.getContentRecord("union/public-runner", "a".repeat(40), ".github/workflows/bounded-public-test.yml");
+    await api.dispatchWorkflow("union/public-runner", "bounded-public-test.yml", "bounded-public-test-v1", { target_repository: "upstream/project" });
+    assert.deepEqual(requests.map(({ url }) => url), [
+      "https://api.github.com/repos/union/public-runner/actions/permissions",
+      "https://api.github.com/repos/union/public-runner/git/ref/tags/bounded-public-test-v1",
+      "https://api.github.com/repos/union/public-runner/releases/tags/bounded-public-test-v1",
+      `https://api.github.com/repos/union/public-runner/contents/.github/workflows/bounded-public-test.yml?ref=${"a".repeat(40)}`,
+      "https://api.github.com/repos/union/public-runner/actions/workflows/bounded-public-test.yml/dispatches",
+    ]);
+    assert.equal(requests.at(-1).init.method, "POST");
+    assert.deepEqual(JSON.parse(requests.at(-1).init.body), { ref: "bounded-public-test-v1", inputs: { target_repository: "upstream/project" } });
+  } finally {
+    if (prior === undefined) delete process.env.GITHUB_SERVICES_TOKEN;
+    else process.env.GITHUB_SERVICES_TOKEN = prior;
+  }
+});
