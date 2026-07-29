@@ -5,7 +5,7 @@ import { canonical, parse as parseJson } from "@red-cup-engineering/json-file-co
 import { parse as parseEavt, serialize as serializeEavt } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
 import { datom, foldObjectDatoms } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt/datom";
 import { escapeText } from "@red-cup-engineering/xml-file-codec-service/html";
-import { svgProjector } from "@red-cup-engineering/relating/codecs/text/xml/svg";
+import { svgProjector } from "@red-cup-engineering/xml-file-codec-service/svg";
 import { fromRatio, toNumber } from "@red-cup-engineering/relating/codecs/host/javascript/numbers";
 import {
   decodeLeanGoldenVectorJsonl,

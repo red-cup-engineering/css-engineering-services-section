@@ -40,7 +40,6 @@ describe("no compatibility ownership shims", () => {
       "./codecs",
       "./codecs/text",
       "./carriers/codecs/text/json/jsonl/eavt/lean/serialization",
-      "./codecs/text/xml/svg",
       "./codecs/boundary/wire",
     ]) {
       assert.ok(pkg.exports[subpath], `${subpath} must be an explicit export`);
@@ -51,6 +50,8 @@ describe("no compatibility ownership shims", () => {
     assert.equal(pkg.exports["./codecs/text/json"], undefined);
     assert.equal(pkg.exports["./codecs/text/json/jsonl/eavt"], undefined);
     assert.equal(pkg.exports["./codecs/text/xml/html"], undefined);
+    assert.equal(pkg.exports["./codecs/text/xml/svg"], undefined);
+    assert.equal(pkg.exports["./codecs/text/xml/svg/radial"], undefined);
     assert.equal(pkg.exports["./writing/lean"], undefined);
 
     const running = await import("@red-cup-engineering/relating/running");

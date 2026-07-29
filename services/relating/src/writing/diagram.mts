@@ -22,7 +22,7 @@ import { eavtId, eavtRecord, type EAVT, type EAVTRecord } from "@red-cup-enginee
 import { define, restrict, type Projector } from "@red-cup-engineering/file-projection-kernel-service";
 import { stringProjector } from "./text.mjs";
 import { xmlProjector } from "@red-cup-engineering/xml-file-codec-service";
-import type { PlacedCell, PlacedEdge, ShapeMorphism, SvgDataform } from "../codecs/text/xml/svg/index.mjs";
+import type { PlacedCell, PlacedEdge, ShapeMorphism, SvgDataform } from "@red-cup-engineering/xml-file-codec-service/svg";
 
 export {
   presentedCategoryDiagramCarrier,

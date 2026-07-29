@@ -42,8 +42,6 @@
     "src/codecs/text/index.mts",
     "src/carriers/codecs/text/json/jsonl/eavt/lean/serialization.mts",
     "src/codecs/text/xml/index.mts",
-    "src/codecs/text/xml/svg/index.mts",
-    "src/codecs/text/xml/svg/radial/index.mts",
     "src/codecs/boundary/index.mts",
     "src/codecs/boundary/wire/index.mts",
     "src/codecs/host/index.mts",

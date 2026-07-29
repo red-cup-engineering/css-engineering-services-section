@@ -183,21 +183,9 @@
       "types": "./dist/src/codecs/text/xml/index.d.mts",
       "import": "./dist/src/codecs/text/xml/index.mjs"
     },
-    "./codecs/text/xml/svg": {
-      "types": "./dist/src/codecs/text/xml/svg/index.d.mts",
-      "import": "./dist/src/codecs/text/xml/svg/index.mjs"
-    },
     "./codecs/xml": {
       "types": "./dist/src/codecs/text/xml/index.d.mts",
       "import": "./dist/src/codecs/text/xml/index.mjs"
-    },
-    "./codecs/svg": {
-      "types": "./dist/src/codecs/text/xml/svg/index.d.mts",
-      "import": "./dist/src/codecs/text/xml/svg/index.mjs"
-    },
-    "./codecs/text/xml/svg/radial": {
-      "types": "./dist/src/codecs/text/xml/svg/radial/index.d.mts",
-      "import": "./dist/src/codecs/text/xml/svg/radial/index.mjs"
     },
     "./codecs/boundary": {
       "types": "./dist/src/codecs/boundary/index.d.mts",

@@ -6,4 +6,4 @@
  */
 export * from "@red-cup-engineering/xml-file-codec-service";
 export * as html from "@red-cup-engineering/xml-file-codec-service/html";
-export * as svg from "./svg/index.mjs";
+export * as svg from "@red-cup-engineering/xml-file-codec-service/svg";

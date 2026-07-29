@@ -28,8 +28,8 @@
  */
 import { canonical, parse as parseJson, type JsonValue, jsonProjector } from "@red-cup-engineering/json-file-codec-service";
 import { eavtProjector } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
-import { svgProjector } from "../../text/xml/svg/index.mjs";
-import { mermaidProjector, umlProjector, plantUmlProjector } from "../../../writing/diagram.mjs";
+import { projectSvg, svgProjector } from "@red-cup-engineering/xml-file-codec-service/svg";
+import { diagramToSvgDataform, isPresentedCategoryDiagram, mermaidProjector, umlProjector, plantUmlProjector } from "../../../writing/diagram.mjs";
 import { rmnProjector } from "../../../writing/rmn.mjs";
 import { stringProjector } from "../../../writing/text.mjs";
 import {
@@ -153,6 +153,10 @@ export const rmnCodec: WireCodec = wireOf(rmnProjector, {
 export const svgCodec: WireCodec = wireOf(svgProjector as Projector<JsonValue>, {
   name: "svg",
   mediaType: "image/svg+xml; charset=utf-8",
+  encode: (value) => {
+    if (!isPresentedCategoryDiagram(value)) throw new TypeError("svg wire requires a presented-category diagram");
+    return projectSvg(diagramToSvgDataform(value));
+  },
 });
 
 /** The Mermaid wire: a textual presentation of the presented-category diagram carrier. */
