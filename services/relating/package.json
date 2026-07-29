@@ -45,7 +45,9 @@
     "typescript": "^5.8.0"
   },
   "dependencies": {
-    "@lenticule-science/articulating": "workspace:*"
+    "@lenticule-science/articulating": "workspace:*",
+    "@red-cup-engineering/toml-file-codec-service": "workspace:*",
+    "@red-cup-engineering/turtle-term-writing-service": "workspace:*"
   },
   "exports": {
     ".": {
