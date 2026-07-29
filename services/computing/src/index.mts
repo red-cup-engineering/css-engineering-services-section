@@ -23,7 +23,7 @@
  *   transport: agent → communication — the agent's act as a meme (communicating edge).
  *   bang     : agent → !A            — the agent as the reusable ! exponential (playing edge).
  */
-export { four, VERIFIED, REFUTED, UNDECIDABLE, CONTRADICTORY, type Four } from "./four.mjs";
+export { four, chargeOfFour, fourOfCharge, VERIFIED, REFUTED, UNDECIDABLE, CONTRADICTORY, type Four } from "./four.mjs";
 export {
   admitAgent,
   standingOfAgent,

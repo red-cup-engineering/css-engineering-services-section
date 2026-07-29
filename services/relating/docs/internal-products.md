@@ -777,7 +777,7 @@ Product reading: this is the package's runtime regime reader.
 It is not a web framework, workflow engine, or general collaboration server.
 It gives a caller small carrier-shaped facts about how a transport is settling: request/response as an unsettled execution path with a known meaning, an event stream as a deterministic process, a consistent claim session as derivation, and a conflicted claim session as inquiry.
 
-Verification reading: the tests assert the four transport-to-work mappings, the four distinct determination charges, monotone claim accumulation, judgement flipping to `stable` on conflict without retraction, `scott` versus `transfinite` session regimes, pure WebSocket exchange, and live HTTP mounting of the Scott and transfinite transports.
+Verification reading: the tests assert the four transport-to-work mappings, the four distinct determination charges, monotone claim accumulation, judgement flipping to `active` on conflict without retraction, `scott` versus `transfinite` session regimes, pure WebSocket exchange, and live HTTP mounting of the Scott and transfinite transports.
 
 ## Scripted Invocation Witnesses
 

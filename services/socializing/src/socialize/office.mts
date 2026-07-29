@@ -38,11 +38,7 @@
  */
 import type { ChargeValueName } from "@red-cup-engineering/relating";
 
-import {
-  correlate,
-  type JuralKind,
-  type JuralRelation,
-} from "./govern.mjs";
+import { correlate, type JuralKind, type JuralRelation } from "./jural.mjs";
 
 /** The work-carrier spine — the levels a jural relation's scope-action (a WORK-ITEM) sits at.
  *  endeavor generates campaign generates project generates plan generates task generates the

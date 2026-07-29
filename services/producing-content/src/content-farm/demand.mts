@@ -14,7 +14,7 @@
 import { existsSync, readFileSync } from "node:fs";
 
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const SeedTermSchema = { $id: "producing-content/content-farm/demand/seed-term", title: "SeedTerm", additionalProperties: false, type: "object", required: ["beat", "term", "priority"], properties: { beat: { minLength: 1, type: "string" }, term: { minLength: 1, type: "string" }, priority: { type: "number" } } } as const;
 

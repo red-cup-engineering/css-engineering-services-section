@@ -19,7 +19,7 @@
 // canonical serialization may normalize quoting and drop comments; it never
 // loses an entry or a body byte).
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const FrontMatterDocumentSchema = { $id: "producing-content/codecs/frontmatter/document", title: "FrontMatterDocument", additionalProperties: false, type: "object", required: ["kind", "frontMatter", "body"], properties: { kind: { const: "producing-content.frontmatter-document" }, frontMatter: { type: "object", additionalProperties: {} }, body: { type: "string" } } } as const;
 

@@ -1,4 +1,5 @@
 /** Explicit HTTP service boundary for relating action manifolds. */
+export * from "./app.mjs";
 export {
   serve,
   serveAsync,

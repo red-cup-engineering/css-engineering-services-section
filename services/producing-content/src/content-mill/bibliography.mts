@@ -6,7 +6,7 @@
  * the site-wide reference-domain rollup.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const SourceKindSchema = { anyOf: [{ const: "commercial-website" }, { const: "independent-website" }, { const: "academic-journal" }, { const: "professional-journal" }, { const: "personal-writing" }, { const: "social-media" }, { const: "unknown" }] } as const;
 

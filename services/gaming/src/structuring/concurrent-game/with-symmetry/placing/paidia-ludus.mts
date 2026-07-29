@@ -32,7 +32,7 @@ import {
 import {
   type Rational,
   ratCompare,
-} from "@red-cup-engineering/relating/analysis";
+} from "@lenticule-science/articulating/predicating/positing/settling/analysis";
 import { codecs } from "@red-cup-engineering/relating";
 import {
   type LudusIndexJudgment,

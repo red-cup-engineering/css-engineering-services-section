@@ -16,13 +16,12 @@
     "check": "tsc --noEmit && tsc -p tsconfig.scripts.json --noEmit",
     "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.scripts.json && node copy-dist-assets.mjs && chmod +x dist/scripts/*.mjs",
     "test": "node --test \"test/*.test.mjs\"",
-    "verify": "npm run check && npm run build",
+    "verify": "npm run check && npm run build && npm test",
     "rebuild": "npm run clean && npm run build",
     "examples": "node examples/multi-agent-arena.mjs"
   },
   "bin": {
-    "gaming": "./dist/scripts/cli.mjs",
-    "gaming-serve": "./dist/scripts/serve.mjs"
+    "gaming": "./dist/scripts/cli.mjs"
   },
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
@@ -54,6 +53,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
+    "@lenticule-science/articulating": "workspace:*",
     "@red-cup-engineering/relating": "0.0.0",
     "@red-cup-engineering/animating": "0.0.0",
     "@red-cup-engineering/communicating": "0.0.0",

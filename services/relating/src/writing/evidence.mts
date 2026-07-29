@@ -7,14 +7,14 @@
  * inexact float is admitted only here, at the representation boundary, never in
  * the core arithmetic.
  */
-import { natIsZero } from "../../lib/articulating/predicating/positing/settling/analysis/exact-number.mjs";
+import { natIsZero } from "@lenticule-science/articulating/predicating/positing/settling/analysis/exact-number";
 import {
   absoluteContinuity,
   independence,
   type ChargeDistributionCarrier,
   type JointChargeDistributionCarrier,
-} from "../../lib/articulating/predicating/positing/settling/analysis/evidence.mjs";
-import { chargeValues } from "../../lib/articulating/predicating/positing/bilattice-charge.mjs";
+} from "@lenticule-science/articulating/predicating/positing/settling/analysis/evidence";
+import { chargeValues } from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
 import { toNumber } from "../codecs/host/javascript/numbers/index.mjs";
 
 const log2 = (value: number): number => Math.log(value) / Math.log(2);

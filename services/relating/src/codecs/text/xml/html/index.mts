@@ -23,15 +23,15 @@ import {
   chargeValueName,
   type ChargeCarrier,
   type ChargeValueName,
-} from "../../../../../lib/articulating/predicating/positing/bilattice-charge.mjs";
-import { mark, type Mark } from "../../../../../lib/articulating/utterance.mjs";
+} from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
+import { mark, type Mark } from "@lenticule-science/articulating/utterance";
 import { canonical, type JsonValue } from "../../json/index.mjs";
 import {
   coloringFactorMap,
   type ColoringFactorMapJudgment,
-} from "../../../../../lib/articulating/predicating/positing/settling/analysis/coloring.mjs";
-import type { Matrix } from "../../../../../lib/articulating/predicating/positing/settling/analysis/exact-number.mjs";
-import type { FormatRegime } from "../../../../../lib/articulating/predicating/positing/settling/analysis/formats-four.mjs";
+} from "@lenticule-science/articulating/predicating/positing/settling/analysis/coloring";
+import type { Matrix } from "@lenticule-science/articulating/predicating/positing/settling/analysis/exact-number";
+import type { FormatRegime } from "@lenticule-science/articulating/predicating/positing/settling/analysis/formats-four";
 import {
   html_is_carrier_not_document,
   type Document,
@@ -40,7 +40,7 @@ import {
   type DocumentReference,
   type DocumentValuationSite,
   type HtmlIsCarrierNotDocumentWitness,
-} from "../../../../../lib/articulating/predicating/positing/settling/document.mjs";
+} from "@lenticule-science/articulating/predicating/positing/settling/document";
 
 /* ── escape ─────────────────────────────────────────────────────────────── */
 

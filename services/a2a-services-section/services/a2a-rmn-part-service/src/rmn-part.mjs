@@ -1,14 +1,11 @@
 import { randomUUID } from "node:crypto";
 import { Message, Role } from "@a2a-js/sdk";
+import { rawNiUri as rawNi } from "@lenticule-science/rmn-semantic-conformance-die/canonical-cbor";
 
 export const RMN_MEDIA_TYPE = "application/rmn+cbor";
 const NI = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u;
 
-// Collapsed onto the die's canonical rawNiUri (byte-identical: both compute
-// `ni:///sha-256;${sha256(bytes).base64url}`) via a relative-file-URL shim,
-// the read-a-schema.js shim style -- no package.json/node_modules wiring
-// required.
-export const rawNi = (await import(new URL("../../../../../../../../lenticule-science/services/obsmetrological-services-section/services/rmn-semantic-conformance-die/src/canonical-cbor.mjs", import.meta.url).href)).rawNiUri;
+export { rawNi };
 
 export function rmnPart(bytes, filename = "operation.rmn.cbor") {
   const body = Buffer.from(bytes), ni = rawNi(body);

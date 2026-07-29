@@ -10,13 +10,13 @@ import {
   presentedCategoryDiagramCarrier,
   presentedCategoryDiagramSchema,
 } from "../carriers/writing/diagram/index.mjs";
-import { charge, chargeValue } from "../../lib/articulating/predicating/positing/bilattice-charge.mjs";
+import { charge, chargeValue } from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
 import {
   freeSettlementFiltration,
   readFiringsOfSettlementFiltration,
   type SettlementFiltration,
   type SettlementFiltrationGenerators,
-} from "../../lib/articulating/predicating/positing/settling/index.mjs";
+} from "@lenticule-science/articulating/predicating/positing/settling/index";
 import { canonical, parse as parseJson, type JsonRecord, type JsonValue } from "../codecs/text/json/core.mjs";
 import { eavtId, eavtRecord, type EAVT, type EAVTRecord } from "../codecs/text/json/jsonl/eavt/index.mjs";
 import { define, restrict, type Projector } from "../projections/kernel.mjs";

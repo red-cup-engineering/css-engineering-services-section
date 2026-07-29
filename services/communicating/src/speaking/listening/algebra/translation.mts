@@ -9,7 +9,7 @@ import {
   type ChargeValue,
   type ChargeValueName,
 } from "@red-cup-engineering/relating";
-import { sofic as soficAnalysis } from "@red-cup-engineering/relating/analysis";
+import { sofic as soficAnalysis } from "@lenticule-science/articulating/predicating/positing/settling/analysis";
 
 import { soficManifestReceipt, type LanguageManifest } from "./manifest.mjs";
 import {

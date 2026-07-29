@@ -1,16 +1,13 @@
-import type { App, Repr } from "@red-cup-engineering/relating/running/http";
+import type { App, Repr } from "@red-cup-engineering/relating/services/http";
 import { linkHeader } from "@red-cup-engineering/relating/writing/http";
-import { stableJson } from "../semantic-reader/index.mjs";
 import { iriRef, turtleLiteral } from "@red-cup-engineering/relating/writing";
 import {
-  CONTRARY_PREDICATE,
-  settle,
+  finiteAlgebra,
   type AssertionTrace,
-  type ContraryOptions,
-  type Folded,
-  type FoldedCell,
+  type ClaimCell,
+  type FiniteAlgebra,
   type SettleOptions,
-} from "@red-cup-engineering/organizing-with-the-web/assertion-worlds";
+} from "../semantic-reader/index.mjs";
 
 export type ProvenanceValue = string | readonly string[];
 
@@ -29,7 +26,7 @@ export type LinkedDataSubject = Readonly<{
   stable: readonly LinkedDataCell[];
 }>;
 
-export type LinkedDataSettleOptions = SettleOptions & ContraryOptions;
+export type LinkedDataSettleOptions = SettleOptions;
 
 export type LinkedDataOptions = Readonly<{
   base?: string;
@@ -77,85 +74,36 @@ function subjectSet(subjects: LinkedDataOptions["subjects"]): ReadonlySet<string
   return subjects instanceof Set ? subjects : new Set(subjects ?? []);
 }
 
-function cellKey(predicate: string, object: unknown): string {
-  return JSON.stringify([predicate, stableJson(object)]);
-}
-
-function witnessProvenance(cell: FoldedCell): ProvenanceValue | undefined {
-  const out = [...cell.witnessedBy].filter(Boolean).sort();
-  return out.length === 0 ? undefined : out.length === 1 ? out[0] : Object.freeze(out);
-}
-
-function plainCell(cell: FoldedCell): LinkedDataCell {
-  const citation = witnessProvenance(cell);
-  return Object.freeze({ predicate: cell.predicate, object: cell.object, ...(citation !== undefined ? { citation } : {}) });
-}
-
-// Contrariety is read-side knowledge, never admission-side polarity: it
-// enters from `opts.contrary` and from `contrary-to` claims in the trace
-// itself (taxonomy is itself claimed).
-function contrarietyOf(assertions: AssertionTrace, declared: Record<string, string>): Record<string, string> {
-  const contrary: Record<string, string> = {};
-  for (const assertion of assertions) {
-    if (assertion.a === CONTRARY_PREDICATE && typeof assertion.v === "string" && typeof assertion.e === "string") {
-      contrary[assertion.e] = assertion.v;
-    }
-  }
-  return { ...contrary, ...declared };
-}
-
 export function linkedDataSubject(subject: string, assertions: AssertionTrace, opts: LinkedDataSettleOptions = {}): LinkedDataSubject {
-  const { contrary, ...settleOpts } = opts;
-  return linkedDataFromFolded(settle(subject, assertions, settleOpts), { contrary: contrarietyOf(assertions, contrary ?? {}) });
+  return linkedDataFromAlgebra(finiteAlgebra(subject, assertions, opts));
 }
 
-// Admission only ever witnesses potential cells, so the active and stable
-// buckets are derived reads: a declared contrary predicate's cell witnesses
-// the canonical cell's falsity side. Both present knowledge-join to stable;
-// the contrary side alone derives the canonical cell active.
-export function linkedDataFromFolded(folded: Folded, opts: ContraryOptions = {}): LinkedDataSubject {
-  const contrary = opts.contrary ?? {};
-  const byKey = new Map<string, FoldedCell>();
-  for (const cell of folded.fiber) byKey.set(cellKey(cell.predicate, cell.object), cell);
+function provenance(value: unknown): ProvenanceValue | undefined {
+  if (typeof value === "string") return value;
+  if (Array.isArray(value) && value.every((item) => typeof item === "string")) return Object.freeze([...value]) as readonly string[];
+  return undefined;
+}
 
-  const potential: LinkedDataCell[] = [];
-  const active: LinkedDataCell[] = [];
-  const stableCells: LinkedDataCell[] = [];
-  const pairedCanonical = new Set<string>();
-
-  for (const cell of folded.fiber) {
-    const canonical = contrary[cell.predicate];
-    if (canonical === undefined) continue;
-    const partner = byKey.get(cellKey(canonical, cell.object));
-    if (partner !== undefined) {
-      pairedCanonical.add(cellKey(canonical, cell.object));
-      const claimedBy = witnessProvenance(partner);
-      const contraryClaimedBy = witnessProvenance(cell);
-      stableCells.push(Object.freeze({
-        predicate: canonical,
-        object: cell.object,
-        ...(claimedBy !== undefined ? { claimedBy } : {}),
-        ...(contraryClaimedBy !== undefined ? { contraryClaimedBy } : {}),
-      }));
-    } else {
-      const citation = witnessProvenance(cell);
-      active.push(Object.freeze({ predicate: canonical, object: cell.object, ...(citation !== undefined ? { citation } : {}) }));
-    }
-  }
-
-  for (const cell of folded.fiber) {
-    if (contrary[cell.predicate] !== undefined) continue; // folds into its canonical pair
-    if (pairedCanonical.has(cellKey(cell.predicate, cell.object))) continue;
-    if (cell.value === "potential") potential.push(plainCell(cell));
-    else if (cell.value === "active") active.push(plainCell(cell));
-    else if (cell.value === "stable") stableCells.push(plainCell(cell));
-  }
-
+function linkedCell(cell: ClaimCell): LinkedDataCell {
+  const citation = provenance(cell.citation);
+  const claimedBy = provenance(cell.claimedBy);
+  const contraryClaimedBy = provenance(cell.contraryClaimedBy);
   return Object.freeze({
-    subject: folded.entity,
-    potential: Object.freeze(potential),
-    active: Object.freeze(active),
-    stable: Object.freeze(stableCells),
+    predicate: cell.predicate,
+    object: cell.object,
+    ...(citation !== undefined ? { citation } : {}),
+    ...(claimedBy !== undefined ? { claimedBy } : {}),
+    ...(contraryClaimedBy !== undefined ? { contraryClaimedBy } : {}),
+  });
+}
+
+/** Project the one settled finite algebra into RDF-facing cells. */
+export function linkedDataFromAlgebra(algebra: FiniteAlgebra): LinkedDataSubject {
+  return Object.freeze({
+    subject: algebra.subject,
+    potential: Object.freeze(algebra.potential.map(linkedCell)),
+    active: Object.freeze(algebra.active.map(linkedCell)),
+    stable: Object.freeze(algebra.stable.map(linkedCell)),
   });
 }
 

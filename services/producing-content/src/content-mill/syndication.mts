@@ -5,7 +5,7 @@
  * names which feed, sitemap, record, audit, and article surfaces are exposed.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const SyndicationSurfaceKindSchema = { anyOf: [{ const: "feed" }, { const: "sitemap" }, { const: "record" }, { const: "audit" }, { const: "article" }] } as const;
 

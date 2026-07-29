@@ -28,7 +28,7 @@ export type SiteConfig = Readonly<{
   publishedOnly?: boolean;
   theme?: Theme;
   themeContext?: ThemeContext;
-  webmentionPath?: string;
+  webmentionPath?: string | null;
   pingbackUrl?: string | null;
 }>;
 
@@ -100,6 +100,7 @@ export type SiteBuildDelta = Readonly<{
 export type MarkdownReaderOptions = Readonly<{
   extension?: string;
   citationPrefix?: string;
+  citationFor?: (root: string, path: string) => string;
   functional?: Iterable<string>;
 }>;
 
@@ -158,8 +159,8 @@ function semanticTheme(config: SiteConfig, extraHead: string): Theme {
 
 export function semanticHead(config: SiteConfig, options: { canonical?: string; jsonLd?: unknown; subject?: string } = {}): string {
   const base = trimBase(config.baseUrl);
-  const webmentionPath = config.webmentionPath ?? "/webmention";
-  const webmentionUrl = `${base}${webmentionPath.startsWith("/") ? "" : "/"}${webmentionPath}`;
+  const webmentionPath = config.webmentionPath === undefined ? "/webmention" : config.webmentionPath;
+  const webmentionUrl = webmentionPath === null ? null : `${base}${webmentionPath.startsWith("/") ? "" : "/"}${webmentionPath}`;
   const alternates = [
     { rel: "alternate", type: "application/feed+json", href: `${base}/feed.json`, title: `${config.title} JSON Feed` },
     { rel: "alternate", type: "application/atom+xml", href: `${base}/feed.atom`, title: `${config.title} Atom` },
@@ -170,7 +171,7 @@ export function semanticHead(config: SiteConfig, options: { canonical?: string; 
     ] : []),
   ];
   return [
-    `<link rel="webmention" href="${escapeHtmlText(webmentionUrl)}" />`,
+    webmentionUrl === null ? "" : `<link rel="webmention" href="${escapeHtmlText(webmentionUrl)}" />`,
     config.pingbackUrl === null ? "" : `<link rel="pingback" href="${escapeHtmlText(config.pingbackUrl ?? `${base}/pingback`)}" />`,
     ...alternates.map((link) => `<link rel="${escapeHtmlText(link.rel)}" type="${escapeHtmlText(link.type)}" href="${escapeHtmlText(link.href)}" title="${escapeHtmlText(link.title)}" />`),
     options.jsonLd ? `<script type="application/ld+json">${scriptJson(options.jsonLd)}</script>` : "",
@@ -549,7 +550,7 @@ export function siteManifest(reader: SemanticReader, config: SiteConfig): Record
     counts[triple.state] += 1;
     return counts;
   }, { potential: 0, active: 0, stable: 0 } satisfies Record<TripleRecord["state"], number>);
-  const webmentionPath = config.webmentionPath ?? "/webmention";
+  const webmentionPath = config.webmentionPath === undefined ? "/webmention" : config.webmentionPath;
   return {
     title: config.title,
     baseUrl: base,
@@ -561,7 +562,7 @@ export function siteManifest(reader: SemanticReader, config: SiteConfig): Record
       rss: `${base}/feed.xml`,
       sitemap: `${base}/sitemap.xml`,
       robots: `${base}/robots.txt`,
-      webmention: `${base}${webmentionPath.startsWith("/") ? "" : "/"}${webmentionPath}`,
+      ...(webmentionPath === null ? {} : { webmention: `${base}${webmentionPath.startsWith("/") ? "" : "/"}${webmentionPath}` }),
     },
     counts: {
       subjects: subjects(reader, config).length,
@@ -942,7 +943,7 @@ function subjectMatch(path: string): { subject: string } | null {
 }
 
 export function buildApp(reader: SemanticReader, config: SiteConfig, options: BuildAppOptions = {}): App {
-  const webmentionPath = config.webmentionPath ?? "/webmention";
+  const webmentionPath = config.webmentionPath === undefined ? "/webmention" : config.webmentionPath;
   const securityTxtPath = options.securityTxtPath ?? "/.well-known/security.txt";
   const security = options.security;
   const languages = Object.freeze([config.language ?? "en"]);
@@ -1054,13 +1055,13 @@ export function buildApp(reader: SemanticReader, config: SiteConfig, options: Bu
         const body = await readJsonBody<{ assertions?: Assertion[] }>(ctx.req, { maxBytes: 1_000_000, empty: {} });
         return repr({ imported: importAssertions(reader, config, body.assertions ?? []) }, "application/json; charset=utf-8", reader.claim ? 202 : 409);
       } },
-      { id: "semantic-site.webmention", name: "Semantic Site Webmention", route: webmentionPath, match: webmentionPath, methods: ["POST"], produces: ["application/json"], handler: async (ctx) => {
+      ...(webmentionPath === null ? [] : [{ id: "semantic-site.webmention", name: "Semantic Site Webmention", route: webmentionPath, match: webmentionPath, methods: ["POST"], produces: ["application/json"], handler: async (ctx: Context) => {
         const result: ReceiveResult = await receiveMention(await readTextBody(ctx.req, { maxBytes: 100_000 }), { baseUrl: config.baseUrl, contentType: String(ctx.req.headers["content-type"] ?? "") });
         if (result.accepted && reader.claim && result.request.source && result.request.target) {
           reader.claim(config.root, result.request.target, { mention: result.request.source }, { citation: result.request.source });
         }
         return repr(result, "application/json; charset=utf-8", result.status);
-      } },
+      } }]),
       { id: "semantic-site.subject", name: "Semantic Site Subject", route: "/:subject", match: subjectMatch, methods: ["GET"], produces: ["text/html", "text/turtle", "application/ld+json"], languages, handler: async (ctx) => {
         const subject = ctx.params.subject ?? "";
         if (!subjects(reader, config).includes(subject)) return notFound();
@@ -1100,7 +1101,7 @@ export function markdownDirectoryReader(options: MarkdownReaderOptions = {}): Se
   const assertionsFor = (root: string, subject?: string): readonly Assertion[] => Object.freeze(markdownFiles(root, extension).flatMap((path) => {
     const fileSubject = markdownSubject(root, path, extension);
     if (subject && fileSubject !== subject) return [];
-    return [...readMarkdownFile(path, { subject: fileSubject, citation: `${citationPrefix}:${path}` }).assertions];
+    return [...readMarkdownFile(path, { subject: fileSubject, citation: options.citationFor?.(root, path) ?? `${citationPrefix}:${path}` }).assertions];
   }));
   return Object.freeze({
     listSubjects: (root) => Object.freeze(markdownFiles(root, extension).map((path) => markdownSubject(root, path, extension)).sort()),

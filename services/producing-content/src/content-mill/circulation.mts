@@ -5,7 +5,7 @@
  * a site owns the masthead and route where those channels are mounted.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const CirculationChannelKindSchema = { anyOf: [{ const: "rss" }, { const: "atom" }, { const: "json-feed" }] } as const;
 

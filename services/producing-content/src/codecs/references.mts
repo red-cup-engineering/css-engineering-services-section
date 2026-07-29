@@ -30,7 +30,7 @@
 // pure functions over text/records; no filesystem, no clock, no network. Codec
 // law (L4) holds: TypeError only for malformed shapes; absences decode to empty.
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const ReferenceDialectSchema = { anyOf: [{ const: "csl" }, { const: "citekey-map" }, { const: "empty" }, { const: "none" }, { const: "mixed" }] } as const;
 

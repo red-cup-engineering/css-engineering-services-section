@@ -12,7 +12,7 @@ import { encodeFrame } from "../writing/http/ws/index.mjs";
 import {
   isChargeValueName,
   type ChargeValueName,
-} from "../../lib/articulating/predicating/positing/bilattice-charge.mjs";
+} from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
 import { claim, conflicts, judge, sessionRegime, type Session } from "./session.mjs";
 
 /** One claim carried on a frame: a charged predication about a cell. */

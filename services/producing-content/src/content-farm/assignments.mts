@@ -12,7 +12,7 @@ import { dirname } from "node:path";
 
 import { newsSlug } from "../topology/news/index.mjs";
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource, parseLines } from "@red-cup-engineering/relating/writing";
+import { jsonResource, parseLines } from "@red-cup-engineering/relating/codecs";
 
 import type { DemandEntry } from "./demand.mjs";
 import { farmLogPath, farmRecordPath } from "./property.mjs";

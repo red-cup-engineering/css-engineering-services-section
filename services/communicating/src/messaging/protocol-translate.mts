@@ -22,7 +22,7 @@ import {
   type JsonValue,
   type UtteranceCarrier,
 } from "@red-cup-engineering/relating";
-import { define, restrict, transcode, type Projector, type Resource } from "@red-cup-engineering/relating/writing";
+import { define, restrict, transcode, type Projector, type Resource } from "@red-cup-engineering/relating/projections";
 
 import { membraneMeme } from "../communicate/face.mjs";
 import type { IllocutionaryForce } from "../speaking/illocuting/index.mjs";

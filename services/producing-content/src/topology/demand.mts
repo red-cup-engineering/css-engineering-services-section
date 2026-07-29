@@ -4,7 +4,7 @@
  * by appending, never by removal.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/writing";
+import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/codecs";
 
 const DecimalIntegerSchema = { pattern: "^-?[0-9]+$", type: "string" } as const;
 

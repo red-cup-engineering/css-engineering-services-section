@@ -6,7 +6,7 @@
  * metrics, prioritized repair tasks, and backlog totals.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const ContentQualitySeveritySchema = { anyOf: [{ const: "attention" }, { const: "warning" }, { const: "blocker" }] } as const;
 

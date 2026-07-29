@@ -14,7 +14,7 @@ It records:
 - a commuting nuclear square with `pi = j1 . j2`;
 - the `Fix(pi) = Fix(j1) ∩ Fix(j2)` law;
 - the four corner operations: neither, `j1`, `j2`, and both;
-- the Lean two-fiber varying family where the `true` fiber raises toward `potential` and the `false` fiber raises toward `stable`.
+- the Lean two-fiber varying family where the `true` fiber raises toward `potential` and the `false` fiber raises toward `active`.
 - the K4-graded tower from `RelMath.
   Positing.
   BigradedDiamondTower`, including the knowledge/truth grade bits, grade-to-pole table, one same-order square per grade, and the carried cross-order obstruction showing truth closure is not a knowledge nucleus.

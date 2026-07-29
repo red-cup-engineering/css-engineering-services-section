@@ -11,7 +11,7 @@
  * as RFC-3339 string parameters.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const FeedArtifactFormatSchema = { anyOf: [{ const: "rss" }, { const: "atom" }, { const: "json-feed" }, { const: "sitemap" }, { const: "sitemap-index" }, { const: "news-sitemap" }, { const: "robots" }] } as const;
 

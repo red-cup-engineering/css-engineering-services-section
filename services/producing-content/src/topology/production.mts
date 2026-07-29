@@ -7,7 +7,7 @@
  * surfaces; current text is a reading over the trace, never mutable state.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/writing";
+import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/codecs";
 import {
   DemandChargeSchema,
   demandRanking,

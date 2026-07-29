@@ -6,7 +6,7 @@
  * readings, and validation findings.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 import type { CorrectionState } from "../topology/accountable-attention.mjs";
 
 export const CorrectionKindSchema = { anyOf: [{ const: "correction" }, { const: "clarification" }, { const: "update" }, { const: "retraction" }] } as const;

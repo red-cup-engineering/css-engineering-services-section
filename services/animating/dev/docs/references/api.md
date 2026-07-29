@@ -1342,7 +1342,7 @@ Capability propagation made concrete.
 export function isContested(charge: ChargeCarrier): boolean
 ```
 
-An incumbency is contested when its charge is anything but plain `potential` (token given, claim not yet contradicted): `active` (denied), `stable` (held contradiction ⊤), or `absurd` (no evidence).
+An incumbency is contested when its charge is anything but plain `potential` (token given, claim not yet contradicted): `active` (denied), `stable` (held contradiction ⊤), or `stable` (no evidence).
 Only `potential` is an uncontested hold.
 
 ### `mode` — function
@@ -2191,7 +2191,7 @@ Returns the frozen list of distinct values asserted for the given subject and pr
 export function section(folded: Folded): Section
 ```
 
-Projects a `Folded` into a `Section`: buckets its fiber cells by charge value into the `potential`, `active`, and `stable` lists, each cell reduced to its predicate, object, and witness ids.
+Projects a `Folded` into a `Section`: buckets its fiber cells by charge value into the `potential`, `potential`, and `stable` lists, each cell reduced to its predicate, object, and witness ids.
 
 ### `Section` — type-alias
 
@@ -2224,7 +2224,7 @@ Computes a subject's full settled view in one pass: returns a frozen record carr
 export function sectionOf(world: WorldInput, subject: string, opts: SettleOptions = {}): Section
 ```
 
-Computes the `Section` for a subject in a world: takes the subject's settled frontier and buckets its cells by charge value into the potential, active, and stable lists.
+Computes the `Section` for a subject in a world: takes the subject's settled frontier and buckets its cells by charge value into the potential, potential, and stable lists.
 
 ### `sectionSpace` — function
 

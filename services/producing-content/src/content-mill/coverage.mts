@@ -6,7 +6,7 @@
  * DefinedTermSet for SEO terms, beats, sections, and tags.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const CoverageTermFacetSchema = { anyOf: [{ const: "seo-term" }, { const: "beat" }, { const: "section" }, { const: "tag" }] } as const;
 

@@ -8,7 +8,7 @@
  * producing-content carrier vocabulary for reporting those acts.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const SourceCycleCandidateReferenceNormalizationSchema = { $id: "producing-content/content-farm/source-cycle/references", title: "SourceCycleCandidateReferenceNormalization", additionalProperties: false, type: "object", required: ["kind", "slug", "path", "changed", "sourceUrlCount", "referenceCount"], properties: { kind: { const: "producing-content.source-cycle.references" }, slug: { minLength: 1, type: "string" }, path: { minLength: 1, type: "string" }, changed: { type: "boolean" }, sourceUrlCount: { minimum: 0, type: "number" }, referenceCount: { minimum: 0, type: "number" } } } as const;
 

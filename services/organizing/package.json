@@ -34,6 +34,7 @@
     "package.json"
   ],
   "dependencies": {
+    "@lenticule-science/articulating": "workspace:*",
     "@red-cup-engineering/relating": "0.0.0",
     "@red-cup-engineering/animating": "0.0.0",
     "@red-cup-engineering/socializing": "0.0.0",
@@ -49,6 +50,10 @@
     ".": {
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
+    },
+    "./work": {
+      "types": "./dist/work.d.mts",
+      "import": "./dist/work.mjs"
     },
     "./diagramming": {
       "types": "./dist/diagramming.d.mts",

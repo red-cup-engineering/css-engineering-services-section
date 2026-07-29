@@ -6,7 +6,7 @@
  * and agents.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const StandardsSeveritySchema = { anyOf: [{ const: "error" }, { const: "warning" }] } as const;
 

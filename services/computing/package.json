@@ -112,6 +112,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
+    "@lenticule-science/articulating": "workspace:*",
     "@red-cup-engineering/relating": "0.0.0",
     "@red-cup-engineering/communicating": "0.0.0",
     "@red-cup-engineering/knowing": "0.0.0",

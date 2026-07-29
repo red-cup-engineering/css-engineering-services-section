@@ -21,7 +21,7 @@
  */
 import { type JsonValue } from "../../codecs/text/json/core.mjs";
 import { canonical, parse } from "../../codecs/text/json/core.mjs";
-import { type ChargeValueName, isChargeValueName } from "../../../lib/articulating/predicating/positing/bilattice-charge.mjs";
+import { type ChargeValueName, isChargeValueName } from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
 import { type Tm, tm } from "../../../lib/notating/index.mjs";
 
 export const arrayTag = "relating.term.array";

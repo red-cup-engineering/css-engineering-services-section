@@ -48,7 +48,7 @@
     "refusal": "foreign customer package import, absent capacity evidence, uncontracted execution, provider self-attestation, customer-border overwrite, model escalation, or local filesystem queue",
     "operation-catalog": {
       "forage-improvement-boards": {
-        "contract": "ni:///sha-256;Nfg6I78-Q-ihAM7wCcg6FGnZAlfdLAuopvHepehx-2k",
+        "contract": "ni:///sha-256;hvB0QtxlxnnE05tkJ6J3GDq7HOev1WvjPBwTlvpdRSY",
         "runtimeFiles": [
           "src/client.mjs",
           "src/a2a-executor.mjs",

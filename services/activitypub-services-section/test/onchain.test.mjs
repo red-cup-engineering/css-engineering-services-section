@@ -83,15 +83,13 @@ test("verified arrivals settle onchain and project one public outbox pulse", asy
   assert.equal((await outbox.list({ limit: 10 })).totalItems, 1);
 });
 
-test("onchain queue resumes pending work and marks it complete", async () => {
+test("onchain queue settles the presently observed pending work", async () => {
   const client = new FakeResourceClient();
-  const queue = createOnchainMessageQueue({ client, actor: "settlement-pulse", name: "inbox", pollMilliseconds: 1 });
+  const queue = createOnchainMessageQueue({ client, actor: "settlement-pulse", name: "inbox" });
   await queue.enqueue({ type: "inbox", id: "one" });
-  assert.deepEqual(await queue.getDepth(), { queued: 1, ready: 1, delayed: 0 });
-  const abort = new AbortController();
+  assert.deepEqual(await queue.getDepth(), { queued: 1 });
   await queue.listen((message) => {
     assert.equal(message.id, "one");
-    abort.abort();
-  }, { signal: abort.signal });
-  assert.deepEqual(await queue.getDepth(), { queued: 0, ready: 0, delayed: 0 });
+  });
+  assert.deepEqual(await queue.getDepth(), { queued: 0 });
 });

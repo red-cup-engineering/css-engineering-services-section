@@ -14,8 +14,8 @@
 import { canonical, isJsonValue, requireJsonValue, type JsonValue } from "../../core.mjs";
 import { restrict, type Projector } from "../../../../../projections/kernel.mjs";
 import { jsonlProjector, parseLines, serializeLines } from "../../core.mjs";
-import { mark } from "../../../../../../lib/articulating/utterance.mjs";
-import { witnessedPotential, type ChargeCarrier } from "../../../../../../lib/articulating/predicating/positing/bilattice-charge.mjs";
+import { mark } from "@lenticule-science/articulating/utterance";
+import { witnessedPotential, type ChargeCarrier } from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
 import { sha256Hex } from "../../../../host/javascript/crypto/index.mjs";
 
 /** A subject-predicate-object cell — the triple an EAVT witnesses. */

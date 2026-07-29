@@ -30,8 +30,8 @@ import {
   type Integer,
   type Natural,
   type Rational,
-} from "@red-cup-engineering/relating/analysis";
-import type { SectionCarrier } from "@red-cup-engineering/relating/settling";
+} from "@lenticule-science/articulating/predicating/positing/settling/analysis";
+import type { SectionCarrier } from "@lenticule-science/articulating/predicating/positing/settling";
 
 const {
   parseDecimal: parseRatDecimal,

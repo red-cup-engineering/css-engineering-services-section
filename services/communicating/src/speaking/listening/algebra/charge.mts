@@ -7,7 +7,7 @@ import {
   valueOf,
   type ChargeCarrier,
   type ChargeValueName,
-} from "@red-cup-engineering/relating";
+} from "@lenticule-science/articulating/predicating/positing";
 
 export type ChargeStatus = "decided" | "ambiguous" | "void";
 

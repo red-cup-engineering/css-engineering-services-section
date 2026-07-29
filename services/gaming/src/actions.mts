@@ -4,7 +4,7 @@
  *
  * Each operation is registered once as an `action`; `induceBins` over this list
  * assembles the discovery apex from which the `gaming` dispatcher (CLI) and
- * `gaming-serve` (HTTP/OpenAPI/MCP/web) are projected, and one `dispatch`
+ * boundary transports are projected from the induced apex, and one `dispatch`
  * witnesses every play as EAVT in gaming's own ledger.
  *
  * The wire is `json` in, `json` out: data is data. EAVT is the shape of the LOG,
@@ -20,7 +20,6 @@
  * `JSON.stringify`.
  */
 import {
-  action,
   carrierFrom,
   jsonResource,
   chargeValue,
@@ -31,7 +30,8 @@ import {
   type JsonValue,
   type JsonRecord,
 } from "@red-cup-engineering/relating";
-import { type Rational } from "@red-cup-engineering/relating/analysis";
+import { action } from "./action.mjs";
+import { type Rational } from "@lenticule-science/articulating/predicating/positing/settling/analysis";
 
 import type { Arena } from "./structuring/index.mjs";
 import {

@@ -6,7 +6,7 @@
  * readings and IR terms.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const InternalLinkOpportunitySchema = { $id: "producing-content/content-farm/internal-link-opportunity", title: "InternalLinkOpportunity", additionalProperties: false, type: "object", required: ["sourceSlug", "sourcePath", "sourceHeadline", "targetSlug", "targetPath", "targetHeadline", "sharedTags", "confidence", "markdownLink", "insertionGuidance"], properties: { sourceSlug: { minLength: 1, type: "string" }, sourcePath: { minLength: 1, type: "string" }, sourceHeadline: { minLength: 1, type: "string" }, targetSlug: { minLength: 1, type: "string" }, targetPath: { minLength: 1, type: "string" }, targetHeadline: { minLength: 1, type: "string" }, sharedTags: { type: "array", items: { type: "string" } }, confidence: { minimum: 0, maximum: 1, type: "number" }, markdownLink: { minLength: 1, type: "string" }, insertionGuidance: { minLength: 1, type: "string" } } } as const;
 

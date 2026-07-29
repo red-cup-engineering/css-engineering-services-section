@@ -32,6 +32,14 @@
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
     },
+    "./office": {
+      "types": "./dist/socialize/office.d.mts",
+      "import": "./dist/socialize/office.mjs"
+    },
+    "./jural": {
+      "types": "./dist/socialize/jural.d.mts",
+      "import": "./dist/socialize/jural.mjs"
+    },
     "./price": {
       "types": "./dist/socialize/price.d.mts",
       "import": "./dist/socialize/price.mjs"
@@ -67,6 +75,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
+    "@lenticule-science/articulating": "workspace:*",
     "@red-cup-engineering/relating": "0.0.0",
     "@red-cup-engineering/communicating": "0.0.0",
     "@red-cup-engineering/animating": "0.0.0"

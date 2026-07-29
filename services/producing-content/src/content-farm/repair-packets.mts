@@ -7,7 +7,7 @@
  * and constraint text, but the packet vocabulary belongs to producing-content.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 const RepairTaskKindSchema = { anyOf: [{ const: "source-alignment" }, { const: "seo-revision" }, { const: "reference-enrichment" }, { const: "copy-edit" }, { const: "warrant-review" }, { const: "structure-repair" }] } as const;
 

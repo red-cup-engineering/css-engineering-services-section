@@ -9,14 +9,14 @@
  */
 import {
   canInvoke,
-  capabilityFromUcan,
+  capabilityFromActivityPubRsaEnvelope,
   deliver,
   invoke,
   refOf,
   type Activity,
   type Capability,
   type Delivery,
-  type UcanToken,
+  type ActivityPubRsaCapabilityEnvelope,
 } from "@red-cup-engineering/animating";
 import {
   canInvokeWasi,
@@ -91,7 +91,7 @@ export const transactionWitnessSchema = {
       additionalProperties: false,
       required: ["kind", "token"],
       properties: {
-        kind: { enum: ["ucan", "capability"] },
+        kind: { enum: ["activitypub-rsa-envelope", "capability"] },
         token: looseObject,
       },
     },
@@ -131,8 +131,8 @@ export const transactionWitnessSchema = {
 } as const;
 
 export interface TransactionAuthorization {
-  readonly kind: "ucan" | "capability";
-  readonly token: UcanToken | Capability;
+  readonly kind: "activitypub-rsa-envelope" | "capability";
+  readonly token: ActivityPubRsaCapabilityEnvelope | Capability;
 }
 
 export interface TransactionInvocation {
@@ -335,8 +335,8 @@ export function makeTransactionWitness(options: TransactionWitnessOptions): Tran
 }
 
 function authorityCapability(transaction: TransactionWitness): Capability {
-  if (transaction.authorization.kind === "ucan") {
-    return capabilityFromUcan(transaction.authorization.token as UcanToken);
+  if (transaction.authorization.kind === "activitypub-rsa-envelope") {
+    return capabilityFromActivityPubRsaEnvelope(transaction.authorization.token as ActivityPubRsaCapabilityEnvelope);
   }
   return transaction.authorization.token as Capability;
 }

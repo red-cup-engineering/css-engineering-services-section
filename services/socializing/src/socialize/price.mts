@@ -79,7 +79,7 @@ import {
   type JsonValue,
   type MarkovKernel,
 } from "@red-cup-engineering/relating";
-import { type Natural } from "@red-cup-engineering/relating/analysis";
+import { type Natural } from "@lenticule-science/articulating/predicating/positing/settling/analysis";
 import { admitAction } from "./admit.mjs";
 import { convergeAction } from "./converge.mjs";
 import { replicaCoverConsensus } from "./glue.mjs";
@@ -449,4 +449,4 @@ export const priceActions: readonly Action[] = Object.freeze([
 
 export type { SocialField, CommonGround };
 export type { MarkovKernel } from "@red-cup-engineering/relating";
-export type { Natural } from "@red-cup-engineering/relating/analysis";
+export type { Natural } from "@lenticule-science/articulating/predicating/positing/settling/analysis";

@@ -109,7 +109,7 @@ To be very clear, tests should never be written to prove that the work you have 
 During active refactors, keep the test suite small and durable:
 
 - package import tests for declared public subpaths and binary targets;
-- fixture-backed behavior tests for stable public functions;
+- fixture-backed behavior tests for active public functions;
 - regression tests for bugs that can recur.
 
 The suite builds first (`pnpm test` runs the build, then the type-checked test compile, then `node --test`), so runtime tests run against emitted artifacts.

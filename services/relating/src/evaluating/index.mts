@@ -31,11 +31,11 @@ import {
   meetTruthValue,
   negateValue,
   type ChargeValueName,
-} from "../../lib/articulating/predicating/positing/bilattice-charge.mjs";
+} from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
 import {
   chargeJoinVClosure,
   settleOverValue,
-} from "../../lib/articulating/predicating/positing/settling/value-category.mjs";
+} from "@lenticule-science/articulating/predicating/positing/settling/value-category";
 import { type JsonValue } from "../codecs/text/json/core.mjs";
 import { type Tm, type Ty, tm, ty, inst, rename } from "../../lib/notating/index.mjs";
 import {

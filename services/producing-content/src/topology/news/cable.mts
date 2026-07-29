@@ -14,7 +14,7 @@
 // projected base and nothing else. TypeError is the only throw.
 
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 /**
  * The two routing projections of a cable into URL space: "subdomain" places

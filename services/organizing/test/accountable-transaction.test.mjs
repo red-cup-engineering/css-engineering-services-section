@@ -4,7 +4,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { grant, ucanCarrier, ucanFromCapability } from "@red-cup-engineering/animating";
+import { activityPubRsaCapabilityEnvelopeCarrier, activityPubRsaEnvelopeFromCapability, grant } from "@red-cup-engineering/animating";
 import { cohere, sameWitness } from "@red-cup-engineering/relating/ledger";
 import {
   capabilityInvokeReading,
@@ -24,15 +24,15 @@ import {
 
 const witnessedAt = "2026-06-26T05:20:00.000Z";
 const capability = grant("did:web:agent.example", "resource:frontier/read", "cap-frontier-read");
-const ucan = ucanCarrier.assert({
-  ...ucanFromCapability("did:web:issuer.example", capability, { id: "ucan-frontier-read" }),
+const authorityEnvelope = activityPubRsaCapabilityEnvelopeCarrier.assert({
+  ...activityPubRsaEnvelopeFromCapability("did:web:issuer.example", capability, { id: "rsa-envelope-frontier-read" }),
   proof: {
     type: "RsaSignature2018",
     created: witnessedAt,
     verificationMethod: "did:web:issuer.example#keys-1",
     signatureValue: "structural-proof-for-bridge-law",
   },
-}, "test ucan");
+}, "test ActivityPub RSA capability envelope");
 const challenge = {
   kind: "organizing.economy.x402.challenge",
   id: "challenge-accountable",
@@ -45,7 +45,7 @@ const challenge = {
 const payment = paymentFromChallenge(challenge, {
   id: "payment-accountable",
   payer: capability.holder,
-  authorization: ucan.id,
+  authorization: authorityEnvelope.id,
   paidAt: witnessedAt,
 });
 const receipt = receiptFromPayment(challenge, payment, {
@@ -59,7 +59,7 @@ function transaction(overrides = {}) {
     witnessedAt,
     affordances: [capability.grants],
     capability,
-    authorization: { kind: "ucan", token: ucan },
+    authorization: { kind: "activitypub-rsa-envelope", token: authorityEnvelope },
     challenge,
     payment,
     receipt,

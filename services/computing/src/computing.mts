@@ -31,10 +31,10 @@ import {
   type JsonValue,
 } from "@red-cup-engineering/relating";
 import { agent, type Agent } from "@red-cup-engineering/animating";
-import { joinK } from "@red-cup-engineering/knowing";
 import { communicate } from "@red-cup-engineering/communicating";
 import { ofCourse, atom, positive, type Proposition } from "@red-cup-engineering/playing";
-import { four, VERIFIED, REFUTED, UNDECIDABLE, CONTRADICTORY, type Four } from "./four.mjs";
+import { joinKnowledgeValue } from "@lenticule-science/articulating/predicating/positing";
+import { chargeOfFour, fourOfCharge, VERIFIED, REFUTED, UNDECIDABLE, CONTRADICTORY, type Four } from "./four.mjs";
 import type { Computation } from "./computation.mjs";
 
 /** The carrier `$id`s the surface references. computing operates over the AGENT carrier. */
@@ -75,22 +75,11 @@ export function standingOfAgent(a: Agent): Four {
   return a.goal.satisfied ? VERIFIED : REFUTED;
 }
 
-/** FOUR → knowing's ≤_k standing (four.mts: potential↔t, active↔f, absurd↔⊥, stable↔⊤). */
-const FOUR_TO_STANDING = Object.freeze({
-  verified: "potential",
-  refuted: "active",
-  undecidable: "absurd",
-  contradictory: "stable",
-} as const);
-type Standing = (typeof FOUR_TO_STANDING)[Four["value"]];
-const standingToFour = (s: Standing): Four =>
-  s === "potential" ? four(true, false) : s === "active" ? four(false, true) : s === "stable" ? four(true, true) : four(false, false);
-
 /** joinKnowledge — settle two computational truths by knowing's comonad knowledge-order
  *  (≤_k) join. Accumulating evidence across agents IS the knowledge order, not an ad-hoc
- *  rule; `joinK` is knowing's own comonad join (FOUR is the enriched relating bilattice). */
+ *  rule; the canonical charge package performs the join. */
 export function joinKnowledge(a: Four, b: Four): Four {
-  return standingToFour(joinK(FOUR_TO_STANDING[a.value], FOUR_TO_STANDING[b.value]));
+  return fourOfCharge(joinKnowledgeValue(chargeOfFour(a), chargeOfFour(b)));
 }
 
 /** Build a computation carrier embedding the (enriched) agent and its settled truth. */

@@ -11,7 +11,7 @@
 import type { SyndicationItem } from "./index.mjs";
 import { newsSlug, type ClaimStateBundle, type AssertedClaim } from "../topology/news/index.mjs";
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export type { SyndicationItem } from "./index.mjs";
 

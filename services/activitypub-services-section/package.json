@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "The Union's canonical public transport: ActivityPub federation carrying CloudEvents whose A2A/RMN payloads reach UCAN, CapTP, x402, and EVM boundaries.",
+  "description": "The Union's canonical public transport: ActivityPub federation carrying CloudEvents whose data is an A2A message with one canonical RMN part.",
   "exports": {
     ".": {
       "types": "./types/provider.d.mts",
@@ -15,6 +15,7 @@
     },
     "./deliver": "./src/deliver.mjs",
     "./rmn-activity": "./src/rmn-activity.mjs",
+    "./rmn-history": "./src/rmn-history.mjs",
     "./rmn-outbox-client": "./src/rmn-outbox-client.mjs",
     "./keys": "./src/keys.mjs",
     "./onchain": "./src/onchain.mjs",
@@ -30,11 +31,12 @@
     "materialize-rmn-outbox-activity": "./bin/materialize-rmn-outbox-activity.mjs"
   },
   "scripts": {
-    "check": "node --check src/provider.mjs && node --check src/server.mjs && node --check src/onchain.mjs && node --check src/onchain-server.mjs && node --check src/generate-encrypted-evm-wallet.mjs && node --check src/deliver.mjs && node --check src/keys.mjs && node --check src/rmn-activity.mjs && node --check src/rmn-outbox-client.mjs && node --check bin/materialize-rmn-outbox-activity.mjs && node --check test/provider.test.mjs && node --check test/onchain.test.mjs && node --check test/generate-encrypted-evm-wallet.test.mjs && node --check test/rmn-outbox-client.test.mjs",
-    "test": "node --test test/provider.test.mjs test/onchain.test.mjs test/generate-encrypted-evm-wallet.test.mjs test/rmn-outbox-client.test.mjs",
+    "check": "node --check src/provider.mjs && node --check src/server.mjs && node --check src/onchain.mjs && node --check src/onchain-server.mjs && node --check src/generate-encrypted-evm-wallet.mjs && node --check src/deliver.mjs && node --check src/keys.mjs && node --check src/rmn-activity.mjs && node --check src/rmn-history.mjs && node --check src/rmn-outbox-client.mjs && node --check bin/materialize-rmn-outbox-activity.mjs && node --check test/provider.test.mjs && node --check test/onchain.test.mjs && node --check test/generate-encrypted-evm-wallet.test.mjs && node --check test/rmn-outbox-client.test.mjs && node --check test/rmn-history.test.mjs",
+    "test": "node --test test/provider.test.mjs test/onchain.test.mjs test/generate-encrypted-evm-wallet.test.mjs test/rmn-outbox-client.test.mjs test/rmn-history.test.mjs",
     "verify": "npm run check && npm test"
   },
   "dependencies": {
+    "@red-cup-engineering/a2a-rmn-part-service": "workspace:*",
     "@fedify/fedify": "2.3.1",
     "@fedify/vocab": "2.3.1",
     "@hono/node-server": "1.19.14",
@@ -80,15 +82,17 @@
       },
       "project-rmn-activity": {
         "contract": "activitypub-services-section/rmn-link/v1",
-        "accepts": "one standard Activity type, canonical RMN CBOR object, recipient, and A2A Agent Card",
-        "returns": "one standard ActivityStreams act containing one CloudEvents/A2A/RMN membrane carrier as an RFC 6920 named application/rmn+cbor Link",
+        "accepts": "one standard Activity type, canonical RMN CBOR object, recipient, A2A Agent Card, and optionally one actual A2A ROLE_AGENT message carrying that exact object",
+        "returns": "one standard ActivityStreams act containing one CloudEvent whose data is an A2A ROLE_AGENT message with one RFC 6920 named application/rmn+cbor part",
         "effects": [
           "deterministic-projection-only"
         ],
         "customerAdmissionRequired": true,
         "semanticAuthorshipPreserved": true,
         "legacyCompatibility": false,
-        "carrierStack": ["ActivityPub", "ActivityStreams", "CloudEvents", "A2A", "UCAN", "CapTP", "x402", "EVM", "RMN"]
+        "requiredCarrierStack": ["ActivityPub", "ActivityStreams", "CloudEvents", "A2A", "RMN"],
+        "optionalInnerCarriers": ["UCAN", "CapTP", "x402", "EVM"],
+        "optionalInnerCarrierRule": "preserved only when supplied by the customer inside the admitted A2A message"
       },
       "observe-addressed-rmn-outbox": {
         "contract": "activitypub-services-section/rmn-outbox-observation/v1",
@@ -98,6 +102,16 @@
           "read-only-standard-activitypub-observation"
         ],
         "foreignPrivateActivitiesInvisible": true,
+        "legacyCompatibility": false
+      },
+      "admit-rmn-history": {
+        "contract": "activitypub-services-section/rmn-history-admission/v1",
+        "accepts": "one authenticated ActivityPub arrival carrying the exact CloudEvents 1.0, A2A, and canonical RMN cone plus its boundary observation time",
+        "returns": "one content-addressed FederationCarrierAdmissionReceipt and a finite typed FOUR history projection",
+        "effects": [
+          "typed-admission-only",
+          "caller-owned-history-custody"
+        ],
         "legacyCompatibility": false
       }
     }

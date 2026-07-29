@@ -9,7 +9,7 @@
  * correction state, or leave the body unable to discharge the surface promise.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 import { normalizeTerm } from "./gates.mjs";
 
 export const AttentionSurfaceKindSchema = { title: "AttentionSurfaceKind", anyOf: [{ const: "headline" }, { const: "description" }, { const: "summary" }, { const: "social" }, { const: "discover-preview" }] } as const;

@@ -14,12 +14,12 @@ import {
   ratNegate, ratSign, rational, successor, fromNatural,
   toInt, fromInt, fromCount, toCount,
   type Integer, type Natural, type Rational,
-} from "../../../../../lib/articulating/predicating/positing/settling/analysis/exact-number.mjs";
+} from "@lenticule-science/articulating/predicating/positing/settling/analysis/exact-number";
 
 // The exact native-integer lifts are algebra; re-export them at the boundary door.
 export {
   toCount, fromCount, toInt, fromInt, ratFromInt, fromRatio, fromInts,
-} from "../../../../../lib/articulating/predicating/positing/settling/analysis/exact-number.mjs";
+} from "@lenticule-science/articulating/predicating/positing/settling/analysis/exact-number";
 
 /** Decode — a rational's native floating-point value (lossy). */
 export const toNumber = (q: Rational): number => toInt(q.num) / toInt(q.den);

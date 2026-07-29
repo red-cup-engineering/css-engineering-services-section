@@ -46,7 +46,7 @@ Each dependency contributes one piece:
 | `aperiodic-patch` | check semantic Wang-style local matching over content-addressed boundary incidences, then emit diffraction, contextuality, automaton, and substitution readings |
 | `aperiodic-self-organize` | rewrite a defective patch by deterministic Markov/Tsetlin local synchronization until a matching fixed point or step bound |
 | `aperiodic-theory-atlas` | activate global historical theory lenses over a patch from measured local matching, diffraction, contextuality, cybernetic, and automata evidence |
-| `aperiodic-bridge-plan` | turn active theory lenses into concrete bridge obligations across repair, trace, reconstruction, diff, coordination, and concurrency verbs |
+| `aperiodic-bridge-plan` | turn potential theory lenses into concrete bridge obligations across repair, trace, reconstruction, diff, coordination, and concurrency verbs |
 
 `eventual-consistency` now also carries a stochastic convergence receipt from `@emsenn/relating`: Markov stationarity is normalized through the root `probability` RMN catalog as a stochastic-closure fixed point.
 This turns the package's former bare `converges: true` reading into an inspectable finite RelMath witness (`stochastic.fixedPoint`, `stochastic.equivalent`, `stochastic.regime`, and `stochastic.stationaryExists`).
@@ -78,7 +78,7 @@ Update the carrier type surface in the same change as the schema or move the car
 - `computing/aperiodic-self-organization-request` and `computing/aperiodic-self-organization` - local adaptation over an aperiodic patch: ordered defect rewrites synchronize one boundary neighborhood at a time, reread the patch after each rewrite, and stop at a reward fixed point or step bound.
   This is the Markov normal-algorithm / Tsetlin automaton operator, not merely the observation.
 - `computing/aperiodic-theory-atlas-request` and `computing/aperiodic-theory-atlas` - a global historical theory atlas over a patch: Wang local matching, Robinson substitution, de Bruijn multigrids, mathematical diffraction, sheaf contextuality, Ashby requisite variety, Petri concurrency, Markov normal algorithms, Kolmogorov-Uspensky graph machines, and Tsetlin learning automata are activated from finite measurements and maturity-tagged.
-- `computing/aperiodic-bridge-plan-request` and `computing/aperiodic-bridge-plan` - a capability bridge planner over the active atlas: each measured theory lens maps to a concrete computing verb and operator obligation, with priority, preconditions, expected effect, and maturity.
+- `computing/aperiodic-bridge-plan-request` and `computing/aperiodic-bridge-plan` - a capability bridge planner over the potential atlas: each measured theory lens maps to a concrete computing verb and operator obligation, with priority, preconditions, expected effect, and maturity.
 
 ## Usage
 

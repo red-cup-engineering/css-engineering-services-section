@@ -29,7 +29,7 @@ import {
   type NewsCable,
 } from "../topology/news/index.mjs";
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 import { escapeHtml, robots, sitemap, type SitemapUrl } from "../codecs/feed.mjs";
 
 import { CableRoutingSchema } from "./discovery.mjs";

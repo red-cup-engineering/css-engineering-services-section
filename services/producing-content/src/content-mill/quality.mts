@@ -5,7 +5,7 @@
  * article-quality packet and the aggregate reading over public article quality.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 import { ContentQualitySeveritySchema } from "../content-farm/revision-packets.mjs";
 import {
   AccountableAttentionFindingSchema,

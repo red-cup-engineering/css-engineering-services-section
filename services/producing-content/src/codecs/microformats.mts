@@ -9,7 +9,7 @@
  * there). Codec law (L4): pure over values, no network/filesystem/clock.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const MicroformatArtifactFormatSchema = { anyOf: [{ const: "h-entry" }, { const: "h-feed" }, { const: "html-document" }] } as const;
 

@@ -18,7 +18,7 @@
 // is its documented LOSSY projection, kept for the existing wire surfaces.
 
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 /**
  * The assertion force of a claim: its modality - whether the claim alleges,

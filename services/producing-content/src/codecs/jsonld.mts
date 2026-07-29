@@ -6,7 +6,7 @@
  * formed artifact; sites own transport.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const JsonLdAuthorSchema = { $id: "producing-content/codecs/jsonld/author", title: "JsonLdAuthor", additionalProperties: false, type: "object", required: ["name"], properties: { name: { minLength: 1, type: "string" }, url: { minLength: 1, type: "string" } } } as const;
 

@@ -48,13 +48,13 @@
  * invented; the market is presented as the concurrent game it already is.
  */
 import {
-  action,
   carrierFrom,
   jsonResource,
   type Action,
   type JsonRecord,
   type JsonValue,
 } from "@red-cup-engineering/relating";
+import { action } from "../action.mjs";
 import {
   arena,
   event,

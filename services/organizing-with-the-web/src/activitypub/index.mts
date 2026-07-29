@@ -3,10 +3,11 @@ import type { IncomingHttpHeaders } from "node:http";
 import { jsonRepr, readTextBody, type App, type Repr } from "@red-cup-engineering/computing-with-http/app";
 import { httpDate } from "@red-cup-engineering/computing-with-http/codecs/http";
 import { assertHttpUrl } from "@red-cup-engineering/content/codecs/feed";
-import type { Assertion, AssertionTrace } from "@red-cup-engineering/animating/becoming/doing/working/governing/federating/assertion-worlds";
 import {
   authorizeBearer,
   type AuthDecision,
+  type Assertion,
+  type AssertionTrace,
   type TokenPolicy,
 } from "../sync-guard/index.mjs";
 

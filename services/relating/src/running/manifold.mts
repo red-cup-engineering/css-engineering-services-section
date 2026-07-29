@@ -6,7 +6,7 @@
  * extrema. Composition is a judgment purchased from its autonomous Actor; this
  * projection does not manufacture bonds from ambient string equality.
  */
-import type { UtteranceCarrier } from "../../lib/articulating/index.mjs";
+import type { UtteranceCarrier } from "@lenticule-science/articulating/index";
 import { fact } from "./action.mjs";
 import type { ActionDiscovery, ActionEndpoint } from "./induce.mjs";
 import { resource, type ResourceCarrier } from "./resource.mjs";

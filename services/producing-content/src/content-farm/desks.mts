@@ -7,7 +7,7 @@
  * reusable packet shape belongs to producing-content.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 import { SourceRollSourceSchema } from "../cable/source-roll.mjs";
 import type { SourceRollSource } from "../cable/source-roll.mjs";

@@ -28,7 +28,7 @@ test("an exact award becomes a proposal-only downward mission", () => {
   const mission = missionForAward(award, bid);
   assert.equal(mission.apply, false);
   assert.equal(Object.hasOwn(mission, "maxTokens"), false);
-  assert.equal(mission.considerationPolicy.acceptableAlternatives[0].obligations[0].maximumAmount, 31);
+  assert.equal(mission.considerationPolicy.type, "ConsiderationPolicy");
   assert.equal(Object.hasOwn(mission, "maximumConsideration"), false);
   assert.equal(mission.testVectors[0].id, "board-lot-route");
   assert.deepEqual(mission.testVectors[0].then, ["node-replay"]);

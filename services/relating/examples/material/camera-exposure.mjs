@@ -1,5 +1,5 @@
-import { articulate, mark, predicating, utterance } from "@red-cup-engineering/relating/articulating";
-import { freeSettlementFiltration, induceRelation, settle } from "@red-cup-engineering/relating/settling";
+import { articulate, mark, predicating, utterance } from "@lenticule-science/articulating";
+import { freeSettlementFiltration, induceRelation, settle } from "@lenticule-science/articulating/predicating/positing/settling";
 
 const aperture = utterance(mark("support"), mark("relation can land"));
 const lens = articulate(aperture);

@@ -57,7 +57,7 @@ That means:
 - `diataxisAntipode` is the composite FOUR gauge element.
 
 RelMath/content notes sometimes name the recurring corners directly as `potential`, `active`, `stable`, and `absurd`.
-The package's `ChargeValue` names carry evidence-coordinate semantics: `absurd` is no evidence, `potential` is the truth side, `active` is the falsity side, and `stable` is both sides.
+The package's `ChargeValue` names carry evidence-coordinate semantics: `absurd` is no evidence, `potential` is the truth side, `potential` is the falsity side, and `active` is both sides.
 This module therefore maps Diataxis by role into the package charge square rather than by surface label coincidence.
 
 The content-local Lean witness `content/.../learning/content/diataxis/lean/DiataxisFour.lean` proves the Diataxis quartet as a recurring FOUR over RelMath's `Corner` vocabulary.

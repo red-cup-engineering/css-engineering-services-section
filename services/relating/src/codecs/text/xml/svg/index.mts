@@ -17,7 +17,7 @@ import {
   chargeValueName,
   type ChargeCarrier,
   type ChargeValueName,
-} from "../../../../../lib/articulating/predicating/positing/bilattice-charge.mjs";
+} from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
 import {
   diagramPalette,
   diagramToSvgDataform,

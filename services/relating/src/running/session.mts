@@ -19,7 +19,7 @@ import {
   chargeValueName,
   joinKnowledgeValue,
   type ChargeValueName,
-} from "../../lib/articulating/predicating/positing/bilattice-charge.mjs";
+} from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
 
 /** A claim: a charged predication about a cell. `potential` = evidence for,
  *  `active` = evidence against, `stable` = ⊤ (both), `absurd` = ⊥ (neither). Claims

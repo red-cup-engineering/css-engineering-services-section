@@ -5,7 +5,7 @@
  * packet over public article metadata, with no reader identifiers.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const ContentPerformanceBucketSchema = { $id: "producing-content/content-mill/content-performance-bucket", title: "ContentPerformanceBucket", additionalProperties: false, type: "object", required: ["views", "articleCount", "averageViews"], properties: { views: { minimum: 0, type: "integer" }, articleCount: { minimum: 0, type: "integer" }, averageViews: { minimum: 0, type: "number" } } } as const;
 

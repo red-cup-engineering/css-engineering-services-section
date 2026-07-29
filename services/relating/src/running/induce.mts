@@ -15,7 +15,7 @@
  * standard knowledge-vault primitives come for free, with packages free to
  * register richer resources/prompts via `resource()`/`prompt()`.
  */
-import type { UtteranceCarrier } from "../../lib/articulating/index.mjs";
+import type { UtteranceCarrier } from "@lenticule-science/articulating/index";
 import { registeredCategory } from "./category.mjs";
 import { actionUtterances, fact, isAction, type Action } from "./action.mjs";
 import { wireCodec } from "../codecs/boundary/wire/index.mjs";

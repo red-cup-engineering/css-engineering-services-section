@@ -7,7 +7,7 @@ import {
   tyCarrier,
   utteranceCarrier,
 } from "@red-cup-engineering/relating/carriers";
-import { articulate, mark, utterance } from "@red-cup-engineering/relating/articulating";
+import { articulate, mark, utterance } from "@lenticule-science/articulating";
 
 describe("src/carriers package realization", () => {
   it("realizes pure shapes as runtime carriers with stable ids", () => {

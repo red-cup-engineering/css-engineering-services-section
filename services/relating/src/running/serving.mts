@@ -42,7 +42,7 @@ import {
   freeSettlementFiltration,
   type SettlementFiltration,
   type SettlementFiltrationGenerators,
-} from "../../lib/articulating/predicating/positing/settling/index.mjs";
+} from "@lenticule-science/articulating/predicating/positing/settling/index";
 
 /**
  * Pure routed response returned by the serving projection.

@@ -8,7 +8,7 @@
 import { createSign } from "node:crypto";
 
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const SearchConsoleDemandAssertionSchema = { $id: "producing-content/codecs/search-console/demand-assertion", title: "SearchConsoleDemandAssertion", additionalProperties: false, type: "object", required: ["kind", "query", "clicks", "impressions", "ctr", "position"], properties: { kind: { const: "producing-content.search-console.demand-assertion" }, query: { minLength: 1, type: "string" }, clicks: { minimum: 0, type: "number" }, impressions: { minimum: 0, type: "number" }, ctr: { minimum: 0, type: "number" }, position: { minimum: 0, type: "number" } } } as const;
 

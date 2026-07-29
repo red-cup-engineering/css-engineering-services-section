@@ -8,7 +8,7 @@
  */
 import { lint } from "@red-cup-engineering/communicating-in-english";
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const GateFindingSchema = { $id: "producing-content/topology/gates/finding", title: "GateFinding", additionalProperties: false, type: "object", required: ["kind", "gate", "evidence"], properties: { kind: { const: "producing-content.gate.finding" }, gate: { minLength: 1, type: "string" }, evidence: { type: "string" } } } as const;
 

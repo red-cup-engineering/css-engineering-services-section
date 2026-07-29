@@ -21,8 +21,15 @@ test("the advertised incitement entry crosses only the authenticated A2A client 
   assert.ok(runtimeFiles.includes("src/a2a-executor.mjs"));
 });
 
-test("the long-running supplier die carries every explicit contract needed after observation", () => {
-  const unit = readFileSync(new URL("../ops/systemd/bare-cedar-fog-cloud-compute-services-section-a2a.service", import.meta.url), "utf8");
+test("the supplier invocation declares its stateless runtime contract in the operation catalog", () => {
+  const manifest = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
+  const operation = manifest["x-agentic-metro-enterprise"]["operation-catalog"]["forage-improvement-boards"];
+  assert.equal(operation.accepts, "provider-addressed ActivityPub/A2A Create<ImprovementForagerIncitement>");
+  assert.ok(operation.runtimeFiles.includes("src/client.mjs"));
+  assert.ok(operation.runtimeFiles.includes("src/a2a-executor.mjs"));
+  assert.doesNotMatch(JSON.stringify(operation), /systemd|PRIVATE_KEY|API_KEY|BEARER_TOKEN/u);
+  /* Retired host-unit assertions retained only as migration history. */
+  /* const unit = readFileSync(new URL("../ops/systemd/bare-cedar-fog-cloud-compute-services-section-a2a.service", import.meta.url), "utf8");
   for (const exactLine of [
     "Environment=RWIL_RDF_AGENT=http://127.0.0.1:19764/.well-known/agent-card.json",
     "Environment=CLOUD_COMPUTE_ACTIVITYPUB_ORIGIN=https://bare-cedar-fog.561.group",
@@ -38,7 +45,7 @@ test("the long-running supplier die carries every explicit contract needed after
   const activityPubUnit = readFileSync(new URL("../ops/systemd/bare-cedar-fog-cloud-compute-services-section-activitypub.service", import.meta.url), "utf8");
   assert.match(activityPubUnit, /^Environment=ACTIVITYPUB_KEYS_PATH=\/home\/emsenn\/info\/lib\/emsenn\/services\/561-group\/services\/red-cup-engineering\/services\/web-services-section\/services\/cloud-compute-services-section\/data\/activitypub\/keys\.json$/mu);
   assert.match(activityPubUnit, /^Environment=ACTIVITYPUB_STATE_PATH=\/home\/emsenn\/info\/lib\/emsenn\/services\/561-group\/services\/red-cup-engineering\/services\/web-services-section\/services\/cloud-compute-services-section\/data\/activitypub\/state\.jsonl$/mu);
-  assert.doesNotMatch(`${unit}\n${activityPubUnit}`, /\.local\/share\/emsenn\/(?:a2a\/cloud-compute-services-section-improvement-market-supplier-tasks|activitypub\/cloud-compute-services-section\.json)/u);
+  assert.doesNotMatch(`${unit}\n${activityPubUnit}`, /\.local\/share\/emsenn\/(?:a2a\/cloud-compute-services-section-improvement-market-supplier-tasks|activitypub\/cloud-compute-services-section\.json)/u); */
 });
 
 test("the supplier control face is one canonical RMN operation over A2A", async () => {

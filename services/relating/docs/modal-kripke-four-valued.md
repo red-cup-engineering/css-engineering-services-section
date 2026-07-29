@@ -8,7 +8,7 @@ The carrier is a finite set of world keys plus a crisp accessibility relation: `
 Given a FOUR-valued valuation over worlds:
 
 - `possibilize` reads possibility as the knowledge join over each accessibility fiber, with the empty fiber reading as `absurd`;
-- `necessitate` reads necessity as the knowledge meet over each accessibility fiber, with the empty fiber reading as `stable`;
+- `necessitate` reads necessity as the knowledge meet over each accessibility fiber, with the empty fiber reading as `active`;
 - `modalKripkeFrame` classifies the relation as `K`, `T`, `S4`, or `S5` by reflexivity, transitivity, and symmetry;
 - `modalKripkeReceipt` exhaustively checks the finite K monotonicity, T inflation/deflation, S4 idempotence, S5 forgetful, and FOUR twist-split negation laws for frames of at most five worlds.
 - `closureOp` is the modal-pair composite `□◇`.
@@ -29,7 +29,7 @@ const frame = modalKripkeFrame(["here", "there"], {
 
 const receipt = modalKripkeReceipt(frame, {
   here: "potential",
-  there: "active",
+  there: "potential",
 });
 
 receipt.frame.frameClass;

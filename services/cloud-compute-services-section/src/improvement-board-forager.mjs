@@ -13,7 +13,7 @@ function fail(code, message) { const error = new Error(message); error.code = co
 const safeArgument = (value) => typeof value === "string" && /^[A-Za-z0-9_./:@=+,%-]+$/u.test(value);
 
 export const DEFAULT_FORAGER_POLICY = Object.freeze({
-  capabilities: Object.freeze(["software-engineering", "code-review"]),
+  capabilities: Object.freeze(["software-engineering", "json-schema-output", "code-review"]),
   minimumAsk: Object.freeze({ amount: 8, unit: "relative-resolution-milliquanta-v1" }),
   considerationPolicy: resolutionCreditPolicy(31),
 });

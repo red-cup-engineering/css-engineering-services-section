@@ -87,6 +87,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
+    "@lenticule-science/articulating": "workspace:*",
     "@red-cup-engineering/relating": "0.0.0"
   },
   "devDependencies": {

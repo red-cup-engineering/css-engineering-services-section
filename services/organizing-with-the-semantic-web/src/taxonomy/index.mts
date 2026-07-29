@@ -1,4 +1,4 @@
-import type { App, Repr, Resource } from "@red-cup-engineering/relating/running/http";
+import type { App, Repr, Resource } from "@red-cup-engineering/relating/services/http";
 import { assertHttpUrl, escapeHtmlText } from "@red-cup-engineering/producing-content/codecs/feed";
 import { pageLinksNav } from "@red-cup-engineering/organizing-with-the-web/pagination";
 

@@ -10,7 +10,7 @@ import {
   predicate,
   utterance,
 } from "@red-cup-engineering/relating";
-import { completeGraphWeights } from "@red-cup-engineering/relating/analysis";
+import { completeGraphWeights } from "@lenticule-science/articulating/predicating/positing/settling/analysis";
 import { htmlCarrierOf } from "@red-cup-engineering/relating/writing";
 import {
   actions,

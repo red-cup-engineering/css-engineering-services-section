@@ -1,4 +1,4 @@
-import { mark, type ChargeValueName, type UtteranceCarrier } from "@red-cup-engineering/relating";
+import type { ChargeValueName, UtteranceCarrier } from "@red-cup-engineering/relating";
 import { escapeHtmlText } from "@red-cup-engineering/content/codecs/feed";
 import { settleLessonJudgments, utterEvidenceSet, type LessonSettlement, type LessonEvidence } from "@red-cup-engineering/knowing/learning";
 import {
@@ -435,13 +435,13 @@ function themeLessonJudgments(value: unknown): ThemeLessonJudgment[] {
 export function admitTheme(value: unknown): ThemeAdmission {
   const name = typeof (value as { name?: unknown } | null)?.name === "string" ? String((value as { name: string }).name) : "anonymous";
   const judgments = Object.freeze(themeLessonJudgments(value));
-  const subject = mark(Object.freeze(["theme", name] as const));
+  const subject = `theme:${name}`;
   // A judgment made good claims satisfaction; a failed judgment claims the
   // contrary predicate — its own fact, never a denial of the first.
   const entries = Object.freeze(judgments.map((judgment) => ({
     subject,
-    predicate: mark(judgment.value === "potential" ? "satisfies-theme-contract" : "violates-theme-contract"),
-    object: mark(judgment.path),
+    predicate: judgment.value === "potential" ? "satisfies-theme-contract" : "violates-theme-contract",
+    object: judgment.path,
     provenance: judgment.reason,
   } satisfies LessonEvidence)));
   const utterances = utterEvidenceSet(entries);

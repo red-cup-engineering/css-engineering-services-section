@@ -1,293 +1,124 @@
-/**
- * writing/ucan — User-Controlled Authorization Networks as portable OCap.
- *
- * A UCAN token is the wire twin of the in-process object-capability: the token's
- * authority IS the ActivityPub OCap `Capability` carrier, and its proof is RSA
- * over the delegation payload using the same HTTP-Signature primitive the S2S
- * brick uses. Delegation chains are checked as capability attenuation: each child
- * must narrow, never widen, the parent's grant, and each child issuer must be the
- * previous audience.
- */
-import { carrierFrom, type FromSchema } from "@red-cup-engineering/relating";
-import {
-  type Capability,
-  revoke,
-} from "../activitypub/capability.mjs";
-import {
-  parseSignatureHeader,
-  signRequest,
-  verifyRequest,
-} from "../activitypub/signatures.mjs";
+/** Standards-clean UCAN invocation admission using canonical ucanto DAG-CBOR/CID carriers. */
+import { relationalRwilDocument } from "@lenticule-science/rwil-rdf-projection-service/client";
+// @ts-expect-error The canonical RMN package is JavaScript and does not yet publish declarations.
+import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
+import type { API } from "@ucanto/core";
+import { Schema } from "@ucanto/core";
+import { ed25519 } from "@ucanto/principal";
+import { Revoked, access, capability } from "@ucanto/validator";
 
-const UCAN_SIGNED_FIELDS = [
-  "ucan",
-  "issuer",
-  "audience",
-  "capability",
-  "grants",
-  "holder",
-  "capability-parent",
-  "parent",
-  "date",
-] as const;
-
-const ucanProofSchema = {
-  type: "object",
-  additionalProperties: false,
-  required: ["type", "created", "verificationMethod", "signatureValue"],
-  properties: {
-    type: { const: "RsaSignature2018" },
-    created: { type: "string" },
-    verificationMethod: { type: "string" },
-    signatureValue: { type: "string" },
-  },
-} as const;
-
-const ucanCapabilitySchema = {
-  type: "object",
-  additionalProperties: false,
-  required: ["@context", "id", "type", "grants", "holder"],
-  properties: {
-    "@context": { const: "https://www.w3.org/ns/activitystreams" },
-    id: { type: "string" },
-    type: { const: "Capability" },
-    grants: { type: "string" },
-    holder: { type: "string" },
-    parent: { type: "string" },
-  },
-} as const;
-
-/** A signed UCAN delegation record. Its `authority` is the Capability carrier. */
-export const ucanSchema = {
-  $id: "animating/writing/ucan/token",
-  title: "UCAN",
-  description:
-    "A User-Controlled Authorization Network token: a signed portable envelope for the existing Capability carrier. `authority` is the OCap grant itself, `parent` links to the prior UCAN in the delegation chain, and `proof` is an RSA-SHA256 proof produced with the same HTTP-Signature primitive used for ActivityPub S2S.",
-  type: "object",
-  additionalProperties: false,
-  required: ["id", "type", "issuer", "audience", "authority", "proof"],
-  properties: {
-    id: { type: "string" },
-    type: { const: "UCAN" },
-    issuer: { type: "string" },
-    audience: { type: "string" },
-    authority: ucanCapabilitySchema,
-    parent: { type: "string" },
-    proof: ucanProofSchema,
-  },
-} as const;
-export type UcanToken = FromSchema<typeof ucanSchema>;
-export const ucanCarrier = carrierFrom(ucanSchema);
-
-export interface IssueUcanOptions {
-  /** stable token id; defaults to a deterministic capability-rooted urn. */
-  readonly id?: string;
-  /** parent token in the delegation chain, if this UCAN delegates/attenuates. */
-  readonly parent?: UcanToken;
-  /** proof timestamp; defaults to now. */
-  readonly created?: string;
-  /** proof verification method; defaults to `${issuer}#keys-1`. */
-  readonly verificationMethod?: string;
+export interface UcanCapability {
+  readonly with: `did:pkh:eip155:${string}:0x${string}`;
+  readonly can: API.Ability;
+  readonly nb: API.Caveats;
 }
 
-export interface UcanVerification {
-  readonly valid: boolean;
-  readonly token: UcanToken;
-  readonly checked: readonly UcanToken[];
-  readonly failures: readonly string[];
+export interface VerifyUcanInvocationOptions {
+  readonly invocation: API.Invocation<API.Capability<API.Ability, UcanCapability["with"], API.Caveats>>;
+  readonly authority: API.Verifier;
+  readonly controller: `did:key:${string}`;
+  readonly actor: `did:key:${string}`;
+  readonly capability: UcanCapability;
+  readonly isRevoked: (cid: string) => boolean | Promise<boolean>;
 }
 
-export type UcanKeyring =
-  | Readonly<Record<string, string>>
-  | ((token: UcanToken) => string | undefined);
-
-let UCAN_SEQ = 0;
-
-function freshUcanId(authority: Capability): string {
-  UCAN_SEQ += 1;
-  return `urn:ucan:${encodeURIComponent(authority.id)}:${UCAN_SEQ}`;
+export interface UcanInvocationVerificationReceipt {
+  readonly id: string;
+  readonly type: "UcanInvocationVerificationReceipt";
+  readonly version: 1;
+  readonly protocol: "UCAN";
+  readonly ucanVersion: "0.9.1";
+  readonly implementation: Readonly<{ core: "@ucanto/core@10.4.6"; validator: "@ucanto/validator@10.0.1"; principal: "@ucanto/principal@9.0.3" }>;
+  readonly disposition: "authorized";
+  readonly revocationStatus: "active";
+  readonly controller: string;
+  readonly actor: string;
+  readonly audience: string;
+  readonly delegationCid: string;
+  readonly invocationCid: string;
+  readonly capability: UcanCapability;
+  readonly capabilityNi: string;
+  readonly proofChain: readonly string[];
+  readonly temporalBounds: Readonly<{ notBefore: number | null; expiration: number; nonce: string | null }>;
 }
 
-function ucanPath(id: string): string {
-  return `/ucan/${encodeURIComponent(id)}`;
+const DID_KEY = /^did:key:z[1-9A-HJ-NP-Za-km-z]{16,512}$/u;
+const RESOURCE = /^did:pkh:eip155:[1-9][0-9]*:0x[0-9a-fA-F]{40}$/u;
+const ABILITY = /^[a-z][a-z0-9-]*(?:\/[a-zA-Z][a-zA-Z0-9-]*)+$/u;
+
+function identify(value: unknown): string {
+  return semanticId(relationalRwilDocument(value));
 }
 
-function proofHeaders(token: Omit<UcanToken, "proof">): Readonly<Record<string, string>> {
-  return {
-    ucan: token.id,
-    issuer: token.issuer,
-    audience: token.audience,
-    capability: token.authority.id,
-    grants: token.authority.grants,
-    holder: token.authority.holder,
-    "capability-parent": token.authority.parent ?? "",
-    parent: token.parent ?? "",
-    date: "",
+function exactCapability(value: UcanCapability): UcanCapability {
+  if (!RESOURCE.test(value?.with ?? "")) throw new TypeError("capability.with must be an EnterpriseAccount did:pkh resource");
+  if (!ABILITY.test(value?.can ?? "")) throw new TypeError("capability.can must be one exact namespaced ability");
+  if (value.nb === null || typeof value.nb !== "object" || Array.isArray(value.nb)) throw new TypeError("capability.nb must be an object");
+  return Object.freeze({ with: value.with.toLowerCase() as UcanCapability["with"], can: value.can,
+    nb: Object.freeze(structuredClone(value.nb)) });
+}
+
+function authorizationCids(authorization: API.Authorization): readonly string[] {
+  const found: string[] = [];
+  const visit = (entry: API.Authorization): void => {
+    for (const proof of entry.proofs) visit(proof);
+    const cid = entry.delegation.cid.toString();
+    if (!found.includes(cid)) found.push(cid);
   };
-}
-
-function signedHeaders(token: Omit<UcanToken, "proof">, created: string): Readonly<Record<string, string>> {
-  return { ...proofHeaders(token), date: created };
-}
-
-function signatureValue(header: string): string {
-  return parseSignatureHeader(header)["signature"] ?? "";
-}
-
-function publicKeyFor(token: UcanToken, keyring: UcanKeyring): string | undefined {
-  if (typeof keyring === "function") return keyring(token);
-  return keyring[token.proof.verificationMethod] ?? keyring[token.issuer];
+  visit(authorization);
+  return Object.freeze(found);
 }
 
 /**
- * capabilityFromUcan — forget the portable envelope and recover the exact
- * authority it carries. This is the UCAN→Capability map: no permission ontology is
- * introduced between the token and the local OCap carrier.
+ * Verify one canonical ucanto Invocation and its proof DAG, including signature,
+ * audience, attenuation, time bounds, and caller-supplied live revocation state.
+ * The EnterpriseAccount controller binding remains a separate ERC-1271 receipt.
  */
-export function capabilityFromUcan(token: UcanToken): Capability {
-  return token.authority;
-}
+export async function verifyUcanInvocation(options: VerifyUcanInvocationOptions): Promise<UcanInvocationVerificationReceipt> {
+  const { invocation, authority, isRevoked } = options;
+  if (invocation === null || typeof invocation !== "object" || typeof invocation.cid?.toString !== "function") throw new TypeError("invocation must be an official ucanto Invocation view");
+  if (typeof authority?.did !== "function" || !DID_KEY.test(authority.did())) throw new TypeError("authority must be a did:key verifier");
+  if (!DID_KEY.test(options.controller) || !DID_KEY.test(options.actor) || options.controller === options.actor) throw new TypeError("controller and actor must be distinct did:key principals");
+  if (typeof isRevoked !== "function") throw new TypeError("isRevoked must be an injected current-status observer");
+  if (invocation.issuer.did() !== options.actor) throw new TypeError("invocation issuer differs from the pairwise actor");
+  if (invocation.audience.did() !== authority.did()) throw new TypeError("invocation audience differs from the executing authority");
+  if (invocation.version !== "0.9.1") throw new TypeError("invocation is not the admitted ucanto UCAN 0.9.1 carrier");
+  if (!Number.isInteger(invocation.expiration) || invocation.notBefore !== undefined && !Number.isInteger(invocation.notBefore)) throw new TypeError("UCAN time bounds must be integers");
 
-/**
- * ucanFromCapability — form the unsigned UCAN payload for an existing Capability.
- * `issueUcan` signs this payload; this helper exposes the Capability→UCAN map.
- */
-export function ucanFromCapability(
-  issuer: string,
-  authority: Capability,
-  options: IssueUcanOptions = {},
-): Omit<UcanToken, "proof"> {
-  return {
-    id: options.id ?? freshUcanId(authority),
-    type: "UCAN",
-    issuer,
-    audience: authority.holder,
+  const expected = exactCapability(options.capability);
+  const parser = capability({ can: expected.can, with: Schema.literal(expected.with),
+    nb: Schema.dictionary({ key: Schema.string(), value: Schema.unknown() }) });
+  const result = await access(invocation, {
     authority,
-    ...(options.parent === undefined ? {} : { parent: options.parent.id }),
-  };
-}
-
-/**
- * issueUcan — sign an existing Capability into a portable UCAN token. If a parent
- * UCAN is supplied, the new token records it as provenance; verification later
- * checks both the RSA proof and the attenuation relation against that parent.
- */
-export function issueUcan(
-  issuer: string,
-  authority: Capability,
-  privateKeyPem: string,
-  options: IssueUcanOptions = {},
-): UcanToken {
-  const unsigned = ucanFromCapability(issuer, authority, options);
-  const created = options.created ?? new Date().toISOString();
-  const verificationMethod = options.verificationMethod ?? `${issuer}#keys-1`;
-  const { signature } = signRequest(
-    "post",
-    ucanPath(unsigned.id),
-    signedHeaders(unsigned, created),
-    verificationMethod,
-    privateKeyPem,
-    UCAN_SIGNED_FIELDS,
-  );
-  return {
-    ...unsigned,
-    proof: {
-      type: "RsaSignature2018",
-      created,
-      verificationMethod,
-      signatureValue: signatureValue(signature),
+    principal: ed25519.Verifier,
+    capability: parser,
+    canIssue: (claim, issuer) => issuer === options.controller && claim.with === expected.with
+      && claim.can === expected.can && identify(claim.nb) === identify(expected.nb),
+    validateAuthorization: async (authorization): Promise<API.Result<API.Unit, API.Revoked>> => {
+      if (await isRevoked(authorization.delegation.cid.toString())) return { error: new Revoked(authorization.delegation) };
+      return { ok: {} } as API.Result<API.Unit, API.Revoked>;
     },
-  };
-}
+  });
+  if (result.error) throw Object.assign(new Error(`UCAN invocation is unauthorized: ${result.error.message}`), { cause: result.error });
 
-/** The grant order used by the first green brick: exact grants and wildcard
- * prefix grants may attenuate; unrelated grants never do. */
-export function attenuatesGrant(parent: string, child: string): boolean {
-  if (parent === child) return true;
-  if (parent === "*") return true;
-  if (!parent.endsWith("*")) return false;
-  return child.startsWith(parent.slice(0, -1));
-}
-
-/** Check whether a child Capability is an attenuation of its parent Capability. */
-export function attenuatesCapability(parent: Capability, child: Capability): boolean {
-  return attenuatesGrant(parent.grants, child.grants);
-}
-
-function verifyProof(token: UcanToken, keyring: UcanKeyring): boolean {
-  const publicKeyPem = publicKeyFor(token, keyring);
-  if (publicKeyPem === undefined || token.proof.signatureValue === "") return false;
-  const unsigned = {
-    id: token.id,
-    type: token.type,
-    issuer: token.issuer,
-    audience: token.audience,
-    authority: token.authority,
-    ...(token.parent === undefined ? {} : { parent: token.parent }),
-  } satisfies Omit<UcanToken, "proof">;
-  const header = `keyId="${token.proof.verificationMethod}",algorithm="rsa-sha256",headers="${UCAN_SIGNED_FIELDS.join(" ")}",signature="${token.proof.signatureValue}"`;
-  return verifyRequest("post", ucanPath(token.id), signedHeaders(unsigned, token.proof.created), header, publicKeyPem);
-}
-
-function ancestryOf(token: UcanToken, chain: readonly UcanToken[]): readonly UcanToken[] {
-  const byId = new Map(chain.map((entry) => [entry.id, entry]));
-  const out: UcanToken[] = [];
-  let cursor: UcanToken | undefined = token;
-  while (cursor !== undefined) {
-    out.unshift(cursor);
-    cursor = cursor.parent === undefined ? undefined : byId.get(cursor.parent);
+  const proofChain = authorizationCids(result.ok);
+  for (const cid of proofChain) {
+    if (await isRevoked(cid)) throw new TypeError(`UCAN proof ${cid} is revoked`);
   }
-  return out;
-}
-
-/**
- * verifyUcan — verify the UCAN's RSA proof chain and its capability order.
- *
- * Every token in the chain must verify against the supplied keyring. Every child
- * must be issued by the previous audience, held by its own audience, and attenuate
- * the previous Capability's grant. A child that widens authority fails even when
- * its RSA signature is valid.
- */
-export function verifyUcan(
-  token: UcanToken,
-  keyring: UcanKeyring,
-  chain: readonly UcanToken[] = [],
-): UcanVerification {
-  const checked = ancestryOf(token, chain);
-  const failures: string[] = [];
-
-  if (checked[checked.length - 1]?.id !== token.id) {
-    failures.push(`missing target token ${token.id}`);
-  }
-
-  for (const entry of checked) {
-    if (entry.audience !== entry.authority.holder) {
-      failures.push(`${entry.id}: audience must be the authority holder`);
-    }
-    if (!verifyProof(entry, keyring)) {
-      failures.push(`${entry.id}: bad proof`);
-    }
-  }
-
-  for (let i = 1; i < checked.length; i += 1) {
-    const parent = checked[i - 1];
-    const child = checked[i];
-    if (parent === undefined || child === undefined) continue;
-    if (child.parent !== parent.id) {
-      failures.push(`${child.id}: parent pointer does not match chain`);
-    }
-    if (child.issuer !== parent.audience) {
-      failures.push(`${child.id}: issuer must be the parent audience`);
-    }
-    if (!attenuatesCapability(parent.authority, child.authority)) {
-      failures.push(`${child.id}: authority widens parent grant`);
-    }
-  }
-
-  return { valid: failures.length === 0, token, checked, failures };
-}
-
-/** revokeUcan — read UCAN revocation through the existing Capability revocation. */
-export function revokeUcan(token: UcanToken, by?: string) {
-  return revoke(token.authority, by);
+  const delegationCid = proofChain.find((cid) => cid !== invocation.cid.toString());
+  if (delegationCid === undefined) throw new TypeError("UCAN invocation has no controller delegation proof");
+  if (result.ok.capability.with !== expected.with || result.ok.capability.can !== expected.can
+    || identify(result.ok.capability.nb) !== identify(expected.nb)) throw new TypeError("authorized capability differs from the requested exact capability");
+  const capabilityNi = identify(expected);
+  const body = Object.freeze({ type: "UcanInvocationVerificationReceipt" as const, version: 1 as const,
+    protocol: "UCAN" as const, ucanVersion: "0.9.1" as const,
+    implementation: Object.freeze({ core: "@ucanto/core@10.4.6" as const,
+      validator: "@ucanto/validator@10.0.1" as const, principal: "@ucanto/principal@9.0.3" as const }),
+    disposition: "authorized" as const, revocationStatus: "active" as const,
+    controller: options.controller, actor: options.actor, audience: authority.did(), delegationCid,
+    invocationCid: invocation.cid.toString(), capability: expected, capabilityNi, proofChain,
+    temporalBounds: Object.freeze({ notBefore: invocation.notBefore ?? null, expiration: invocation.expiration,
+      nonce: invocation.nonce ?? null }),
+  });
+  return Object.freeze({ id: identify(body), ...body });
 }

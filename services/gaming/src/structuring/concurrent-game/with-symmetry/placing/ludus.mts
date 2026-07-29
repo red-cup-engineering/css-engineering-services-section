@@ -27,7 +27,7 @@ import {
   causes,
   eventIds,
 } from "../index.mjs";
-import { type Rational } from "@red-cup-engineering/relating/analysis";
+import { type Rational } from "@lenticule-science/articulating/predicating/positing/settling/analysis";
 import { codecs } from "@red-cup-engineering/relating";
 
 const { fromRatio } = codecs.host.javascript.numbers;

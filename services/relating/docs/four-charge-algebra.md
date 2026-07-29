@@ -6,7 +6,7 @@ A relation does not carry one Boolean; it carries two evidence sides:
 - `absurd`: no positive evidence and no negative evidence
 - `potential`: positive evidence only
 - `active`: negative evidence only
-- `stable`: both positive and negative evidence
+- `active`: both positive and negative evidence
 
 The knowledge order accumulates evidence.
 That is why joining `potential` with `active` returns `stable`: the contradiction is held as a value, not thrown away.
@@ -32,7 +32,7 @@ The package exposes both orders so callers can choose whether they are asking "h
 Useful handles:
 
 - values: `chargeValue`, `chargeValues`, `chargeValueName`
-- carriers: `charge`, `valueOf`, `witnessedPotential`
+- carriers: `charge`, `valueOf`, `witnessedActive`
 - census and aggregate reads: `fourCensus`, `fourCensusOfNames`, `knowledgeAggregate`, `knowledgeAggregateOfCensus`
 - knowledge order: `joinKnowledge`, `meetKnowledge`, `leqKnowledge`
 - truth order: `joinTruth`, `meetTruth`, `leqTruth`

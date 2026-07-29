@@ -8,7 +8,7 @@
  * into the one apex; the MCP transport projects them as `resources/list` and
  * `resources/read`, with no second ontology.
  */
-import { mark, utterance, type UtteranceCarrier } from "../../lib/articulating/index.mjs";
+import { mark, utterance, type UtteranceCarrier } from "@lenticule-science/articulating/index";
 import { fact } from "./action.mjs";
 
 /**

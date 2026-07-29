@@ -6,7 +6,7 @@
  * meme-topology over relating's descent engine (term → predicate → utterance →
  * induce → section → charge), and nothing more. Quantities (price, amount, qty)
  * ride elsewhere as provenance; they are never kernel evidence here, so no money
- * type (`@red-cup-engineering/relating/analysis` Rational / GradedRational) is imported into
+ * type (`@lenticule-science/articulating/predicating/positing/settling/analysis` Rational / GradedRational) is imported into
  * this layer. The topology is the value-free skeleton over which the §4 descent
  * (commodity=charge → exchange=cut → value-form → conservation → price=consensus
  * → market=CGS → valuation → capital=reseed → institution) is hung — see

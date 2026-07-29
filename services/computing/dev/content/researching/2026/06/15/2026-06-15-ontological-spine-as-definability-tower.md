@@ -18,7 +18,7 @@ audience: future agents working the package ontology
 
 A **value object** $\mathbf 4 = \mathbf 2^{\bowtie}$: charges $\langle p,n\rangle\in\{0,1\}^2$, knowledge order $\langle p,n\rangle\le_k\langle p',n'\rangle\iff p\le p'\wedge n\le n'$ (componentwise), truth order with the second coordinate reversed.
 Negation $\sim\langle p,n\rangle=\langle n,p\rangle$; conflation $-\langle p,n\rangle=\langle\lnot n,\lnot p\rangle$.
-(This is `@emsenn/relating/algebra`'s `ChargeValue`: `potential`=t=⟨1,0⟩, `active`=f=⟨0,1⟩, `stable`=⊤=⟨1,1⟩, `absurd`=⊥=⟨0,0⟩.)
+(This is `@emsenn/relating/algebra`'s `ChargeValue`: `potential`=t=⟨1,0⟩, `potential`=f=⟨0,1⟩, `active`=⊤=⟨1,1⟩, `stable`=⊥=⟨0,0⟩.)
 
 A **process**: fix a cell-set $\Phi$ and a $\le_k$-monotone rule-operator $C$ on the valuation lattice $\mathrm{Val}=\mathbf 4^{\Phi}$ (complete under pointwise $\le_k$).
 A **settling** is $S=(\Phi,C,v_\kappa)$ with $v_\kappa=\mathrm{lfp}(C)\ge_k v_0$ and $\kappa$ the closure ordinal (Knaster–Tarski).

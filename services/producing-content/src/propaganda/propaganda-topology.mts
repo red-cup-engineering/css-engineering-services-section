@@ -18,7 +18,7 @@
  * `./furtherance.mjs` â€” a charge with two-sided evidence, never a boolean.
  */
 import { carrierFrom, carrierToTerm, mark, utterance, type Tm, type UtteranceCarrier, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/writing";
+import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/codecs";
 import {
   contentCellMark,
   contentTerm,

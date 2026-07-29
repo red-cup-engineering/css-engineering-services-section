@@ -1,4 +1,4 @@
-import type { App, Repr, Resource } from "@red-cup-engineering/relating/running/http";
+import type { App, Repr, Resource } from "@red-cup-engineering/relating/services/http";
 import type { ChargeValueName, UtteranceCarrier } from "@red-cup-engineering/relating";
 import { settleLessonJudgments, utterEvidenceSet, type LessonSettlement, type LessonEvidence } from "@red-cup-engineering/knowing/learning";
 import { assertHttpUrl, escapeHtmlText } from "@red-cup-engineering/producing-content/codecs/feed";

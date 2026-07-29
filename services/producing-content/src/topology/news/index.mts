@@ -1,5 +1,5 @@
 ﻿import { carrierFrom, asChargeValueName, carrierToTerm, type ChargeValueName, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 /** A JSON value â€” the metadata/object payload carried by news carriers.
  * The content domain owns its own JSON type; it borrows none from the agent

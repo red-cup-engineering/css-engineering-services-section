@@ -11,7 +11,7 @@ import { dirname, join, resolve } from "node:path";
 
 import type { CslDate, CslItem } from "../codecs/references.mjs";
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/writing";
+import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/codecs";
 
 import { DEFAULT_WIRE_STORE } from "../cable/index.mjs";
 

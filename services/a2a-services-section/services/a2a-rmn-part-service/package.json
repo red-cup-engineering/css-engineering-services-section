@@ -15,7 +15,8 @@
     "verify": "npm run check && npm test"
   },
   "dependencies": {
-    "@a2a-js/sdk": "1.0.0-beta.0"
+    "@a2a-js/sdk": "1.0.0-beta.0",
+    "@lenticule-science/rmn-semantic-conformance-die": "6.0.0"
   },
   "x-agentic-metro-enterprise": {
     "node-id": "a2a-rmn-part-service",

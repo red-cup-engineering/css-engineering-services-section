@@ -8,7 +8,7 @@
 //
 // Moved from apps/content-computer/src/source.mts (2026-06-13).
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const SyndicationItemSchema = { $id: "producing-content/syndication/item", title: "SyndicationItem", additionalProperties: false, type: "object", required: ["kind", "url", "title"], properties: { kind: { const: "producing-content.syndication-item" }, id: { minLength: 1, type: "string" }, url: { minLength: 1, type: "string" }, title: { minLength: 1, type: "string" }, summary: { type: "string" }, authors: { type: "array", items: { minLength: 1, type: "string" } }, published: { minLength: 1, type: "string" }, categories: { type: "array", items: { minLength: 1, type: "string" } }, source: { minLength: 1, type: "string" } } } as const;
 

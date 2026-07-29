@@ -26,7 +26,7 @@ A **Verifiable Credential** is, term-for-term, what `relating` already has: a **
 
 - `credentialSubject` **is relating's `claim`** — token = who (the subject DID), claim = what is attested of them.
   (`claimOfCredential` reads the relating `claim` back out.)
-- the credential's `charge` **is relating's FOUR bilattice value** — the issuer's evidenced truth-lean on the claim (`potential` / `active` / `stable` ⊤ / `absurd` ⊥), not a boolean "valid".
+- the credential's `charge` **is relating's FOUR bilattice value** — the issuer's evidenced truth-lean on the claim (`potential` / `active` / `stable` ⊤ / `stable` ⊥), not a boolean "valid".
 - the `proof` is an **RSA-SHA256 signature** — the provenance that makes the charged claim *verifiable* rather than merely stated, produced by the **same `signRequest` / `verifyRequest` crypto the S2S HTTP-Signatures brick uses** (draft-cavage signing string over the credential's canonical fields).
   A VC proof is an HTTP Signature over the claim, not a new crypto stack.
 

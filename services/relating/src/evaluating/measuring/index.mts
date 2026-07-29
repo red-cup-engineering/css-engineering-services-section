@@ -20,8 +20,8 @@ import {
   scottClosureRegime,
   transfiniteClosureRegime,
   type ClosureRegime,
-} from "../../../lib/articulating/predicating/positing/settling/closure.mjs";
-import { classifyRegime, cohomologyVanishesInRegime } from "../../../lib/articulating/predicating/positing/settling/value-category.mjs";
+} from "@lenticule-science/articulating/predicating/positing/settling/closure";
+import { classifyRegime, cohomologyVanishesInRegime } from "@lenticule-science/articulating/predicating/positing/settling/value-category";
 
 export {
   scalarCancellationTerm,

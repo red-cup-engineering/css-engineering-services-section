@@ -17,7 +17,7 @@ import {
   chargeValueName,
   joinKnowledgeValue,
   type ChargeValueName,
-} from "../../lib/articulating/predicating/positing/bilattice-charge.mjs";
+} from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
 import { conflicts, type Session } from "./session.mjs";
 
 /** The two skillful-work nuclei read off a transport. */

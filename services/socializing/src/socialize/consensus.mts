@@ -31,16 +31,18 @@ import {
   cohomologyOfCells,
   cohomologyTerms,
   evaluateRunTerm,
-  joinKnowledge,
   mark,
-  meetKnowledge,
   predicateOfClaim,
   token,
-  valueOf,
-  type ChargeCarrier,
   type JsonRecord,
   type JsonValue,
 } from "@red-cup-engineering/relating";
+import {
+  chargeSideName,
+  joinKnowledge,
+  meetKnowledge,
+  type ChargeCarrier,
+} from "@lenticule-science/articulating/predicating/positing";
 
 /**
  * An undirected comparison edge in the observer graph: a [left, right] pair of
@@ -97,12 +99,10 @@ export function completeGraph(size: number): ObserverEdge[] {
 /** The [positive, negative] truth/falsity presence of a charge.
  *  ⊥ absurd = [f,f], t potential = [t,f], f active = [f,t], ⊤ stable = [t,t]. */
 function present(charge: ChargeCarrier): readonly [positive: boolean, negative: boolean] {
-  switch (valueOf(charge).name) {
-    case "potential": return [true, false];
-    case "active": return [false, true];
-    case "stable": return [true, true];
-    default: return [false, false]; // absurd
-  }
+  return Object.freeze([
+    chargeSideName(charge.value[0]) === "present",
+    chargeSideName(charge.value[1]) === "present",
+  ] as const);
 }
 
 /** A charge with a definite truth direction (potential or active, not ⊥/⊤). */

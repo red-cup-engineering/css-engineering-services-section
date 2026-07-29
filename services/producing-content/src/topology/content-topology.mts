@@ -1,5 +1,5 @@
 ﻿import { carrierFrom, carrierToTerm, fixedPointReadingsOfUtterances, mark, settleUtterances, utterance, type MemeTopologyFixedPointReadings, type SettlementFiltration, type Tm, type UtteranceCarrier, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export type { UtteranceCarrier };
 

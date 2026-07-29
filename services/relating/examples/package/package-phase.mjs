@@ -1,7 +1,7 @@
 import { actions } from "@red-cup-engineering/relating/actions";
 import { utteranceCarrier } from "@red-cup-engineering/relating/carriers";
 import { wireCodec } from "@red-cup-engineering/relating/codecs/boundary/wire";
-import { mark, utterance } from "@red-cup-engineering/relating/articulating";
+import { mark, utterance } from "@lenticule-science/articulating";
 import { induceBins } from "@red-cup-engineering/relating/running";
 
 const admitted = utterance(mark("token"), mark("claim"));

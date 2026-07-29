@@ -11,6 +11,7 @@ import path from "node:path";
 import { writeTextFileSync } from "@red-cup-engineering/computing/admission";
 import {
   charge,
+  chargeSideName,
   chargeValue,
   codecs,
   valueOf,
@@ -233,27 +234,6 @@ interface NormalizedDefaultViewData {
 const VIEW_DATA_DIR = "data";
 const VIEW_NOTEBOOK_DIR = "notebooks";
 
-const CHARGE_COORDINATES: Readonly<Record<ChargeValueName, readonly ["absent" | "present", "absent" | "present"]>> = Object.freeze({
-  absurd: ["absent", "absent"],
-  potential: ["present", "absent"],
-  active: ["absent", "present"],
-  stable: ["present", "present"],
-});
-
-const K_RANK: Readonly<Record<ChargeValueName, number>> = Object.freeze({
-  absurd: 0,
-  potential: 1,
-  active: 1,
-  stable: 2,
-});
-
-const T_RANK: Readonly<Record<ChargeValueName, number>> = Object.freeze({
-  active: 0,
-  absurd: 1,
-  stable: 1,
-  potential: 2,
-});
-
 export function organizingDefaultJupyterViewArtifacts(input: OrganizingDefaultJupyterViewsInput): OrganizingDefaultViewArtifact {
   const data = normalizeDefaultViewData(input);
   const dataFiles = defaultDataFiles(data);
@@ -343,7 +323,7 @@ function normalizeWitnessRows(input: OrganizingDefaultJupyterViewsInput): readon
   }
   return Object.freeze(rows.map(({ row, source }) => {
     const chargeName = chargeNameOf(row);
-    const [truth, falsity] = CHARGE_COORDINATES[chargeName];
+    const [truth, falsity] = chargeValue(chargeName).coordinates.map(chargeSideName);
     return Object.freeze({
       id: eavtId(row),
       entity: row.e,
@@ -354,8 +334,8 @@ function normalizeWitnessRows(input: OrganizingDefaultJupyterViewsInput): readon
       charge: chargeName,
       truth_side: truth,
       falsity_side: falsity,
-      leq_k: K_RANK[chargeName],
-      leq_t: T_RANK[chargeName],
+      leq_k: Number(truth === "present") + Number(falsity === "present"),
+      leq_t: 1 + Number(truth === "present") - Number(falsity === "present"),
     });
   }));
 }

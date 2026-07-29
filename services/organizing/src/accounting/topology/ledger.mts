@@ -30,7 +30,7 @@
  * obstruction) directly off the booked accounts via `debitNormalUtterance`.
  *
  * Exact money and the conservation (every-debit-a-credit ⟺ ker ∂) live in
- * `@red-cup-engineering/relating/analysis` (Rational + conservation); they are consumed by the
+ * `@lenticule-science/articulating/predicating/positing/settling/analysis` (Rational + conservation); they are consumed by the
  * postings/desk layer, not here — this module models *knowledge about* a ledger's
  * structure, not the amounts. No codec imports: use `@red-cup-engineering/computing-with-ledgers`
  * to parse beancount/hledger text into entries at the observe edge, then build

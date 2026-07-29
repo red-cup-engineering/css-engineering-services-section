@@ -28,11 +28,11 @@ import {
   svgRoot,
 } from "../index.mjs";
 import { document, element, serialize, type XmlElement, type XmlNode } from "../../core.mjs";
-import type { ChargeCarrier, ChargeValueName } from "../../../../../../lib/articulating/predicating/positing/bilattice-charge.mjs";
-import { termCoincides } from "../../../../../../lib/articulating/predicating/predication.mjs";
-import type { Valuation } from "../../../../../../lib/articulating/predicating/positing/fiber.mjs";
-import type { Meme } from "../../../../../../lib/articulating/predicating/positing/fiber.mjs";
-import type { PredicationValuationClosureStageCarrier } from "../../../../../../lib/articulating/predicating/positing/settling/valuation-closure.mjs";
+import type { ChargeCarrier, ChargeValueName } from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
+import { termCoincides } from "@lenticule-science/articulating/predicating/predication";
+import type { Valuation } from "@lenticule-science/articulating/predicating/positing/fiber";
+import type { Meme } from "@lenticule-science/articulating/predicating/positing/fiber";
+import type { PredicationValuationClosureStageCarrier } from "@lenticule-science/articulating/predicating/positing/settling/valuation-closure";
 
 /* ── palette ────────────────────────────────────────────────────────────── */
 

@@ -27,7 +27,7 @@
 // failure mode is TypeError for malformed, truncated, or unrecognized
 // byte shapes â€” exceptions are for malformed shapes only.
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const ImageFormatSchema = { anyOf: [{ const: "png" }, { const: "jpeg" }, { const: "gif" }, { const: "webp" }] } as const;
 

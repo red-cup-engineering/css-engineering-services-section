@@ -48,7 +48,7 @@ import {
   type JsonRecord,
   type UtteranceCarrier,
 } from "@red-cup-engineering/relating";
-import { bigradedCohomology } from "@red-cup-engineering/relating/settling";
+import { bigradedCohomology } from "@lenticule-science/articulating/predicating/positing/settling";
 
 import {
   completeTranslations,

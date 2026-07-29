@@ -1,9 +1,12 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
-import { canonical, parseLines, requireJsonValue, serializeLines } from "@red-cup-engineering/relating/writing";
+import { canonical, parseLines, requireJsonValue, serializeLines } from "@red-cup-engineering/relating/codecs";
 import { deriveLessons, type DerivedLesson, type LessonEvidence } from "@red-cup-engineering/knowing/learning";
 
 export type Assertion = Readonly<{ e: string; a: string; v: unknown; t?: unknown }>;
+export type AssertionTrace = readonly Assertion[];
+export type AssertionWorld = ReadonlyMap<string, AssertionTrace>;
+export type AssertionWorldInput = AssertionWorld | Readonly<Record<string, AssertionTrace>> | null | undefined;
 export type ClaimCell = Readonly<{ predicate: string; object: unknown; citation?: unknown; claimedBy?: unknown; contraryClaimedBy?: unknown }>;
 export type FiniteReading = Readonly<{
   subject: unknown;
@@ -45,6 +48,22 @@ export type RelationalHandle = Readonly<{
   records: readonly Record<string, unknown>[];
   config: RelationalConfig;
 }>;
+
+/** Read the asserted subjects from either map or record presentation. */
+export function worldSubjects(world: AssertionWorldInput): readonly string[] {
+  if (world == null) return Object.freeze([]);
+  const keys = world instanceof Map ? [...world.keys()] : Object.keys(world);
+  return Object.freeze(keys.sort());
+}
+
+/** Read one subject trace without materializing a second world representation. */
+export function worldTrace(world: AssertionWorldInput, subject: string): AssertionTrace {
+  if (world == null) return Object.freeze([]);
+  const trace = world instanceof Map
+    ? world.get(subject)
+    : (world as Readonly<Record<string, AssertionTrace>>)[subject];
+  return Object.freeze([...(trace ?? [])]);
+}
 
 // Order-stable JSON serialization (object keys sorted), the canonical cell-key
 // primitive shared across the four-valued readers (linked-data, semantic-hypertext).

@@ -1,10 +1,10 @@
-import type { App, Repr } from "@red-cup-engineering/relating/running/http";
+import type { App, Repr } from "@red-cup-engineering/relating/services/http";
 import { linkHeader } from "@red-cup-engineering/relating/writing/http";
 import {
-  logFor,
-  subjects,
-  type WorldInput,
-} from "@red-cup-engineering/organizing-with-the-web/assertion-worlds";
+  worldSubjects,
+  worldTrace,
+  type AssertionWorldInput,
+} from "../semantic-reader/index.mjs";
 import {
   linkedDataSubject,
   toJsonLd,
@@ -65,7 +65,7 @@ export type FragmentPage = Readonly<{
 }>;
 
 export type TpfAppOptions = FragmentOptions & Readonly<{
-  world: WorldInput | (() => WorldInput | Promise<WorldInput>);
+  world: AssertionWorldInput | (() => AssertionWorldInput | Promise<AssertionWorldInput>);
   paths?: {
     query?: string;
   };
@@ -105,10 +105,10 @@ function stableCell(record: TripleRecord): LinkedDataCell {
 // The states are the measured charge value names: every admitted claim is a
 // potential cell; active and stable are derived reads across declared
 // contrary predicate pairs (see @red-cup-engineering/web-linked-data).
-export function allTriples(world: WorldInput, opts: { fold?: LinkedDataSettleOptions } = {}): readonly TripleRecord[] {
+export function allTriples(world: AssertionWorldInput, opts: { fold?: LinkedDataSettleOptions } = {}): readonly TripleRecord[] {
   const out: TripleRecord[] = [];
-  for (const subject of subjects(world)) {
-    const derived = linkedDataSubject(subject, logFor(world, subject), opts.fold ?? {});
+  for (const subject of worldSubjects(world)) {
+    const derived = linkedDataSubject(subject, worldTrace(world, subject), opts.fold ?? {});
     for (const derivedCell of derived.potential) {
       out.push(Object.freeze({
         subject,
@@ -165,7 +165,7 @@ export function tripleMatches(record: TripleRecord, pattern: TriplePattern = {})
   return true;
 }
 
-export function queryTriples(world: WorldInput, pattern: TriplePattern = {}, opts: FragmentOptions = {}): FragmentPage {
+export function queryTriples(world: AssertionWorldInput, pattern: TriplePattern = {}, opts: FragmentOptions = {}): FragmentPage {
   const limit = clampLimit(opts.limit, opts.maxLimit);
   const allOpts = opts.fold === undefined ? {} : { fold: opts.fold };
   const matched = allTriples(world, allOpts).filter((record) => tripleMatches(record, pattern));
@@ -350,7 +350,7 @@ function repr(type: string, body: string, headers: Record<string, string> = {}):
   };
 }
 
-async function worldFor(opts: TpfAppOptions): Promise<WorldInput> {
+async function worldFor(opts: TpfAppOptions): Promise<AssertionWorldInput> {
   return typeof opts.world === "function" ? await opts.world() : opts.world;
 }
 
@@ -420,7 +420,7 @@ export function tpfApp(opts: TpfAppOptions): App {
             ...(page.links.next ? [{ href: page.links.next, rel: "next" }] : []),
           ]) };
           if (ctx.negotiatedType === "text/turtle") {
-            return repr(TURTLE_TYPE, fragmentTurtle(page, { base, subjects: subjects(world) }), headers);
+            return repr(TURTLE_TYPE, fragmentTurtle(page, { base, subjects: worldSubjects(world) }), headers);
           } else if (ctx.negotiatedType === "application/ld+json") {
             return repr(JSONLD_TYPE, `${JSON.stringify(fragmentJsonLd(page, { base }), null, 2)}\n`, headers);
           }

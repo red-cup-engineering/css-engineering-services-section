@@ -9,15 +9,17 @@
 import { canonical, type JsonValue } from "@red-cup-engineering/relating";
 import {
   cell,
-  readWitnessLog,
   registerLogReading,
-  witnessObservation,
   type Feed,
   type LogReading,
   type RWILWitness,
   type Witness,
-  type WitnessStore,
 } from "@red-cup-engineering/relating/ledger";
+import {
+  readWitnessLog,
+  witnessObservation,
+  type WitnessStore,
+} from "@red-cup-engineering/relating/services/filesystem-store";
 import { grant, canInvoke, type Capability } from "../../../../writing/activitypub/capability.mjs";
 import type { AgentCard } from "../../../../writing/a2a/index.mjs";
 import type { OpenAiChatFunctionTool } from "../../../../writing/openai-chat/index.mjs";

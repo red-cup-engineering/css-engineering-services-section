@@ -8,7 +8,7 @@
 import { createHash } from "node:crypto";
 
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const ArticleFingerprintFactsSchema = { $id: "producing-content/content-mill/article-fingerprint-facts", title: "ArticleFingerprintFacts", additionalProperties: false, type: "object", required: ["kind", "slug", "url", "headline", "summary", "keywords", "tags", "references", "wordCount", "bodySha256"], properties: { kind: { const: "producing-content.article-fingerprint.facts" }, slug: { minLength: 1, type: "string" }, url: { minLength: 1, type: "string" }, headline: { minLength: 1, type: "string" }, summary: { type: "string" }, datePublished: { minLength: 1, type: "string" }, dateModified: { minLength: 1, type: "string" }, correctionState: { minLength: 1, type: "string" }, correctionCount: { minimum: 0, type: "integer" }, author: { minLength: 1, type: "string" }, section: { minLength: 1, type: "string" }, keywords: { type: "array", items: { minLength: 1, type: "string" } }, tags: { type: "array", items: { minLength: 1, type: "string" } }, references: { type: "array", items: { minLength: 1, type: "string" } }, license: { minLength: 1, type: "string" }, licenseUrl: { minLength: 1, type: "string" }, syndicationRights: { minLength: 1, type: "string" }, seoTerm: { minLength: 1, type: "string" }, wordCount: { minimum: 0, type: "integer" }, bodySha256: { minLength: 64, maxLength: 64, type: "string" } } } as const;
 

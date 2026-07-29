@@ -8,8 +8,9 @@ import test from "node:test";
 import { MemoryKvStore } from "@fedify/fedify";
 import { semanticBytes } from "@red-cup-engineering/rmn-semantic-conformance";
 import { encodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
+import { rawNi } from "@red-cup-engineering/a2a-rmn-part-service";
 import { createActivityPubProvider, importActorKeyPairs } from "../src/provider.mjs";
-import { extractRmnActivity, projectRmnActivity } from "../src/rmn-activity.mjs";
+import { ACTIVITYSTREAMS_PUBLIC, extractRmnActivity, projectRmnActivity } from "../src/rmn-activity.mjs";
 import { generateActorKeyMaterial } from "../src/keys.mjs";
 import { loadActivityPubOutbox, serveActivityPubProvider } from "../src/server.mjs";
 import { deliverFromEnvironment } from "../src/deliver.mjs";
@@ -139,8 +140,29 @@ test("a standard ActivityStreams Link carries canonical RMN bytes and names the 
   const extracted = extractRmnActivity(transported, { expectedActor: "https://supplier.example/actors/supplier", expectedRecipient: "https://customer.example/actors/customer", expectedAgentCard: "https://supplier.example/.well-known/agent-card.json" });
   assert.deepEqual(extracted.objectBytes, bytes);
   assert.match(extracted.objectNi, /^ni:\/\/\/sha-256;/u);
+  assert.equal(extracted.a2aMessage.role, "ROLE_AGENT");
+  assert.equal(extracted.a2aMessage.parts.length, 1);
+  assert.equal(extracted.a2aMessage.parts[0].metadata.ni, extracted.objectNi);
+  assert.equal(JSON.stringify(transported).includes("embedded-in-a2a-data"), false);
   assert.equal(JSON.stringify(transported).includes("application/rmn+json"), false);
   assert.throws(() => extractRmnActivity({ ...transported, object: { ...transported.object, name: "ni:///sha-256;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" } }, { expectedActor: transported.actor, expectedRecipient: "https://customer.example/actors/customer" }), /do not match/);
+});
+
+test("the cone preserves only supplied real A2A extensions and forgets exactly to the same RMN bytes", () => {
+  const encoded = encodeRelationalValue({ type: "CapabilityResult", reference: "urn:authority:one" });
+  const bytes = semanticBytes(["ascribe", encoded.type, encoded.term]);
+  const message = {
+    messageId: "urn:a2a:capability-result:one",
+    role: "ROLE_AGENT",
+    parts: [{ raw: bytes.toString("base64"), metadata: { ni: rawNi(bytes) }, filename: "result.rmn.cbor", mediaType: "application/rmn+cbor" }],
+    metadata: { capabilityOperation: { protocol: "captp", target: "urn:authority:one", method: "invoke", answer: "urn:answer:one" } },
+    extensions: ["urn:captp:operation:v1"]
+  };
+  const projected = projectRmnActivity({ type: "Create", origin: "https://supplier.example/", identifier: "supplier", recipient: ACTIVITYSTREAMS_PUBLIC, objectBytes: bytes, agentCard: "https://supplier.example/.well-known/agent-card.json", a2aMessage: message });
+  const extracted = extractRmnActivity(projected, { expectedActor: "https://supplier.example/actors/supplier", expectedRecipient: ACTIVITYSTREAMS_PUBLIC, expectedAgentCard: "https://supplier.example/.well-known/agent-card.json" });
+  assert.deepEqual(extracted.objectBytes, bytes);
+  assert.deepEqual(extracted.a2aMessage.metadata.capabilityOperation, message.metadata.capabilityOperation);
+  assert.deepEqual(extracted.a2aMessage.extensions, message.extensions);
 });
 
 test("the generic provider loads a customer-authored durable outbox", async () => {
@@ -210,18 +232,9 @@ test("the Node compatibility server requires injected network custody and suppor
     listOutbox: async () => ({ items: [] }),
   });
   try {
-    let response;
-    for (let attempt = 0; attempt < 40; attempt += 1) {
-      try {
-        response = await fetch(`http://127.0.0.1:${port}/actors/metroplat`, {
-          headers: { accept: "application/activity+json" },
-        });
-        break;
-      } catch {
-        await new Promise((resolve) => setTimeout(resolve, 25));
-      }
-    }
-    assert.ok(response);
+    const response = await fetch(`http://127.0.0.1:${port}/actors/metroplat`, {
+      headers: { accept: "application/activity+json" },
+    });
     assert.equal(response.status, 200);
     assert.equal((await response.json()).id, `http://127.0.0.1:${port}/actors/metroplat`);
   } finally {

@@ -16,13 +16,13 @@
  * json in, json out; carrier outputs are projected with gaming's own encoders.
  */
 import {
-  action,
   carrierFrom,
   jsonResource,
   type Action,
   type JsonRecord,
   type JsonValue,
 } from "@red-cup-engineering/relating";
+import { action } from "./action.mjs";
 import {
   decodeArena,
   decodeDesign,
@@ -716,7 +716,12 @@ function projectEquivariance(judgment: ReturnType<typeof nominalEquivarianceJudg
         kind: judgment.nominalArena.kind,
         arena: encodeArena(judgment.nominalArena.arena),
         labels: judgment.nominalArena.labels.map((l) => ({ kind: l.kind, event: l.event, name: l.name })),
-        actions: judgment.nominalArena.actions.map((act) => ({ kind: act.kind, permutation: encodePermutation(act.permutation) })),
+        actions: judgment.nominalArena.actions.map((act) => ({
+          kind: act.kind,
+          permutation: encodePermutation(act.permutation),
+          bijection: act.bijection.map((pair) => [pair[0], pair[1]]),
+          symmetry: { kind: act.symmetry.kind },
+        })),
       },
       symmetryInvariance: { kind: judgment.symmetryInvariance.kind },
     };
@@ -727,7 +732,20 @@ function projectEquivariance(judgment: ReturnType<typeof nominalEquivarianceJudg
       kind: judgment.nominalArena.kind,
       arena: encodeArena(judgment.nominalArena.arena),
       labels: judgment.nominalArena.labels.map((l) => ({ kind: l.kind, event: l.event, name: l.name })),
-      obstruction: { kind: judgment.nominalArena.obstruction.kind },
+      obstruction: {
+        kind: judgment.nominalArena.obstruction.kind,
+        permutation: encodePermutation(judgment.nominalArena.obstruction.permutation),
+        reason: judgment.nominalArena.obstruction.reason,
+        ...(judgment.nominalArena.obstruction.event === undefined
+          ? {}
+          : { event: judgment.nominalArena.obstruction.event }),
+        ...(judgment.nominalArena.obstruction.name === undefined
+          ? {}
+          : { name: judgment.nominalArena.obstruction.name }),
+        ...(judgment.nominalArena.obstruction.symmetry === undefined
+          ? {}
+          : { symmetry: { kind: judgment.nominalArena.obstruction.symmetry.kind } }),
+      },
     };
   }
   if (judgment.symmetryInvariance !== undefined) {

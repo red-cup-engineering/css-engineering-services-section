@@ -35,7 +35,7 @@ import {
   type SectionEntry,
   type UtteranceCarrier,
 } from "@red-cup-engineering/relating";
-import { bigradedCohomology } from "@red-cup-engineering/relating/settling";
+import { bigradedCohomology } from "@lenticule-science/articulating/predicating/positing/settling";
 import { communicatingFace } from "@red-cup-engineering/communicating";
 import { knowingFace, contextualityOf } from "@red-cup-engineering/knowing";
 import { playingFace } from "@red-cup-engineering/playing";

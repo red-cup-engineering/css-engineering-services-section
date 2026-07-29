@@ -56,7 +56,7 @@ import {
   type JsonValue,
   type JsonRecord,
 } from "@red-cup-engineering/relating";
-import { gradedCompare, gradedZero, gradeOf, type Natural } from "@red-cup-engineering/relating/analysis";
+import { gradedCompare, gradedZero, gradeOf, type Natural } from "@lenticule-science/articulating/predicating/positing/settling/analysis";
 import { agent, type Agent } from "@red-cup-engineering/animating";
 import { compute, relay, type Four } from "@red-cup-engineering/computing";
 

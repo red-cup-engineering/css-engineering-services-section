@@ -6,7 +6,7 @@
  * reading the same action shape while domain/codomain refs now derive from
  * carrier objects.
  */
-import { mark, utterance, type UtteranceCarrier } from "../../lib/articulating/index.mjs";
+import { mark, utterance, type UtteranceCarrier } from "@lenticule-science/articulating/index";
 import type { JsonValue } from "../codecs/text/json/core.mjs";
 import { evaluateRunTerm } from "../evaluating/index.mjs";
 import { tm } from "../../lib/notating/index.mjs";

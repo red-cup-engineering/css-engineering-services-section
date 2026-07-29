@@ -295,7 +295,7 @@ export const compositeSchema = {
   "$defs": {
     "Design": {
       "type": "object",
-      "description": "A charge valuation: a finite list of {locus, charge} entries (each entry's locus is its key string). Mirrors encodeDesign.",
+      "description": "A charge valuation in the canonical playing codec: a finite list of {locus, charge} entries whose loci are address arrays. Mirrors encodeDesign.",
       "properties": {
         "entries": {
           "type": "array",
@@ -303,8 +303,9 @@ export const compositeSchema = {
             "type": "object",
             "properties": {
               "locus": {
-                "type": "string",
-                "description": "The locus key string of this entry."
+                "type": "array",
+                "items": { "type": "integer", "minimum": 0 },
+                "description": "The locus address of this entry; the root is []."
               },
               "charge": {
                 "type": "string",
@@ -1255,7 +1256,7 @@ export const matchSchema = {
     },
     "Design": {
       "type": "object",
-      "description": "A charge valuation: a finite list of {locus, charge} entries (each entry's locus is its key string). Mirrors encodeDesign.",
+      "description": "A charge valuation in the canonical playing codec: a finite list of {locus, charge} entries whose loci are address arrays. Mirrors encodeDesign.",
       "properties": {
         "entries": {
           "type": "array",
@@ -1263,8 +1264,7 @@ export const matchSchema = {
             "type": "object",
             "properties": {
               "locus": {
-                "type": "string",
-                "description": "The locus key string of this entry."
+                "$ref": "#/$defs/Locus"
               },
               "charge": {
                 "$ref": "#/$defs/ChargeName"
@@ -1383,7 +1383,7 @@ export const parallelSchema = {
     },
     "Design": {
       "type": "object",
-      "description": "A charge valuation: a finite list of {locus, charge} entries (each entry's locus is its key string). Mirrors encodeDesign.",
+      "description": "A charge valuation in the canonical playing codec: a finite list of {locus, charge} entries whose loci are address arrays. Mirrors encodeDesign.",
       "properties": {
         "entries": {
           "type": "array",
@@ -1391,8 +1391,7 @@ export const parallelSchema = {
             "type": "object",
             "properties": {
               "locus": {
-                "type": "string",
-                "description": "The locus key string of this entry."
+                "$ref": "#/$defs/Locus"
               },
               "charge": {
                 "$ref": "#/$defs/ChargeName"
@@ -1903,7 +1902,7 @@ export const strategySchema = {
       }
     },
     "Design": {
-      "description": "Wire projection of a playing Design (the union of its chronicles). Mirrors encodeDesign in @red-cup-engineering/playing/encoding (re-exported by lib/gaming-experimental/src/encoding/index.mts): { entries: [{ locusKey, charge }] }, each entry a locus-key string and a charge-value name (potential/active/stable/absurd). Used by the playing-lift: strategyFromDesign lifts a Design's chronicles to the strategy's plays, and designsOfStrategy/designOfStrategy read the maximal plays back as Design(s) — the round-trip witnessing playing -> gaming.",
+      "description": "Wire projection of a playing Design (the union of its chronicles). Mirrors encodeDesign in @red-cup-engineering/playing/encoding: { entries: [{ locus, charge }] }, each locus an address array and each charge a charge-value name. Used by the playing-lift round-trip.",
       "type": "object",
       "properties": {
         "entries": {
@@ -1911,15 +1910,16 @@ export const strategySchema = {
           "items": {
             "type": "object",
             "properties": {
-              "locusKey": {
-                "type": "string"
+              "locus": {
+                "type": "array",
+                "items": { "type": "integer", "minimum": 0 }
               },
               "charge": {
                 "type": "string"
               }
             },
             "required": [
-              "locusKey",
+              "locus",
               "charge"
             ],
             "additionalProperties": false

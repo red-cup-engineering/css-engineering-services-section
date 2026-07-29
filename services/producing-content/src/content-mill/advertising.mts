@@ -7,7 +7,7 @@
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource, parseLines, requireJsonValue, serializeLines } from "@red-cup-engineering/relating/writing";
+import { jsonResource, parseLines, requireJsonValue, serializeLines } from "@red-cup-engineering/relating/codecs";
 
 export const AdProviderSchema = { anyOf: [{ const: "adsense" }, { const: "a-ads" }] } as const;
 

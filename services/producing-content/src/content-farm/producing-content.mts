@@ -5,7 +5,7 @@
 // and organizing glues those sections into the produced-content collective.
 
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/writing";
+import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/codecs";
 
 import { isCultivationObstruction, type CultivationJudgment } from "./cultivate.mjs";
 

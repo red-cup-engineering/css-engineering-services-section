@@ -53,7 +53,7 @@ Temporal handles:
 
 Firing handles:
 
-- `classifyFiring(value)` reads a FOUR charge value as truth-only, falsity-only, stable, or absurd.
+- `classifyFiring(value)` reads a FOUR charge value as truth-only, falsity-only, active, or absurd.
 - `firingGradeCohomology(values)` counts the truth and falsity side ranks of a charge-valued firing family and compares that shadow rank with the abelian rank.
 - `classifyFiringOrbit(values)` classifies a firing family under negation: self-dual, one-sided, exchange-mixed, or mixed.
 - `firingSelfDuality(values)` reports whether the orbit, symmetry, and negation reads cohere as a self-dual firing family.

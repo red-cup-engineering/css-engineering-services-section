@@ -88,7 +88,7 @@ The package builds to `dist/` and every law below was just re-verified by runnin
 The pipeline `settled information --observe--> CGS arena --strategy--> --run--> player move`, aggregated in `computer/index.mts`.
 
 - `computer/provenance.mts` — `derivationProvenance` / `derivationStages`: the finite-restriction record `articulating → predicating → positing → settling` beneath every declared arena (SPOTCOMP spec §1), with audited polarity-uncommitted cells kept as evidence.
-- `computer/observation.mts` — `observe` / `observeReading`: a frontier of settled relationality memes → polarized arena, via the **charge-IS-polarity** identity (`potential = t` ⇒ Player, `active = f` ⇒ Opponent, `absurd`/`stable` ⇒ no move, kept as audit evidence).
+- `computer/observation.mts` — `observe` / `observeReading`: a frontier of settled relationality memes → polarized arena, via the **charge-IS-polarity** identity (`potential = t` ⇒ Player, `potential = f` ⇒ Opponent, `absurd`/`stable` ⇒ no move, kept as audit evidence).
   `settledMeme`, `memePolarity`.
 - `computer/run.mts` — `run`: one interaction step.
   A modeled player IS a `Morphism`; given history + an admitted Opponent move it returns the *set* of enabled (concurrent) Player moves, with `RunWitness`/`RunObstruction` at the receptivity/legality boundary.

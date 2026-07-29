@@ -13,7 +13,7 @@
  * A package may also register richer composed flows (e.g. a research flow that
  * chains several actions) by calling `prompt()` directly.
  */
-import type { UtteranceCarrier } from "../../lib/articulating/index.mjs";
+import type { UtteranceCarrier } from "@lenticule-science/articulating/index";
 import { fact, type Action } from "./action.mjs";
 
 /**

@@ -5,7 +5,7 @@
  * packet over articles, edges, section buckets, and aggregate graph counts.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const ContentGraphNodeSchema = { $id: "producing-content/content-mill/content-graph-node", title: "ContentGraphNode", additionalProperties: false, type: "object", required: ["slug", "path", "headline", "tags", "referenceDomains", "outboundInternalLinks", "inboundInternalLinks", "suggestedInternalTargets", "graphCentrality", "orphan", "isolated"], properties: { slug: { minLength: 1, type: "string" }, path: { minLength: 1, type: "string" }, headline: { minLength: 1, type: "string" }, section: { minLength: 1, type: "string" }, tags: { type: "array", items: { minLength: 1, type: "string" } }, referenceDomains: { type: "array", items: { minLength: 1, type: "string" } }, outboundInternalLinks: { type: "array", items: { minLength: 1, type: "string" } }, inboundInternalLinks: { type: "array", items: { minLength: 1, type: "string" } }, suggestedInternalTargets: { type: "array", items: { minLength: 1, type: "string" } }, graphCentrality: { minimum: 0, maximum: 1, type: "number" }, orphan: { type: "boolean" }, isolated: { type: "boolean" } } } as const;
 

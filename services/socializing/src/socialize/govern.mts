@@ -67,75 +67,8 @@ import { sheafCharges } from "./consensus.mjs";
 import { aggregatePreferences, type CollectivePreference, type PreferencePair } from "./preference.mjs";
 import { priceConsensus, type PriceConsensus } from "./price.mjs";
 import { completeTranslations, ungroundedSection, type Field } from "./field.mjs";
-
-/** The Hohfeldian eightfold — the four ADVANTAGE positions and their four correlatives.
- *  claim/duty, privilege/no-right, power/liability, immunity/disability (jural-relation.md). */
-export const JURAL_KINDS = Object.freeze([
-  "claim",
-  "duty",
-  "privilege",
-  "no-right",
-  "power",
-  "liability",
-  "immunity",
-  "disability",
-] as const);
-export type JuralKind = typeof JURAL_KINDS[number];
-
-/** Hohfeld's correlative table: the passive kind paired with each active kind. The pairing
- *  is an involution (correlate ∘ correlate = id). */
-const CORRELATIVE: Readonly<Record<JuralKind, JuralKind>> = Object.freeze({
-  claim: "duty",
-  duty: "claim",
-  privilege: "no-right",
-  "no-right": "privilege",
-  power: "liability",
-  liability: "power",
-  immunity: "disability",
-  disability: "immunity",
-});
-
-/** The correlative of a Hohfeldian kind (power ↔ liability, duty ↔ claim, …). Involutive. */
-export function correlativeKind(kind: JuralKind): JuralKind {
-  return CORRELATIVE[kind];
-}
-
-/**
- * A single Hohfeldian jural relation between two observers: a directed correlative
- * normative relation, FOUR-valued in its existence (jural-relation.md "Bilattice values on
- * jural-relation cells": t asserted, f denied, ⊥ no information, ⊤ contradictory).
- */
-export interface JuralRelation {
-  /** the Hohfeldian kind (claim/duty/privilege/no-right/power/liability/immunity/disability). */
-  readonly kind: JuralKind;
-  /** the agent in the ACTIVE position (the power-wielder, duty-bearer, privilege/immunity-holder). */
-  readonly active: string;
-  /** the agent in the PASSIVE (correlative) position. */
-  readonly passive: string;
-  /** the action / substrate operation the relation regards (Hohfeld's scope-action X). */
-  readonly scope: string;
-  /** the FOUR-valued standing of the relation's EXISTENCE: `potential` asserted (t),
-   *  `active` denied (f), `stable` contradicted (⊤ — both asserted and denied), `absurd`
-   *  no information (⊥). */
-  readonly standing: ChargeValueName;
-}
-
-/**
- * The CORRELATIVE of a jural relation: swap active and passive parties (the
- * predicate-converse — self-adjoint in both bilattice orders, so the standing is
- * preserved) and rename the kind to its correlative (a predicate-specialization). Per
- * jural-relation.md this factors through existing predicate-category generators; it is not
- * a new generator. Involutive: `correlate(correlate(r))` is `r`.
- */
-export function correlate(relation: JuralRelation): JuralRelation {
-  return Object.freeze({
-    kind: correlativeKind(relation.kind),
-    active: relation.passive,
-    passive: relation.active,
-    scope: relation.scope,
-    standing: relation.standing,
-  });
-}
+import { correlate, type JuralRelation } from "./jural.mjs";
+export { JURAL_KINDS, correlate, correlativeKind, type JuralKind, type JuralRelation } from "./jural.mjs";
 
 /** The governance DISCIPLINE — which structural tooling the polity makes primary, read off
  *  the power-relation graph over O. Frame-neutral: discriminated by graph shape, not privileged. */

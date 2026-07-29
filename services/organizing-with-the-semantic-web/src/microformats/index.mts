@@ -9,7 +9,7 @@
  * transport-coupled piece: the `microformatsApp` resource builder.
  */
 
-import type { App, Repr } from "@red-cup-engineering/relating/running/http";
+import type { App, Repr } from "@red-cup-engineering/relating/services/http";
 import {
   type MicroformatFeed,
   type MicroformatDocumentOptions,

@@ -9,17 +9,6 @@
  */
 
 export { stringProjector } from "./text.mjs";
-// Compatibility address used by the recovered organizing packages. JSON
-// admission remains implemented once at the codec boundary.
-export {
-  canonical,
-  isJsonRecord,
-  jsonResource,
-  parseLines,
-  requireJsonValue,
-  serializeLines,
-  type JsonValue,
-} from "../codecs/text/json/core.mjs";
 
 export { decodeToml, encodeToml, type TomlValue, type TomlTable } from "./toml.mjs";
 export { iriRef, turtleLiteral } from "./turtle.mjs";

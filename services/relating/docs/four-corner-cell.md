@@ -10,9 +10,9 @@ The JS package already has a public FOUR charge algebra, but its value names fol
 | Slot pair | Lean corner | Lean charge alias | JS charge name |
 | --- | --- | --- | --- |
 | `(false, false)` | `potential` | `kBot` | `absurd` |
-| `(true, false)` | `active` | `tTop` | `potential` |
+| `(true, false)` | `potential` | `tTop` | `potential` |
 | `(true, true)` | `absurd` | `kTop` | `stable` |
-| `(false, true)` | `stable` | `tBot` | `active` |
+| `(false, true)` | `active` | `tBot` | `potential` |
 
 The receipt keeps both names instead of renaming the existing API.
 Its claim is coordinate-level parity: the articulation phase and the charge value carry the same two bits.

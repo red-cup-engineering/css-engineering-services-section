@@ -2,14 +2,56 @@ import type { IncomingHttpHeaders } from "node:http";
 import { readJsonBody, type App, type Context, type Repr, type RequestTrace } from "@red-cup-engineering/computing-with-http/app";
 import { authAdmissionReport, type AuthAdmissionReport, type AuthEvidence } from "@red-cup-engineering/http-server";
 import { bearerToken as bearerTokenValue } from "@red-cup-engineering/computing-with-http/codecs/http";
-import {
-  assertAssertion,
-  provenanceOf,
-  recognizerFrom,
-  type RecognitionInput,
-  type Assertion,
-  type AssertionTrace,
-} from "@red-cup-engineering/animating/becoming/doing/working/governing/federating/assertion-worlds";
+import type { ChargeValueName } from "@red-cup-engineering/relating";
+
+export type Assertion = Readonly<{
+  e: string;
+  a: string;
+  v: unknown;
+  t?: unknown;
+  source?: string;
+  signature?: Readonly<{ by?: unknown }>;
+}>;
+export type AssertionTrace = readonly Assertion[];
+export type RecognitionInput =
+  | ((source: string) => ChargeValueName | boolean | unknown)
+  | ReadonlySet<string>
+  | readonly string[]
+  | ReadonlyMap<string, unknown>
+  | Readonly<Record<string, unknown>>;
+
+type AssertionProvenance = Readonly<{ source: string; kind: "source" | "signature" | "witnessed-t" }>;
+
+export function assertAssertion(value: unknown): Assertion {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) throw new TypeError("assertion must be an object");
+  const assertion = value as Partial<Assertion>;
+  if (typeof assertion.e !== "string" || typeof assertion.a !== "string") throw new TypeError("assertion.e and assertion.a must be strings");
+  return value as Assertion;
+}
+
+export function provenanceOf(assertion: Assertion): AssertionProvenance | null {
+  if (typeof assertion.source === "string" && assertion.source) return Object.freeze({ source: assertion.source, kind: "source" });
+  if (typeof assertion.signature?.by === "string" && assertion.signature.by) return Object.freeze({ source: assertion.signature.by, kind: "signature" });
+  if (assertion.t !== null && typeof assertion.t === "object" && typeof (assertion.t as { by?: unknown }).by === "string") {
+    return Object.freeze({ source: (assertion.t as { by: string }).by, kind: "witnessed-t" });
+  }
+  return null;
+}
+
+function recognitionValue(value: unknown): ChargeValueName {
+  if (value === true || value === "potential" || value === "stable") return value === "stable" ? "stable" : "potential";
+  if (value === "active") return "active";
+  return "absurd";
+}
+
+export function recognizerFrom(input: RecognitionInput): (source: string) => ChargeValueName {
+  if (typeof input === "function") return (source) => recognitionValue(input(source));
+  if (Array.isArray(input)) return (source) => input.includes(source) ? "potential" : "absurd";
+  if (input instanceof Set) return (source) => input.has(source) ? "potential" : "absurd";
+  if (input instanceof Map) return (source) => recognitionValue(input.get(source));
+  const table = input as Readonly<Record<string, unknown>>;
+  return (source) => recognitionValue(table[source]);
+}
 
 export type AuthDecision = {
   ok: boolean;

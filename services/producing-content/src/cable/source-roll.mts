@@ -7,7 +7,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { requireJsonValue } from "@red-cup-engineering/relating/writing";
+import { requireJsonValue } from "@red-cup-engineering/relating/codecs";
 import { DEFAULT_WIRE_STORE, NEWSCABLE_CONFIG_BLOCK, assertNewscableBlock } from "./discovery.mjs";
 
 export const SourceRollSourceSchema = { $id: "producing-content/cable/source-roll/source", title: "SourceRollSource", additionalProperties: false, type: "object", required: ["kind", "wire", "beat", "adapter", "sourceKind", "sourceClass", "editorialRole", "wireItemCount"], properties: { kind: { const: "producing-content.source-roll.source" }, wire: { minLength: 1, type: "string" }, beat: { minLength: 1, type: "string" }, adapter: { minLength: 1, type: "string" }, url: { type: "string" }, query: { type: "string" }, domain: { type: "string" }, max: { type: "number" }, sourceKind: { minLength: 1, type: "string" }, sourceClass: { minLength: 1, type: "string" }, editorialRole: { minLength: 1, type: "string" }, wireItemCount: { type: "number" }, latestWireItemAt: { type: "string" } } } as const;

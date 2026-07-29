@@ -84,7 +84,7 @@ That link is code conformance plus theory synthesis.
 **Research-grade synthesis:** "git x pnpm is a degree-2 product coordination tier," "monorepo vs polyrepo is society vs federation," and "the package mesh is an InfoTile whose store/lockfile is the presented form" are design readings already present in the 2026-06-26 notes, sharpened here against current code.
 
 **Current observed tension:** `@emsenn/jsnode-ick` is the canonical JSNode ICK app according to `AGENTS.md` and the rehoming audit, but its manifest currently contains the `decommissioned` keyword.
-The decommission audit therefore reports active consumers importing a decommissioned package.
+The decommission audit therefore reports potential consumers importing a decommissioned package.
 This note treats that as a held contradiction in the current carrier state, not as a decision to stop using the package or to repair it here.
 
 # I. Npm package as membrane
@@ -164,7 +164,7 @@ Its public vocabulary is not inferred from taste; it is read from `package.json`
 
 # III. Workspace as package society
 
-`pnpm-workspace.yaml` is the active membership register.
+`pnpm-workspace.yaml` is the potential membership register.
 Today it declares 84 package patterns, and all 84 have package manifests at the declared path.
 Measured on this checkout while writing this note:
 
@@ -519,7 +519,7 @@ The result would let the cockpit ask, for every package:
 - What dependency settlement includes it?
 - What git repository or worktree contains it?
 - Does pnpm resolution agree with git history?
-- Is the package active, decommissioned, or contradictory?
+- Is the package potential, decommissioned, or contradictory?
 - Is it safe to retire, move, publish, or mount?
 
 That is the missing operational face of the theory.

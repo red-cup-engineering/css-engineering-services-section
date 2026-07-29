@@ -12,13 +12,13 @@
  * formalization obligation.
  */
 import {
-  action,
   carrierFrom,
   jsonResource,
   type Action,
   type JsonRecord,
   type JsonValue,
 } from "@red-cup-engineering/relating";
+import { action } from "./action.mjs";
 import { dialecticaObject } from "@red-cup-engineering/playing/ludics";
 import { encodeArena } from "./encoding/index.mjs";
 import {

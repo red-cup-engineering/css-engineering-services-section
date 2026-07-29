@@ -7,7 +7,7 @@
  * mechanics; financial/product packages may name the venue, but the game-shaped
  * book walk belongs to gaming.
  */
-import { ratSign } from "@red-cup-engineering/relating/analysis";
+import { ratSign } from "@lenticule-science/articulating/predicating/positing/settling/analysis";
 import {
   addMoney,
   cmpMoney,

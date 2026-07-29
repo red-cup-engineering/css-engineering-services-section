@@ -16,7 +16,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 
-import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/writing";
+import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/codecs";
 import { fetchSearchConsoleDemand } from "../computer/demand.mjs";
 import type { FetchLike } from "../syndication/index.mjs";
 

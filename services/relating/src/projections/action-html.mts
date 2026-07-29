@@ -6,12 +6,12 @@
  * request asks for a human-readable face.
  */
 import type { ActionDiscovery, ActionEndpoint, InducedBins } from "../running/induce.mjs";
-import { articulate, mark, utterance } from "../../lib/articulating/utterance.mjs";
-import { predicate } from "../../lib/articulating/predicating/predication.mjs";
-import { posit } from "../../lib/articulating/predicating/positing/fiber.mjs";
-import { fixedPoints } from "../../lib/articulating/predicating/positing/settling/fixed-point.mjs";
-import { documentOfFixedPoint } from "../../lib/articulating/predicating/positing/settling/document.mjs";
-import { completeGraphWeights } from "../../lib/articulating/predicating/positing/settling/analysis/index.mjs";
+import { articulate, mark, utterance } from "@lenticule-science/articulating/utterance";
+import { predicate } from "@lenticule-science/articulating/predicating/predication";
+import { posit } from "@lenticule-science/articulating/predicating/positing/fiber";
+import { fixedPoints } from "@lenticule-science/articulating/predicating/positing/settling/fixed-point";
+import { documentOfFixedPoint } from "@lenticule-science/articulating/predicating/positing/settling/document";
+import { completeGraphWeights } from "@lenticule-science/articulating/predicating/positing/settling/analysis/index";
 import {
   htmlCarrierOf,
   profile_forms_render_fiber,

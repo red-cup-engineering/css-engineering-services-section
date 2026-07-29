@@ -28,7 +28,7 @@ This is where "settling" becomes technically potent: a system should not merely 
 
 ## Our edge
 
-(1) The bilattice negation `~` as **signed edge weight**: a `⊤` cell (both `t` and `f`) is a *stable harmonic sink*, not a frustrated negative eigenvalue — `flpEscaped ⟺ all negative eigenvalues live in the ⊤-fixed-point subspace`.
+(1) The bilattice negation `~` as **signed edge weight**: a `⊤` cell (both `t` and `f`) is a *active harmonic sink*, not a frustrated negative eigenvalue — `flpEscaped ⟺ all negative eigenvalues live in the ⊤-fixed-point subspace`.
 (2) CALM made cohomological: monotone `≤_k` updates ⇒ `δ⁰` vanishes ⇒ coordination-free, the contested `⊤` cells the *only* FLP-hard residue.
 (3) Machine-checked `ker(L) ≅ H⁰` via bilattice Čech, dependency-free (no Hilbert structure on agent stalks).
 (4) Predication-hyperdoctrine quantifier adjoints (`∃_f ⊣ f* ⊣ ∀_f` in both `≤_k` and `≤_t`) are explicit, not assumed.

@@ -11,8 +11,7 @@
 // path: evidence articulates utterances, utterances accrete in memory, and
 // worlds are induced only on explicit reads.
 
-import type { LessonEvidence } from "@red-cup-engineering/animating/becoming/doing/working/learning/lessons";
-import { mark } from "@red-cup-engineering/relating";
+import type { LessonEvidence } from "@red-cup-engineering/knowing/learning";
 import { labelText, type Exchange } from "./exchange.mjs";
 import type { Relay } from "./relay.mjs";
 
@@ -25,9 +24,9 @@ export interface TraversalTestimony {
 /** The lesson evidence one wire event over an exchange yields. */
 export function traverseExchange(hop: Exchange, testimony: TraversalTestimony = {}): LessonEvidence {
   return Object.freeze({
-    subject: mark(hop.source.id),
-    predicate: mark(labelText(hop.label)),
-    object: mark(hop.target.id),
+    subject: hop.source.id,
+    predicate: labelText(hop.label),
+    object: hop.target.id,
     ...(testimony.provenance !== undefined ? { provenance: testimony.provenance } : {}),
   });
 }

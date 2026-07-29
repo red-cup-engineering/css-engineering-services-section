@@ -444,22 +444,22 @@ export {
   type FacetName,
 } from "./writing/identity/index.mjs";
 
-// UCAN — portable object-capabilities: a signed delegation chain whose authority
-// is the existing Capability carrier, with each step checked as attenuation.
+// UCAN — canonical ucanto Delegation/Invocation verification. EnterpriseAccount
+// controller binding is deliberately a separate ERC-1271 observation.
 export {
-  ucanCarrier,
-  ucanFromCapability,
-  capabilityFromUcan,
-  issueUcan,
-  verifyUcan,
-  revokeUcan,
-  attenuatesGrant,
-  attenuatesCapability,
-  type UcanToken,
-  type IssueUcanOptions,
-  type UcanVerification,
-  type UcanKeyring,
+  verifyUcanInvocation,
+  type UcanCapability,
+  type VerifyUcanInvocationOptions,
+  type UcanInvocationVerificationReceipt,
 } from "./writing/ucan/index.mjs";
+
+export {
+  activityPubRsaCapabilityEnvelopeSchema,
+  activityPubRsaCapabilityEnvelopeCarrier,
+  activityPubRsaEnvelopeFromCapability,
+  capabilityFromActivityPubRsaEnvelope,
+  type ActivityPubRsaCapabilityEnvelope,
+} from "./writing/activitypub-rsa-capability-envelope/index.mjs";
 
 // OpenAI-compatible Chat Completions — the de-facto `/v1/chat/completions` wire
 // as a projection of the animating perceive→act loop, with function tools read as

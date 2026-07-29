@@ -18,8 +18,8 @@
  * `@red-cup-engineering/relating/evaluating` to reduce or type-check those terms, and use
  * `@red-cup-engineering/relating/evaluating/projecting` to cross the JSON carrier boundary.
  */
-import { fourCornerNames, type FourCornerName } from "../articulating/four-corner-cell.mjs";
-import { type ChargeValueName } from "../articulating/predicating/positing/bilattice-charge.mjs";
+import { fourCornerNames, type FourCornerName } from "@lenticule-science/articulating/four-corner-cell";
+import { type ChargeValueName } from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
 
 // ── type exports ──────────────────────────────────────────────────────────────
 

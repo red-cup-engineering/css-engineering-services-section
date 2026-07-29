@@ -4,7 +4,10 @@ import { dirname } from "node:path";
 
 export async function withSupplierSettlementLock(lockPath, action, { flock = "/usr/bin/flock", label = "supplier actuation" } = {}) {
   mkdirSync(dirname(lockPath), { recursive: true });
-  const holder = spawn(flock, ["--exclusive", "--nonblock", "--conflict-exit-code", "75", lockPath, process.execPath, "-e", "process.stdout.write('acquired\\n'); process.stdin.resume();"], { stdio: ["pipe", "pipe", "pipe"] });
+  // Keep the flock child attached to our stdin.  `process.stdin.resume()` is
+  // not a reliable holder here: when Node sees no consumers it may exit 0
+  // immediately, which releases the lock before the protected action starts.
+  const holder = spawn(flock, ["--exclusive", "--nonblock", "--conflict-exit-code", "75", lockPath, "/bin/sh", "-c", "printf 'acquired\\n'; cat >/dev/null"], { stdio: ["pipe", "pipe", "pipe"] });
   let stderr = "";
   holder.stderr.setEncoding("utf8"); holder.stderr.on("data", (chunk) => { stderr += chunk; });
   await new Promise((accept, reject) => {

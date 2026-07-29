@@ -1,118 +1,65 @@
-/**
- * UCAN — portable object-capabilities. These tests pin the first brick:
- * authority is the existing Capability carrier, a delegation chain verifies only
- * when each step attenuates its parent, and RSA proofs bind the payload.
- */
-import test from "node:test";
 import assert from "node:assert/strict";
-import { generateKeyPairSync } from "node:crypto";
+import test from "node:test";
+import { delegate, invoke } from "@ucanto/core";
+import { ed25519 } from "@ucanto/principal";
+import { relationalRwilDocument } from "@lenticule-science/rwil-rdf-projection-service/client";
+import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
+import { verifyUcanInvocation } from "../dist/index.mjs";
 
-import {
-  grant,
-  delegate,
-  attenuate,
-  issueUcan,
-  verifyUcan,
-  capabilityFromUcan,
-  ucanFromCapability,
-  revokeUcan,
-} from "../dist/index.mjs";
+const ACCOUNT = "0x1111111111111111111111111111111111111111";
+const RESOURCE = `did:pkh:eip155:5615610:${ACCOUNT}`;
+const CAPABILITY = Object.freeze({ with: RESOURCE, can: "semiotic-exchange/settle-demand",
+  nb: Object.freeze({ demand: `0x${"22".repeat(32)}` }) });
 
-const keys = () => {
-  const { privateKey, publicKey } = generateKeyPairSync("rsa", { modulusLength: 2048 });
-  return {
-    priv: privateKey.export({ type: "pkcs1", format: "pem" }).toString(),
-    pub: publicKey.export({ type: "spki", format: "pem" }).toString(),
-  };
-};
+async function fixture(capability = CAPABILITY) {
+  const controller = await ed25519.generate();
+  const actor = await ed25519.generate();
+  const executor = await ed25519.generate();
+  const now = Math.floor(Date.now() / 1000);
+  const delegation = await delegate({ issuer: controller, audience: actor, capabilities: [capability],
+    notBefore: now - 1, expiration: now + 300, nonce: "delegation-1" });
+  const invocation = await invoke({ issuer: actor, audience: executor, capability, proofs: [delegation],
+    notBefore: now - 1, expiration: now + 60, nonce: "invocation-1" }).delegate();
+  return { controller, actor, executor, delegation, invocation };
+}
 
-test("a UCAN delegation chain narrows authority and verifies", () => {
-  const alice = keys();
-  const bob = keys();
-  const keyring = {
-    "did:example:alice#keys-1": alice.pub,
-    "did:example:bob#keys-1": bob.pub,
-  };
-
-  const rootCap = grant("did:example:alice", "ledger|*", "urn:cap:root");
-  const root = issueUcan("did:example:alice", rootCap, alice.priv, {
-    id: "urn:ucan:root",
-    created: "2026-06-25T00:00:00.000Z",
-  });
-
-  const delegated = delegate(rootCap, "did:example:bob", "urn:cap:bob:any").capability;
-  const bobAny = issueUcan("did:example:alice", delegated, alice.priv, {
-    id: "urn:ucan:bob:any",
-    parent: root,
-    created: "2026-06-25T00:01:00.000Z",
-  });
-
-  const narrowed = attenuate(delegated, "ledger|read", "urn:cap:bob:read");
-  const bobRead = issueUcan("did:example:bob", narrowed, bob.priv, {
-    id: "urn:ucan:bob:read",
-    parent: bobAny,
-    created: "2026-06-25T00:02:00.000Z",
-  });
-
-  const result = verifyUcan(bobRead, keyring, [root, bobAny]);
-  assert.equal(result.valid, true, result.failures.join("; "));
-  assert.deepEqual(result.checked.map((token) => token.id), ["urn:ucan:root", "urn:ucan:bob:any", "urn:ucan:bob:read"]);
-
-  // UCAN <-> Capability is a view, not a second ontology.
-  assert.equal(capabilityFromUcan(bobRead).id, narrowed.id);
-  assert.equal(capabilityFromUcan(bobRead).grants, "ledger|read");
-  assert.equal(ucanFromCapability("did:example:bob", narrowed, { id: "urn:ucan:view" }).authority, narrowed);
-
-  const revoked = revokeUcan(bobRead, "did:example:alice");
-  assert.equal(revoked.type, "Undo");
-  assert.equal(revoked.object.id, narrowed.id);
+test("official ucanto proof DAG emits one content-addressed invocation verification receipt", async () => {
+  const value = await fixture();
+  const receipt = await verifyUcanInvocation({ invocation: value.invocation, authority: value.executor,
+    controller: value.controller.did(), actor: value.actor.did(), capability: CAPABILITY,
+    isRevoked: async () => false });
+  assert.equal(receipt.type, "UcanInvocationVerificationReceipt");
+  assert.equal(receipt.protocol, "UCAN");
+  assert.equal(receipt.ucanVersion, "0.9.1");
+  assert.equal(receipt.disposition, "authorized");
+  assert.equal(receipt.revocationStatus, "active");
+  assert.equal(receipt.controller, value.controller.did());
+  assert.equal(receipt.actor, value.actor.did());
+  assert.equal(receipt.audience, value.executor.did());
+  assert.equal(receipt.delegationCid, value.delegation.cid.toString());
+  assert.equal(receipt.invocationCid, value.invocation.cid.toString());
+  assert.deepEqual(receipt.proofChain, [value.delegation.cid.toString(), value.invocation.cid.toString()]);
+  assert.match(receipt.id, /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u);
+  assert.match(receipt.capabilityNi, /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u);
+  const { id, ...body } = receipt;
+  assert.equal(id, semanticId(relationalRwilDocument(body)));
+  assert.equal(receipt.capabilityNi, semanticId(relationalRwilDocument(CAPABILITY)));
 });
 
-test("a signed UCAN chain that widens authority fails verification", () => {
-  const alice = keys();
-  const bob = keys();
-  const keyring = {
-    "did:example:alice#keys-1": alice.pub,
-    "did:example:bob#keys-1": bob.pub,
-  };
-
-  const rootCap = grant("did:example:alice", "ledger|read", "urn:cap:root-read");
-  const root = issueUcan("did:example:alice", rootCap, alice.priv, {
-    id: "urn:ucan:root-read",
-    created: "2026-06-25T00:00:00.000Z",
-  });
-
-  const widened = {
-    ...delegate(rootCap, "did:example:bob", "urn:cap:bob:write").capability,
-    grants: "ledger|write",
-  };
-  const bad = issueUcan("did:example:alice", widened, alice.priv, {
-    id: "urn:ucan:bob:write",
-    parent: root,
-    created: "2026-06-25T00:01:00.000Z",
-  });
-
-  const result = verifyUcan(bad, keyring, [root]);
-  assert.equal(result.valid, false);
-  assert.ok(result.failures.some((failure) => failure.includes("widens")), result.failures.join("; "));
+test("revoked proof cannot produce an authorized receipt", async () => {
+  const value = await fixture();
+  await assert.rejects(() => verifyUcanInvocation({ invocation: value.invocation, authority: value.executor,
+    controller: value.controller.did(), actor: value.actor.did(), capability: CAPABILITY,
+    isRevoked: async (cid) => cid === value.delegation.cid.toString() }), /revoked/u);
 });
 
-test("a bad UCAN signature fails verification", () => {
-  const alice = keys();
-  const keyring = { "did:example:alice#keys-1": alice.pub };
-
-  const cap = grant("did:example:alice", "ledger|*", "urn:cap:signed");
-  const signed = issueUcan("did:example:alice", cap, alice.priv, {
-    id: "urn:ucan:signed",
-    created: "2026-06-25T00:00:00.000Z",
-  });
-  assert.equal(verifyUcan(signed, keyring).valid, true);
-
-  const tampered = {
-    ...signed,
-    authority: { ...signed.authority, grants: "vault|drain" },
-  };
-  const result = verifyUcan(tampered, keyring);
-  assert.equal(result.valid, false);
-  assert.ok(result.failures.some((failure) => failure.includes("bad proof")), result.failures.join("; "));
+test("capability widening and displaced actor are refused", async () => {
+  const value = await fixture();
+  await assert.rejects(() => verifyUcanInvocation({ invocation: value.invocation, authority: value.executor,
+    controller: value.controller.did(), actor: value.actor.did(),
+    capability: { ...CAPABILITY, can: "semiotic-exchange/raise-demand" }, isRevoked: async () => false }), /unauthorized/u);
+  const stranger = await ed25519.generate();
+  await assert.rejects(() => verifyUcanInvocation({ invocation: value.invocation, authority: value.executor,
+    controller: value.controller.did(), actor: stranger.did(), capability: CAPABILITY,
+    isRevoked: async () => false }), /issuer differs/u);
 });

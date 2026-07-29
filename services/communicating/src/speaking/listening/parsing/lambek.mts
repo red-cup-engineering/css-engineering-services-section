@@ -7,7 +7,7 @@
  * attaches the finite Lambek law witness owned by @red-cup-engineering/relating.
  */
 import { carrierFrom, type ChargeValueName } from "@red-cup-engineering/relating";
-import * as analysis from "@red-cup-engineering/relating/analysis";
+import * as analysis from "@lenticule-science/articulating/predicating/positing/settling/analysis";
 
 import type { ParseForest, ParseForestReading, ParsedArc, ParsedWord } from "./types.mjs";
 

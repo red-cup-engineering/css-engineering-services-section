@@ -3,8 +3,8 @@
  * carriers. The polynomial arithmetic stays exact (Integer coefficients); these
  * read coefficients to/from native integers only at the representation boundary.
  */
-import { integerPolynomial, type IntegerPolynomial } from "../../lib/articulating/predicating/positing/settling/analysis/spectral.mjs";
-import type { Integer } from "../../lib/articulating/predicating/positing/settling/analysis/exact-number.mjs";
+import { integerPolynomial, type IntegerPolynomial } from "@lenticule-science/articulating/predicating/positing/settling/analysis/spectral";
+import type { Integer } from "@lenticule-science/articulating/predicating/positing/settling/analysis/exact-number";
 import { fromInt, toInt } from "../codecs/host/javascript/numbers/index.mjs";
 
 /** Build an IntegerPolynomial from native integer coefficients (ascending degree). */

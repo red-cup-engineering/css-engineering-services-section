@@ -45,7 +45,7 @@ The same minimal transmissible unit communicating uses.
 Two facts about it are what knowing stands on:
 
 1. **The charge lives on a bilattice with two orders** (`pre-bilattice/content/bilattice`, `two-orders-duality`).
-  `positing/fiber.mts` names them: the **knowledge order** `≤_k` (absurd ⊥ → stable ⊤) and the **truth order** `≤_t` (active ⊥ → potential ⊤).
+  `positing/fiber.mts` names them: the **knowledge order** `≤_k` (absurd ⊥ → stable ⊤) and the **truth order** `≤_t` (active ⊥ → absurd ⊤).
   `two-orders-duality` proves the two are conjugate by the swap involution σ on FOUR. **knowing is the package that works ≤_k**; communicating works the meaning/≤_t side.
 2. **The charge carries evidence witnesses on each side.** "Value enters predication by evidence" (`positing` doctrine).
   A meme is therefore *already* a held-with- evidence claim — the "provenance/evidence" the question asked about is in the carrier, not an extension of it.

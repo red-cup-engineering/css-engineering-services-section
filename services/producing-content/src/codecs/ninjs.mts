@@ -6,7 +6,7 @@
  * carrier that can be stored, served, and related by downstream packages.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export type JsonScalar = string | number | boolean | null;
 export type JsonValue = JsonScalar | readonly JsonValue[] | { readonly [key: string]: JsonValue };

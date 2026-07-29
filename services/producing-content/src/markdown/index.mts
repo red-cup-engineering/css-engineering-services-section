@@ -6,7 +6,7 @@
  * organizing-visible form that farms and mills can store, serve, or reduce.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const RenderedMarkdownArtifactSchema = { $id: "producing-content/markdown/rendered-artifact", title: "RenderedMarkdownArtifact", additionalProperties: false, type: "object", required: ["kind", "markdown", "html", "text"], properties: { kind: { const: "producing-content.rendered-markdown" }, markdown: { type: "string" }, html: { type: "string" }, text: { type: "string" } } } as const;
 

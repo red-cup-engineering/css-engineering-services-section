@@ -7,7 +7,7 @@
  * fits, gathers related intake when requested, and cultivates the assignment.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/writing";
+import { jsonResource, type JsonValue } from "@red-cup-engineering/relating/codecs";
 import { syndicationItem, type FetchLike, type SyndicationItem } from "../syndication/index.mjs";
 import { distinctiveTermWords } from "../topology/article.mjs";
 import { normalizeTerm } from "../topology/gates.mjs";

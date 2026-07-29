@@ -43,11 +43,11 @@ import {
   settlingFirstCohomologyTerm,
 } from "./evaluating/measuring/index.mjs";
 
-export * from "../lib/articulating/index.mjs";
-export * from "../lib/articulating/predicating/index.mjs";
-export * from "../lib/articulating/predicating/positing/index.mjs";
-export * from "../lib/articulating/predicating/positing/settling/index.mjs";
-export * from "../lib/articulating/predicating/positing/settling/analysis/index.mjs";
+export * from "@lenticule-science/articulating/index";
+export * from "@lenticule-science/articulating/predicating/index";
+export * from "@lenticule-science/articulating/predicating/positing/index";
+export * from "@lenticule-science/articulating/predicating/positing/settling/index";
+export * from "@lenticule-science/articulating/predicating/positing/settling/analysis/index";
 export * from "../lib/notating/index.mjs";
 
 export * from "./carriers/index.mjs";
@@ -68,13 +68,13 @@ export { parse as parseJson } from "./codecs/text/json/core.mjs";
 // `carrier`; retain that address while the one implementation remains
 // `carrierFrom` in the carrier kernel.
 
-export { Claim, claim } from "../lib/articulating/index.mjs";
-export { cell, cohere } from "../lib/articulating/predicating/index.mjs";
-export { bigradedCohomology, divides, settle } from "../lib/articulating/predicating/positing/settling/index.mjs";
+export { Claim, claim } from "@lenticule-science/articulating/index";
+export { cell, cohere } from "@lenticule-science/articulating/predicating/index";
+export { bigradedCohomology, divides, settle } from "@lenticule-science/articulating/predicating/positing/settling/index";
 
-export * as analysis from "../lib/articulating/predicating/positing/settling/analysis/index.mjs";
-export * as geometry from "../lib/articulating/predicating/geometry/index.mjs";
-export * as settling from "../lib/articulating/predicating/positing/settling/index.mjs";
+export * as analysis from "@lenticule-science/articulating/predicating/positing/settling/analysis/index";
+export * as geometry from "@lenticule-science/articulating/predicating/geometry/index";
+export * as settling from "@lenticule-science/articulating/predicating/positing/settling/index";
 export * as notating from "../lib/notating/index.mjs";
 export * as carriers from "./carriers/index.mjs";
 export * as running from "./running/index.mjs";

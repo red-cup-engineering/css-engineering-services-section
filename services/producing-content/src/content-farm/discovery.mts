@@ -6,7 +6,7 @@
  * candidate sources, external trend folds, and the combined discovery reading.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const ContentCoverageGapSchema = { $id: "producing-content/content-farm/discovery/coverage-gap", title: "ContentCoverageGap", additionalProperties: false, type: "object", required: ["kind", "term", "beat", "priority", "intakeSupport", "coverage", "gapScore", "evidence"], properties: { kind: { const: "producing-content.content-farm.discovery.coverage-gap" }, term: { minLength: 1, type: "string" }, beat: { minLength: 1, type: "string" }, priority: { type: "number" }, intakeSupport: { minimum: 0, type: "integer" }, coverage: { minimum: 0, type: "integer" }, gapScore: { minimum: 0, type: "number" }, evidence: { type: "array", items: { minLength: 1, type: "string" } } } } as const;
 

@@ -26,7 +26,7 @@ Observed through repo-native tools on 2026-06-25:
 
 - `dev.bare-cedar-fog.emsenn.net` `read-work-vocabulary` distinguishes `work`, `working`, `work-item`, `work-unit`, `trace`, `workflow`, `shared-field`, and `coordination`.
 - `dev.bare-cedar-fog.emsenn.net` `orient-agent` for this task scoped the lane to `.
-  `, `lib/relating`, and the active focus `project-relating-webux`.
+  `, `lib/relating`, and the potential focus `project-relating-webux`.
 - `dev.bare-cedar-fog.emsenn.net` `claim-locus` recorded a conflict-free claim for this note and `lib/relating`.
 - `organizing-with-jsnode` read `lib/relating` as `@emsenn/relating`: layer `lib`, lifecycle `active`, maturity `experimental`, Node `>=22.18`, bins `relate` and `relate-serve`, scripts `build`, `check`, `docs:api`, `examples`, `test`, and `verify`, runtime dependencies `@sinclair/typebox` and `ajv`, and exports across `running`, `ledger`, `writing/http/*`, `evaluating/*`, and `expressing/*`.
 - NVIDIA Integrate model discovery worked from the `.envrc` key.

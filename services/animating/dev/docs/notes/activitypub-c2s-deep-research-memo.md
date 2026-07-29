@@ -642,7 +642,7 @@ notifications:read
 ```
 
 Do not overfit to the first scope taxonomy.
-The API Task Force still has active issues around OAuth scopes and extensions.
+The API Task Force still has potential issues around OAuth scopes and extensions.
 ([github.com](https://github.com/swicg/activitypub-api/issues))
 
 For S2S, you still need HTTP Signatures.

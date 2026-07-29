@@ -6,7 +6,7 @@ The package owns the multi-agent CGS layer:
 
 - schema-first carriers under `src/carriers/*.schema.json`, with generated structural types;
 - action-registered morphisms in `src/actions.mts` and `src/multi-agent.mts`;
-- the two-bin boundary `gaming` / `gaming-serve`, projected through one dispatcher;
+- the ephemeral `gaming` action boundary, projected through one dispatcher;
 - EAVT witnessing through the action boundary;
 - the CGS carriers: arena-with-symmetry, concurrent strategy, parallel composition, symmetry/equivariance, embeddings, running game, match, and the social play readings.
 

@@ -18,8 +18,8 @@
  */
 
 import { carrierFrom, carrierToTerm, mark, negate, valueOf, witnessedPotential, type ChargeCarrier, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { canonical, type JsonValue as ResourceJsonValue } from "@red-cup-engineering/relating/writing";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { canonical, type JsonValue as ResourceJsonValue } from "@red-cup-engineering/relating/codecs";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 import { GATE_FAIL, type JsonValue, type NewsClaim, type NewsClaimSet, type NewsClaimWrite } from "./index.mjs";
 

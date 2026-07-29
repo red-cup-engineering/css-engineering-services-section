@@ -24,8 +24,7 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "bin": {
-    "animate": "./dist/scripts/cli.mjs",
-    "animate-serve": "./dist/scripts/serve.mjs"
+    "animate": "./dist/scripts/cli.mjs"
   },
   "files": [
     "dist",
@@ -34,10 +33,16 @@
     "package.json"
   ],
   "dependencies": {
+    "@lenticule-science/articulating": "workspace:*",
+    "@lenticule-science/rwil-rdf-projection-service": "1.0.2",
     "@red-cup-engineering/communicating": "0.0.0",
     "@red-cup-engineering/knowing": "0.0.0",
     "@red-cup-engineering/playing": "0.0.1",
-    "@red-cup-engineering/relating": "0.0.0"
+    "@red-cup-engineering/relating": "0.0.0",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0",
+    "@ucanto/core": "10.4.6",
+    "@ucanto/principal": "9.0.3",
+    "@ucanto/validator": "10.0.1"
   },
   "devDependencies": {
     "@red-cup-engineering/organizing": "0.0.0",

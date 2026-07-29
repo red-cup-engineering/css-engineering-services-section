@@ -6,7 +6,7 @@
  * and graph centrality without reader tracking.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 import { ContentQualityFindingSchema, contentQualityFinding, type ContentQualityFinding } from "./quality.mjs";
 
 export const PredicationCellKindSchema = { anyOf: [{ const: "claim" }, { const: "evidence" }, { const: "same-site-relation" }, { const: "unsupported" }, { const: "structure" }] } as const;

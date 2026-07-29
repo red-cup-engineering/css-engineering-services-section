@@ -446,7 +446,7 @@ export function gamingFace(membrane: readonly UtteranceCarrier[]): GamingFace {
     else if (side === "negative") againstCount += 1;
     if (!censused.has(id)) {
       censused.add(id);
-      distinctCharges.push(chargeValue(side === "negative" ? "active" : "potential"));
+      distinctCharges.push(chargeValue(side === "negative" ? "stable" : "active"));
     }
   }
   const belnap = fourCensus(distinctCharges);

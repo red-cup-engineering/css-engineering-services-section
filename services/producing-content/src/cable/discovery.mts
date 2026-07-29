@@ -16,7 +16,7 @@
 import { readFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 import { wireBaseUrl, type CableRouting } from "../topology/news/index.mjs";
 
 import { createNewswire, type Newswire, type NewswireAuthor, type RenderDocument } from "./wire.mjs";

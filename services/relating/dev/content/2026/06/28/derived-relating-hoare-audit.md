@@ -501,7 +501,7 @@ pass 613
 fail 0
 ```
 
-The audit remains active until every family has:
+The audit remains potential until every family has:
 
 - a triple;
 - a forced root;

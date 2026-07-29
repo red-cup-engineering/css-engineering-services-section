@@ -11,8 +11,8 @@ import {
   articulate,
   mark,
   utterance,
-} from "../../lib/articulating/index.mjs";
-import { predicate } from "../../lib/articulating/predicating/index.mjs";
+} from "@lenticule-science/articulating/index";
+import { predicate } from "@lenticule-science/articulating/predicating/index";
 import {
   countableSettlingCofinality,
   initialSettlingStageInput,
@@ -23,7 +23,7 @@ import {
   settlingStageOrdinal,
   uncountableSettlingCofinality,
   type SettlingClassification,
-} from "../../lib/articulating/predicating/positing/settling/index.mjs";
+} from "@lenticule-science/articulating/predicating/positing/settling/index";
 import type { JsonRecord } from "../codecs/text/json/core.mjs";
 import type { Action } from "./action.mjs";
 

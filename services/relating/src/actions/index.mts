@@ -48,16 +48,16 @@ import {
   utterance,
   type UtteranceCarrier,
   type ArticulationCell,
-} from "../../lib/articulating/index.mjs";
+} from "@lenticule-science/articulating/index";
 import { utteranceCarrier, articulationCellCarrier } from "../carriers/index.mjs";
 import {
   predicate, presentPredicationSite, freePredicationSite,
   type PredicationSite, type PredicationSiteGenerators,
-} from "../../lib/articulating/predicating/index.mjs";
+} from "@lenticule-science/articulating/predicating/index";
 import {
   posit, freePositPresheaf,
   type PositPresheaf, type PositPresheafGenerators,
-} from "../../lib/articulating/predicating/positing/index.mjs";
+} from "@lenticule-science/articulating/predicating/positing/index";
 import {
   settle,
   freeSettlementFiltration,
@@ -67,8 +67,8 @@ import {
   readFiringsOfSettlementFiltration,
   readFiringEventsOfSettlementFiltration,
   readCausalOrderOfSettlementFiltration,
-} from "../../lib/articulating/predicating/positing/settling/index.mjs";
-import type { SettlementFiltration, SettlementFiltrationGenerators } from "../../lib/articulating/predicating/positing/settling/index.mjs";
+} from "@lenticule-science/articulating/predicating/positing/settling/index";
+import type { SettlementFiltration, SettlementFiltrationGenerators } from "@lenticule-science/articulating/predicating/positing/settling/index";
 import { jsonResource, type JsonRecord, type JsonValue } from "../codecs/text/json/core.mjs";
 import { action, type Action } from "../running/index.mjs";
 import { tm, type Tm } from "../../lib/notating/index.mjs";

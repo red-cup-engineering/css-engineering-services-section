@@ -9,7 +9,7 @@ function required(name) { const value = process.env[name]; if (typeof value !== 
 export async function serveSupplierActivityPubFace(options = {}) {
   const origin = options.origin ?? required("ACTIVITYPUB_ORIGIN"), identifier = options.identifier ?? required("ACTIVITYPUB_IDENTIFIER");
   const agentCard = options.agentCard ?? required("SUPPLIER_ACTIVITYPUB_AGENT_CARD");
-  const callbacks = createSupplierActivityPubCallbacks({ origin, identifier, agentCard, ledger: options.ledger ?? foragingReadLedger(options) });
+  const callbacks = createSupplierActivityPubCallbacks({ origin, identifier, agentCard, ledger: options.ledger ?? await foragingReadLedger(options) });
   return serveActivityPubProvider({ ...options, origin, identifier, listOutbox: callbacks.listOutbox, onActivity: callbacks.onActivity });
 }
 

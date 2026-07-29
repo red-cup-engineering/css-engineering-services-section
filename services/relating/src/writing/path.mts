@@ -15,7 +15,7 @@
  * structural-not-reference seam).
  */
 import { define, type Projector, type Resource } from "../projections/kernel.mjs";
-import { mark, utterance, type UtteranceCarrier } from "../../lib/articulating/utterance.mjs";
+import { mark, utterance, type UtteranceCarrier } from "@lenticule-science/articulating/utterance";
 import { eavtRecord, type EAVT, type EAVTRecord } from "../codecs/text/json/jsonl/eavt/index.mjs";
 import type { JsonValue } from "../codecs/text/json/core.mjs";
 

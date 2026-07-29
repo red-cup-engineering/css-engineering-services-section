@@ -41,7 +41,7 @@
  *     *Production of Commodities by Means of Commodities*: prices of production are
  *     the Perron–Frobenius dominant eigenvector of the input–output matrix (the
  *     self-replacing standard system). On this substrate the eigenstructure is read
- *     SPECTRALLY and EXACTLY: `charPoly(io)` (`@red-cup-engineering/relating/analysis`, ascending
+ *     SPECTRALLY and EXACTLY: `charPoly(io)` (`@lenticule-science/articulating/predicating/positing/settling/analysis`, ascending
  *     degree, exact `Integer` arithmetic — Bareiss/fraction-free, never a float) is
  *     the characteristic polynomial whose dominant real root is the Perron–Frobenius
  *     eigenvalue (1 + r over the standard ratio), and `rank(io)` (count of nonzero
@@ -83,7 +83,7 @@ import {
   type Integer,
   type Matrix,
   type Natural,
-} from "@red-cup-engineering/relating/analysis";
+} from "@lenticule-science/articulating/predicating/positing/settling/analysis";
 import { reseed, type Becoming } from "@red-cup-engineering/animating";
 
 import {
@@ -288,7 +288,7 @@ export function surplusReading(invested: Money, recovered: Money): SurplusReadin
  * Sraffa prices of production: the characteristic-polynomial spectral structure of
  * the input–output matrix, the substrate of the Perron–Frobenius dominant eigenvector.
  *
- * `charPoly(io)` (`@red-cup-engineering/relating/analysis`, ascending degree, exact `Integer`
+ * `charPoly(io)` (`@lenticule-science/articulating/predicating/positing/settling/analysis`, ascending degree, exact `Integer`
  * arithmetic — fraction-free, never a float) is the polynomial whose dominant real
  * root is the Perron–Frobenius eigenvalue of the self-replacing standard system; the
  * prices of production ARE that dominant eigenvector. `rank(io)` (count of nonzero

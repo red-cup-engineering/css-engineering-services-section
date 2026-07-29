@@ -132,27 +132,25 @@ export function createOnchainKvStore({ client, actor }) {
     async get(key) {
       const record = await collection.get(keyId(key));
       if (record?.present !== true) return undefined;
-      if (record.expiresAt !== null && Date.now() >= record.expiresAt) return undefined;
       return record.value;
     },
-    async set(key, value, options = {}) {
-      const milliseconds = options.ttl === undefined ? null : options.ttl.total({ unit: "milliseconds" });
-      await collection.put(keyId(key), { key: [...key], present: true, value, expiresAt: milliseconds === null ? null : Date.now() + milliseconds });
+    async set(key, value) {
+      await collection.put(keyId(key), { key: [...key], present: true, value });
     },
     async delete(key) {
-      await collection.put(keyId(key), { key: [...key], present: false, value: null, expiresAt: null });
+      await collection.put(keyId(key), { key: [...key], present: false, value: null });
     },
-    async cas(key, expectedValue, newValue, options = {}) {
+    async cas(key, expectedValue, newValue) {
       const observed = await this.get(key);
       if (!isDeepStrictEqual(observed, expectedValue)) return false;
-      await this.set(key, newValue, options);
+      await this.set(key, newValue);
       return true;
     },
     async *list(prefix = undefined) {
       const wanted = prefix === undefined ? undefined : pathOf(prefix, "Fedify KV prefix");
       for (const id of await collection.index()) {
         const record = await collection.get(id);
-        if (record?.present !== true || (record.expiresAt !== null && Date.now() >= record.expiresAt)) continue;
+        if (record?.present !== true) continue;
         if (wanted !== undefined && !wanted.every((part, index) => record.key[index] === part)) continue;
         yield { key: record.key, value: record.value };
       }
@@ -189,44 +187,35 @@ export function createOnchainOutbox({ client, actor }) {
   });
 }
 
-function delayMilliseconds(delay) {
-  return delay === undefined ? 0 : Number(delay.total({ unit: "milliseconds" }));
-}
-
-export function createOnchainMessageQueue({ client, actor, name, pollMilliseconds = 1000 }) {
+export function createOnchainMessageQueue({ client, actor, name }) {
   const collection = new OnchainCollection(client, ["activitypub", requiredText(actor, "ActivityPub actor namespace"), "queue", requiredText(name, "queue name")]);
   let sequence = 0;
   return Object.freeze({
     nativeRetrial: true,
-    async enqueue(message, options = {}) {
+    async enqueue(message) {
       const id = identifier({ message, sequence: sequence++ });
-      await collection.put(id, { message, status: "pending", attempts: 0, availableAt: Date.now() + delayMilliseconds(options.delay) });
+      await collection.put(id, { message, status: "pending" });
     },
-    async listen(handler, options = {}) {
-      while (!options.signal?.aborted) {
-        for (const id of await collection.index()) {
-          const record = await collection.get(id);
-          if (record?.status !== "pending" || record.availableAt > Date.now()) continue;
-          try {
-            await handler(record.message);
-            await collection.put(id, { ...record, status: "done", completedAt: Date.now() });
-          } catch {
-            await collection.put(id, { ...record, attempts: record.attempts + 1, availableAt: Date.now() + Math.min(60_000, 1000 * 2 ** record.attempts) });
-          }
+    async listen(handler) {
+      for (const id of await collection.index()) {
+        const record = await collection.get(id);
+        if (record?.status !== "pending") continue;
+        try {
+          await handler(record.message);
+          await collection.put(id, { ...record, status: "done" });
+        } catch {
+          // A pending record stays observable for the next external trigger.
         }
-        await new Promise((resolve) => setTimeout(resolve, pollMilliseconds));
       }
     },
     async getDepth() {
-      let queued = 0, ready = 0, delayed = 0;
+      let queued = 0;
       for (const id of await collection.index()) {
         const record = await collection.get(id);
         if (record?.status !== "pending") continue;
         queued += 1;
-        if (record.availableAt <= Date.now()) ready += 1;
-        else delayed += 1;
       }
-      return { queued, ready, delayed };
+      return { queued };
     },
   });
 }

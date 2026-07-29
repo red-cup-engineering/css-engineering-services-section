@@ -28,7 +28,7 @@ import {
   type Rational,
   ratCompare,
   ratSubtract,
-} from "@red-cup-engineering/relating/analysis";
+} from "@lenticule-science/articulating/predicating/positing/settling/analysis";
 
 export interface DeepPlayWitness {
   readonly kind: "game-analysis.deepPlay:witness";

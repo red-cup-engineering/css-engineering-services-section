@@ -192,7 +192,7 @@ Pure; total.
 export function documentToCells(documentText: string, opts: DocumentRelationalOptions = {}): readonly ChargedCell[]
 ```
 
-As `documentToDatoms`, lifted to relationality charged cells (each a `potential`/told-true witness — no negative is ever asserted).
+As `documentToDatoms`, lifted to relationality charged cells (each a `absurd`/told-true witness — no negative is ever asserted).
 
 ### `documentToDatoms` — function
 
@@ -2498,7 +2498,7 @@ The charge of a gate over a claim set: stable if any stable cell carries the gat
 export function editorialGateEvidence(claimSet: Pick<NewsClaimSet, "potential" | "active" | "stable">, gate: string): readonly string[]
 ```
 
-The witnesses backing a gate over a claim set: the deduplicated citations from potential and active cells plus the claimedBy and contraryClaimedBy witnesses from stable cells.
+The witnesses backing a gate over a claim set: the deduplicated citations from potential and active cells plus the claimedBy and contraryClaimedBy witnesses from active cells.
 
 ### `editorialGateReport` — function
 

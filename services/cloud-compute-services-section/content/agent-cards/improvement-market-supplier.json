@@ -36,7 +36,7 @@
           "territory": "ni:///sha-256;_9rH2_VxyxVpi_JcfkP-hGvtU1HJBWeaMHV7NJ4SGn4",
           "component": {
             "profile": "org.emsenn.rmn.hierarchical-circuit.v3",
-            "law": "ni:///sha-256;Nfg6I78-Q-ihAM7wCcg6FGnZAlfdLAuopvHepehx-2k",
+            "law": "ni:///sha-256;hvB0QtxlxnnE05tkJ6J3GDq7HOev1WvjPBwTlvpdRSY",
             "ports": [
               {
                 "name": "request",

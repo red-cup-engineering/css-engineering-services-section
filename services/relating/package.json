@@ -44,38 +44,17 @@
     "typedoc": "^0.28.19",
     "typescript": "^5.8.0"
   },
+  "dependencies": {
+    "@lenticule-science/articulating": "workspace:*"
+  },
   "exports": {
     ".": {
       "types": "./dist/src/index.d.mts",
       "import": "./dist/src/index.mjs"
     },
-    "./articulating": {
-      "types": "./dist/lib/articulating/index.d.mts",
-      "import": "./dist/lib/articulating/index.mjs"
-    },
     "./notating": {
       "types": "./dist/lib/notating/index.d.mts",
       "import": "./dist/lib/notating/index.mjs"
-    },
-    "./analysis": {
-      "types": "./dist/lib/articulating/predicating/positing/settling/analysis/index.d.mts",
-      "import": "./dist/lib/articulating/predicating/positing/settling/analysis/index.mjs"
-    },
-    "./geometry": {
-      "types": "./dist/lib/articulating/predicating/geometry/spatial/index.d.mts",
-      "import": "./dist/lib/articulating/predicating/geometry/spatial/index.mjs"
-    },
-    "./settling": {
-      "types": "./dist/lib/articulating/predicating/positing/settling/index.d.mts",
-      "import": "./dist/lib/articulating/predicating/positing/settling/index.mjs"
-    },
-    "./articulating/predicating/positing/settling": {
-      "types": "./dist/lib/articulating/predicating/positing/settling/index.d.mts",
-      "import": "./dist/lib/articulating/predicating/positing/settling/index.mjs"
-    },
-    "./dynamics": {
-      "types": "./dist/lib/articulating/predicating/positing/settling/dynamics/index.d.mts",
-      "import": "./dist/lib/articulating/predicating/positing/settling/dynamics/index.mjs"
     },
     "./carriers": {
       "types": "./dist/src/carriers/index.d.mts",

@@ -5,7 +5,7 @@
  * published items grouped by month and year with stable URLs.
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/relating/codecs";
 
 export const ContentArchiveMonthReadingSchema = { $id: "producing-content/content-mill/archive/month", title: "ContentArchiveMonthReading", additionalProperties: false, type: "object", required: ["kind", "year", "month", "title", "count", "url"], properties: { kind: { const: "producing-content.archive.month" }, year: { minLength: 4, type: "string" }, month: { minLength: 2, type: "string" }, title: { minLength: 1, type: "string" }, count: { minimum: 0, type: "integer" }, url: { minLength: 1, type: "string" }, latestPublished: { minLength: 1, type: "string" } } } as const;
 

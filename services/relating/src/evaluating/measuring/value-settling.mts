@@ -1,7 +1,7 @@
 /**
  * RMN normalizers for finite value-category settling and optimization receipts.
  *
- * The law checks live in `@red-cup-engineering/relating/settling`; these normalizers carry
+ * The law checks live in `@lenticule-science/articulating/predicating/positing/settling`; these normalizers carry
  * the resulting finite witness/obstruction objects as Relation Model Notation.
  */
 import { tm, type Tm } from "../../../lib/notating/index.mjs";

@@ -18,7 +18,7 @@ export const FORAGING_LAW = compileRmlLaw(readFileSync(new URL("../content/contr
 export const CONTRACT = FORAGING_LAW.id;
 export const CATEGORY = "cloud-compute-services-section.improvement-board-foraging";
 const INVESTMENT_OPPORTUNITIES = new Set(["SupplierCapacityInvestmentOpportunity", "SupplierCapabilityInvestmentOpportunity"]);
-const SELF_IMPROVEMENT_TERMINALS = new Set(["SupplierSelfImprovementAttemptResidue", "SupplierSelfImprovementSettlement"]);
+const SELF_IMPROVEMENT_TERMINALS = new Set(["SupplierSelfImprovementAttemptResidue", "SupplierSelfImprovementSettlement", "SupplierSelfImprovementPatchManifest"]);
 function rmnId(value) { return semanticId(relationalRwilDocument(value)); }
 function record(body) { return Object.freeze({ id: rmnId(body), ...body }); }
 function exact(value) { return value?.id === rmnId(Object.fromEntries(Object.entries(value ?? {}).filter(([key]) => key !== "id"))); }
@@ -135,17 +135,19 @@ function incitementProblem(activity) {
 
 export async function foragingReadLedger(options = {}) {
   const dataRoot = resolve(options.dataRoot ?? process.env.CLOUD_COMPUTE_DATA_ROOT ?? new URL("../data", import.meta.url).pathname);
-  const rows = await querySettlementRecords(CATEGORY);
+  const rows = await querySettlementRecords(CATEGORY, { custody: options.custody, categoryIndex: options.categoryIndex });
   return Object.freeze({ read: () => [...rows] });
 }
 
-export function foragingLedger(options = {}) {
+export async function foragingLedger(options = {}) {
   const dataRoot = resolve(options.dataRoot ?? process.env.CLOUD_COMPUTE_DATA_ROOT ?? new URL("../data", import.meta.url).pathname);
-  const rows = foragingReadLedger({ dataRoot }).read();
+  const rows = (await foragingReadLedger({ ...options, dataRoot })).read();
   const settlement = createSettlementStore({
     settlementRoot: ROOT,
     agentUrl: options.rwilAgentUrl ?? process.env.RWIL_RDF_AGENT,
     caip2: options.caip2 ?? process.env.SETTLEMENT_CAIP2,
+    custody: options.custody,
+    categoryIndex: options.categoryIndex,
   });
   return Object.freeze({
     read: () => [...rows],
@@ -169,7 +171,7 @@ async function forageImprovementBoardsUnlocked(activity, options = {}) {
   const policy = validateForagingPolicy(options.policy ?? loadForagingPolicy()), at = options.recordedAt ?? new Date().toISOString();
   const problem = incitementProblem(activity);
   if (problem) return { "@context": CONTEXT, type: "Reject", actor: ACTOR, target: activity?.actor ?? null, inReplyTo: activity?.id ?? null, object: { type: "ImprovementForagerIncitementRefusal", contract: CONTRACT, reason: problem, customerTerritoryMutation: false } };
-  const ledger = options.ledger ?? foragingLedger(options), invokeBoard = options.invokeBoard ?? ((board, operation, input) => invokeActivityPubBoardOperation(board, operation, input, options.activityPub ?? {})), fulfill = options.fulfillAward ?? fulfillBoardAward;
+  const ledger = options.ledger ?? await foragingLedger(options), invokeBoard = options.invokeBoard ?? ((board, operation, input) => invokeActivityPubBoardOperation(board, operation, input, options.activityPub ?? {})), fulfill = options.fulfillAward ?? fulfillBoardAward;
   const sequence = ledger.read().length, bidPolicy = options.bidPolicy ?? DEFAULT_FORAGER_POLICY;
   const admitFoldback = options.admitFoldback ?? ((decision, { expectedCustomer }) => admitCustomerTrajectoryFoldback(decision, expectedCustomer, ACTOR, options.trajectoryMemory ?? {}));
   const deliverFounderLead = options.deliverFounderLead ?? ((founder, signal) => deliverFounderFormationLead(founder, signal, { ...(options.activityPub ?? {}), deliver: options.activityPub?.deliver }));
@@ -309,7 +311,7 @@ async function forageImprovementBoardsUnlocked(activity, options = {}) {
   if (policy.supplierSelfImprovementExecution) {
     const settleSelfImprovement = options.settleSelfImprovement ?? settleNextSupplierSelfImprovement;
     const selfImprovement = await settleSelfImprovement({ rows: ledger.read(), ledger, activity, contract: CONTRACT, policy: policy.supplierSelfImprovementExecution, root: ROOT, sequence, at });
-    if (selfImprovement) outcomes.push({ board: ACTOR, activity: selfImprovement.publication, status: selfImprovement.type === "SupplierSelfImprovementSettlement" ? "supplier-self-improvement-settled" : "supplier-self-improvement-residue", detail: { record: selfImprovement.id, lot: selfImprovement.lot, capability: selfImprovement.capability ?? null, reason: selfImprovement.reason ?? null, successorSchedule: selfImprovement.successorSchedule ?? null } });
+    if (selfImprovement) outcomes.push({ board: ACTOR, activity: selfImprovement.publication, status: selfImprovement.type === "SupplierSelfImprovementPatchManifest" ? "supplier-self-improvement-awaiting-js-mark-admission" : selfImprovement.type === "SupplierSelfImprovementSettlement" ? "supplier-self-improvement-settled" : "supplier-self-improvement-residue", detail: { record: selfImprovement.id, lot: selfImprovement.lot, capability: selfImprovement.capability ?? null, reason: selfImprovement.reason ?? null, successorSchedule: selfImprovement.successorSchedule ?? null } });
   }
   return { "@context": CONTEXT, type: "Accept", actor: ACTOR, target: activity.actor, inReplyTo: activity.id, object: { type: "ImprovementForagerIncitementReceipt", contract: CONTRACT, incitementId: activity.id, resourceObservation, outcomes, customerTerritoryMutation: false } };
 }

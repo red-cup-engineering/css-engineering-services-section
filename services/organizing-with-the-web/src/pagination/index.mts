@@ -1,7 +1,6 @@
 import type { App, Repr } from "@red-cup-engineering/computing-with-http/app";
-import { mark, type ChargeValueName, type UtteranceCarrier } from "@red-cup-engineering/relating";
-import { joinKnowledgeNames } from "@red-cup-engineering/animating/becoming/doing/algebra";
-import { utterEvidence } from "@red-cup-engineering/animating/becoming/doing/working/learning/lessons";
+import type { ChargeValueName, UtteranceCarrier } from "@red-cup-engineering/relating";
+import { joinKnowledgeNames, utterEvidence } from "@red-cup-engineering/knowing/learning";
 import { linkHeader } from "@red-cup-engineering/computing-with-http/codecs/http";
 import { assertHttpUrl, escapeHtmlText } from "../feed/index.mjs";
 
@@ -297,7 +296,7 @@ export function feedHistoryClaim<T>(
     subject,
     predicate,
     object: claim,
-    utterance: utterEvidence({ subject: mark(subject), predicate: mark(predicate), object: mark(claim), provenance: witness }),
+    utterance: utterEvidence({ subject, predicate, object: claim, provenance: witness }),
     value: asserted ? "potential" : "active",
   };
 }

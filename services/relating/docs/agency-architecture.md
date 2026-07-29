@@ -311,7 +311,7 @@ The `glued` flag is exact: in `governing`, `glued === (cohomologyRank === 0)`.
 So "the agent coheres" is literally "the first cohomology of its union settlement vanishes."
 
 **Settled below, open above.** The bulk's interior is closed — the settlement of the union membrane is a fixed point; no new knowledge can be extracted from facts already received.
-But the agent is open at its **affordances**: the open cells (stable `⊤` = contested, or absurd `⊥` = untouched) it can still act on.
+But the agent is open at its **affordances**: the open cells (stable `⊤` = contested, or stable `⊥` = untouched) it can still act on.
 The `milieu` counts the residual cells — Simondon's pre-individual charge that drives further individuation — and `reseed` re-poses the settled individual as the seed of the next-scale descent, closing the perceive→act spiral.
 
 The bulk is **not directly observable.** By the holographic principle (the corpus reads the interior as a projection of boundary data), you see the agent only through its three faces.
