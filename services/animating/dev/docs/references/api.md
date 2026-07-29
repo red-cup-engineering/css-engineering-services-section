@@ -1342,7 +1342,7 @@ Capability propagation made concrete.
 export function isContested(charge: ChargeCarrier): boolean
 ```
 
-An incumbency is contested when its charge is anything but plain `potential` (token given, claim not yet contradicted): `active` (denied), `stable` (held contradiction ⊤), or `stable` (no evidence).
+An incumbency is contested when its charge is anything but plain `potential` (token given, claim not yet contradicted): `active` (denied), `stable` (held contradiction ⊤), or `absurd` (no evidence).
 Only `potential` is an uncontested hold.
 
 ### `mode` — function

@@ -15,7 +15,7 @@ The bilattice knowledge order `≤_k` on `Charge` is already the corpus's `Q`-ca
 
 ## Our edge
 
-The decisive RelMath advantage on the evidence face: **active = `⊤` = `⟨1,1⟩` ("told both") is a *designated* harmonic fixed point**, not a source of instability.
+The decisive RelMath advantage on the evidence face: **stable = `⊤` = `⟨1,1⟩` ("told both") is a *designated* harmonic fixed point**, not a source of instability.
 `L(⊤) = ⊤`; designs carrying the Daimon charge form a convex set under `L`.
 HGR/SEAMAN treat signed-graph conflict as instability to spectrally control; here, conflict *is* the Daimon's convergence marker.
 The Lawvere Laplacian is `Q`-enriched (contraction moduli in the quantale `Charge` itself, not real spectral gaps), needs only order + polarity (no inner product), and aperiodic step-n classification gives `O(n)` settling bounds independent of any spectral gap.

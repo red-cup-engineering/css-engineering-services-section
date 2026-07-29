@@ -6,7 +6,7 @@ A relation does not carry one Boolean; it carries two evidence sides:
 - `absurd`: no positive evidence and no negative evidence
 - `potential`: positive evidence only
 - `active`: negative evidence only
-- `active`: both positive and negative evidence
+- `stable`: both positive and negative evidence
 
 The knowledge order accumulates evidence.
 That is why joining `potential` with `active` returns `stable`: the contradiction is held as a value, not thrown away.

@@ -9,10 +9,10 @@ The JS package already has a public FOUR charge algebra, but its value names fol
 
 | Slot pair | Lean corner | Lean charge alias | JS charge name |
 | --- | --- | --- | --- |
-| `(false, false)` | `potential` | `kBot` | `absurd` |
+| `(false, false)` | `absurd` | `kBot` | `absurd` |
 | `(true, false)` | `potential` | `tTop` | `potential` |
-| `(true, true)` | `absurd` | `kTop` | `stable` |
-| `(false, true)` | `active` | `tBot` | `potential` |
+| `(true, true)` | `stable` | `kTop` | `stable` |
+| `(false, true)` | `active` | `tBot` | `active` |
 
 The receipt keeps both names instead of renaming the existing API.
 Its claim is coordinate-level parity: the articulation phase and the charge value carry the same two bits.
@@ -31,7 +31,7 @@ const cell = articulate(utterance(mark("token"), mark("claim")));
 const receipt = fourCornerCellReceipt(cell);
 
 receipt.cellReading.corner;
-// "potential"
+// "absurd"
 
 receipt.cellReading.chargeName;
 // "absurd"

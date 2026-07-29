@@ -110,8 +110,8 @@ export function frameCharge(section: SectionCarrier, contentId: string, frameId:
  * The editorial gate's two-cell verdict on one content object: gatekeeping
  * theory's object as paired charges. `cleared` is the charge at "content
  * clears-gate gate" and `rejected` is the charge at "content rejected-by-gate
- * gate" - contrary cells held side by side, where both `potential` means the
- * gate has claimed both ways and both `absurd` means it has not spoken.
+ * gate" - contrary cells held side by side, where `stable` means the gate has
+ * claimed both ways and `absurd` means it has not spoken.
  */
 export interface GateVerdict {
   readonly kind: "content.gate.verdict";

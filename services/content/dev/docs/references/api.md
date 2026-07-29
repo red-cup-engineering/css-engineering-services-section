@@ -192,7 +192,7 @@ Pure; total.
 export function documentToCells(documentText: string, opts: DocumentRelationalOptions = {}): readonly ChargedCell[]
 ```
 
-As `documentToDatoms`, lifted to relationality charged cells (each a `absurd`/told-true witness — no negative is ever asserted).
+As `documentToDatoms`, lifted to relationality charged cells (each a `potential`/told-true witness — no negative is ever asserted).
 
 ### `documentToDatoms` — function
 
@@ -1880,7 +1880,7 @@ export interface GateVerdict
 ```
 
 The editorial gate's two-cell verdict on one content object: gatekeeping theory's object as paired charges.
-`cleared` is the charge at "content clears-gate gate" and `rejected` is the charge at "content rejected-by-gate gate" - contrary cells held side by side, where both `potential` means the gate has claimed both ways and both `absurd` means it has not spoken.
+`cleared` is the charge at "content clears-gate gate" and `rejected` is the charge at "content rejected-by-gate gate" - contrary cells held side by side, where `stable` means the gate has claimed both ways and `absurd` means it has not spoken.
 
 ### `hallucinatedApiFindings` — function
 
