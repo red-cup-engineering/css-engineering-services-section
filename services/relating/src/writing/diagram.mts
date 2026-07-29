@@ -21,7 +21,7 @@ import { canonical, parse as parseJson, type JsonRecord, type JsonValue } from "
 import { eavtId, eavtRecord, type EAVT, type EAVTRecord } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
 import { define, restrict, type Projector } from "@red-cup-engineering/file-projection-kernel-service";
 import { stringProjector } from "./text.mjs";
-import { xmlProjector } from "../codecs/text/xml/core.mjs";
+import { xmlProjector } from "@red-cup-engineering/xml-file-codec-service";
 import type { PlacedCell, PlacedEdge, ShapeMorphism, SvgDataform } from "../codecs/text/xml/svg/index.mjs";
 
 export {

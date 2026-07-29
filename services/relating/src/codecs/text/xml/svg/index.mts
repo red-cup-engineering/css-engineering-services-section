@@ -23,7 +23,7 @@ import {
   diagramToSvgDataform,
   isPresentedCategoryDiagram,
 } from "../../../../writing/diagram.mjs";
-import { document, element, serialize, xmlProjector, type XmlElement, type XmlNode } from "../core.mjs";
+import { document, element, serialize, xmlProjector, type XmlElement, type XmlNode } from "@red-cup-engineering/xml-file-codec-service";
 
 /* ── morphism ───────────────────────────────────────────────────────────── */
 

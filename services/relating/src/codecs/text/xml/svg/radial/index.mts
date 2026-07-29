@@ -27,7 +27,7 @@ import {
   svgProjector,
   svgRoot,
 } from "../index.mjs";
-import { document, element, serialize, type XmlElement, type XmlNode } from "../../core.mjs";
+import { document, element, serialize, type XmlElement, type XmlNode } from "@red-cup-engineering/xml-file-codec-service";
 import type { ChargeCarrier, ChargeValueName } from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
 import { termCoincides } from "@lenticule-science/articulating/predicating/predication";
 import type { Valuation } from "@lenticule-science/articulating/predicating/positing/fiber";

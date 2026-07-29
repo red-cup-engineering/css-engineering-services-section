@@ -21,7 +21,7 @@ import {
   type CssSystem,
   type HtmlCarrierNode,
   type RenderProfile,
-} from "../codecs/text/xml/html/index.mjs";
+} from "@red-cup-engineering/xml-file-codec-service/html";
 
 export interface ProjectionMount {
   readonly name: string;

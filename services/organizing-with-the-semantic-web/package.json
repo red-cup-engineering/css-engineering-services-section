@@ -64,6 +64,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
+    "@red-cup-engineering/xml-file-codec-service": "workspace:*",
     "@red-cup-engineering/animating": "0.0.0",
     "@red-cup-engineering/knowing": "0.0.0",
     "@red-cup-engineering/producing-content": "0.0.1",
