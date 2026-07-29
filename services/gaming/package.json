@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/gaming",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "keywords": [
@@ -53,9 +53,9 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@lenticule-science/articulating": "workspace:*",
+    "@lenticule-science/articulating": "0.1.0",
     "@red-cup-engineering/relating": "0.0.0",
-    "@red-cup-engineering/animating": "0.0.0",
+    "@red-cup-engineering/animating": "0.0.2",
     "@red-cup-engineering/communicating": "0.0.0",
     "@red-cup-engineering/playing": "0.0.1"
   },

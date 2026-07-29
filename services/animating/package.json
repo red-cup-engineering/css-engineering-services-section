@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/animating",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -33,8 +33,8 @@
     "package.json"
   ],
   "dependencies": {
-    "@red-cup-engineering/json-file-codec-service": "workspace:*",
-    "@lenticule-science/articulating": "workspace:*",
+    "@red-cup-engineering/json-file-codec-service": "0.1.0",
+    "@lenticule-science/articulating": "0.1.0",
     "@lenticule-science/rwil-rdf-projection-service": "1.0.2",
     "@red-cup-engineering/communicating": "0.0.0",
     "@red-cup-engineering/knowing": "0.0.0",
