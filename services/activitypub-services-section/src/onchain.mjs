@@ -187,8 +187,9 @@ export function createOnchainOutbox({ client, actor }) {
   });
 }
 
-export function createOnchainMessageQueue({ client, actor, name }) {
+export function createOnchainMessageQueue({ client, actor, name, pollMilliseconds = 1000 }) {
   const collection = new OnchainCollection(client, ["activitypub", requiredText(actor, "ActivityPub actor namespace"), "queue", requiredText(name, "queue name")]);
+  if (!Number.isSafeInteger(pollMilliseconds) || pollMilliseconds < 1) throw new TypeError("onchain queue poll interval must be a positive integer");
   let sequence = 0;
   return Object.freeze({
     nativeRetrial: true,
@@ -196,16 +197,20 @@ export function createOnchainMessageQueue({ client, actor, name }) {
       const id = identifier({ message, sequence: sequence++ });
       await collection.put(id, { message, status: "pending" });
     },
-    async listen(handler) {
-      for (const id of await collection.index()) {
-        const record = await collection.get(id);
-        if (record?.status !== "pending") continue;
-        try {
-          await handler(record.message);
-          await collection.put(id, { ...record, status: "done" });
-        } catch {
-          // A pending record stays observable for the next external trigger.
+    async listen(handler, options = {}) {
+      while (!options.signal?.aborted) {
+        for (const id of await collection.index()) {
+          const record = await collection.get(id);
+          if (record?.status !== "pending") continue;
+          try {
+            await handler(record.message);
+            await collection.put(id, { ...record, status: "done" });
+          } catch {
+            // A pending record stays observable for a later polling pass.
+          }
         }
+        if (options.signal?.aborted) break;
+        await new Promise((resolve) => setTimeout(resolve, pollMilliseconds));
       }
     },
     async getDepth() {
