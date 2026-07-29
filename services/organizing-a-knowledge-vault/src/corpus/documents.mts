@@ -1,16 +1,17 @@
 /**
- * corpus/documents  -  reading the corpus through relating's content reader + markdown codec.
+ * corpus/documents  -  reading the corpus through Relating's content reader and the proof-pathed Markdown codec.
  *
  * knowing re-enacts NONE of the I/O: the fs walking and confinement are relating's
  * (`@red-cup-engineering/relating/ledger`  -  the one effectful binding), and decoding is
- * relating's markdown codec. This package names the result as corpus carriers. A document is a
+ * the proof-pathed Markdown codec. This package names the result as corpus carriers. A document is a
  * holography `Resource` decoded by `markdownDataform`; listing and gathering are the
  * reader's confined enumeration. (The former hand-rolled fs walk + the `find` path-scan are
  * gone  -  reading the corpus belongs to relating's capability surface; `find` is proof search.)
  */
 import { confine, readContentResource, listContentEntries, readContentTree } from "@red-cup-engineering/relating/ledger";
 import { statSync } from "node:fs";
-import { markdown, type JsonValue } from "@red-cup-engineering/relating/writing";
+import { markdown } from "@red-cup-engineering/relating/writing";
+import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import type { Resource } from "@red-cup-engineering/relating/projections";
 import type { CorpusDocument, Listing, ListEntry } from "./carriers.mjs";
 import { corpusListLimit, corpusReadBounds } from "./bounds.mjs";
@@ -19,7 +20,7 @@ import { knowledgeVaultPathAllowedInRoot, normalizeKnowledgeVaultPath } from "./
 export type { Resource, CorpusDocument, Listing, ListEntry };
 
 /**
- * read : address  -  the document decoded by relating's markdown codec. The addressed `.md`
+ * read : address  -  the document decoded by the proof-pathed Markdown codec. The addressed `.md`
  * is read as a holography Resource and run through `markdownDataform`, so the carrier is the
  * *decoded* document (subject, frontmatter, body, byte length, conformance verdict,
  * and the EAVT assertions the codec derives). The corpus-relative path is the codec witness.

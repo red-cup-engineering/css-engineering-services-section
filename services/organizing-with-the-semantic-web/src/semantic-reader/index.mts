@@ -1,5 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
+import { parseMarkdown } from "@red-cup-engineering/markdown-file-codec-service";
+import { resolveMarkdownFilePath } from "@red-cup-engineering/markdown-file-reading-service";
 import { canonical, parseLines, requireJsonValue, serializeLines } from "@red-cup-engineering/relating/codecs";
 import { deriveLessons, type DerivedLesson, type LessonEvidence } from "@red-cup-engineering/knowing/learning";
 
@@ -262,20 +264,8 @@ export function loadFinite(root: string, subject: string): FiniteAlgebra | null 
 
 export function parseFrontMatter(value: string): { frontMatter: Record<string, unknown>; body: string } {
   const text = String(value ?? "");
-  if (!text.startsWith("---\n")) return { frontMatter: {}, body: text };
-  const end = text.indexOf("\n---", 4);
-  if (end === -1) return { frontMatter: {}, body: text };
-  const frontMatter: Record<string, unknown> = {};
-  for (const line of text.slice(4, end).split("\n")) {
-    const match = /^([^:#]+):\s*(.*)$/.exec(line);
-    if (!match) continue;
-    const key = match[1]!.trim();
-    const raw = match[2]!.trim();
-    frontMatter[key] = raw.startsWith("[") && raw.endsWith("]")
-      ? raw.slice(1, -1).split(",").map((part) => part.trim()).filter(Boolean)
-      : raw;
-  }
-  return { frontMatter, body: text.slice(end + 4).replace(/^\n/, "") };
+  const parsed = parseMarkdown(text);
+  return { frontMatter: { ...(parsed.frontmatter ?? {}) }, body: parsed.body };
 }
 
 export function markdownAssertions(subject: string, markdown: string, citation = `victor:${subject}`): MarkdownDocument {
@@ -289,7 +279,8 @@ export function markdownAssertions(subject: string, markdown: string, citation =
 
 export function readMarkdownFile(path: string, options: { subject?: string; citation?: string } = {}): MarkdownDocument {
   const subject = options.subject ?? basename(path).replace(/\.[^.]+$/, "");
-  return markdownAssertions(subject, readFileSync(path, "utf8"), options.citation ?? `victor:${path}`);
+  const admitted = resolveMarkdownFilePath({ root: dirname(path), path: basename(path) });
+  return markdownAssertions(subject, readFileSync(admitted.path, "utf8"), options.citation ?? `victor:${admitted.path}`);
 }
 
 export function settleMarkdown(subject: string, markdown: string, options: SettleOptions & { citation?: string } = {}): FiniteAlgebra {

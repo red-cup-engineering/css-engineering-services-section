@@ -8,9 +8,19 @@
  * and its conformance is a four-valued charge, not a boolean lint.
  */
 import { restrict, type Projector } from "@red-cup-engineering/file-projection-kernel-service";
-import { canonical, parse as parseJson, requireJsonValue, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
+import { canonical, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
+import {
+  createMarkdown,
+  parseMarkdown,
+  type CreateMarkdownOptions,
+  type MarkdownFrontmatterFormat,
+  type MarkdownParseResult,
+} from "@red-cup-engineering/markdown-file-codec-service";
 import { type JsonSchema, type SchemaAssertion, unfoldSchema } from "./schema.mjs";
 import { stringProjector } from "./text.mjs";
+
+export { createMarkdown, parseMarkdown };
+export type { CreateMarkdownOptions, MarkdownFrontmatterFormat, MarkdownParseResult };
 
 const extensionOf = (path: string): string => {
   const name = path.split("/").filter(Boolean).at(-1) ?? path;
@@ -18,7 +28,6 @@ const extensionOf = (path: string): string => {
   return index <= 0 ? "" : name.slice(index).toLowerCase();
 };
 
-export type MarkdownFrontmatterFormat = "yaml" | "toml" | null;
 export type FrontmatterModality = "MUST" | "SHOULD" | "MAY";
 export type FrontmatterCharge = "potential" | "active" | "absurd";
 
@@ -44,12 +53,6 @@ export type FrontmatterConformance = Readonly<{
   readonly format: MarkdownFrontmatterFormat;
   readonly charges: readonly FrontmatterChargeEntry[];
   readonly notes: readonly string[];
-}>;
-
-export type MarkdownParseResult = Readonly<{
-  readonly frontmatter: Readonly<Record<string, JsonValue>> | null;
-  readonly format: MarkdownFrontmatterFormat;
-  readonly body: string;
 }>;
 
 export type MarkdownDataform = Readonly<{
@@ -98,73 +101,6 @@ export const markdownProjector: Projector<JsonValue> = restrict(stringProjector,
   },
 });
 
-export type CreateMarkdownOptions = Readonly<{
-  /** The markdown body; defaults to the view's body attribute (see `bodyKey`). */
-  readonly body?: string;
-  /** Which attribute carries the body, kept out of the frontmatter. Default `"body"`. */
-  readonly bodyKey?: string;
-}>;
-
-/** Project one entity view to a markdown document: scalar attributes become
- *  `key: value` frontmatter lines, set-valued (array) attributes become YAML
- *  block lists, and the body attribute becomes the markdown body. The inverse
- *  of `markdownDataform`; emits no frontmatter fences when nothing remains.
- *
- * @example
- * ```js
- * import { createMarkdown, markdownDataform } from "@red-cup-engineering/relating/writing";
- *
- * const text = createMarkdown({
- *   slug: "relating",
- *   title: "Relating",
- *   body: "# Relating\n",
- * });
- *
- * markdownDataform(text, { witness: "README.md" }).subject; // "relating"
- * ```
- */
-export function createMarkdown(view: Readonly<Record<string, JsonValue>>, opts: CreateMarkdownOptions = {}): string {
-  const bodyKey = opts.bodyKey ?? "body";
-  const rawBody = opts.body ?? view[bodyKey];
-  const body = typeof rawBody === "string" ? rawBody : "";
-  const lines: string[] = [];
-  for (const key of Object.keys(view).sort()) {
-    if (key === bodyKey) continue;
-    const value = view[key];
-    if (value === undefined || value === null) continue;
-    if (Array.isArray(value)) {
-      if (value.length === 0) continue;
-      lines.push(`${key}:`);
-      for (const item of value) lines.push(`  - ${serializeFrontmatterScalar(item)}`);
-    } else {
-      lines.push(`${key}: ${serializeFrontmatterScalar(value)}`);
-    }
-  }
-  if (lines.length === 0) return body;
-  return `---\n${lines.join("\n")}\n---\n${body}`;
-}
-
-/** A frontmatter scalar: emitted plain when it round-trips through `parseScalar`
- *  as the same string, JSON-quoted otherwise (so `"true"`, `"3"`, and strings
- *  with structural characters never drift type on the read leg). */
-function serializeFrontmatterScalar(value: JsonValue): string {
-  if (typeof value === "string") return isPlainScalar(value) ? value : JSON.stringify(value);
-  return JSON.stringify(value);
-}
-
-function isPlainScalar(value: string): boolean {
-  if (value === "" || value !== value.trim()) return false;
-  if (/[\n:#]/.test(value)) return false;
-  if (/^["'[\]{}\-&*!|>%@`,]/.test(value)) return false;
-  if (/^(true|false|null)$/.test(value)) return false;
-  if (/^-?\d+(\.\d+)?$/.test(value)) return false;
-  try {
-    JSON.parse(value);
-    return false;
-  } catch {
-    return true;
-  }
-}
 
 export const markdownDocumentSchemaFragment: JsonSchema = Object.freeze({
   type: "object",
@@ -242,21 +178,6 @@ export const documentTypeDefinitions: readonly DocumentTypeDefinition[] = Object
   }),
 ]);
 
-export function parseMarkdown(text: string): MarkdownParseResult {
-  const yamlMatch = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
-  if (yamlMatch) {
-    return Object.freeze({
-      frontmatter: Object.freeze(parseYamlFrontmatter(yamlMatch[1] ?? "")),
-      format: "yaml" as const,
-      body: text.slice(yamlMatch[0].length),
-    });
-  }
-  const tomlMatch = text.match(/^\+\+\+\r?\n[\s\S]*?\r?\n\+\+\+\r?\n?/);
-  if (tomlMatch) {
-    return Object.freeze({ frontmatter: Object.freeze({}), format: "toml" as const, body: text.slice(tomlMatch[0].length) });
-  }
-  return Object.freeze({ frontmatter: null, format: null, body: text });
-}
 
 export function frontmatterConformance(text: string, opts: { readonly witness?: string } = {}): FrontmatterConformance {
   const witness = opts.witness ?? "frontmatter";
@@ -352,130 +273,4 @@ export function allDocumentTypeAssertions(opts: { readonly base?: string; readon
 function frontmatterRowValue(value: JsonValue): JsonValue {
   if (value !== null && typeof value === "object") return canonical(value);
   return value;
-}
-
-function parseYamlFrontmatter(src: string): Record<string, JsonValue> {
-  const lines = src.split(/\r?\n/);
-  const out: Record<string, JsonValue> = {};
-  for (let index = 0; index < lines.length;) {
-    const line = lines[index]!;
-    if (line.trim() === "") {
-      index++;
-      continue;
-    }
-    const match = line.match(/^([A-Za-z0-9_-]+):(?:\s*(.*))?$/);
-    if (!match) throw new TypeError(`frontmatter: expected key at line ${index + 1}`);
-    const key = match[1]!;
-    const rest = match[2] ?? "";
-    if (rest.trim() !== "") {
-      out[key] = parseScalar(rest);
-      index++;
-      continue;
-    }
-    const block = collectIndented(lines, index + 1);
-    out[key] = parseYamlBlock(block.lines);
-    index = block.next;
-  }
-  return requireJsonValue(out, "frontmatter") as Record<string, JsonValue>;
-}
-
-function collectIndented(lines: readonly string[], start: number): { readonly lines: readonly string[]; readonly next: number } {
-  const block: string[] = [];
-  let index = start;
-  while (index < lines.length) {
-    const line = lines[index]!;
-    if (line.trim() === "") {
-      block.push(line);
-      index++;
-      continue;
-    }
-    if (!line.startsWith("  ")) break;
-    block.push(line);
-    index++;
-  }
-  return { lines: block, next: index };
-}
-
-function parseYamlBlock(lines: readonly string[]): JsonValue {
-  const meaningful = lines.filter((line) => line.trim() !== "");
-  if (meaningful.length === 0) return {};
-  return parseYamlNode(meaningful, lineIndent(meaningful[0]!));
-}
-
-function parseYamlNode(lines: readonly string[], indent: number): JsonValue {
-  const meaningful = lines.filter((line) => line.trim() !== "");
-  if (meaningful.length === 0) return {};
-  return meaningful[0]!.slice(indent).startsWith("- ")
-    ? parseYamlArray(meaningful, indent)
-    : parseYamlMapping(meaningful, indent);
-}
-
-function parseYamlArray(lines: readonly string[], indent: number): JsonValue {
-  const items: JsonValue[] = [];
-  for (let index = 0; index < lines.length;) {
-    const line = lines[index]!;
-    if (lineIndent(line) !== indent || !line.slice(indent).startsWith("- ")) {
-      throw new TypeError("frontmatter: expected array item");
-    }
-    const rest = line.slice(indent + 2);
-    const itemLines: string[] = [];
-    index++;
-    while (index < lines.length && !(lineIndent(lines[index]!) === indent && lines[index]!.slice(indent).startsWith("- "))) {
-      itemLines.push(lines[index]!);
-      index++;
-    }
-    if (rest.trim() === "") {
-      items.push(parseYamlNode(itemLines, indent + 2));
-      continue;
-    }
-    if (/^[A-Za-z0-9_-]+:\s*/.test(rest)) {
-      items.push(parseYamlNode([`${" ".repeat(indent + 2)}${rest}`, ...itemLines], indent + 2));
-      continue;
-    }
-    if (itemLines.length > 0) throw new TypeError("frontmatter: scalar array item cannot have nested fields");
-    items.push(parseScalar(rest));
-  }
-  return requireJsonValue(items, "frontmatter array");
-}
-
-function parseYamlMapping(lines: readonly string[], indent: number): JsonValue {
-  const record: Record<string, JsonValue> = {};
-  for (let index = 0; index < lines.length;) {
-    const line = lines[index]!;
-    const prefix = " ".repeat(indent);
-    if (!line.startsWith(prefix) || lineIndent(line) !== indent) throw new TypeError("frontmatter: expected nested mapping field");
-    const match = line.slice(indent).match(/^([A-Za-z0-9_-]+):(?:\s*(.*))?$/);
-    if (!match) throw new TypeError("frontmatter: expected nested mapping field");
-    const key = match[1]!;
-    const rest = match[2] ?? "";
-    index++;
-    if (rest.trim() !== "") {
-      record[key] = parseScalar(rest);
-      continue;
-    }
-    const child: string[] = [];
-    while (index < lines.length && lineIndent(lines[index]!) > indent) {
-      child.push(lines[index]!);
-      index++;
-    }
-    record[key] = parseYamlNode(child, indent + 2);
-  }
-  return requireJsonValue(record, "frontmatter nested mapping");
-}
-
-function lineIndent(line: string): number {
-  return line.match(/^ */)?.[0].length ?? 0;
-}
-
-function parseScalar(raw: string): JsonValue {
-  const trimmed = raw.trim();
-  if (trimmed === "") return "";
-  try {
-    return requireJsonValue(parseJson(trimmed), "frontmatter scalar");
-  } catch {
-    if (trimmed === "true") return true;
-    if (trimmed === "false") return false;
-    if (/^-?\d+(\.\d+)?$/.test(trimmed)) return Number(trimmed);
-    return trimmed.replace(/^["']|["']$/g, "");
-  }
 }

@@ -9,15 +9,14 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { confine } from "@red-cup-engineering/relating/ledger";
+import { createMarkdown, parseMarkdown } from "@red-cup-engineering/markdown-file-codec-service";
+import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import {
-  createMarkdown,
   documentTypeDefinitions,
   documentTypeFragment,
   markdownDocumentSchemaFragment,
-  markdown,
   projectSchemaAssertions,
   schema,
-  type JsonValue,
   type JsonSchema,
   type SchemaAssertion,
 } from "@red-cup-engineering/relating/writing";
@@ -193,7 +192,7 @@ export function auditDocumentType(root: string, relative: string, options: Audit
   if (pattern !== null && !new RegExp(pattern).test(file)) violations.push(`filename ${JSON.stringify(file)} does not match x-trc-filename ${pattern}`);
   const placed = matchPlacement(stringField(resolved.schema, "x-trc-placement"), resourcePath);
   if (placed === null) violations.push(`directory does not match x-trc-placement ${String(resolved.schema["x-trc-placement"])}`);
-  const parsed = markdown.parseMarkdown(readFileSync(full, "utf8"));
+  const parsed = parseMarkdown(readFileSync(full, "utf8"));
   if (parsed.frontmatter === null) violations.push("no YAML frontmatter");
   else violations.push(...validateFrontmatter(resolved.schema, parsed.frontmatter).map((error) => `frontmatter: ${error}`));
   return Object.freeze({

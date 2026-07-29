@@ -9,13 +9,13 @@
  * document is `slug/slug.md`. Resolution is tolerant  -  a topic is the meaningful proof path
  * of slugs and the resolver fills the `content/` joints.
  *
- * This is the navigation logic for the persistent memorystore; the fs and decoding are relating's  -  directory
- * listing via `listContentEntries`, document reading via `readContentResource`, frontmatter
- * and body via the markdown codec. knowing re-enacts no I/O. Reads stay SCOPED: a node's
+ * This is the navigation logic for the persistent memorystore. Relating owns directory
+ * listing via `listContentEntries` and document reading via `readContentResource`; the
+ * proof-pathed Markdown codec owns frontmatter and body decoding. knowing re-enacts no I/O. Reads stay SCOPED: a node's
  * ancestry (walk up) and its generated frontier (one listing), never a full corpus walk.
  */
 import { listContentEntries, readContentResource } from "@red-cup-engineering/relating/ledger";
-import { markdown } from "@red-cup-engineering/relating/writing";
+import { parseMarkdown } from "@red-cup-engineering/markdown-file-codec-service";
 import type { CorpusNode } from "./carriers.mjs";
 import { KNOWLEDGE_VAULT_SUPPORT_PREFIXES } from "./root.mjs";
 
@@ -91,13 +91,13 @@ function topicSteps(topic: string): readonly string[] {
 }
 
 /**
- * Read the frontmatter facts of a node's `slug/slug.md` through relating's markdown codec.
+ * Read the frontmatter facts of a node's `slug/slug.md` through the proof-pathed Markdown codec.
  * the corpus's representation boundary, not a hand-rolled regex.
  */
 function readFrontmatter(root: string, rel: string, slug: string): Pick<CorpusNode, "title" | "description" | "tags"> {
   const text = readText(root, joinRel(rel, `${slug}.md`));
   if (text === null) return {};
-  const frontmatter = markdown.parseMarkdown(text).frontmatter;
+  const frontmatter = parseMarkdown(text).frontmatter;
   if (frontmatter === null) return {};
   const facts: { title?: string; description?: string; tags?: readonly string[] } = {};
   const title = scalarString(frontmatter["title"]);
@@ -230,12 +230,12 @@ export function references(root: string, topic: string): readonly CorpusNode[] {
   return Object.freeze(out);
 }
 
-/** Read the canonical document body (sans frontmatter) of a node, if present  -  the body projected by relating's markdown codec. */
+/** Read the canonical document body (sans frontmatter) of a node, if present  -  the body projected by the proof-pathed Markdown codec. */
 export function document(root: string, topic: string): string | null {
   const resolved = resolveNode(root, topic);
   if (resolved === null) return null;
   const text = readText(root, joinRel(resolved.path, `${resolved.node.slug}.md`));
-  return text === null ? null : markdown.parseMarkdown(text).body;
+  return text === null ? null : parseMarkdown(text).body;
 }
 
 /** Raised when a topic does not resolve to a corpus node; the boundary reports it as 4xx. */

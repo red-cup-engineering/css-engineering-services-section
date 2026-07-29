@@ -30,6 +30,7 @@ export {
   markdownProjector,
   markdownDataform,
   createMarkdown,
+  parseMarkdown,
   markdownDocumentSchemaFragment,
   documentTypeDefinitions,
   documentTypeFragment,
@@ -38,6 +39,7 @@ export {
   type MarkdownDataform,
   type DocumentTypeDefinition,
   type CreateMarkdownOptions,
+  type MarkdownParseResult,
 } from "./markdown.mjs";
 
 export * as diagram from "./diagram.mjs";

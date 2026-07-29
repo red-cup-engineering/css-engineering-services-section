@@ -7,7 +7,7 @@
  * as a memorystore carrier; downstream packages own concrete filepath admission.
  *
  * It depends on no package but `@red-cup-engineering/relating`: document parsing
- * comes from relating's markdown codec (`parseMarkdown`), and settlement from
+ * comes from the proof-pathed Markdown codec (`parseMarkdown`), and settlement from
  * `induceRelation` + `relateRelations`. The genre, frontmatter-legibility
  * conformance, and internal-reference helpers are ported into knowing (below) — the
  * capability lives here. knowing writes no settlement engine.
@@ -48,11 +48,11 @@ import type { Resource } from "@red-cup-engineering/relating/projections";
 // (the settling derivation).
 
 // ── conformance vocabulary, ported into knowing (no @red-cup-engineering/content dependency) ──
-// knowing reads markdown frontmatter through relating's markdown codec and applies
+// knowing reads markdown frontmatter through the proof-pathed Markdown codec and applies
 // its own legibility conformance, genre, and internal-reference helpers — the
 // capability lives here, depending on no package but @red-cup-engineering/relating.
 
-/** A frontmatter record: relating's markdown codec frontmatter shape. */
+/** A frontmatter record: the proof-pathed Markdown codec frontmatter shape. */
 type FrontMatterRecord = Readonly<Record<string, JsonValue>>;
 
 /** A document's genre: a single classifying facet, or null when unstated. */
@@ -83,7 +83,7 @@ function genreFacet(frontMatter: FrontMatterRecord): GenreFacet {
 }
 
 /**
- * Read a document's conformance findings from relating's markdown codec verdict —
+ * Read a document's conformance findings from the proof-pathed Markdown codec verdict —
  * the codec's `frontmatterConformance`, not a hand-rolled title check. A failed MUST
  * (non-conformant frontmatter) is an error; each SHOULD note is a warning; a missing
  * frontmatter title is the one knowing-specific legibility warning.

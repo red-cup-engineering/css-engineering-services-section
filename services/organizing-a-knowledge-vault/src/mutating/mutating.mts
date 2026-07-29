@@ -1,8 +1,7 @@
 /**
- * mutating  -  the document-write surface, DERIVED from @red-cup-engineering/relating's
- * markdown codec.
+ * mutating  -  the document-write surface derived from the proof-pathed Markdown codec.
  *
- * Simple document writes use relating's markdown codec; content-corpus document
+ * Simple document writes use the proof-pathed Markdown codec; content-corpus document
  * preparation and updates use @red-cup-engineering/content's frontmatter/reference codecs.
  * Every filesystem operation is DRY-RUN BY DEFAULT: it
  * returns the prepared `{ path, text }` and writes only when `write` is set, and every
@@ -22,7 +21,8 @@ import {
   setReferences,
   type CslItem,
 } from "@red-cup-engineering/content/codecs";
-import { createMarkdown, type JsonValue } from "@red-cup-engineering/relating/writing";
+import { createMarkdown } from "@red-cup-engineering/markdown-file-codec-service";
+import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import { confine } from "@red-cup-engineering/relating/ledger";
 import { readDocument } from "../corpus/documents.mjs";
 import { knowledgeVaultAllowedPrefixes, knowledgeVaultPathAllowedInRoot } from "../corpus/root.mjs";
@@ -71,7 +71,7 @@ function place(root: string, relative: string, text: string): void {
 
 /**
  * prepare/create a document: encode `{ path, title, tags, body }` into a
- * frontmatter document via relating's markdown codec. Dry-run unless `write` is true.
+ * frontmatter document via the proof-pathed Markdown codec. Dry-run unless `write` is true.
  */
 export function createDocument(root: string, input: Readonly<Record<string, unknown>>, write: boolean): PreparedDocument {
   const relative = typeof input["path"] === "string" ? input["path"].trim() : "";
@@ -86,7 +86,7 @@ export function createDocument(root: string, input: Readonly<Record<string, unkn
 
 /**
  * Update a document's frontmatter: decode the existing document, merge the patch
- * over its frontmatter (via relating's markdown codec), re-encode. Dry-run unless `write`.
+ * over its frontmatter (via the proof-pathed Markdown codec), re-encode. Dry-run unless `write`.
  */
 export function updateFrontmatter(root: string, input: Readonly<Record<string, unknown>>, write: boolean): PreparedDocument {
   const relative = typeof input["path"] === "string" ? input["path"].trim() : "";

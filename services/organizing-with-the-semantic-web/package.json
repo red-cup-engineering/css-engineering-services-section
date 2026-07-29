@@ -64,6 +64,8 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
+    "@red-cup-engineering/markdown-file-codec-service": "workspace:*",
+    "@red-cup-engineering/markdown-file-reading-service": "workspace:*",
     "@red-cup-engineering/xml-file-codec-service": "workspace:*",
     "@red-cup-engineering/animating": "0.0.0",
     "@red-cup-engineering/knowing": "0.0.0",

@@ -29,6 +29,8 @@
     "package.json"
   ],
   "dependencies": {
+    "@red-cup-engineering/json-file-codec-service": "workspace:*",
+    "@red-cup-engineering/markdown-file-codec-service": "workspace:*",
     "@red-cup-engineering/content": "0.0.1",
     "@red-cup-engineering/knowing": "0.0.0",
     "@red-cup-engineering/relating": "0.0.0"

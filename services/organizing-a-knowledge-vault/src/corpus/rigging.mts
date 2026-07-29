@@ -7,7 +7,7 @@
  */
 import { carrierFrom } from "@red-cup-engineering/relating";
 import { carrierToTerm, type Tm } from "@red-cup-engineering/relating";
-import { jsonResource } from "@red-cup-engineering/relating/writing";
+import { jsonResource } from "@red-cup-engineering/json-file-codec-service";
 import type { KnowledgeVaultRoot } from "./carriers.mjs";
 import { knowledgeVaultPathAllowedInRoot, normalizeKnowledgeVaultPath } from "./root.mjs";
 

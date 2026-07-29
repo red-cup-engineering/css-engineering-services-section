@@ -10,7 +10,7 @@
 // judgment — a window over the entities of the view — not a hidden filter, in
 // the sense of geometry/spatial/cut-and-project. Pure: ./store does the I/O.
 
-import { createMarkdown } from "../writing/markdown.mjs";
+import { createMarkdown } from "@red-cup-engineering/markdown-file-codec-service";
 import type { EntityView, StateView } from "./state.mjs";
 
 /**
