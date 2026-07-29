@@ -98,7 +98,14 @@ export async function serveActivityPubProvider(options = {}) {
   const server = serve({
     hostname,
     port,
-    fetch: (request) => provider.fetch(request),
+    fetch: async (request) => {
+      try {
+        return await provider.fetch(request);
+      } catch (error) {
+        process.stderr.write(`ActivityPub request failed: ${(error instanceof Error ? error.stack ?? error.message : String(error)).slice(0, 8000)}\n`);
+        throw error;
+      }
+    },
     overrideGlobalObjects: false,
   });
   return Object.freeze({ provider, server, close: () => new Promise((resolve) => server.close(resolve)) });
