@@ -54,6 +54,7 @@ import {
   documentTypeAuditCarrier,
   knowledgeVaultRoot,
   knowledgeVaultRootCarrier,
+  corpusReadingCarrier,
   corpusReadBounds,
   resolveKnowledgeVaultRoot,
 } from "./corpus/index.mjs";
@@ -504,10 +505,10 @@ export const organizeCorpusAction: Action = action({
   inputFormat: "string",
   outputFormat: "json",
   options: ["path", "limit", "maxScan", "identity"],
-  summary: "Organize a corpus region through @red-cup-engineering/organizing.",
-  description: "Domain: a corpus region path (empty = root). The corpus is read as a three-face social boundary: socializing = membership, computing = markdown conformance, gaming = tags/placement predicates. Codomain: @red-cup-engineering/organizing's organization carrier.",
+  summary: "Read a bounded corpus region as its three-face social boundary.",
+  description: "Domain: a corpus region path (empty = root). Codomain: a bounded corpus reading whose socializing face carries membership, computing face carries Markdown conformance, and gaming face carries tags and placement predicates.",
   domainSchema: Object.freeze({ type: "string", description: "a corpus region path (empty = root)" }),
-  codomainSchema: Object.freeze({ $ref: "organizing/organization" }),
+  codomain: corpusReadingCarrier,
   run: (input: JsonValue, args: JsonRecord): JsonValue => {
     const { root, region, limit, maxScan } = memoryRegion(input, args);
     const identity = typeof args["identity"] === "string" && args["identity"].trim() !== "" ? args["identity"].trim() : undefined;

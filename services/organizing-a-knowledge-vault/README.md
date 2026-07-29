@@ -1,6 +1,6 @@
-# @emsenn/organizing-a-knowledge-vault
+# @red-cup-engineering/organizing-a-knowledge-vault
 
-The organizing downstream specialization for mounted `content/` knowledge-vault trees.
+Corpus admission, reading, and projection for mounted `content/` knowledge-vault trees.
 
 This package owns the corpus boundary for a knowledge vault: modeling the expected
 root affordances, resolving topic proof paths, browsing generated frontiers,
@@ -9,7 +9,7 @@ addressing, preparing frontmatter documents, projecting topic health/inspection/
 gap/concept-map carriers, and admitting bounded corpus regions as knowing
 memory/research.
 
-`@emsenn/knowing` keeps the epistemic core: proof search, concept formation, memory,
+`@red-cup-engineering/knowing` keeps the epistemic core: proof search, concept formation, memory,
 and research carriers. This package specializes those capabilities to a concrete
 filepath-tree law for knowledge vaults. In this package, the corpus is the
 persistent memorystore.
@@ -27,13 +27,14 @@ When no explicit `--path` is provided, `resolveKnowledgeVaultRoot` walks up from
 the current workspace context and mounts the nearest workspace `content/`
 directory. `ORGANIZING_KNOWLEDGE_VAULT_PATH` overrides that default.
 
-`@emsenn/organizing` supplies the gluing read: `organize-corpus` reads a bounded
-corpus region as a three-face social boundary (membership, markdown conformance,
-tags/placement) and returns an `organizing.organization`.
+This package owns the bounded corpus read: `organize-corpus` reads a corpus region
+as a three-face boundary (membership, Markdown conformance, tags/placement) and
+returns an `organizing.knowledge-vault.corpus-reading` carrier. A corpus reading
+does not invent an ambient organization.
 
 The `./addressing` subpath exposes `findAddressedName` and `grepAddressedText`
 for bounded, confined corpus lookup. These are concrete filepath-corpus helpers;
-`@emsenn/knowing` receives already gathered resources as memory.
+`@red-cup-engineering/knowing` receives already gathered resources as memory.
 
 The `./corpus` subpath owns corpus reading, cataloging, and document-type law.
 Its direct read APIs and memory-backed actions use the same bounded-read law:
@@ -84,6 +85,6 @@ echo topic/docs/dev/specification.md | organize-knowledge-vault audit-document-t
 
 The document-type workflow is the corpus-specific typed resource law: claim
 schema fragments into a confined assertion log, project that log into a JSON
-Schema using `@emsenn/relating/codecs/schema`, realize markdown through
-`@emsenn/relating/codecs/markdown`, and audit existing corpus resources against
+Schema through `@red-cup-engineering/relating/writing`, realize Markdown through
+`@red-cup-engineering/markdown-file-codec-service`, and audit existing corpus resources against
 filename, placement, and frontmatter law.

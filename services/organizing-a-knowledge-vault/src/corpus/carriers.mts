@@ -93,6 +93,31 @@ export interface KnowledgeVaultRoot {
   readonly allowedPrefixes: readonly string[];
 }
 
+export const corpusReadingSchema = {
+  $id: "organizing/knowledge-vault/corpus/reading",
+  title: "CorpusReading",
+  description: "A bounded reading of a knowledge-vault corpus as its socializing, computing, and gaming boundary faces.",
+  type: "object",
+  required: ["kind", "identity", "boundary"],
+  properties: {
+    kind: { const: "organizing.knowledge-vault.corpus-reading" },
+    identity: { type: "string", minLength: 1 },
+    boundary: {
+      type: "object",
+      required: ["socializing", "computing", "gaming"],
+      properties: {
+        socializing: { type: "string" },
+        computing: { type: "string" },
+        gaming: { type: "string" },
+      },
+      additionalProperties: false,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const corpusReadingCarrier = carrierFrom(corpusReadingSchema);
+
 const catalogDocumentSchema = { $id: "organizing/knowledge-vault/corpus/catalog-document", title: "CatalogDocument", description: "One cataloged corpus document: frontmatter facets plus filesystem metadata.", additionalProperties: false, type: "object", required: ["path", "title", "description", "authors", "tags", "topic", "modifiedAt", "bytes"], properties: { path: { description: "the corpus-relative markdown resource path", type: "string" }, title: { description: "the display title derived from frontmatter or path", type: "string" }, description: { description: "the frontmatter description/summary/abstract, when present", type: "string" }, authors: { description: "normalized author/creator values", type: "array", items: { type: "string" } }, tags: { description: "normalized tag/topic values", type: "array", items: { type: "string" } }, topic: { description: "the broad topic inferred from the corpus path", type: "string" }, modifiedAt: { description: "the resource mtime as an ISO timestamp", type: "string" }, bytes: { minimum: 0, description: "the UTF-8 byte length of the resource", type: "integer" } } } as const;
 
 export const catalogDocumentCarrier = carrierFrom(catalogDocumentSchema);

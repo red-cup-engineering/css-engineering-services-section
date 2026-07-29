@@ -5,7 +5,8 @@ import path from "node:path";
 import { execFileSync, spawnSync } from "node:child_process";
 import test from "node:test";
 
-import { actionMcpHandle, actionMcpPrompts, actionMcpResources, actionMcpTools, actionOpenApi, induceBins } from "@red-cup-engineering/relating/running";
+import { actionMcpHandle, induceBins } from "@red-cup-engineering/relating/running";
+import { actionMcpPrompts, actionMcpResources, actionMcpTools, actionOpenApi } from "@red-cup-engineering/relating/projections";
 import {
   actions,
   resources,
@@ -46,6 +47,7 @@ import {
   collectMarkdownPaths,
   corpusDocumentKind,
   corpusDocumentCarrier,
+  corpusReadingCarrier,
   knowledgeVaultRig,
   knowledgeVaultRigCarrier,
   knowledgeVaultRigging,
@@ -884,7 +886,7 @@ test("document type catalog builds, realizes, and audits markdown placement law"
   assert.ok(bad.violations.some((violation) => violation.includes("frontmatter")));
 });
 
-test("corpus organizes through @red-cup-engineering/organizing", (t) => {
+test("corpus reads a bounded three-face boundary without inventing an ambient organization", (t) => {
   const root = fixture();
   t.after(() => rmSync(root, { recursive: true, force: true }));
 
@@ -894,10 +896,11 @@ test("corpus organizes through @red-cup-engineering/organizing", (t) => {
   assert.match(boundary.gaming, /mark\/mark\.md\|tag:mark/);
 
   const organization = organizeCorpus(root, "", { identity: "fixture-corpus", limit: "10" });
-  assert.equal(organization.kind, "organizing.organization");
+  assert.equal(organization.kind, "organizing.knowledge-vault.corpus-reading");
   assert.equal(organization.identity, "fixture-corpus");
-  assert.equal(organization.settledBelow, true);
-  assert.equal(organization.openAbove, true);
+  assert.equal(organization.boundary.socializing, boundary.socializing);
+  assert.equal(organization.boundary.computing, boundary.computing);
+  assert.equal(organization.boundary.gaming, boundary.gaming);
 
   const scanBound = corpusBoundary(root, "", { limit: "10", maxScan: "1" });
   assert.match(scanBound.socializing, /mark\/mark\.md\|present-in-corpus/);
@@ -1081,7 +1084,7 @@ test("addressing CLI actions emit carrier-shaped search results", (t) => {
   assert.deepEqual(grep.hits.map((hit) => hit.path), ["mark/content/token/token.md"]);
 });
 
-test("organize-corpus CLI action emits an organizing organization", (t) => {
+test("organize-corpus CLI action emits a bounded corpus reading", (t) => {
   const root = fixture();
   t.after(() => rmSync(root, { recursive: true, force: true }));
 
@@ -1098,7 +1101,7 @@ test("organize-corpus CLI action emits an organizing organization", (t) => {
     encoding: "utf8",
   });
   const organization = JSON.parse(stdout);
-  assert.equal(organization.kind, "organizing.organization");
+  assert.equal(organization.kind, "organizing.knowledge-vault.corpus-reading");
   assert.equal(organization.identity, "cli-corpus");
 });
 
@@ -1565,7 +1568,7 @@ test("corpus rigging mounts external inputs through the root path law", (t) => {
   assert.throws(() => knowledgeVaultRigging({ root: modeled, rigs: [{ inputKind: "newswire", name: "bad", mount: "unknown/feed" }] }), /allowed corpus prefix/);
 });
 
-test("action metadata advertises corpus and organizing carriers", () => {
+test("action metadata advertises first-class carrier objects", () => {
   const byVerb = new Map(actions.map((act) => [act.verb, act]));
   for (const verb of [
     "research",
@@ -1590,54 +1593,32 @@ test("action metadata advertises corpus and organizing carriers", () => {
   ]) {
     assert.ok(byVerb.get(verb)?.options?.includes("maxScan"), `${verb} advertises maxScan`);
   }
-  assert.equal(byVerb.get("inspect-root")?.codomainSchema?.$ref, "organizing/knowledge-vault/corpus/root");
   assert.equal(byVerb.get("inspect-root")?.codomain, knowledgeVaultRootCarrier);
   assert.match(byVerb.get("inspect-root")?.description ?? "", /stable package prefixes/);
   assert.match(byVerb.get("inspect-root")?.description ?? "", /observed top-level prefixes/);
-  assert.equal(byVerb.get("browse")?.codomainSchema?.$ref, "organizing/knowledge-vault/corpus/frontier");
   assert.equal(byVerb.get("browse")?.codomain, frontierCarrier);
-  assert.equal(byVerb.get("locate")?.codomainSchema?.$ref, "organizing/knowledge-vault/corpus/node");
   assert.equal(byVerb.get("locate")?.codomain, corpusNodeCarrier);
-  assert.equal(byVerb.get("read")?.codomainSchema?.$ref, "organizing/knowledge-vault/corpus/document");
   assert.equal(byVerb.get("read")?.codomain, corpusDocumentCarrier);
-  assert.equal(byVerb.get("list")?.codomainSchema?.$ref, "organizing/knowledge-vault/corpus/listing");
-  assert.equal(byVerb.get("normalization-plan")?.codomainSchema?.$ref, "organizing/knowledge-vault/mutating/normalization-plan");
   assert.equal(byVerb.get("normalization-plan")?.codomain, normalizationPlanCarrier);
-  assert.equal(byVerb.get("inspect-topic")?.codomainSchema?.$ref, "organizing/knowledge-vault/mutating/topic-inspection");
   assert.equal(byVerb.get("inspect-topic")?.codomain, topicInspectionCarrier);
-  assert.equal(byVerb.get("concept-map")?.codomainSchema?.$ref, "organizing/knowledge-vault/mutating/topic-concept-map");
   assert.equal(byVerb.get("concept-map")?.codomain, topicConceptMapCarrier);
-  assert.equal(byVerb.get("measure-gap")?.codomainSchema?.$ref, "organizing/knowledge-vault/mutating/topic-gap-measurement");
   assert.equal(byVerb.get("measure-gap")?.codomain, topicGapMeasurementCarrier);
-  assert.equal(byVerb.get("inspect-health")?.codomainSchema?.$ref, "organizing/knowledge-vault/holography/memory-health");
   assert.equal(byVerb.get("inspect-health")?.codomain, memoryHealthProjectionCarrier);
-  assert.equal(byVerb.get("topic-guidance")?.codomainSchema?.$ref, "organizing/knowledge-vault/mutating/topic-guidance");
   assert.equal(byVerb.get("topic-guidance")?.codomain, topicGuidanceCarrier);
   assert.equal(byVerb.get("list")?.codomain, listingCarrier);
-  assert.equal(byVerb.get("find-name")?.codomainSchema?.$ref, "organizing/knowledge-vault/addressing/name-search");
   assert.equal(byVerb.get("find-name")?.codomain, addressedNameSearchCarrier);
-  assert.equal(byVerb.get("grep-text")?.codomainSchema?.$ref, "organizing/knowledge-vault/addressing/text-search");
   assert.equal(byVerb.get("grep-text")?.codomain, addressedTextSearchCarrier);
-  assert.equal(byVerb.get("catalog")?.codomainSchema?.$ref, "organizing/knowledge-vault/corpus/catalog");
   assert.equal(byVerb.get("catalog")?.codomain, catalogCarrier);
   assert.match(byVerb.get("catalog")?.description ?? "", /empty = corpus root/);
-  assert.equal(byVerb.get("catalog-facet")?.codomainSchema?.$ref, "organizing/knowledge-vault/corpus/catalog-facet");
   assert.equal(byVerb.get("catalog-facet")?.codomain, catalogFacetCarrier);
-  assert.equal(byVerb.get("create-document")?.codomainSchema?.$ref, "organizing/knowledge-vault/mutating/prepared-document");
   assert.equal(byVerb.get("create-document")?.codomain, preparedDocumentCarrier);
-  assert.equal(byVerb.get("update-frontmatter")?.codomainSchema?.$ref, "organizing/knowledge-vault/mutating/prepared-document");
   assert.equal(byVerb.get("update-frontmatter")?.codomain, preparedDocumentCarrier);
-  assert.equal(byVerb.get("upload-triage-file")?.codomainSchema?.$ref, "organizing/knowledge-vault/mutating/triage-upload");
   assert.equal(byVerb.get("upload-triage-file")?.codomain, triageUploadCarrier);
-  assert.equal(byVerb.get("claim-document-type")?.codomainSchema?.$ref, "organizing/knowledge-vault/corpus/document-type-claim");
   assert.equal(byVerb.get("claim-document-type")?.codomain, documentTypeClaimCarrier);
-  assert.equal(byVerb.get("project-document-type")?.codomainSchema?.$ref, "organizing/knowledge-vault/corpus/document-type-projection");
   assert.equal(byVerb.get("project-document-type")?.codomain, documentTypeProjectionCarrier);
-  assert.equal(byVerb.get("realize-document-type")?.codomainSchema?.$ref, "organizing/knowledge-vault/corpus/document-type-realization");
   assert.equal(byVerb.get("realize-document-type")?.codomain, documentTypeRealizationCarrier);
-  assert.equal(byVerb.get("audit-document-type")?.codomainSchema?.$ref, "organizing/knowledge-vault/corpus/document-type-audit");
   assert.equal(byVerb.get("audit-document-type")?.codomain, documentTypeAuditCarrier);
-  assert.equal(byVerb.get("organize-corpus")?.codomainSchema?.$ref, "organizing/organization");
+  assert.equal(byVerb.get("organize-corpus")?.codomain, corpusReadingCarrier);
 
   const induced = induceBins(actions, { packageName: "@red-cup-engineering/organizing-a-knowledge-vault" });
   assert.equal(induced.discovery.package, "@red-cup-engineering/organizing-a-knowledge-vault");

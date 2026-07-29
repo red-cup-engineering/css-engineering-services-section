@@ -49,7 +49,7 @@ export const knowledgeVaultAgentProfile: KnowledgeVaultAgentProfile = Object.fre
   carrier: KNOWLEDGE_VAULT_AGENT_PROFILE_CARRIER_ID,
   package: "@red-cup-engineering/organizing-a-knowledge-vault",
   corpusRole: "persistent-memorystore",
-  upstreams: Object.freeze(["@red-cup-engineering/relating", "@red-cup-engineering/organizing", "@red-cup-engineering/knowing", "@red-cup-engineering/content"]),
+  upstreams: Object.freeze(["@red-cup-engineering/relating", "@red-cup-engineering/knowing", "@red-cup-engineering/content", "@red-cup-engineering/json-file-codec-service", "@red-cup-engineering/markdown-file-codec-service"]),
   schemaResources: Object.freeze({
     profile: KNOWLEDGE_VAULT_AGENT_PROFILE_SCHEMA_URI,
     workflow: KNOWLEDGE_VAULT_AGENT_WORKFLOW_SCHEMA_URI,

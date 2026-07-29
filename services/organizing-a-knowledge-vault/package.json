@@ -4,14 +4,14 @@
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
-  "description": "Organizing a knowledge vault: the @emsenn/organizing downstream specialization that admits mounted content/ filepath trees as corpus memorystores, glues corpus regions as organizations, and projects knowing memory readings into knowledge-vault corpus, topic, health, and mutation carriers.",
+  "description": "Knowledge-vault corpus services that admit mounted content/ filepath trees as persistent memorystores, read bounded corpus regions through their three-face boundaries, and project knowing readings into corpus, topic, health, and mutation carriers.",
   "engines": {
     "node": ">=22.18"
   },
   "scripts": {
     "clean": "node -e \"const fs=require('node:fs'); for (const p of ['dist','.tmp']) fs.rmSync(p,{recursive:true,force:true});\"",
     "check": "tsc --noEmit && tsc -p tsconfig.scripts.json --noEmit",
-    "build": "node -e \"require('node:fs').rmSync('dist/src',{recursive:true,force:true});\" && tsc -p tsconfig.build.json && tsc -p tsconfig.scripts.json && node copy-dist-assets.mjs && node -e \"const fs=require('node:fs'); for (const f of fs.readdirSync('dist/scripts')) if (f.endsWith('.mjs')) fs.chmodSync('dist/scripts/'+f,0o755);\"",
+    "build": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true});\" && tsc -p tsconfig.build.json && tsc -p tsconfig.scripts.json && node copy-dist-assets.mjs && node -e \"const fs=require('node:fs'); for (const f of fs.readdirSync('dist/scripts')) if (f.endsWith('.mjs')) fs.chmodSync('dist/scripts/'+f,0o755);\"",
     "test": "npm run build && node --test \"test/*.test.mjs\"",
     "verify": "npm run check && npm run build",
     "rebuild": "npm run clean && npm run build"

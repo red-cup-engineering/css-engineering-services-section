@@ -1,10 +1,10 @@
 /**
  * @red-cup-engineering/organizing-a-knowledge-vault  -  corpus admission for content/.
  *
- * The package is downstream of @red-cup-engineering/organizing and specializes @red-cup-engineering/knowing's
- * epistemic carriers to the concrete path law of a mounted content corpus.
- * The filesystem and markdown boundary still come from @red-cup-engineering/relating; the
- * memory/proof/research readings still come from @red-cup-engineering/knowing.
+ * This package owns bounded corpus admission and reading under the concrete path law of a
+ * mounted content corpus. Relating supplies carrier, action, schema, and filesystem boundaries;
+ * first-class file-codec services supply serialization; Knowing supplies memory, proof, and
+ * research readings.
  */
 
 export {
@@ -53,6 +53,7 @@ export {
   listEntryCarrier,
   listingCarrier,
   knowledgeVaultRootCarrier,
+  corpusReadingCarrier,
   knowledgeVaultRig,
   knowledgeVaultRigCarrier,
   knowledgeVaultNewscableRig,

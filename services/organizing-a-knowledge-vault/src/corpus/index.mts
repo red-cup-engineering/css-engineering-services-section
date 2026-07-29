@@ -35,6 +35,7 @@ export {
   documentTypeRealizationCarrier,
   documentTypeAuditCarrier,
   knowledgeVaultRootCarrier,
+  corpusReadingCarrier,
   type Catalog,
   type CatalogDocument,
   type CatalogFacet,
