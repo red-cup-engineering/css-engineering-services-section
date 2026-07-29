@@ -2,6 +2,7 @@
 
 import { Activity } from "@fedify/vocab";
 import { OnchainResourceClient, createOnchainActivityPubAdapters, loadOnchainWallet } from "./onchain.mjs";
+import { createR2OnchainExternalBodyStore } from "./onchain-r2-external-body.mjs";
 import { serveActivityPubProvider } from "./server.mjs";
 
 const ACTIVITYSTREAMS_CONTEXT = "https://www.w3.org/ns/activitystreams";
@@ -58,7 +59,11 @@ export async function main() {
   const actor = required("ACTIVITYPUB_IDENTIFIER");
   const origin = required("ACTIVITYPUB_ORIGIN");
   const chain = `eip155:${required("EVM_CHAIN_ID")}`;
-  const client = new OnchainResourceClient({ contractAddress: required("ONCHAIN_RESOURCE_CONTRACT"), wallet });
+  const client = new OnchainResourceClient({
+    contractAddress: required("ONCHAIN_RESOURCE_CONTRACT"),
+    wallet,
+    externalBodies: createR2OnchainExternalBodyStore(),
+  });
   const adapters = createOnchainActivityPubAdapters({ client, actor });
   const announceSettlementPulse = process.env.ACTIVITYPUB_ANNOUNCE_SETTLEMENT_PULSE !== "false";
   return serveActivityPubProvider({

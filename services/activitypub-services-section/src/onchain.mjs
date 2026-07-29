@@ -7,8 +7,10 @@ const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 const ABI = [
   "function describe(string[] resource) view returns ((bytes32 sha256Digest,address controller,uint64 version,bool externalBody,string mediaType,string body,string locator))",
   "function publishInline(string[] resource,string mediaType,string body) payable returns (bytes32 key,bytes32 digest,uint64 version)",
+  "function publishExternal(string[] resource,string mediaType,string locator,bytes32 sha256Digest) payable returns (bytes32 key,uint64 version)",
   "function writePrice() view returns (uint256)",
 ];
+const INLINE_BODY_LIMIT_BYTES = 16 * 1024;
 
 function requiredText(value, label) {
   if (typeof value !== "string" || value.trim() === "") throw new TypeError(`${label} must be a non-empty string`);
@@ -40,20 +42,32 @@ export async function loadOnchainWallet({ rpcUrl, keystorePath, passwordPath }) 
 }
 
 export class OnchainResourceClient {
-  constructor({ contractAddress, wallet }) {
-    if (wallet === null || typeof wallet !== "object" || wallet.provider === null) {
+  constructor({ contractAddress, wallet, contract, externalBodies, inlineBodyLimitBytes = INLINE_BODY_LIMIT_BYTES }) {
+    if (contract === undefined && (wallet === null || typeof wallet !== "object" || wallet.provider === null)) {
       throw new TypeError("an EVM wallet connected to a provider is required");
     }
-    this.contract = new Contract(getAddress(requiredText(contractAddress, "ERC-5219 contract address")), ABI, wallet);
+    if (!Number.isSafeInteger(inlineBodyLimitBytes) || inlineBodyLimitBytes < 1) throw new TypeError("inline body limit must be one positive safe integer");
+    this.contract = contract ?? new Contract(getAddress(requiredText(contractAddress, "ERC-5219 contract address")), ABI, wallet);
+    this.externalBodies = externalBodies;
+    this.inlineBodyLimitBytes = inlineBodyLimitBytes;
     this.serial = Promise.resolve();
   }
 
   async get(resource) {
     const selected = await this.contract.describe(pathOf(resource));
     if (selected.controller.toLowerCase() === ZERO_ADDRESS) return undefined;
-    if (selected.externalBody) throw new Error("ActivityPub custody requires an inline ERC-5219 resource");
+    let body = selected.body;
+    if (selected.externalBody) {
+      if (!this.externalBodies || typeof this.externalBodies.get !== "function") throw new Error("ActivityPub external-body custody is not configured");
+      const observed = await this.externalBodies.get({ locator: selected.locator, digest: selected.sha256Digest, mediaType: selected.mediaType });
+      const bytes = Buffer.from(observed?.body ?? []);
+      const digest = `0x${createHash("sha256").update(bytes).digest("hex")}`;
+      if (digest !== selected.sha256Digest) throw new Error("ActivityPub external body does not match its onchain SHA-256 digest");
+      try { body = new TextDecoder("utf-8", { fatal: true }).decode(bytes); }
+      catch { throw new Error("ActivityPub external body is not valid UTF-8"); }
+    }
     return Object.freeze({
-      body: selected.body,
+      body,
       mediaType: selected.mediaType,
       digest: selected.sha256Digest,
       controller: selected.controller,
@@ -63,11 +77,23 @@ export class OnchainResourceClient {
 
   put(resource, value, mediaType = "application/json") {
     const operation = async () => {
+      const selectedResource = pathOf(resource);
+      const selectedMediaType = requiredText(mediaType, "media type");
+      const body = requiredText(value, "resource body");
+      const bytes = Buffer.from(body, "utf8");
+      const digest = `0x${createHash("sha256").update(bytes).digest("hex")}`;
       const price = await this.contract.writePrice();
       const runner = this.contract.runner;
       const address = await runner.getAddress();
       const nonce = await runner.provider.getTransactionCount(address, "pending");
-      const transaction = await this.contract.publishInline(pathOf(resource), requiredText(mediaType, "media type"), value, { value: price, nonce });
+      let transaction;
+      if (bytes.length <= this.inlineBodyLimitBytes) {
+        transaction = await this.contract.publishInline(selectedResource, selectedMediaType, body, { value: price, nonce });
+      } else {
+        if (!this.externalBodies || typeof this.externalBodies.put !== "function") throw new Error("ActivityPub external-body custody is required for this ERC-5219 resource");
+        const stored = await this.externalBodies.put({ body: bytes, digest, mediaType: selectedMediaType });
+        transaction = await this.contract.publishExternal(selectedResource, selectedMediaType, requiredText(stored?.locator, "external body locator"), digest, { value: price, nonce });
+      }
       const receipt = await transaction.wait();
       if (receipt?.status !== 1) throw new Error("ERC-5219 write did not finalize successfully");
       return Object.freeze({
@@ -75,7 +101,7 @@ export class OnchainResourceClient {
         blockNumber: receipt.blockNumber,
         blockHash: receipt.blockHash,
         transactionIndex: receipt.index,
-        digest: `0x${createHash("sha256").update(value).digest("hex")}`,
+        digest,
       });
     };
     const result = this.serial.then(operation, operation);

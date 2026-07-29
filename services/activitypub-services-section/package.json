@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/activitypub-services-section",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "The Union's canonical public transport: ActivityPub federation carrying CloudEvents whose data is an A2A message with one canonical RMN part.",
   "exports": {
@@ -30,12 +30,13 @@
     "materialize-rmn-outbox-activity": "./bin/materialize-rmn-outbox-activity.mjs"
   },
   "scripts": {
-    "check": "node --check src/provider.mjs && node --check src/server.mjs && node --check src/onchain.mjs && node --check src/onchain-server.mjs && node --check src/generate-encrypted-evm-wallet.mjs && node --check src/deliver.mjs && node --check src/keys.mjs && node --check src/rmn-activity.mjs && node --check src/rmn-history.mjs && node --check src/rmn-outbox-client.mjs && node --check bin/materialize-rmn-outbox-activity.mjs && node --check test/provider.test.mjs && node --check test/onchain.test.mjs && node --check test/generate-encrypted-evm-wallet.test.mjs && node --check test/rmn-outbox-client.test.mjs && node --check test/rmn-history.test.mjs",
+    "check": "node --check src/provider.mjs && node --check src/server.mjs && node --check src/onchain.mjs && node --check src/onchain-r2-external-body.mjs && node --check src/onchain-server.mjs && node --check src/generate-encrypted-evm-wallet.mjs && node --check src/deliver.mjs && node --check src/keys.mjs && node --check src/rmn-activity.mjs && node --check src/rmn-history.mjs && node --check src/rmn-outbox-client.mjs && node --check bin/materialize-rmn-outbox-activity.mjs && node --check test/provider.test.mjs && node --check test/onchain.test.mjs && node --check test/generate-encrypted-evm-wallet.test.mjs && node --check test/rmn-outbox-client.test.mjs && node --check test/rmn-history.test.mjs",
     "test": "node --test test/provider.test.mjs test/onchain.test.mjs test/generate-encrypted-evm-wallet.test.mjs test/rmn-outbox-client.test.mjs test/rmn-history.test.mjs",
     "verify": "npm run check && npm test"
   },
   "dependencies": {
     "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
+    "@red-cup-engineering/resource-brokerage-service-section": "2.0.3",
     "@fedify/fedify": "2.3.1",
     "@fedify/vocab": "2.3.1",
     "@hono/node-server": "1.19.14",
