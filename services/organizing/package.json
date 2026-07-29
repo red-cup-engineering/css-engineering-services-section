@@ -34,6 +34,7 @@
     "package.json"
   ],
   "dependencies": {
+    "@red-cup-engineering/json-file-codec-service": "workspace:*",
     "@lenticule-science/articulating": "workspace:*",
     "@red-cup-engineering/relating": "0.0.0",
     "@red-cup-engineering/animating": "0.0.0",

@@ -2,7 +2,7 @@
 // file-extension table, compressibility classification, and the content-commitment
 // corner each media type carries.
 
-import type { Corner } from "../../../projections/kernel.mjs";
+import type { Corner } from "@red-cup-engineering/file-projection-kernel-service";
 
 const EXT_TYPES: Record<string, string> = {
   html: "text/html", htm: "text/html",

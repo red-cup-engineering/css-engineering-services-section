@@ -6,7 +6,7 @@
 // server-to-client frames), and the decoder additionally accepts the
 // masked client-to-server form, unmasking on decode.
 
-import { sha1Base64 } from "../../../codecs/host/javascript/crypto/index.mjs";
+import { sha1Base64 } from "@red-cup-engineering/file-cryptographic-integrity-service";
 
 const WS_MAGIC = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 

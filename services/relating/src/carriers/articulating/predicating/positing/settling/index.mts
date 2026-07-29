@@ -1,5 +1,5 @@
 import { kindCarrier } from "../../../../kind.mjs";
-import type { JsonRecord } from "../../../../../codecs/text/json/core.mjs";
+import type { JsonRecord } from "@red-cup-engineering/json-file-codec-service";
 
 export const settlementFiltrationCarrier = kindCarrier(
   "relating/articulating/predicating/positing/settling/filtration",

@@ -7,8 +7,8 @@
  * the schema writer uses, so a document is a settled fold of its own assertions
  * and its conformance is a four-valued charge, not a boolean lint.
  */
-import { restrict, type Projector } from "../projections/kernel.mjs";
-import { canonical, parse as parseJson, requireJsonValue, type JsonValue } from "../codecs/text/json/core.mjs";
+import { restrict, type Projector } from "@red-cup-engineering/file-projection-kernel-service";
+import { canonical, parse as parseJson, requireJsonValue, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import { type JsonSchema, type SchemaAssertion, unfoldSchema } from "./schema.mjs";
 import { stringProjector } from "./text.mjs";
 

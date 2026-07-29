@@ -62,8 +62,8 @@ export * from "./evaluating/counting/index.mjs";
 export * from "./evaluating/measuring/index.mjs";
 export * from "./evaluating/connecting/index.mjs";
 export * from "./evaluating/pairing/index.mjs";
-export * from "./codecs/text/json/core.mjs";
-export { parse as parseJson } from "./codecs/text/json/core.mjs";
+export * from "@red-cup-engineering/json-file-codec-service";
+export { parse as parseJson } from "@red-cup-engineering/json-file-codec-service";
 // Former TypeBox-authored clients named the same schema-to-carrier functor
 // `carrier`; retain that address while the one implementation remains
 // `carrierFrom` in the carrier kernel.

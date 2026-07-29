@@ -11,7 +11,7 @@
  *
  * @packageDocumentation
  */
-import type { JsonValue } from "../../codecs/text/json/core.mjs";
+import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
 
 /** A structural type — an object of the bicartesian category of TS structural types. */
 export type StructuralType =

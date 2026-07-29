@@ -15,7 +15,7 @@
  *
  * @packageDocumentation
  */
-import { isJsonRecord, type JsonRecord, type JsonValue } from "../../codecs/text/json/core.mjs";
+import { isJsonRecord, type JsonRecord, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import {
   array,
   intersection,

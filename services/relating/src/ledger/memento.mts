@@ -9,8 +9,8 @@ import {
   timeMapCarrier,
   timeMapSchema,
 } from "../carriers/ledger/memento/index.mjs";
-import { eavtId, type EAVTRecord } from "../codecs/text/json/jsonl/eavt/index.mjs";
-import { canonical, requireJsonValue, type JsonValue } from "../codecs/text/json/core.mjs";
+import { eavtId, type EAVTRecord } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
+import { canonical, requireJsonValue, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import { projectStateView, type StateView } from "./state.mjs";
 
 export {

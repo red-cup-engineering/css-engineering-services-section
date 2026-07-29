@@ -17,9 +17,9 @@ import {
   type SettlementFiltration,
   type SettlementFiltrationGenerators,
 } from "@lenticule-science/articulating/predicating/positing/settling/index";
-import { canonical, parse as parseJson, type JsonRecord, type JsonValue } from "../codecs/text/json/core.mjs";
-import { eavtId, eavtRecord, type EAVT, type EAVTRecord } from "../codecs/text/json/jsonl/eavt/index.mjs";
-import { define, restrict, type Projector } from "../projections/kernel.mjs";
+import { canonical, parse as parseJson, type JsonRecord, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
+import { eavtId, eavtRecord, type EAVT, type EAVTRecord } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
+import { define, restrict, type Projector } from "@red-cup-engineering/file-projection-kernel-service";
 import { stringProjector } from "./text.mjs";
 import { xmlProjector } from "../codecs/text/xml/core.mjs";
 import type { PlacedCell, PlacedEdge, ShapeMorphism, SvgDataform } from "../codecs/text/xml/svg/index.mjs";

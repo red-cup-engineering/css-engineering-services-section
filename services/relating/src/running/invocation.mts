@@ -9,8 +9,8 @@
  */
 import { cell, type Witness } from "../ledger/cells.mjs";
 import type { Feed } from "../ledger/feed.mjs";
-import type { EAVTRecord } from "../codecs/text/json/jsonl/eavt/index.mjs";
-import type { JsonRecord, JsonValue } from "../codecs/text/json/core.mjs";
+import type { EAVTRecord } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
+import type { JsonRecord, JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import type { MorphismCarrier } from "./category.mjs";
 
 /** One scripted play. */

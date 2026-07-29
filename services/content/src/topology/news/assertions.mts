@@ -18,7 +18,7 @@
  */
 
 import { mark, negate, valueOf, witnessedPotential, type ChargeCarrier } from "@red-cup-engineering/relating";
-import { canonical, type JsonValue as ResourceJsonValue } from "@red-cup-engineering/relating/codecs/path/object/attribute/file/flatfile/serialization/json/jsonl";
+import { canonical, type JsonValue as ResourceJsonValue } from "@red-cup-engineering/json-file-codec-service";
 
 import { GATE_FAIL, type JsonValue, type NewsClaim, type NewsClaimSet, type NewsClaimWrite } from "./index.mjs";
 

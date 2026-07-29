@@ -39,7 +39,7 @@ import {
   parseLines,
   serializeLines,
   type JsonValue,
-} from "@red-cup-engineering/relating/codecs/path/object/attribute/file/flatfile/serialization/json/jsonl";
+} from "@red-cup-engineering/json-file-codec-service";
 import { rehydrateUtterances } from "@red-cup-engineering/relating/codecs";
 import { induceContentTopology, type ContentTopologyCarrier } from "../topology/content-topology.mjs";
 

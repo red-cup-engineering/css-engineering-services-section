@@ -36,7 +36,7 @@ import {
   chargeJoinVClosure,
   settleOverValue,
 } from "@lenticule-science/articulating/predicating/positing/settling/value-category";
-import { type JsonValue } from "../codecs/text/json/core.mjs";
+import { type JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import { type Tm, type Ty, tm, ty, inst, rename } from "../../lib/notating/index.mjs";
 import {
   objectFieldOf,

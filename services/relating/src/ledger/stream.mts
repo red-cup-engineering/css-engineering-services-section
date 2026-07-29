@@ -7,9 +7,9 @@
 // frames — coordination-free, the same CALM property the log itself has. Pure: no
 // I/O (the caller reads the log via ./store and binds the HTTP response).
 
-import { eavtId, type EAVTRecord } from "../codecs/text/json/jsonl/eavt/index.mjs";
+import { eavtId, type EAVTRecord } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
 import { sseFrame, sseHeaders } from "../writing/http/sse/index.mjs";
-import type { JsonValue } from "../codecs/text/json/core.mjs";
+import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
 
 /** The SSE event name carrying one witnessed EAVT row. */
 export const EAVT_EVENT = "datom";

@@ -19,8 +19,7 @@
  * is the deterministic crossing from already-admitted carrier data into the
  * typed total term substrate, and back out after evaluation.
  */
-import { type JsonValue } from "../../codecs/text/json/core.mjs";
-import { canonical, parse } from "../../codecs/text/json/core.mjs";
+import { type JsonValue, canonical, parse } from "@red-cup-engineering/json-file-codec-service";
 import { type ChargeValueName, isChargeValueName } from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
 import { type Tm, tm } from "../../../lib/notating/index.mjs";
 

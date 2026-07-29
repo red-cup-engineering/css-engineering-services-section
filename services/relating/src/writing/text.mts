@@ -5,8 +5,8 @@
  * string. This projector carries the raw content as a single JSON string value,
  * so it composes in one catalog with the JSON and EAVT projectors.
  */
-import { define, type Projector } from "../projections/kernel.mjs";
-import type { JsonValue } from "../codecs/text/json/core.mjs";
+import { define, type Projector } from "@red-cup-engineering/file-projection-kernel-service";
+import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
 
 /** The string projector: recognizes any content, carries it verbatim as one value. */
 export const stringProjector: Projector<JsonValue> = define<JsonValue>({

@@ -20,7 +20,7 @@ export {
   serializeLines,
   type JsonRecord,
   type JsonValue,
-} from "./text/json/core.mjs";
+} from "@red-cup-engineering/json-file-codec-service";
 
 // Compatibility face for content carriers recovered from the immediately
 // preceding relationality layout. The implementation already survived under

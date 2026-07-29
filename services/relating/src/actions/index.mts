@@ -69,7 +69,7 @@ import {
   readCausalOrderOfSettlementFiltration,
 } from "@lenticule-science/articulating/predicating/positing/settling/index";
 import type { SettlementFiltration, SettlementFiltrationGenerators } from "@lenticule-science/articulating/predicating/positing/settling/index";
-import { jsonResource, type JsonRecord, type JsonValue } from "../codecs/text/json/core.mjs";
+import { jsonResource, type JsonRecord, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import { action, type Action } from "../running/index.mjs";
 import { tm, type Tm } from "../../lib/notating/index.mjs";
 import { evaluateRunTerm, isClosed, termSize, termUses } from "../evaluating/index.mjs";

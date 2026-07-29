@@ -24,7 +24,7 @@ import {
   uncountableSettlingCofinality,
   type SettlingClassification,
 } from "@lenticule-science/articulating/predicating/positing/settling/index";
-import type { JsonRecord } from "../codecs/text/json/core.mjs";
+import type { JsonRecord } from "@red-cup-engineering/json-file-codec-service";
 import type { Action } from "./action.mjs";
 
 export type ActionSettlementRegime = "strict-finite" | "scott" | "transfinite-bounded" | "aperiodic";

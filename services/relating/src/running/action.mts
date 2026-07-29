@@ -7,7 +7,7 @@
  * carrier objects.
  */
 import { mark, utterance, type UtteranceCarrier } from "@lenticule-science/articulating/index";
-import type { JsonValue } from "../codecs/text/json/core.mjs";
+import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import { evaluateRunTerm } from "../evaluating/index.mjs";
 import { tm } from "../../lib/notating/index.mjs";
 import { action as kernelAction, composes, type Action, type ActionSpec } from "./category.mjs";

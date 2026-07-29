@@ -1,13 +1,13 @@
-import type { FromSchema } from "../../../../../../carriers/kernel/carrier.mjs";
+import type { FromSchema } from "../../../../../../kernel/carrier.mjs";
 import {
   LeanGoldenVectorSchema,
   leanGoldenVectorCarrier,
-} from "../../../../../../carriers/codecs/text/json/jsonl/eavt/lean/index.mjs";
+} from "./index.mjs";
 
 export {
   LeanGoldenVectorSchema,
   leanGoldenVectorCarrier,
-} from "../../../../../../carriers/codecs/text/json/jsonl/eavt/lean/index.mjs";
+} from "./index.mjs";
 
 export type LeanGoldenVector = FromSchema<typeof LeanGoldenVectorSchema>;
 

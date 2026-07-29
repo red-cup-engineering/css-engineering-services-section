@@ -18,8 +18,8 @@ import {
   readingDescriptorCarrier,
   readingDescriptorSchema,
 } from "../carriers/ledger/reading.mjs";
-import { eavtRecord, type EAVTRecord } from "../codecs/text/json/jsonl/eavt/index.mjs";
-import { canonical, type JsonValue } from "../codecs/text/json/core.mjs";
+import { eavtRecord, type EAVTRecord } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
+import { canonical, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
 
 export {
   coherenceReportCarrier,

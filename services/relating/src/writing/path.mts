@@ -14,10 +14,10 @@
  * content without claiming mark coincidence across peers (the deliberate
  * structural-not-reference seam).
  */
-import { define, type Projector, type Resource } from "../projections/kernel.mjs";
+import { define, type Projector, type Resource } from "@red-cup-engineering/file-projection-kernel-service";
 import { mark, utterance, type UtteranceCarrier } from "@lenticule-science/articulating/utterance";
-import { eavtRecord, type EAVT, type EAVTRecord } from "../codecs/text/json/jsonl/eavt/index.mjs";
-import type { JsonValue } from "../codecs/text/json/core.mjs";
+import { eavtRecord, type EAVT, type EAVTRecord } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
+import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
 
 /** An addressable term: a JSON value or a readonly array of JSON path parts. */
 export type AddressTerm = JsonValue | readonly JsonValue[];

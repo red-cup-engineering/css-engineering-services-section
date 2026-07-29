@@ -8,7 +8,7 @@
 import { readdirSync, readFileSync, statSync, type Stats } from "node:fs";
 import { join, relative, resolve, sep } from "node:path";
 
-import type { Resource } from "../projections/kernel.mjs";
+import type { Resource } from "@red-cup-engineering/file-projection-kernel-service";
 
 const IGNORED_CONTENT = new Set([".git", "node_modules"]);
 

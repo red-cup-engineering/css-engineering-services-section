@@ -17,7 +17,7 @@
  *
  * @packageDocumentation
  */
-import { restrict, type Projector } from "../../../../../projections/kernel.mjs";
+import { restrict, type Projector } from "@red-cup-engineering/file-projection-kernel-service";
 import {
   affirmedCharge,
   background,

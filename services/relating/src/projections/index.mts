@@ -8,6 +8,6 @@
  * OpenAPI and MCP discovery. Live request routing stays in `src/running`; live
  * processes stay in `services`.
  */
-export * from "./kernel.mjs";
+export * from "@red-cup-engineering/file-projection-kernel-service";
 export * from "./action-apex.mjs";
 export * from "./action-html.mjs";

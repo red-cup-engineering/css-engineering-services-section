@@ -37,10 +37,10 @@ import {
   eavtToCell,
   type EAVT,
   type ChargedCell,
-} from "@red-cup-engineering/relating/codecs/path/object/attribute/file/flatfile/serialization/json/jsonl/eavt";
-import { type JsonValue } from "@red-cup-engineering/relating/codecs/path/object/attribute/file/flatfile/serialization/json/jsonl";
+} from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
+import { type JsonValue } from "@red-cup-engineering/json-file-codec-service";
 
-export type { EAVT, ChargedCell } from "@red-cup-engineering/relating/codecs/path/object/attribute/file/flatfile/serialization/json/jsonl/eavt";
+export type { EAVT, ChargedCell } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
 
 /** The predicate under which a document's `references:` citations are recorded. */
 export const CITES_PREDICATE = "cites" as const;

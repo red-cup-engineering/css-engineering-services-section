@@ -35,7 +35,7 @@ import {
 } from "../projections/action-html.mjs";
 import type { ActionEndpoint, InducedBins } from "./induce.mjs";
 import type { DispatchOptions, DispatchResult } from "./dispatch.mjs";
-import type { EAVTRecord } from "../codecs/text/json/jsonl/eavt/index.mjs";
+import type { EAVTRecord } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
 import { streamWitnessLog } from "../ledger/stream.mjs";
 import { sseFrame } from "../writing/http/sse/index.mjs";
 import {
@@ -114,7 +114,7 @@ export const text = (body: string, status: number): ServedResponse => ({ status,
 /** The content corner the settled value commits to: the corner of the action's
  *  declared output wire. A value crosses the boundary down this corner but never up
  *  — negotiation may settle it to a lower corner, never fabricate a richer one. */
-function valueCorner(endpoint: ActionEndpoint): import("../projections/kernel.mjs").Corner {
+function valueCorner(endpoint: ActionEndpoint): import("@red-cup-engineering/file-projection-kernel-service").Corner {
   const codec = wireByMediaType(endpoint.output);
   return codec?.corner ?? mediaTypeCorner(endpoint.output);
 }

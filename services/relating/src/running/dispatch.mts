@@ -12,7 +12,7 @@
  * This replaces every per-script `readStdin`/`jsonResource`/`import.meta.url`
  * tail with one place.
  */
-import type { JsonRecord, JsonValue } from "../codecs/text/json/core.mjs";
+import type { JsonRecord, JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import { morphismCarrier } from "./category.mjs";
 import { type Action } from "./action.mjs";
 import { wireCodec } from "../codecs/boundary/wire/index.mjs";

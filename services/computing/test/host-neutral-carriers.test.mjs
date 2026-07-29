@@ -22,7 +22,7 @@ import {
   readLeanAdmission,
   reflectLeanModuleGraph,
 } from "../dist/index.mjs";
-import { canonical } from "@red-cup-engineering/relating/codecs/text/json";
+import { canonical } from "@red-cup-engineering/json-file-codec-service";
 
 function roundTrip(carrier, value) {
   const admitted = carrier.assert(value);

@@ -36,6 +36,7 @@
     "package.json"
   ],
   "dependencies": {
+    "@red-cup-engineering/json-file-codec-service": "workspace:*",
     "@red-cup-engineering/relating": "0.0.0",
     "@red-cup-engineering/semantic-linefeed-normalization-service": "0.1.0"
   },

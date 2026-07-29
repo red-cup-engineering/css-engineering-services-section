@@ -13,7 +13,7 @@
  * The whole subtree (escape, morphism, markup, lint, profiles, normalize,
  * project, packet, projector) is consolidated here, flat on the new base.
  */
-import { define, type Projector } from "../../../../projections/kernel.mjs";
+import { define, type Projector } from "@red-cup-engineering/file-projection-kernel-service";
 import {
   charge,
   chargeValue,
@@ -25,7 +25,7 @@ import {
   type ChargeValueName,
 } from "@lenticule-science/articulating/predicating/positing/bilattice-charge";
 import { mark, type Mark } from "@lenticule-science/articulating/utterance";
-import { canonical, type JsonValue } from "../../json/index.mjs";
+import { canonical, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import {
   coloringFactorMap,
   type ColoringFactorMapJudgment,

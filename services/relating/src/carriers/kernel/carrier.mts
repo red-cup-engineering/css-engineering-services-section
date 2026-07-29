@@ -16,7 +16,7 @@
  * referenced carrier's own validator. `running/category` composes this carrier
  * registry with its action registry into the full `CategoryRegistry`.
  */
-import type { JsonRecord } from "../../codecs/text/json/core.mjs";
+import type { JsonRecord } from "@red-cup-engineering/json-file-codec-service";
 
 export type CarrierId = string;
 

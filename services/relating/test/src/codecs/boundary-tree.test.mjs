@@ -1,16 +1,16 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
-import { canonical, parse as parseJson } from "@red-cup-engineering/relating/codecs/text/json";
-import { parse as parseEavt, serialize as serializeEavt } from "@red-cup-engineering/relating/codecs/text/json/jsonl/eavt";
-import { datom, foldObjectDatoms } from "@red-cup-engineering/relating/codecs/text/json/jsonl/eavt/datom";
+import { canonical, parse as parseJson } from "@red-cup-engineering/json-file-codec-service";
+import { parse as parseEavt, serialize as serializeEavt } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
+import { datom, foldObjectDatoms } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt/datom";
 import { escapeText } from "@red-cup-engineering/relating/codecs/text/xml/html";
 import { svgProjector } from "@red-cup-engineering/relating/codecs/text/xml/svg";
 import { fromRatio, toNumber } from "@red-cup-engineering/relating/codecs/host/javascript/numbers";
 import {
   decodeLeanGoldenVectorJsonl,
   encodeLeanGoldenVectorJsonl,
-} from "@red-cup-engineering/relating/codecs/text/json/jsonl/eavt/lean";
+} from "@red-cup-engineering/relating/carriers/codecs/text/json/jsonl/eavt/lean/serialization";
 
 describe("nested codec boundary tree", () => {
   it("imports textual JSON and JSONL EAVT through their syntax refinement path", () => {

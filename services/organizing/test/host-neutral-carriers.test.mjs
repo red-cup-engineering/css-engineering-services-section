@@ -19,7 +19,7 @@ import {
   leanEnvironmentFromAdmission,
   readLeanAdmission,
 } from "@red-cup-engineering/computing";
-import { canonical } from "@red-cup-engineering/relating/codecs/text/json";
+import { canonical } from "@red-cup-engineering/json-file-codec-service";
 
 function roundTrip(carrier, value) {
   const admitted = carrier.assert(value);

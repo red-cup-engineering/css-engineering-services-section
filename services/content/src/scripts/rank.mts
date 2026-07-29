@@ -38,7 +38,7 @@ import {
   readStdin,
   readDemandTrace,
 } from "./wire.mjs";
-import { canonical, serializeLines, type JsonValue } from "@red-cup-engineering/relating/codecs/path/object/attribute/file/flatfile/serialization/json/jsonl";
+import { canonical, serializeLines, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
 
 /** A rank entry rendered for the wire: bigint value as a JSON-safe integer string. */
 interface RankRecord {

@@ -32,7 +32,7 @@ import {
   clearsGatePredicate,
   rejectedByGatePredicate,
 } from "../topology/index.mjs";
-import { canonical } from "@red-cup-engineering/relating/codecs/path/object/attribute/file/flatfile/serialization/json/jsonl";
+import { canonical } from "@red-cup-engineering/json-file-codec-service";
 import {
   parseArgs,
   readStdin,

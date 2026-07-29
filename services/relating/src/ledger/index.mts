@@ -4,7 +4,7 @@
  * ledger (RWIL) is the witness ledger as boundary-to-bulk holography — a first-class
  * capability peer to `writing`/`evaluating`/`running`, not a child of `running`. The
  * witness ROW codecs (EAVT/Datom/triple) live under
- * `@red-cup-engineering/relating/codecs/text/json/jsonl/eavt`; this is their projection
+ * `@red-cup-engineering/json-file-codec-service/jsonl/eavt`; this is their projection
  * engine. Reached at `@red-cup-engineering/relating/ledger`.
  *
  * ```text

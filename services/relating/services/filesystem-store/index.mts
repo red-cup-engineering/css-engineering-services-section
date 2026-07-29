@@ -14,9 +14,9 @@ import { randomUUID } from "node:crypto";
 import { appendFileSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync, type Stats } from "node:fs";
 import path from "node:path";
 
-import { canonical, requireJsonValue, serializeLines, type JsonValue } from "../../src/codecs/text/json/core.mjs";
+import { canonical, requireJsonValue, serializeLines, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import { address } from "../../src/writing/path.mjs";
-import type { Resource } from "../../src/projections/kernel.mjs";
+import type { Resource } from "@red-cup-engineering/file-projection-kernel-service";
 import { projectContentDocuments, type ContentDocument, type ContentProjection } from "../../src/ledger/content.mjs";
 import type { Feed } from "../../src/ledger/feed.mjs";
 import { projectStateView, type StateView } from "../../src/ledger/state.mjs";
@@ -30,7 +30,7 @@ import {
   type Datom,
   type EAVT,
   type EAVTRecord,
-} from "../../src/codecs/text/json/jsonl/eavt/index.mjs";
+} from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
 
 /**
  * Filesystem binding for one witness-ledger store.

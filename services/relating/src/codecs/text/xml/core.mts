@@ -8,7 +8,7 @@
  *
  * @packageDocumentation
  */
-import { define, type Projector } from "../../../projections/kernel.mjs";
+import { define, type Projector } from "@red-cup-engineering/file-projection-kernel-service";
 
 /* ── escape ─────────────────────────────────────────────────────────────── */
 

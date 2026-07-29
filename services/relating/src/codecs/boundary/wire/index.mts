@@ -26,8 +26,8 @@
  * layer inherits the RMN admission boundary; it does not make arbitrary host code
  * safe to read.
  */
-import { canonical, parse as parseJson, type JsonValue, jsonProjector } from "../../text/json/core.mjs";
-import { eavtProjector } from "../../text/json/jsonl/eavt/index.mjs";
+import { canonical, parse as parseJson, type JsonValue, jsonProjector } from "@red-cup-engineering/json-file-codec-service";
+import { eavtProjector } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
 import { svgProjector } from "../../text/xml/svg/index.mjs";
 import { mermaidProjector, umlProjector, plantUmlProjector } from "../../../writing/diagram.mjs";
 import { rmnProjector } from "../../../writing/rmn.mjs";
@@ -39,13 +39,13 @@ import {
   define,
   type Corner,
   type Rung,
-} from "../../../projections/kernel.mjs";
-import type { Projector } from "../../../projections/kernel.mjs";
+} from "@red-cup-engineering/file-projection-kernel-service";
+import type { Projector } from "@red-cup-engineering/file-projection-kernel-service";
 import {
   parse as parseEavt,
   serialize as serializeEavt,
   type EAVTRecord,
-} from "../../text/json/jsonl/eavt/index.mjs";
+} from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
 
 /** A wire codec: decode a boundary document into a carrier, encode it back. It is
  *  the boundary face of one `writing` projector, so it inherits that projector's

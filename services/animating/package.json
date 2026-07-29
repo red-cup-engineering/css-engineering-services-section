@@ -33,6 +33,7 @@
     "package.json"
   ],
   "dependencies": {
+    "@red-cup-engineering/json-file-codec-service": "workspace:*",
     "@lenticule-science/articulating": "workspace:*",
     "@lenticule-science/rwil-rdf-projection-service": "1.0.2",
     "@red-cup-engineering/communicating": "0.0.0",

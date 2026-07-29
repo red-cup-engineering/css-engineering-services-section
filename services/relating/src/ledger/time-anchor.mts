@@ -14,9 +14,9 @@ import {
   timestampedWitnessCarrier,
   timestampedWitnessSchema,
 } from "../carriers/ledger/time-anchor/index.mjs";
-import { eavtId, eavtRecord, type Datom, type EAVT, type EAVTRecord } from "../codecs/text/json/jsonl/eavt/index.mjs";
-import { canonical, requireJsonValue, type JsonValue } from "../codecs/text/json/core.mjs";
-import { sha256Hex } from "../codecs/host/javascript/crypto/index.mjs";
+import { eavtId, eavtRecord, type Datom, type EAVT, type EAVTRecord } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
+import { canonical, requireJsonValue, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
+import { sha256Hex } from "@red-cup-engineering/file-cryptographic-integrity-service";
 
 export {
   timeAnchorCarrier,

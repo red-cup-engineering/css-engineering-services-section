@@ -8,7 +8,7 @@
  *
  * @packageDocumentation
  */
-import { canonical, type JsonValue } from "../codecs/text/json/core.mjs";
+import { canonical, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import { realize, realizeDefs } from "../carriers/kernel/realize.mjs";
 import type { StructuralType } from "../carriers/kernel/structural.mjs";
 

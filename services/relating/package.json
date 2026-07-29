@@ -46,6 +46,9 @@
   },
   "dependencies": {
     "@lenticule-science/articulating": "workspace:*",
+    "@red-cup-engineering/file-cryptographic-integrity-service": "workspace:*",
+    "@red-cup-engineering/file-projection-kernel-service": "workspace:*",
+    "@red-cup-engineering/json-file-codec-service": "workspace:*",
     "@red-cup-engineering/toml-file-codec-service": "workspace:*",
     "@red-cup-engineering/turtle-term-writing-service": "workspace:*"
   },
@@ -167,41 +170,9 @@
       "types": "./dist/src/codecs/text/index.d.mts",
       "import": "./dist/src/codecs/text/index.mjs"
     },
-    "./codecs/text/json": {
-      "types": "./dist/src/codecs/text/json/index.d.mts",
-      "import": "./dist/src/codecs/text/json/index.mjs"
-    },
-    "./codecs/text/json/jsonl": {
-      "types": "./dist/src/codecs/text/json/jsonl/index.d.mts",
-      "import": "./dist/src/codecs/text/json/jsonl/index.mjs"
-    },
-    "./codecs/text/json/jsonl/eavt": {
-      "types": "./dist/src/codecs/text/json/jsonl/eavt/index.d.mts",
-      "import": "./dist/src/codecs/text/json/jsonl/eavt/index.mjs"
-    },
-    "./codecs/text/json/jsonl/eavt/datom": {
-      "types": "./dist/src/codecs/text/json/jsonl/eavt/datom/index.d.mts",
-      "import": "./dist/src/codecs/text/json/jsonl/eavt/datom/index.mjs"
-    },
-    "./codecs/text/json/jsonl/eavt/triple": {
-      "types": "./dist/src/codecs/text/json/jsonl/eavt/triple/index.d.mts",
-      "import": "./dist/src/codecs/text/json/jsonl/eavt/triple/index.mjs"
-    },
-    "./codecs/text/json/jsonl/eavt/lean": {
-      "types": "./dist/src/codecs/text/json/jsonl/eavt/lean/index.d.mts",
-      "import": "./dist/src/codecs/text/json/jsonl/eavt/lean/index.mjs"
-    },
-    "./codecs/path/object/attribute/file/flatfile/serialization/json/jsonl": {
-      "types": "./dist/src/codecs/text/json/core.d.mts",
-      "import": "./dist/src/codecs/text/json/core.mjs"
-    },
-    "./codecs/path/object/attribute/file/flatfile/serialization/json": {
-      "types": "./dist/src/codecs/text/json/index.d.mts",
-      "import": "./dist/src/codecs/text/json/index.mjs"
-    },
-    "./codecs/path/object/attribute/file/flatfile/serialization/json/jsonl/eavt": {
-      "types": "./dist/src/codecs/text/json/jsonl/eavt/index.d.mts",
-      "import": "./dist/src/codecs/text/json/jsonl/eavt/index.mjs"
+    "./carriers/codecs/text/json/jsonl/eavt/lean/serialization": {
+      "types": "./dist/src/carriers/codecs/text/json/jsonl/eavt/lean/serialization.d.mts",
+      "import": "./dist/src/carriers/codecs/text/json/jsonl/eavt/lean/serialization.mjs"
     },
     "./codecs/path": {
       "types": "./dist/src/codecs/index.d.mts",
@@ -246,10 +217,6 @@
     "./codecs/host/javascript": {
       "types": "./dist/src/codecs/host/javascript/index.d.mts",
       "import": "./dist/src/codecs/host/javascript/index.mjs"
-    },
-    "./codecs/host/javascript/crypto": {
-      "types": "./dist/src/codecs/host/javascript/crypto/index.d.mts",
-      "import": "./dist/src/codecs/host/javascript/crypto/index.mjs"
     },
     "./codecs/host/javascript/numbers": {
       "types": "./dist/src/codecs/host/javascript/numbers/index.d.mts",

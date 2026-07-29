@@ -25,7 +25,7 @@ import { join } from "node:path";
 
 import { activityCell, activityFromCell, standingKey, answer } from "../dist/index.mjs";
 import { appendWitnesses, projectStateView } from "@red-cup-engineering/relating/ledger";
-import { canonical } from "@red-cup-engineering/relating/codecs/text/json";
+import { canonical } from "@red-cup-engineering/json-file-codec-service";
 
 // A canonical outbox activity, minted through G so it is exactly the wire form the
 // agent's outbox leg emits (type ∈ {Create, Undo}, Note object, optional published).

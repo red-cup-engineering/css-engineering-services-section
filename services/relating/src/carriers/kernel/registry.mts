@@ -18,7 +18,7 @@
  *
  * @packageDocumentation
  */
-import { isJsonRecord, type JsonValue } from "../../codecs/text/json/core.mjs";
+import { isJsonRecord, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import { resolveJsonPointer } from "../../writing/schema.mjs";
 import type { Carrier } from "./carrier.mjs";
 

@@ -8,10 +8,10 @@
  * invocation ledger uses, applied to the schema documents that drive `realize`,
  * OpenAPI, and MCP: a schema is a settled fold of its own assertions.
  */
-import { restrict, type Projector } from "../projections/kernel.mjs";
-import { canonical, isJsonValue, jsonProjector, requireJsonValue, type JsonValue } from "../codecs/text/json/core.mjs";
-import { type EAVTRecord, eavtId, eavtRecord, foldJson, mergeEavtLogs, unfoldJson } from "../codecs/text/json/jsonl/eavt/index.mjs";
-import { sha256Hex } from "../codecs/host/javascript/crypto/index.mjs";
+import { restrict, type Projector } from "@red-cup-engineering/file-projection-kernel-service";
+import { canonical, isJsonValue, jsonProjector, requireJsonValue, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
+import { type EAVTRecord, eavtId, eavtRecord, foldJson, mergeEavtLogs, unfoldJson } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
+import { sha256Hex } from "@red-cup-engineering/file-cryptographic-integrity-service";
 
 const basename = (path: string): string => path.split("/").filter(Boolean).at(-1) ?? path;
 

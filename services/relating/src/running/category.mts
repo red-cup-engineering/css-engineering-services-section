@@ -15,7 +15,7 @@
  * action registry into one `CategoryRegistry` so downstream faculties populate a
  * single live category by declaring carriers and actions.
  */
-import type { JsonValue } from "../codecs/text/json/core.mjs";
+import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import {
   registerCarrier,
   carrierById,

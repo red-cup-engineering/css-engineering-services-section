@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { parse as parseEavt } from "@red-cup-engineering/relating/codecs/text/json/jsonl/eavt";
+import { parse as parseEavt } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
 
 import {
   evaluateChronicleLedgerQuery,

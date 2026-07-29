@@ -1,6 +1,6 @@
 // ledger/feed - pure description of how observations become witness rows.
 
-import type { EAVTRecord } from "../codecs/text/json/jsonl/eavt/index.mjs";
+import type { EAVTRecord } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
 import type { Witness } from "./cells.mjs";
 
 /**

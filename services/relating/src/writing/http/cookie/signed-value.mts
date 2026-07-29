@@ -6,7 +6,7 @@
 // the image (tampered or unsigned text) decodes to null. Verification is
 // timing-safe.
 
-import { hmacSha256Base64Url, timingSafeStringEqual } from "../../../codecs/host/javascript/crypto/index.mjs";
+import { hmacSha256Base64Url, timingSafeStringEqual } from "@red-cup-engineering/file-cryptographic-integrity-service";
 
 export function signCookieValue(value: string, secret: string, salt = "cookie"): string {
   if (!secret) throw new TypeError("signCookieValue: secret is required");
