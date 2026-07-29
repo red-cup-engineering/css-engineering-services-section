@@ -165,6 +165,21 @@ test("the cone preserves only supplied real A2A extensions and forgets exactly t
   assert.deepEqual(extracted.a2aMessage.extensions, message.extensions);
 });
 
+test("an addressed Create may carry one exact A2A ROLE_USER work message", () => {
+  const encoded = encodeRelationalValue({ type: "CloudRunReconciliationRequest", sequence: 1 });
+  const bytes = semanticBytes(["ascribe", encoded.type, encoded.term]);
+  const message = {
+    messageId: "urn:a2a:cloud-run-work:one", role: "ROLE_USER",
+    parts: [{ raw: bytes.toString("base64"), metadata: { ni: rawNi(bytes) }, filename: "work.rmn.cbor", mediaType: "application/rmn+cbor" }],
+    metadata: { optionalInnerCarriers: ["ucan", "x402", "captp"] }, extensions: ["urn:ucan:invocation:v1"],
+  };
+  const projected = projectRmnActivity({ type: "Create", origin: "https://customer.example/", identifier: "customer", recipient: "https://provider.example/actors/gcloud", objectBytes: bytes, agentCard: "https://customer.example/.well-known/agent-card.json", a2aMessage: message, a2aRole: "ROLE_USER" });
+  const extracted = extractRmnActivity(projected, { expectedActor: "https://customer.example/actors/customer", expectedRecipient: "https://provider.example/actors/gcloud", expectedAgentCard: "https://customer.example/.well-known/agent-card.json" });
+  assert.equal(extracted.a2aMessage.role, "ROLE_USER");
+  assert.deepEqual(extracted.objectBytes, bytes);
+  assert.deepEqual(extracted.a2aMessage.metadata.optionalInnerCarriers, ["ucan", "x402", "captp"]);
+});
+
 test("the generic provider loads a customer-authored durable outbox", async () => {
   const root = mkdtempSync(path.join(tmpdir(), "activitypub-outbox-"));
   const outboxPath = path.join(root, "outbox.json");

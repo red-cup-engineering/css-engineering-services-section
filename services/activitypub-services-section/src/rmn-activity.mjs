@@ -1,6 +1,7 @@
 import { Activity } from "@fedify/vocab";
 import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
 import { decodeRelationalValue, encodeRelationalValue, RELATIONAL_VALUE_TYPE } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
+import { rawNiUri as sha256Ni } from "@lenticule-science/rmn-semantic-conformance-die/canonical-cbor";
 import {
   agentRmnMessage,
   extractRmnPart,
@@ -27,7 +28,6 @@ function actorUrl(origin, identifier) {
   if (typeof identifier !== "string" || !/^[a-z0-9][a-z0-9._-]*$/u.test(identifier)) throw new TypeError("ActivityPub identifier is invalid");
   return new URL(`/actors/${identifier}`, exactUrl(origin, "ActivityPub origin")).href;
 }
-const sha256Ni = (await import(new URL("../../../../../../../../lenticule-science/services/obsmetrological-services-section/services/rmn-semantic-conformance-die/src/canonical-cbor.mjs", import.meta.url).href)).rawNiUri;
 function one(value) { return Array.isArray(value) ? value : [value]; }
 function sameRecipient(left, right) { return left === right || ([left, right].every((value) => [ACTIVITYSTREAMS_PUBLIC, "as:Public"].includes(value))); }
 function immutable(value) {
@@ -44,11 +44,11 @@ function dataBytes(value) {
   return bytes;
 }
 
-function exactA2aMessage(objectBytes, supplied) {
+function exactA2aMessage(objectBytes, supplied, expectedRole = "ROLE_AGENT") {
   const payload = Buffer.from(objectBytes ?? []);
   const payloadNi = sha256Ni(payload);
   const message = supplied ?? agentRmnMessage(payload, "operation.rmn.cbor", payloadNi);
-  if (message?.role !== "ROLE_AGENT") throw new TypeError("ActivityPub RMN projection requires one A2A ROLE_AGENT message");
+  if (message?.role !== expectedRole) throw new TypeError(`ActivityPub RMN projection requires one A2A ${expectedRole} message`);
   let part;
   try {
     part = extractRmnPart(parseA2aMessage(message).parts);
@@ -61,8 +61,8 @@ function exactA2aMessage(objectBytes, supplied) {
   return immutable(structuredClone(message));
 }
 
-function cloudEventBytes({ type, actor, recipient, objectBytes, a2aMessage, eventTime }) {
-  const message = exactA2aMessage(objectBytes, a2aMessage);
+function cloudEventBytes({ type, actor, recipient, objectBytes, a2aMessage, eventTime, a2aRole }) {
+  const message = exactA2aMessage(objectBytes, a2aMessage, a2aRole);
   const data = {
     profile: AGENTIC_ACTIVITY_PROFILE,
     transport: "A2A",
@@ -92,8 +92,8 @@ function unwrapCloudEvent(bytes, expectedType, expectedActor, expectedRecipient)
   if (event?.specversion !== "1.0" || event.source !== expectedActor || event.subject !== expectedRecipient || event.type !== `org.harmonious-union.activitypub.${expectedType.toLowerCase()}.v1` || event.datacontenttype !== A2A_MEDIA_TYPE || event.data?.profile !== AGENTIC_ACTIVITY_PROFILE || event.data?.transport !== "A2A") {
     throw new TypeError("ActivityPub RMN object has the wrong canonical CloudEvents/A2A envelope");
   }
-  if (event.data.message?.role !== "ROLE_AGENT") {
-    throw new TypeError("CloudEvents data is not one A2A ROLE_AGENT message");
+  if (!["ROLE_USER", "ROLE_AGENT"].includes(event.data.message?.role)) {
+    throw new TypeError("CloudEvents data is not one A2A ROLE_USER or ROLE_AGENT message");
   }
   const { id: eventId, ...eventBody } = event;
   const encodedBody = encodeRelationalValue(eventBody);
@@ -119,7 +119,7 @@ function unwrapCloudEvent(bytes, expectedType, expectedActor, expectedRecipient)
   });
 }
 
-export function projectRmnActivity({ type, origin, identifier, recipient, objectBytes, agentCard, a2aMessage, eventTime }) {
+export function projectRmnActivity({ type, origin, identifier, recipient, objectBytes, agentCard, a2aMessage, eventTime, a2aRole = "ROLE_AGENT" }) {
   if (!TYPES.has(type)) throw new TypeError("ActivityPub RMN projection requires a standard supported Activity type");
   const bytes = Buffer.from(objectBytes ?? []);
   if (bytes.length < 1 || bytes.length > MAXIMUM_INLINE_RMN_BYTES) throw new TypeError("ActivityPub RMN projection requires bounded nonempty canonical bytes");
@@ -131,7 +131,8 @@ export function projectRmnActivity({ type, origin, identifier, recipient, object
   const actor = actorUrl(origin, identifier);
   const to = recipient === ACTIVITYSTREAMS_PUBLIC ? recipient : exactUrl(recipient, "ActivityPub recipient");
   const card = exactUrl(agentCard, "A2A Agent Card");
-  const envelopeBytes = cloudEventBytes({ type, actor, recipient: to, objectBytes: bytes, a2aMessage, eventTime });
+  if (!["ROLE_USER", "ROLE_AGENT"].includes(a2aRole)) throw new TypeError("ActivityPub RMN projection requires A2A ROLE_USER or ROLE_AGENT");
+  const envelopeBytes = cloudEventBytes({ type, actor, recipient: to, objectBytes: bytes, a2aMessage, eventTime, a2aRole });
   const ni = sha256Ni(envelopeBytes);
   const projectionBody = encodeRelationalValue({ type, actor, to, envelopeNi: ni, agentCard: card });
   const projectionDigest = semanticId(["ascribe", projectionBody.type, projectionBody.term]).slice("ni:///sha-256;".length);

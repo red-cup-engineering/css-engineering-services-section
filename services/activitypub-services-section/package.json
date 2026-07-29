@@ -1,7 +1,6 @@
 {
   "name": "@red-cup-engineering/activitypub-services-section",
-  "version": "1.0.0",
-  "private": true,
+  "version": "1.0.1",
   "type": "module",
   "description": "The Union's canonical public transport: ActivityPub federation carrying CloudEvents whose data is an A2A message with one canonical RMN part.",
   "exports": {
@@ -36,12 +35,13 @@
     "verify": "npm run check && npm test"
   },
   "dependencies": {
-    "@red-cup-engineering/a2a-rmn-part-service": "workspace:*",
+    "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
     "@fedify/fedify": "2.3.1",
     "@fedify/vocab": "2.3.1",
     "@hono/node-server": "1.19.14",
     "ethers": "6.17.0",
-    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0"
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0",
+    "@lenticule-science/rmn-semantic-conformance-die": "6.0.0"
   },
   "engines": {
     "node": ">=22"
@@ -82,8 +82,8 @@
       },
       "project-rmn-activity": {
         "contract": "activitypub-services-section/rmn-link/v1",
-        "accepts": "one standard Activity type, canonical RMN CBOR object, recipient, A2A Agent Card, and optionally one actual A2A ROLE_AGENT message carrying that exact object",
-        "returns": "one standard ActivityStreams act containing one CloudEvent whose data is an A2A ROLE_AGENT message with one RFC 6920 named application/rmn+cbor part",
+        "accepts": "one standard Activity type, canonical RMN CBOR object, recipient, A2A Agent Card, and optionally one actual A2A ROLE_AGENT output or ROLE_USER inbound-work message carrying that exact object",
+        "returns": "one standard ActivityStreams act containing one CloudEvent whose data is the supplied exact A2A ROLE_USER or ROLE_AGENT message with one RFC 6920 named application/rmn+cbor part",
         "effects": [
           "deterministic-projection-only"
         ],
