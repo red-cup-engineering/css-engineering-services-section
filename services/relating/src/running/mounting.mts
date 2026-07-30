@@ -21,6 +21,7 @@
  * `services/http/server`.
  */
 import { induceBins, type InducedBins } from "./induce.mjs";
+import { escapeHtml } from "@red-cup-engineering/html-file-codec-service/string-rendering";
 import type { SchemaRegistry } from "../carriers/kernel/registry.mjs";
 import {
   consumedIds,
@@ -36,11 +37,6 @@ import {
   type ServedResponse,
   type ServeOptions,
 } from "./serving.mjs";
-
-/** Minimal HTML text escape for the namespace web-UX projection. */
-function escapeHtml(value: string): string {
-  return value.replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch] ?? ch));
-}
 
 /** A carrier-node mount: a guest apex plus the carrier `$id` its domain acts on. */
 export interface CarrierMount {

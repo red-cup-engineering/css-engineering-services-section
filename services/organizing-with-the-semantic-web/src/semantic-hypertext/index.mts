@@ -18,7 +18,14 @@ import {
   type ChargeValueName,
   type RelationCarrier,
 } from "@red-cup-engineering/relating";
-import { escapeAttr, escapeText, slug } from "@red-cup-engineering/html-file-codec-service";
+import {
+  fromCells,
+  project as projectShpDocument,
+  projectArticle as projectShpArticle,
+  type ChargedCell,
+  type ShpDataform,
+} from "@red-cup-engineering/html-file-codec-service";
+import { requireJsonValue } from "@red-cup-engineering/relating/codecs";
 import { stableJson, type ClaimCell } from "../semantic-reader/index.mjs";
 
 type PageSpace = RelationCarrier<string, string>;
@@ -254,69 +261,30 @@ export function nest(secs: readonly Section[]): readonly Section[] {
   return secs;
 }
 
-function witnessText(entry: unknown): unknown {
-  return entry && typeof entry === "object" && (entry as { kind?: unknown }).kind === "utterance.mark"
-    ? (entry as { value?: unknown }).value
-    : entry;
-}
-
-function witnesses(value: readonly unknown[]): string {
-  return value.length === 0 ? "<em>none recorded</em>" : value.map((entry) => `<li>${escapeText(String(witnessText(entry) ?? ""))}</li>`).join("");
-}
-
-function renderWhy(carrier: ChargeCarrier, mark: string): string {
-  return `<details class="why" data-value="${escapeAttr(mark)}"><summary>why ${escapeText(mark)}</summary><ul class="witnesses-truth" data-side="truth">${witnesses([...carrier.evidence[0]])}</ul><ul class="witnesses-falsity" data-side="falsity">${witnesses([...carrier.evidence[1]])}</ul></details>`;
-}
-
-function renderSpan(entry: Selected, mode: "calm" | "audit"): string {
-  const name: ChargeValueName = chargeNameOfCarrier(entry.charge);
-  const valueMark = VALUE_MARK[name];
-  const object = entry.cell.object;
-  const hasObject = object !== undefined && object !== null && object !== "";
-  const text = hasObject ? `${entry.cell.predicate} ${object}` : entry.cell.predicate;
-  const contested = name === "stable";
-  const attrs = [
-    `class="${escapeAttr(slug(entry.cell.predicate))}"`,
-    `data-e="${escapeAttr(entry.cell.subject)}"`,
-    `data-a="${escapeAttr(entry.cell.predicate)}"`,
-    hasObject ? `data-v="${escapeAttr(String(object))}"` : "",
-    contested ? `data-contested="true"` : "",
-  ].filter(Boolean).join(" ");
-  const why = contested || mode === "audit" ? renderWhy(entry.charge, valueMark) : "";
-  return `      <span ${attrs}>${escapeText(text)}${why}</span>`;
+function selectedDataform(page: Page, selected: readonly Selected[], options: { title?: string; mode?: "calm" | "audit"; observer?: string }): ShpDataform {
+  const cells: ChargedCell[] = selected.map((entry) => {
+    const object = entry.cell.object;
+    const cell = object === undefined
+      ? { subject: entry.cell.subject, predicate: entry.cell.predicate }
+      : { subject: entry.cell.subject, predicate: entry.cell.predicate, object: requireJsonValue(object, "semantic-hypertext object") };
+    return Object.freeze({ cell: Object.freeze(cell), charge: entry.charge });
+  });
+  return fromCells(page.subject ?? "semantic-hypertext", cells, {
+    ...(options.title === undefined ? {} : { title: options.title }),
+    ...(options.observer === undefined ? {} : { observer: options.observer }),
+    mode: options.mode === "audit" ? "audit" : "calm",
+  });
 }
 
 export function projectArticle(page: Page, contextName: string, options: { mode?: "calm" | "audit"; observer?: string } = {}): string {
-  const mode = options.mode === "audit" ? "audit" : "calm";
   const selected = selectForContext(page, contextName);
   if (selected.length === 0) return "";
-  const body = nest(sections(selected))
-    .map((section) => `    <section class="subject" data-e="${escapeAttr(section.subject)}">\n${section.cells.map((cell) => renderSpan(cell, mode)).join("\n")}\n    </section>`)
-    .join("\n");
-  const attrs = [
-    `class="semantic-hypertext-packet"`,
-    page.subject === null ? "" : `data-subject="${escapeAttr(page.subject)}"`,
-    options.observer === undefined ? "" : `data-observer="${escapeAttr(options.observer)}"`,
-    `data-cells="${selected.length}"`,
-    `data-mode="${mode}"`,
-  ].filter(Boolean).join(" ");
-  return `  <article ${attrs}>\n${body}\n  </article>`;
+  return projectShpArticle(selectedDataform(page, selected, options));
 }
 
 export function projectDocument(page: Page, contextName: string, options: { title?: string; mode?: "calm" | "audit"; observer?: string } = {}): string {
   const title = options.title ?? page.subject ?? "semantic-hypertext";
-  const article = projectArticle(page, contextName, options) || `  <p class="empty">No cells selected.</p>`;
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>${escapeText(title)}</title>
-</head>
-<body>
-${article}
-</body>
-</html>
-`;
+  return projectShpDocument(selectedDataform(page, selectForContext(page, contextName), { ...options, title }));
 }
 
 function left(value: string): string {
