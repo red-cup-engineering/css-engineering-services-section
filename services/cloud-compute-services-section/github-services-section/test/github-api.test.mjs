@@ -25,6 +25,27 @@ test("repository tarball bytes cross the codeload boundary while credentials do 
   }
 });
 
+test("the provider admits the existing GitHub runtime credential when its service alias is absent", async () => {
+  const priorService = process.env.GITHUB_SERVICES_TOKEN;
+  const priorRuntime = process.env.GITHUB_TOKEN;
+  delete process.env.GITHUB_SERVICES_TOKEN;
+  process.env.GITHUB_TOKEN = "runtime-owned-secret";
+  try {
+    let authorization = null;
+    const api = githubApi({ fetchImpl: async (_url, init) => {
+      authorization = init.headers.authorization;
+      return new Response(JSON.stringify({ visibility: "public" }), { status: 200 });
+    } });
+    await api.getRepo("emsenn/union-free-compute-runner");
+    assert.equal(authorization, "Bearer runtime-owned-secret");
+  } finally {
+    if (priorService === undefined) delete process.env.GITHUB_SERVICES_TOKEN;
+    else process.env.GITHUB_SERVICES_TOKEN = priorService;
+    if (priorRuntime === undefined) delete process.env.GITHUB_TOKEN;
+    else process.env.GITHUB_TOKEN = priorRuntime;
+  }
+});
+
 test("tarball transport refuses foreign redirects and over-limit bodies", async () => {
   const foreign = githubApi({ fetchImpl: async () => new Response(null, { status: 302, headers: { location: "https://example.invalid/archive.tgz" } }) });
   await assert.rejects(foreign.getRepositoryTarball("acme/widgets"), /left the admitted codeload origin/);

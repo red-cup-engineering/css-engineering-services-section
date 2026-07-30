@@ -26,7 +26,10 @@ async function boundedBytes(response, maximumBytes) {
 }
 
 export function githubApi({ fetchImpl = fetch } = {}) {
-  const token = process.env.GITHUB_SERVICES_TOKEN;
+  // Credential material remains owned by this protocol carrier.  A deployed
+  // service receives GITHUB_SERVICES_TOKEN; GitHub-hosted and controlled
+  // interactive runtime receive the same scoped credential as GITHUB_TOKEN.
+  const token = process.env.GITHUB_SERVICES_TOKEN ?? process.env.GITHUB_TOKEN;
   const headers = { accept: "application/vnd.github+json", "user-agent": "red-cup-engineering-github-capability" };
   if (token) headers.authorization = `Bearer ${token}`;
   const j = async (method, path, body) => {
