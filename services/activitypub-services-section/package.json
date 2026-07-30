@@ -16,6 +16,7 @@
     "./rmn-activity": "./src/rmn-activity.mjs",
     "./rmn-history": "./src/rmn-history.mjs",
     "./rmn-outbox-client": "./src/rmn-outbox-client.mjs",
+    "./r2-custody": "./src/r2-custody.mjs",
     "./keys": "./src/keys.mjs",
     "./onchain": "./src/onchain.mjs",
     "./src/onchain.mjs": "./src/onchain.mjs",
@@ -30,8 +31,8 @@
     "materialize-rmn-outbox-activity": "./bin/materialize-rmn-outbox-activity.mjs"
   },
   "scripts": {
-    "check": "node --check src/provider.mjs && node --check src/server.mjs && node --check src/onchain.mjs && node --check src/onchain-r2-external-body.mjs && node --check src/onchain-server.mjs && node --check src/generate-encrypted-evm-wallet.mjs && node --check src/deliver.mjs && node --check src/keys.mjs && node --check src/rmn-activity.mjs && node --check src/rmn-history.mjs && node --check src/rmn-outbox-client.mjs && node --check bin/materialize-rmn-outbox-activity.mjs && node --check test/provider.test.mjs && node --check test/onchain.test.mjs && node --check test/generate-encrypted-evm-wallet.test.mjs && node --check test/rmn-outbox-client.test.mjs && node --check test/rmn-history.test.mjs",
-    "test": "node --test test/provider.test.mjs test/onchain.test.mjs test/generate-encrypted-evm-wallet.test.mjs test/rmn-outbox-client.test.mjs test/rmn-history.test.mjs",
+    "check": "node --check src/provider.mjs && node --check src/server.mjs && node --check src/onchain.mjs && node --check src/onchain-r2-external-body.mjs && node --check src/onchain-server.mjs && node --check src/generate-encrypted-evm-wallet.mjs && node --check src/deliver.mjs && node --check src/keys.mjs && node --check src/rmn-activity.mjs && node --check src/rmn-history.mjs && node --check src/rmn-outbox-client.mjs && node --check src/r2-custody.mjs && node --check bin/materialize-rmn-outbox-activity.mjs && node --check test/provider.test.mjs && node --check test/onchain.test.mjs && node --check test/generate-encrypted-evm-wallet.test.mjs && node --check test/rmn-outbox-client.test.mjs && node --check test/rmn-history.test.mjs && node --check test/r2-custody.test.mjs",
+    "test": "node --test test/provider.test.mjs test/onchain.test.mjs test/generate-encrypted-evm-wallet.test.mjs test/rmn-outbox-client.test.mjs test/rmn-history.test.mjs test/r2-custody.test.mjs",
     "verify": "npm run check && npm test"
   },
   "dependencies": {
