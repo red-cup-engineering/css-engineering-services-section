@@ -13,6 +13,8 @@
       "import": "./src/server.mjs"
     },
     "./deliver": "./src/deliver.mjs",
+    "./bounded-exchange": "./src/exchange.mjs",
+    "./network-mcp": "./src/network-mcp.mjs",
     "./rmn-activity": "./src/rmn-activity.mjs",
     "./rmn-history": "./src/rmn-history.mjs",
     "./rmn-outbox-client": "./src/rmn-outbox-client.mjs",
@@ -25,14 +27,15 @@
   "bin": {
     "serve-activitypub-provider": "./src/server.mjs",
     "deliver-activitypub-activity": "./src/deliver.mjs",
+    "serve-activitypub-network-mcp": "./src/network-mcp.mjs",
     "generate-activitypub-keys": "./src/keys.mjs",
     "generate-encrypted-evm-wallet": "./src/generate-encrypted-evm-wallet.mjs",
     "serve-onchain-activitypub-provider": "./src/onchain-server.mjs",
     "materialize-rmn-outbox-activity": "./bin/materialize-rmn-outbox-activity.mjs"
   },
   "scripts": {
-    "check": "node --check src/provider.mjs && node --check src/server.mjs && node --check src/onchain.mjs && node --check src/onchain-r2-external-body.mjs && node --check src/onchain-server.mjs && node --check src/generate-encrypted-evm-wallet.mjs && node --check src/deliver.mjs && node --check src/keys.mjs && node --check src/rmn-activity.mjs && node --check src/rmn-history.mjs && node --check src/rmn-outbox-client.mjs && node --check src/r2-custody.mjs && node --check bin/materialize-rmn-outbox-activity.mjs && node --check test/provider.test.mjs && node --check test/deliver.test.mjs && node --check test/onchain.test.mjs && node --check test/generate-encrypted-evm-wallet.test.mjs && node --check test/rmn-outbox-client.test.mjs && node --check test/rmn-history.test.mjs && node --check test/r2-custody.test.mjs",
-    "test": "node --test test/provider.test.mjs test/deliver.test.mjs test/onchain.test.mjs test/generate-encrypted-evm-wallet.test.mjs test/rmn-outbox-client.test.mjs test/rmn-history.test.mjs test/r2-custody.test.mjs",
+    "check": "node --check src/provider.mjs && node --check src/server.mjs && node --check src/onchain.mjs && node --check src/onchain-r2-external-body.mjs && node --check src/onchain-server.mjs && node --check src/generate-encrypted-evm-wallet.mjs && node --check src/deliver.mjs && node --check src/exchange.mjs && node --check src/network-mcp.mjs && node --check src/keys.mjs && node --check src/rmn-activity.mjs && node --check src/rmn-history.mjs && node --check src/rmn-outbox-client.mjs && node --check src/r2-custody.mjs && node --check bin/materialize-rmn-outbox-activity.mjs && node --check test/provider.test.mjs && node --check test/deliver.test.mjs && node --check test/exchange.test.mjs && node --check test/network-mcp.test.mjs && node --check test/onchain.test.mjs && node --check test/generate-encrypted-evm-wallet.test.mjs && node --check test/rmn-outbox-client.test.mjs && node --check test/rmn-history.test.mjs && node --check test/r2-custody.test.mjs",
+    "test": "node --test test/provider.test.mjs test/deliver.test.mjs test/exchange.test.mjs test/network-mcp.test.mjs test/onchain.test.mjs test/generate-encrypted-evm-wallet.test.mjs test/rmn-outbox-client.test.mjs test/rmn-history.test.mjs test/r2-custody.test.mjs",
     "verify": "npm run check && npm test"
   },
   "dependencies": {
@@ -81,6 +84,13 @@
           "signed HTTPS POST to one exact recipient inbox"
         ],
         "customerAuthorshipPreserved": true
+      },
+      "exchange-bounded-activitypub-a2a": {
+        "contract": "activitypub-services-section/bounded-exchange/v1",
+        "accepts": "one caller-authored ActivityPub or A2A JSON-RPC JSON object, exact HTTPS endpoint, and a caller-held credential resource reference where needed",
+        "returns": "one typed bounded response or exact authorization/provider refusal",
+        "effects": ["one HTTPS POST"],
+        "proofPath": "endpoint, protocol, and credential resource are explicit; no x402 settlement or chain write is implicit"
       },
       "project-rmn-activity": {
         "contract": "activitypub-services-section/rmn-link/v1",
