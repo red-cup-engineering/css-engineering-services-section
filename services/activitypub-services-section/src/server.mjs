@@ -95,11 +95,17 @@ export async function serveActivityPubProvider(options = {}) {
   });
   const port = Number(options.port ?? process.env.PORT ?? origin.port ?? "8000");
   const hostname = options.hostname ?? process.env.HOST ?? "127.0.0.1";
+  const wellKnownResources = options.wellKnownResources ?? {};
+  for (const [resourcePath, document] of Object.entries(wellKnownResources)) {
+    if (!resourcePath.startsWith("/.well-known/") || document === undefined) throw new TypeError("well-known resources require exact /.well-known/* paths and JSON documents");
+  }
   const server = serve({
     hostname,
     port,
     fetch: async (request) => {
       try {
+        const resource = wellKnownResources[new URL(request.url).pathname];
+        if (request.method === "GET" && resource !== undefined) return new Response(`${JSON.stringify(resource)}\n`, { status: 200, headers: { "content-type": "application/json" } });
         return await provider.fetch(request);
       } catch (error) {
         process.stderr.write(`ActivityPub request failed: ${(error instanceof Error ? error.stack ?? error.message : String(error)).slice(0, 8000)}\n`);

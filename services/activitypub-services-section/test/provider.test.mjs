@@ -258,6 +258,37 @@ test("the Node compatibility server requires injected network custody and suppor
   }
 });
 
+test("the ActivityPub listener serves injected generic well-known JSON without changing provider routes", async () => {
+  const root = mkdtempSync(path.join(tmpdir(), "activitypub-well-known-"));
+  const keyPath = path.join(root, "keys.json");
+  const port = await unusedPort();
+  await writeFile(keyPath, JSON.stringify(await generateActorKeyMaterial()), { mode: 0o600 });
+  const service = await serveActivityPubProvider({
+    origin: `http://127.0.0.1:${port}`,
+    identifier: "metroplat",
+    actorName: "Test Settlement",
+    summary: "A sovereign settlement hiring an ActivityPub face.",
+    keyPath,
+    ...networkAdapters(),
+    testOnlyInProcess: true,
+    hostname: "127.0.0.1",
+    port,
+    bearerToken: "persistent-test-client-token-32-characters",
+    listOutbox: async () => ({ items: [] }),
+    wellKnownResources: { "/.well-known/provider-card.json": { type: "ProviderCard", version: 1 } },
+  });
+  try {
+    const document = await fetch(`http://127.0.0.1:${port}/.well-known/provider-card.json`);
+    assert.equal(document.status, 200);
+    assert.deepEqual(await document.json(), { type: "ProviderCard", version: 1 });
+    const actor = await fetch(`http://127.0.0.1:${port}/actors/metroplat`, { headers: { accept: "application/activity+json" } });
+    assert.equal(actor.status, 200);
+  } finally {
+    await service.close();
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("one customer-authored activity is signed, delivered, verified, and handed to the receiving customer", async () => {
   const root = mkdtempSync(path.join(tmpdir(), "activitypub-delivery-"));
   const senderPort = await unusedPort();
