@@ -139,7 +139,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@red-cup-engineering/html-file-codec-service": "workspace:*",
+    "@red-cup-engineering/html-file-codec-service": "0.1.1",
     "@red-cup-engineering/communicating": "0.0.0",
     "@red-cup-engineering/communicating-in-english": "0.0.0",
     "@red-cup-engineering/relating": "0.0.0",
