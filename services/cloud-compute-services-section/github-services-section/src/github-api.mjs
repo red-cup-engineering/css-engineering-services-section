@@ -118,8 +118,8 @@ export function githubApi({ fetchImpl = fetch } = {}) {
     },
     async getTreeEntries(repo, ref) {
       const t = await j("GET", `/repos/${repo}/git/trees/${encodeURIComponent(ref)}?recursive=1`);
-      return (t.tree || []).filter((entry) => entry.type === "blob")
-        .map(({ path, mode, sha }) => ({ path, mode, sha }));
+      return (t.tree || []).filter((entry) => entry.type === "blob" || entry.type === "commit")
+        .map(({ path, mode, type, sha }) => ({ path, mode, type, sha }));
     },
     async getContentRecord(repo, ref, path) {
       if (!REPOSITORY.test(repo ?? "") || typeof ref !== "string" || ref.length === 0 || typeof path !== "string" || path.length === 0) throw new TypeError("GitHub repository, ref, and path are required");

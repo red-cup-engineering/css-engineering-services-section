@@ -64,3 +64,15 @@ test("bounded public-compute GitHub observations and dispatch stay on the provid
     else process.env.GITHUB_SERVICES_TOKEN = prior;
   }
 });
+
+test("tree entry observations preserve blobs and gitlinks", async () => {
+  const api = githubApi({ fetchImpl: async () => new Response(JSON.stringify({ tree: [
+    { path: "README.md", mode: "100644", type: "blob", sha: "blob-sha" },
+    { path: "lib/cell", mode: "160000", type: "commit", sha: "commit-sha" },
+    { path: "lib", mode: "040000", type: "tree", sha: "tree-sha" },
+  ] }), { status: 200 }) });
+  assert.deepEqual(await api.getTreeEntries("union/root", "a".repeat(40)), [
+    { path: "README.md", mode: "100644", type: "blob", sha: "blob-sha" },
+    { path: "lib/cell", mode: "160000", type: "commit", sha: "commit-sha" },
+  ]);
+});
