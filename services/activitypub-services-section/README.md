@@ -21,6 +21,10 @@ ACTIVITYPUB_RECIPIENT_INBOX=https://customer.example/inbox \
   deliver-activitypub-activity < activity.json
 ```
 
+For a cloud job without standard input, provide the same already-authored JSON
+in `ACTIVITYPUB_ACTIVITY_JSON` (maximum 1 MiB).  The command rejects invalid
+or oversized environment JSON.
+
 The activity actor must be the exact contracted actor at
 `$ACTIVITYPUB_ORIGIN/actors/$ACTIVITYPUB_IDENTIFIER`; the provider signs and
 delivers those bytes but does not author them.

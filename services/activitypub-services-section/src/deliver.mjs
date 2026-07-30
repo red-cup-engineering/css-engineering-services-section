@@ -5,6 +5,8 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { createActivityPubProvider, deliverActivity, importActorKeyPairs } from "./provider.mjs";
 
+export const MAX_ACTIVITYPUB_ACTIVITY_JSON_BYTES = 1024 * 1024;
+
 function requiredEnvironment(name) {
   const value = process.env[name];
   if (value === undefined || value.trim() === "") throw new TypeError(`${name} is required`);
@@ -33,8 +35,42 @@ export async function deliverFromEnvironment(activity, options = {}) {
   });
 }
 
+function parseActivityJson(json, source) {
+  let activity;
+  try {
+    activity = JSON.parse(json);
+  } catch {
+    throw new TypeError(`${source} must contain valid JSON`);
+  }
+  if (activity === null || typeof activity !== "object" || Array.isArray(activity)) {
+    throw new TypeError(`${source} must contain one ActivityStreams activity object`);
+  }
+  return activity;
+}
+
+/**
+ * Read one already-authored ActivityStreams activity for the delivery command.
+ * Cloud jobs can set ACTIVITYPUB_ACTIVITY_JSON; interactive callers retain the
+ * standard-input contract.  The environment form is deliberately bounded so
+ * it remains an invocation parameter rather than a work queue.
+ */
+export function readActivityFromEnvironmentOrStdin({
+  environment = process.env,
+  readStandardInput = () => readFileSync(0, "utf8"),
+} = {}) {
+  if (Object.hasOwn(environment, "ACTIVITYPUB_ACTIVITY_JSON")) {
+    const json = environment.ACTIVITYPUB_ACTIVITY_JSON;
+    if (typeof json !== "string") throw new TypeError("ACTIVITYPUB_ACTIVITY_JSON must be a string");
+    if (Buffer.byteLength(json, "utf8") > MAX_ACTIVITYPUB_ACTIVITY_JSON_BYTES) {
+      throw new RangeError(`ACTIVITYPUB_ACTIVITY_JSON must not exceed ${MAX_ACTIVITYPUB_ACTIVITY_JSON_BYTES} bytes`);
+    }
+    return parseActivityJson(json, "ACTIVITYPUB_ACTIVITY_JSON");
+  }
+  return parseActivityJson(readStandardInput(), "standard input");
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
-  deliverFromEnvironment(JSON.parse(readFileSync(0, "utf8"))).then((receipt) => {
+  deliverFromEnvironment(readActivityFromEnvironmentOrStdin()).then((receipt) => {
     process.stdout.write(`${JSON.stringify(receipt)}\n`);
   }).catch((error) => {
     process.stderr.write(`${error instanceof Error ? error.stack : String(error)}\n`);
