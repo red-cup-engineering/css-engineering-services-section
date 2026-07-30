@@ -26,9 +26,12 @@ export interface ActivityPubProviderOptions {
   readonly allowPrivateAddress?: boolean;
   readonly onActivity: (arrival: ActivityPubArrival) => void | Promise<void>;
   readonly authorizeInbox: (input: Readonly<{ identifier: string; request: Request }>) => boolean | Promise<boolean>;
-  readonly listInbox: (input: Readonly<{ identifier: string; cursor?: string; limit: number }>) =>
-    Readonly<{ items: readonly unknown[]; totalItems: number; nextCursor?: string }> |
-    Promise<Readonly<{ items: readonly unknown[]; totalItems: number; nextCursor?: string }>>;
+  /** Optional customer-owned bounded history index. Custody is never scanned as an inbox history source. */
+  readonly inboxIndex?: Readonly<{
+    list: (input: Readonly<{ identifier: string; cursor?: string; limit: number }>) =>
+      Readonly<{ items: readonly unknown[]; totalItems: number; nextCursor?: string }> |
+      Promise<Readonly<{ items: readonly unknown[]; totalItems: number; nextCursor?: string }>>;
+  }>;
   readonly listOutbox: (input: Readonly<{ identifier: string; cursor?: string }>) =>
     Readonly<{ items: readonly Activity[]; nextCursor?: string }> |
     Promise<Readonly<{ items: readonly Activity[]; nextCursor?: string }>>;

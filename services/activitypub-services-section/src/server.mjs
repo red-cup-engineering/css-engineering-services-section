@@ -90,7 +90,7 @@ export async function serveActivityPubProvider(options = {}) {
       await onActivity(Object.freeze({ ...arrival, ...(settlement === undefined ? {} : { settlement }) }));
     },
     authorizeInbox: ({ request }) => bearerMatches(request, bearerToken),
-    listInbox: (input) => inbox.list(input),
+    ...(options.inboxIndex === undefined ? {} : { inboxIndex: options.inboxIndex }),
     listOutbox,
   });
   const port = Number(options.port ?? process.env.PORT ?? origin.port ?? "8000");
@@ -99,12 +99,25 @@ export async function serveActivityPubProvider(options = {}) {
   for (const [resourcePath, document] of Object.entries(wellKnownResources)) {
     if (!resourcePath.startsWith("/.well-known/") || document === undefined) throw new TypeError("well-known resources require exact /.well-known/* paths and JSON documents");
   }
+  const workerRoute = options.workerRoute;
+  if (workerRoute !== undefined) {
+    if (!workerRoute || typeof workerRoute !== "object" || typeof workerRoute.path !== "string" || !workerRoute.path.startsWith("/_private/") || typeof workerRoute.consume !== "function") {
+      throw new TypeError("ActivityPub worker route requires one private path and consume function");
+    }
+  }
   const server = serve({
     hostname,
     port,
     fetch: async (request) => {
       try {
-        const resource = wellKnownResources[new URL(request.url).pathname];
+        const requestUrl = new URL(request.url);
+        if (workerRoute !== undefined && requestUrl.pathname === workerRoute.path) {
+          if (request.method !== "POST") return new Response(null, { status: 404 });
+          const response = await workerRoute.consume(request);
+          if (!(response instanceof Response)) throw new TypeError("ActivityPub private worker consume must return a Response");
+          return response;
+        }
+        const resource = wellKnownResources[requestUrl.pathname];
         if (request.method === "GET" && resource !== undefined) return new Response(`${JSON.stringify(resource)}\n`, { status: 200, headers: { "content-type": "application/json" } });
         return await provider.fetch(request);
       } catch (error) {

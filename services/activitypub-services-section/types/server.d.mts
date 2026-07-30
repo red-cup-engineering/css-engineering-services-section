@@ -25,8 +25,13 @@ export interface ServeActivityPubProviderOptions {
   readonly queue?: MessageQueue;
   readonly inbox: Readonly<{
     retain: (arrival: ActivityPubArrival) => void | Promise<void>;
-    list: (input: Readonly<{ cursor?: string; limit: number }>) => Readonly<{ items: readonly unknown[]; totalItems: number; nextCursor?: string }> | Promise<Readonly<{ items: readonly unknown[]; totalItems: number; nextCursor?: string }>>;
   }>;
+  /** Explicit bounded index for the optional private inbox-history projection. */
+  readonly inboxIndex?: Readonly<{
+    list: (input: Readonly<{ identifier: string; cursor?: string; limit: number }>) => Readonly<{ items: readonly unknown[]; totalItems: number; nextCursor?: string }> | Promise<Readonly<{ items: readonly unknown[]; totalItems: number; nextCursor?: string }>>;
+  }>;
+  /** A non-public worker trigger. The injected queue owns request authentication and returns its HTTP response unchanged. */
+  readonly workerRoute?: Readonly<{ path: `/_private/${string}`; consume: (request: Request) => Response | Promise<Response> }>;
   readonly listOutbox?: (input: Readonly<{ identifier: string; cursor?: string }>) =>
     Readonly<{ items: readonly Activity[]; nextCursor?: string }> |
     Promise<Readonly<{ items: readonly Activity[]; nextCursor?: string }>>;

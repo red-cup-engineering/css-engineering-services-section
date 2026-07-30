@@ -68,8 +68,11 @@ export function createActivityPubProvider(options) {
   }
   const onActivity = requiredFunction(options.onActivity, "ActivityPub onActivity");
   const listOutbox = requiredFunction(options.listOutbox, "ActivityPub listOutbox");
-  const listInbox = requiredFunction(options.listInbox, "ActivityPub listInbox");
   const authorizeInbox = requiredFunction(options.authorizeInbox, "ActivityPub authorizeInbox");
+  const inboxIndex = options.inboxIndex;
+  if (inboxIndex !== undefined && (!inboxIndex || typeof inboxIndex.list !== "function")) {
+    throw new TypeError("ActivityPub inboxIndex must expose bounded list");
+  }
   const attachments = identityAttachments(options.cell, options.controller);
   const federation = createFederation({
     kv: options.kv ?? new MemoryKvStore(),
@@ -161,9 +164,13 @@ export function createActivityPubProvider(options) {
           },
         });
       }
+      // Custody retains verified arrivals; it is not a history authority.  An
+      // inbox collection exists only when the customer explicitly injects a
+      // bounded index capable of serving it.
+      if (inboxIndex === undefined) return new Response(null, { status: 404, headers: { "cache-control": "private, no-store", vary: "Authorization, Accept" } });
       const page = url.searchParams.get("page") === "true";
       const cursor = url.searchParams.get("cursor") ?? undefined;
-      const listed = await listInbox(Object.freeze({ identifier, cursor, limit: 100 }));
+      const listed = await inboxIndex.list(Object.freeze({ identifier, cursor, limit: 100 }));
       if (listed === null || typeof listed !== "object" || !Array.isArray(listed.items)
           || !Number.isSafeInteger(listed.totalItems) || listed.totalItems < 0
           || (listed.nextCursor !== undefined && (typeof listed.nextCursor !== "string" || listed.nextCursor === ""))) {

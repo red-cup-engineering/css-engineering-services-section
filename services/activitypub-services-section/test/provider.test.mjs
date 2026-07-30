@@ -15,7 +15,7 @@ import { generateActorKeyMaterial } from "../src/keys.mjs";
 import { loadActivityPubOutbox, serveActivityPubProvider } from "../src/server.mjs";
 import { deliverFromEnvironment } from "../src/deliver.mjs";
 
-async function fixture() {
+async function fixture({ legacyListInbox } = {}) {
   return createActivityPubProvider({
     identifier: "metroplat",
     actorName: "Test Settlement",
@@ -24,7 +24,7 @@ async function fixture() {
     kv: new MemoryKvStore(),
     onActivity: async () => { throw new Error("unsigned activity reached the customer"); },
     authorizeInbox: ({ request }) => request.headers.get("authorization") === "Bearer test-client-token-with-at-least-32-characters",
-    listInbox: async () => ({ items: [], totalItems: 0 }),
+    ...(legacyListInbox === undefined ? {} : { listInbox: legacyListInbox }),
     listOutbox: async () => ({ items: [] }),
   });
 }
@@ -201,8 +201,9 @@ test("the generic provider loads a customer-authored durable outbox", async () =
   }
 });
 
-test("the client inbox pin is a private standard ActivityStreams collection", async () => {
-  const provider = await fixture();
+test("inbox history is absent without an explicitly injected bounded index and never scans custody", async () => {
+  let scans = 0;
+  const provider = await fixture({ legacyListInbox: async () => { scans += 1; return { items: [], totalItems: 0 }; } });
   const refused = await provider.fetch(new Request("https://example.test/actors/metroplat/inbox", {
     headers: { accept: "application/activity+json" },
   }));
@@ -212,11 +213,8 @@ test("the client inbox pin is a private standard ActivityStreams collection", as
   const admitted = await provider.fetch(new Request("https://example.test/actors/metroplat/inbox", {
     headers: { accept: "application/activity+json", authorization: "Bearer test-client-token-with-at-least-32-characters" },
   }));
-  assert.equal(admitted.status, 200);
-  const collection = await admitted.json();
-  assert.equal(collection.type, "OrderedCollection");
-  assert.equal(collection.totalItems, 0);
-  assert.equal(collection.first, "https://example.test/actors/metroplat/inbox?page=true");
+  assert.equal(admitted.status, 404);
+  assert.equal(scans, 0);
 });
 
 async function unusedPort() {
@@ -263,6 +261,7 @@ test("the ActivityPub listener serves injected generic well-known JSON without c
   const keyPath = path.join(root, "keys.json");
   const port = await unusedPort();
   await writeFile(keyPath, JSON.stringify(await generateActorKeyMaterial()), { mode: 0o600 });
+  let consumed = 0;
   const service = await serveActivityPubProvider({
     origin: `http://127.0.0.1:${port}`,
     identifier: "metroplat",
@@ -275,6 +274,12 @@ test("the ActivityPub listener serves injected generic well-known JSON without c
     port,
     bearerToken: "persistent-test-client-token-32-characters",
     listOutbox: async () => ({ items: [] }),
+    workerRoute: { path: "/_private/test-worker", consume: async (request) => {
+      consumed += 1;
+      if (request.headers.get("authorization") !== "Bearer queue-verified") return new Response("queue authorization required", { status: 401 });
+      if (request.headers.get("x-retry") === "true") return new Response("retry", { status: 503, headers: { "retry-after": "30" } });
+      return new Response(null, { status: 204 });
+    } },
     wellKnownResources: { "/.well-known/provider-card.json": { type: "ProviderCard", version: 1 } },
   });
   try {
@@ -283,6 +288,17 @@ test("the ActivityPub listener serves injected generic well-known JSON without c
     assert.deepEqual(await document.json(), { type: "ProviderCard", version: 1 });
     const actor = await fetch(`http://127.0.0.1:${port}/actors/metroplat`, { headers: { accept: "application/activity+json" } });
     assert.equal(actor.status, 200);
+    const refused = await fetch(`http://127.0.0.1:${port}/_private/test-worker`, { method: "POST" });
+    assert.equal(refused.status, 401);
+    assert.equal(consumed, 1);
+    const delegated = await fetch(`http://127.0.0.1:${port}/_private/test-worker`, { method: "POST", headers: { authorization: "Bearer queue-verified" } });
+    assert.equal(delegated.status, 204);
+    const retry = await fetch(`http://127.0.0.1:${port}/_private/test-worker`, { method: "POST", headers: { authorization: "Bearer queue-verified", "x-retry": "true" } });
+    assert.equal(retry.status, 503);
+    assert.equal(retry.headers.get("retry-after"), "30");
+    assert.equal(await retry.text(), "retry");
+    const wrongMethod = await fetch(`http://127.0.0.1:${port}/_private/test-worker`);
+    assert.equal(wrongMethod.status, 404);
   } finally {
     await service.close();
     rmSync(root, { recursive: true, force: true });
@@ -328,6 +344,7 @@ test("one customer-authored activity is signed, delivered, verified, and handed 
     port: receiverPort,
     allowPrivateAddress: true,
     bearerToken: "receiver-test-client-token-at-least-32-characters",
+    inboxIndex: receiverNetwork.inbox,
     listOutbox: async () => ({ items: [] }),
     onActivity: async (arrival) => received.push(arrival.jsonLd),
   });
