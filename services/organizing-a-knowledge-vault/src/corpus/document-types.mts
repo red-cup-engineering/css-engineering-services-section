@@ -12,13 +12,15 @@ import { confine } from "@red-cup-engineering/relating/ledger";
 import { createMarkdown, parseMarkdown } from "@red-cup-engineering/markdown-file-codec-service";
 import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import {
+  projectSchemaAssertions,
+  type Schema as JsonSchema,
+  type SchemaAssertion,
+} from "@red-cup-engineering/json-schema-service";
+import * as schema from "@red-cup-engineering/json-schema-service";
+import {
   documentTypeDefinitions,
   documentTypeFragment,
   markdownDocumentSchemaFragment,
-  projectSchemaAssertions,
-  schema,
-  type JsonSchema,
-  type SchemaAssertion,
 } from "@red-cup-engineering/relating/writing";
 import type {
   DocumentTypeAudit,

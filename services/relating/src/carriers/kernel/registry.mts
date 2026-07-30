@@ -19,7 +19,7 @@
  * @packageDocumentation
  */
 import { isJsonRecord, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
-import { resolveJsonPointer } from "../../writing/schema.mjs";
+import { resolveJsonPointer } from "@red-cup-engineering/json-schema-service";
 import type { Carrier } from "./carrier.mjs";
 
 /** A schema registry: resolve a carrier `$ref` to the schema document it names. */

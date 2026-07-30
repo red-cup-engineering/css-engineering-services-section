@@ -13,18 +13,6 @@ export { stringProjector } from "./text.mjs";
 export { decodeToml, encodeToml, type TomlValue, type TomlTable } from "@red-cup-engineering/toml-file-codec-service";
 export { iriRef, turtleLiteral } from "@red-cup-engineering/turtle-term-writing-service";
 
-export * as schema from "./schema.mjs";
-export {
-  JSON_SCHEMA_DIALECT,
-  schemaProjector,
-  unfoldSchema,
-  foldSchema,
-  projectSchemaAssertions,
-  resolveJsonPointer,
-  type JsonSchema,
-  type SchemaAssertion,
-} from "./schema.mjs";
-
 export * as markdown from "./markdown.mjs";
 export {
   markdownProjector,

@@ -50,6 +50,7 @@
     "@red-cup-engineering/file-projection-kernel-service": "workspace:*",
     "@red-cup-engineering/html-file-codec-service": "workspace:*",
     "@red-cup-engineering/json-file-codec-service": "workspace:*",
+    "@red-cup-engineering/json-schema-service": "workspace:*",
     "@red-cup-engineering/markdown-file-codec-service": "workspace:*",
     "@red-cup-engineering/xml-file-codec-service": "workspace:*",
     "@red-cup-engineering/toml-file-codec-service": "workspace:*",
