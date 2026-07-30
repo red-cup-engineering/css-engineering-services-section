@@ -10,6 +10,9 @@
  * Codec law (L4): pure over values, no network/filesystem/clock — time enters
  * as RFC-3339 string parameters.
  */
+import { escapeHtml as escapeHtmlText } from "@red-cup-engineering/html-file-codec-service/string-rendering";
+
+export { escapeHtmlText };
 
 export type FeedAuthor = {
   name: string;
@@ -139,15 +142,6 @@ const assertAbsoluteUrl = assertHttpUrl;
 
 // Site-composition utility belt — one copy shared by the garden and blog
 // specializations, which used to carry byte-identical private versions.
-
-export function escapeHtmlText(value: unknown): string {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
 
 export function joinUrl(base: string, path = ""): string {
   const left = String(base ?? "").replace(/\/+$/, "");

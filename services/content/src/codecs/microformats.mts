@@ -8,6 +8,9 @@
  * artifact) and by web (which mounts it on HTTP — `microformatsApp` stays
  * there). Codec law (L4): pure over values, no network/filesystem/clock.
  */
+import { attrs, classes, el, escapeHtml } from "@red-cup-engineering/html-file-codec-service/string-rendering";
+
+export { attrs, classes, el, escapeHtml };
 
 export type MicroformatAuthor = {
   name: string;
@@ -216,60 +219,7 @@ function requireFeed(feed: MicroformatFeed): void {
   }
 }
 
-export function escapeHtml(value: unknown): string {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
 export const escapeAttr = escapeHtml;
-
-const VOID_ELEMENTS = new Set([
-  "area", "base", "br", "col", "embed", "hr", "img", "input",
-  "link", "meta", "param", "source", "track", "wbr",
-]);
-
-function isVoidElement(tag: string): boolean {
-  return VOID_ELEMENTS.has(tag);
-}
-
-export function attrs(map?: Record<string, unknown> | null): string {
-  if (!map) return "";
-  let out = "";
-  for (const [name, value] of Object.entries(map)) {
-    if (value === null || value === undefined || value === false) continue;
-    if (value === true) {
-      out += ` ${name}`;
-      continue;
-    }
-    out += ` ${name}="${escapeAttr(value)}"`;
-  }
-  return out;
-}
-
-export function classes(...tokens: (string | null | undefined | false)[]): string {
-  const seen = new Set<string>();
-  const out: string[] = [];
-  for (const token of tokens) {
-    if (!token) continue;
-    for (const part of token.split(/\s+/)) {
-      if (!part || seen.has(part)) continue;
-      seen.add(part);
-      out.push(part);
-    }
-  }
-  return out.join(" ");
-}
-
-export function el(tag: string, attributes?: Record<string, unknown> | null, children?: string | readonly string[]): string {
-  const open = `<${tag}${attrs(attributes)}`;
-  if (isVoidElement(tag)) return `${open} />`;
-  const inner = Array.isArray(children) ? children.join("") : children ?? "";
-  return `${open}>${inner}</${tag}>`;
-}
 
 function attr(value: unknown): string {
   return escapeHtml(value);

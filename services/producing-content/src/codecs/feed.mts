@@ -12,6 +12,9 @@
  */
 import { carrierFrom, carrierToTerm, type Tm, type FromSchema } from "@red-cup-engineering/relating";
 import { jsonResource } from "@red-cup-engineering/relating/codecs";
+import { escapeHtml as escapeHtmlText } from "@red-cup-engineering/html-file-codec-service/string-rendering";
+
+export { escapeHtmlText };
 
 export const FeedArtifactFormatSchema = { anyOf: [{ const: "rss" }, { const: "atom" }, { const: "json-feed" }, { const: "sitemap" }, { const: "sitemap-index" }, { const: "news-sitemap" }, { const: "robots" }] } as const;
 
@@ -150,15 +153,6 @@ const assertAbsoluteUrl = assertHttpUrl;
 
 // Site-composition utility belt â€” one copy shared by the garden and blog
 // specializations, which used to carry byte-identical private versions.
-
-export function escapeHtmlText(value: unknown): string {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
 
 export function joinUrl(base: string, path = ""): string {
   const left = String(base ?? "").replace(/\/+$/, "");
