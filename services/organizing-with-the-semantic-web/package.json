@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/organizing-with-the-semantic-web",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "description": "Organizing with the semantic web: linked data, RDF/Turtle/JSON-LD, Linked Data Fragments, semantic reading, hypertext projection, microformats, page metadata, taxonomy, Cool URIs, and semantic site surfaces downstream of organizing.",
@@ -71,7 +71,7 @@
     "@red-cup-engineering/animating": "0.0.0",
     "@red-cup-engineering/knowing": "0.0.0",
     "@red-cup-engineering/producing-content": "0.0.1",
-    "@red-cup-engineering/relating": "0.0.0",
+    "@red-cup-engineering/relating": "0.0.1",
     "@red-cup-engineering/organizing-with-the-web": "0.0.0",
     "@red-cup-engineering/http-server": "0.0.0"
   },
