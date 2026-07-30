@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { canonical, parse as parseJson } from "@red-cup-engineering/json-file-codec-service";
 import { parse as parseEavt, serialize as serializeEavt } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt";
 import { datom, foldObjectDatoms } from "@red-cup-engineering/json-file-codec-service/jsonl/eavt/datom";
-import { escapeText } from "@red-cup-engineering/xml-file-codec-service/html";
+import { escapeText } from "@red-cup-engineering/html-file-codec-service";
 import { svgProjector } from "@red-cup-engineering/xml-file-codec-service/svg";
 import { fromRatio, toNumber } from "@red-cup-engineering/relating/codecs/host/javascript/numbers";
 import {

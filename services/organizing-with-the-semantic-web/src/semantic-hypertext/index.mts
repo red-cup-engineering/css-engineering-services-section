@@ -18,7 +18,7 @@ import {
   type ChargeValueName,
   type RelationCarrier,
 } from "@red-cup-engineering/relating";
-import { escapeAttr, escapeText, slug } from "@red-cup-engineering/xml-file-codec-service/html";
+import { escapeAttr, escapeText, slug } from "@red-cup-engineering/html-file-codec-service";
 import { stableJson, type ClaimCell } from "../semantic-reader/index.mjs";
 
 type PageSpace = RelationCarrier<string, string>;
