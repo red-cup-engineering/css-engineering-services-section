@@ -15,7 +15,12 @@ import {
   type JsonValue,
   type UtteranceCarrier,
 } from "@red-cup-engineering/relating";
-import { readContentTree, readJsonl, readWitnessLog, type WitnessStore } from "@red-cup-engineering/relating/ledger";
+import { readContentTree } from "@red-cup-engineering/relating/ledger";
+import {
+  readEntriesAtPath,
+  readJsonLinesAtPath,
+  type WitnessJournalDirectories as WitnessStore,
+} from "@red-cup-engineering/witness-journal-log-service";
 
 import { assemble, type Constituent, type Organization, type OrganizationOptions } from "../organizing.mjs";
 import {
@@ -333,8 +338,8 @@ function packageConstituent(pkg: JSNodePackageSubstrate): Constituent {
 function readAgentEventsChronicle(dataRoot: string): SubstrateChronicle {
   const store = witnessStore(dataRoot);
   const feed = "agent-events";
-  const eavtRows = readWitnessLog(store, feed);
-  const rows = eavtRows.length > 0 ? eavtRows : readJsonl<JsonValue>(path.join(store.logDir, `${feed}.jsonl`)).flatMap((row) =>
+  const eavtRows = readEntriesAtPath(path.join(store.logDir, `${feed}.jsonl`));
+  const rows = eavtRows.length > 0 ? eavtRows : readJsonLinesAtPath(path.join(store.logDir, `${feed}.jsonl`)).flatMap((row) =>
     unfoldJson(row, { base: feed, t: eventTime(row) }));
   return Object.freeze({
     kind: "organizing.substrate.chronicle" as const,

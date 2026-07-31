@@ -19,11 +19,11 @@ import {
   type ChargeValueName,
   type JsonValue,
 } from "@red-cup-engineering/relating";
+import { type RWILWitness } from "@red-cup-engineering/relating/ledger";
 import {
-  readWitnessLog,
-  type RWILWitness,
-  type WitnessStore,
-} from "@red-cup-engineering/relating/ledger";
+  readEntriesAtPath,
+  type WitnessJournalDirectories as WitnessStore,
+} from "@red-cup-engineering/witness-journal-log-service";
 
 import {
   encodeIpynb,
@@ -318,7 +318,7 @@ function normalizeWitnessRows(input: OrganizingDefaultJupyterViewsInput): readon
   for (const row of input.witnessRows ?? []) rows.push({ row: eavtRecord(row), source: "input" });
   if (input.witnessLedger !== undefined) {
     for (const feed of input.witnessLedger.feeds) {
-      for (const row of readWitnessLog(input.witnessLedger.store, feed)) rows.push({ row, source: feed });
+      for (const row of readEntriesAtPath(path.join(input.witnessLedger.store.logDir, `${feed}.jsonl`))) rows.push({ row, source: feed });
     }
   }
   return Object.freeze(rows.map(({ row, source }) => {
