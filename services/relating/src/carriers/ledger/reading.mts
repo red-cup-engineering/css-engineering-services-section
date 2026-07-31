@@ -35,7 +35,7 @@ export const coherenceReportSchema = {
   type: "object",
   required: ["kind", "left", "right", "witness", "leftIso", "rightIso", "leftToRight", "rightToLeft", "ok"],
   properties: {
-    kind: { const: "relating.ledger.coherence" },
+    kind: { const: "witness-journal.coherence" },
     left: { type: "string", minLength: 1 },
     right: { type: "string", minLength: 1 },
     witness: {},
@@ -57,7 +57,7 @@ export const logCoherenceReportSchema = {
   type: "object",
   required: ["kind", "left", "right", "witnessLog", "leftIso", "rightIso", "leftToRight", "rightToLeft", "ok"],
   properties: {
-    kind: { const: "relating.ledger.log-coherence" },
+    kind: { const: "witness-journal.log-coherence" },
     left: { type: "string", minLength: 1 },
     right: { type: "string", minLength: 1 },
     witnessLog: { type: "array", items: { type: "object" } },

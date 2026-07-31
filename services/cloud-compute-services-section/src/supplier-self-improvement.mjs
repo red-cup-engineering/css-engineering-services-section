@@ -3,7 +3,7 @@
 // Those are the one JS Mark's host effects, after an independently purchased
 // admission judgment accepts this manifest.
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/rwil-rdf-projection-service/client";
+import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { validateConsiderationPolicy, RESOLUTION_CREDIT_UNIT } from "@harmonious-union/inference-work-lot-service/consideration";
 import { ACTOR } from "./improvement-board-forager.mjs";
 

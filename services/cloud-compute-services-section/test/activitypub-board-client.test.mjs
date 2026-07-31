@@ -3,7 +3,7 @@ import test from "node:test";
 import { extractRmnActivity, projectRmnActivity } from "@red-cup-engineering/activitypub-services-section/rmn-activity";
 import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
 import { decodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
-import { relationalRwilDocument } from "@lenticule-science/rwil-rdf-projection-service/client";
+import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { invokeActivityPubBoardOperation } from "../src/activitypub-board-client.mjs";
 import { ACTOR, CONTEXT } from "../src/improvement-board-forager.mjs";
 

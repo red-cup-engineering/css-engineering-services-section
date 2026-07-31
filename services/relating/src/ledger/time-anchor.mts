@@ -44,7 +44,7 @@ function digest(value: JsonValue): string {
 }
 
 function commitmentPayload(witnessHash: string): JsonValue {
-  return requireJsonValue({ kind: "relating.ledger.time-anchor.commitment", witnessHash }, "time-anchor commitment");
+  return requireJsonValue({ kind: "witness-journal.time-anchor.commitment", witnessHash }, "time-anchor commitment");
 }
 
 function attestationPayload(anchor: Omit<TimeAnchor, "digest">): JsonValue {
@@ -70,7 +70,7 @@ export function anchorWitnessTime(row: EAVT | EAVTRecord, input: TimeAnchorInput
   const witness = eavtRecord(row);
   const witnessHash = eavtId(witness);
   const base = Object.freeze({
-    kind: "relating.ledger.time-anchor.anchor" as const,
+    kind: "witness-journal.time-anchor.anchor" as const,
     standard: "opentimestamps/rfc3161.structural" as const,
     calendar: input.calendar,
     authority: input.authority,
@@ -84,7 +84,7 @@ export function anchorWitnessTime(row: EAVT | EAVTRecord, input: TimeAnchorInput
     digest: digest(attestationPayload(base)),
   }), "time anchor") as TimeAnchor;
   return timestampedWitnessCarrier.assert(Object.freeze({
-    kind: "relating.ledger.time-anchor.timestamped-witness" as const,
+    kind: "witness-journal.time-anchor.timestamped-witness" as const,
     witness,
     anchor,
   }), "timestamped witness") as TimestampedWitness;
@@ -116,7 +116,7 @@ export function verifyTimestampedWitness(value: TimestampedWitness): boolean {
 
 export function timestampedWitnessToDatom(value: TimestampedWitness): Datom {
   const reading = timeAnchorReadingCarrier.assert(Object.freeze({
-    kind: "relating.ledger.time-anchor.reading" as const,
+    kind: "witness-journal.time-anchor.reading" as const,
     standard: "opentimestamps/rfc3161.structural" as const,
     anchor: value.anchor,
     verified: verifyTimestampedWitness(value),

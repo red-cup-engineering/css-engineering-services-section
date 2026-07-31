@@ -7,7 +7,7 @@ export const timeAnchorSchema = {
   type: "object",
   required: ["kind", "standard", "calendar", "authority", "witnessHash", "witnessTime", "attestedTime", "commitment", "digest"],
   properties: {
-    kind: { const: "relating.ledger.time-anchor.anchor" },
+    kind: { const: "witness-journal.time-anchor.anchor" },
     standard: { const: "opentimestamps/rfc3161.structural" },
     calendar: { type: "string", minLength: 1 },
     authority: { type: "string", minLength: 1 },
@@ -29,7 +29,7 @@ export const timestampedWitnessSchema = {
   type: "object",
   required: ["kind", "witness", "anchor"],
   properties: {
-    kind: { const: "relating.ledger.time-anchor.timestamped-witness" },
+    kind: { const: "witness-journal.time-anchor.timestamped-witness" },
     witness: {},
     anchor: { $ref: "relating/ledger/time-anchor/anchor" },
   },
@@ -45,7 +45,7 @@ export const timeAnchorReadingSchema = {
   type: "object",
   required: ["kind", "standard", "anchor", "verified"],
   properties: {
-    kind: { const: "relating.ledger.time-anchor.reading" },
+    kind: { const: "witness-journal.time-anchor.reading" },
     standard: { const: "opentimestamps/rfc3161.structural" },
     anchor: { $ref: "relating/ledger/time-anchor/anchor" },
     verified: { type: "boolean" },

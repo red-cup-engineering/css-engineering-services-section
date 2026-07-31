@@ -10,7 +10,7 @@ import { Reader } from "@contentauth/c2pa-node";
 import { serveContractedAgent } from "@red-cup-engineering/a2a-contracted-agent-service";
 import { ephemeralAgentCardSigning } from "@red-cup-engineering/a2a-agent-card-key-service/testing";
 import { startRmnProviderProcess } from "@red-cup-engineering/rmn-semantic-conformance/test-provider";
-import { startRwilProviderProcess } from "@lenticule-science/rwil-rdf-projection-service/test-provider";
+import { startRwilProviderProcess } from "@lenticule-science/witness-journal-rdf-projection-service/test-provider";
 import { startWitTransitionAssayProcess } from "@lenticule-science/wit-transition-assay/test-provider";
 import { C2PA_BINDING_PREDICATE, publishArticle50Asset } from "../src/client.mjs";
 

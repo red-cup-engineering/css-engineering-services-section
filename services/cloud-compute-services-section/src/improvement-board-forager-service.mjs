@@ -3,7 +3,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
 import { compileRmlLaw } from "@red-cup-engineering/rmn-semantic-conformance/law";
-import { createSettlementStore, querySettlementRecords, relationalRwilDocument } from "@lenticule-science/rwil-rdf-projection-service/client";
+import { createSettlementStore, querySettlementRecords, relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { ACTOR, CONTEXT, DEFAULT_FORAGER_POLICY, bidForBoardOffer, fulfillBoardAward, qualifiedBoardOfferKind } from "./improvement-board-forager.mjs";
 import { admitCustomerTrajectoryFoldback, recallSoftwareTrajectories } from "@red-cup-engineering/software-trajectory-memory-service/client";
 import { invokeActivityPubBoardOperation } from "./activitypub-board-client.mjs";

@@ -3,7 +3,7 @@ import { projectRmnActivity } from "@red-cup-engineering/activitypub-services-se
 import { listAddressedRmnOutbox } from "@red-cup-engineering/activitypub-services-section/rmn-outbox-client";
 import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
 import { decodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
-import { relationalRwilDocument } from "@lenticule-science/rwil-rdf-projection-service/client";
+import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { ACTOR, CONTEXT } from "./improvement-board-forager.mjs";
 
 const PUBLIC = "https://www.w3.org/ns/activitystreams#Public";

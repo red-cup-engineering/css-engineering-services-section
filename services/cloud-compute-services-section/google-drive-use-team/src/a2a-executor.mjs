@@ -2,7 +2,7 @@ import { Message, Role } from "@a2a-js/sdk";
 import { extractRmnPart, rmnPart } from "@red-cup-engineering/a2a-rmn-part-service";
 import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
 import { decodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
-import { relationalRwilDocument } from "@lenticule-science/rwil-rdf-projection-service/client";
+import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { ACTOR, executeGoogleDriveUseOperation } from "./contract-google-drive-use.mjs";
 const ROOT = new URL("..", import.meta.url).pathname;
 const id=(value)=>semanticId(relationalRwilDocument(value)),record=(body)=>Object.freeze({id:id(body),...body}),exact=(value)=>value?.id===id(Object.fromEntries(Object.entries(value??{}).filter(([key])=>key!=="id")));

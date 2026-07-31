@@ -10,11 +10,11 @@
     "./executor": "./src/a2a-executor.mjs"
   },
   "bin": {
-    "execute-google-drive-use-a2a-message": "./bin/execute-a2a-message.mjs",
-    "serve-google-drive-use-a2a": "./bin/serve-a2a.mjs"
+    "execute-google-drive-use-a2a-message": "./scripts/execute-a2a-message.mjs",
+    "serve-google-drive-use-a2a": "./scripts/serve-a2a.mjs"
   },
   "scripts": {
-    "check": "node --check src/law.mjs && node --check src/records.mjs && node --check src/contract-google-drive-use.mjs && node --check src/google-oauth-refresh.mjs && node --check src/client.mjs && node --check src/a2a-executor.mjs && node --check bin/execute-a2a-message.mjs && node --check bin/serve-a2a.mjs && node --check examples/use-google-drive.mjs && node --check test/google-drive-use.test.mjs && node --check test/google-oauth-refresh.test.mjs",
+    "check": "node --check src/law.mjs && node --check src/records.mjs && node --check src/contract-google-drive-use.mjs && node --check src/google-oauth-refresh.mjs && node --check src/client.mjs && node --check src/a2a-executor.mjs && node --check scripts/execute-a2a-message.mjs && node --check scripts/serve-a2a.mjs && node --check examples/use-google-drive.mjs && node --check test/google-drive-use.test.mjs && node --check test/google-oauth-refresh.test.mjs",
     "test": "node --test --test-isolation=none test/*.test.mjs"
   },
   "engines": {
@@ -26,6 +26,6 @@
     "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
     "@red-cup-engineering/a2a-rmn-task-client-service": "1.1.0",
     "@red-cup-engineering/rmn-semantic-conformance": "6.0.1",
-    "@lenticule-science/rwil-rdf-projection-service": "1.0.2"
+    "@lenticule-science/witness-journal-rdf-projection-service": "1.0.2"
   }
 }

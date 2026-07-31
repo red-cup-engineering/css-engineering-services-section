@@ -111,7 +111,7 @@ export function cohere<LeftWire, RightWire>(
   const leftToRight = hopsLosslessly(left, right, witness);
   const rightToLeft = hopsLosslessly(right, left, witness);
   return coherenceReportCarrier.assert(Object.freeze({
-    kind: "relating.ledger.coherence" as const,
+    kind: "witness-journal.coherence" as const,
     left: left.id,
     right: right.id,
     witness: eavtRecord(witness) as unknown as JsonValue,
@@ -140,7 +140,7 @@ export function cohereLog<LeftWire, RightWire>(
   const leftToRight = logHopsLosslessly(left, right, admittedLog);
   const rightToLeft = logHopsLosslessly(right, left, admittedLog);
   return logCoherenceReportCarrier.assert(Object.freeze({
-    kind: "relating.ledger.log-coherence" as const,
+    kind: "witness-journal.log-coherence" as const,
     left: left.id,
     right: right.id,
     witnessLog: admittedLog as unknown as readonly JsonValue[],

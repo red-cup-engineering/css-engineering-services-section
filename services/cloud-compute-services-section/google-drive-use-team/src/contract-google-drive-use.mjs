@@ -9,7 +9,7 @@ import {
   digest,
   resourceObservations,
 } from "./records.mjs";
-import { createSettlementStore } from "@lenticule-science/rwil-rdf-projection-service/client";
+import { createSettlementStore } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { GOOGLE_DRIVE_USE_SERVICE_LAW } from "./law.mjs";
 
 export const ACTOR = "urn:ame:google-drive-use-team";

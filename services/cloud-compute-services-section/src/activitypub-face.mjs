@@ -1,6 +1,6 @@
 import { materializeRmnActivity } from "@red-cup-engineering/activitypub-services-section/rmn-activity";
 import { semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/rwil-rdf-projection-service/client";
+import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { ACTOR, CONTEXT } from "./improvement-board-forager.mjs";
 import { PUBLIC } from "./supplier-investment-decision.mjs";
 

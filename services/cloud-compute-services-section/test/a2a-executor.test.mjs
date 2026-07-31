@@ -4,7 +4,7 @@ import test from "node:test";
 import { Message, Role } from "@a2a-js/sdk";
 import { extractRmnPart, rmnPart } from "@red-cup-engineering/a2a-rmn-part-service";
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/rwil-rdf-projection-service/client";
+import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { executeA2aMessage, operationBytes, operationFromBytes } from "../src/a2a-executor.mjs";
 import { inciteImprovementMarketSupplier } from "../src/client.mjs";
 import { ACTOR } from "../src/improvement-board-forager.mjs";
@@ -13,7 +13,7 @@ const exact = (body) => ({ id: semanticId(relationalRwilDocument(body)), ...body
 const incitement = exact({ type: "Create", actor: "urn:ame:test-inciter", target: ACTOR, object: { type: "ImprovementForagerIncitement", evidence: ["urn:evidence:test"], sequence: 1 } });
 
 test("the advertised incitement entry crosses only the authenticated A2A client boundary", () => {
-  const entry = readFileSync(new URL("../bin/forage-improvement-boards.mjs", import.meta.url), "utf8");
+  const entry = readFileSync(new URL("../scripts/forage-improvement-boards.mjs", import.meta.url), "utf8");
   assert.match(entry, /inciteImprovementMarketSupplier/u);
   assert.doesNotMatch(entry, /forageImprovementBoards/u);
   const runtimeFiles = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"))["x-agentic-metro-enterprise"]["operation-catalog"]["forage-improvement-boards"].runtimeFiles;

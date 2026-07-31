@@ -10,9 +10,9 @@
     "./executor": "./src/a2a-executor.mjs"
   },
   "bin": {
-    "forage-improvement-boards": "bin/forage-improvement-boards.mjs",
-    "execute-improvement-market-supplier-a2a-message": "bin/execute-a2a-message.mjs",
-    "serve-improvement-market-supplier-a2a": "bin/serve-a2a.mjs",
+    "forage-improvement-boards": "scripts/forage-improvement-boards.mjs",
+    "execute-improvement-market-supplier-a2a-message": "scripts/execute-a2a-message.mjs",
+    "serve-improvement-market-supplier-a2a": "scripts/serve-a2a.mjs",
     "serve-cloud-compute-services-section-activitypub": "src/serve-activitypub-face.mjs"
   },
   "scripts": {
@@ -28,7 +28,7 @@
     "@harmonious-union/inference-work-lot-service": "4.0.0",
     "@red-cup-engineering/protected-acceptance-service": "1.0.0",
     "@red-cup-engineering/rmn-semantic-conformance": "6.0.1",
-    "@lenticule-science/rwil-rdf-projection-service": "1.0.2",
+    "@lenticule-science/witness-journal-rdf-projection-service": "1.0.2",
     "@red-cup-engineering/sandbox-command-execution-service": "1.0.0",
     "@red-cup-engineering/software-mission-execution-service": "1.0.0",
     "@red-cup-engineering/software-trajectory-memory-service": "1.0.0"

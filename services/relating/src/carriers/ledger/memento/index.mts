@@ -7,7 +7,7 @@ export const mementoSnapshotSchema = {
   type: "object",
   required: ["kind", "datetime", "state"],
   properties: {
-    kind: { const: "relating.ledger.memento.snapshot" },
+    kind: { const: "witness-journal.memento.snapshot" },
     datetime: { type: "string", minLength: 1 },
     state: {},
   },
@@ -23,7 +23,7 @@ export const timeMapSchema = {
   type: "object",
   required: ["kind", "original", "snapshots"],
   properties: {
-    kind: { const: "relating.ledger.memento.timemap" },
+    kind: { const: "witness-journal.memento.timemap" },
     original: { type: "string" },
     snapshots: {
       type: "array",

@@ -1,5 +1,5 @@
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/rwil-rdf-projection-service/client";
+import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { contractInferenceWork as defaultContractInferenceWork } from "@harmonious-union/inference-work-lot-service/codex-inference-market";
 import { resolutionCreditPolicy } from "@harmonious-union/inference-work-lot-service/consideration";
 import { executeSoftwareMission as defaultExecuteSoftwareMission } from "@red-cup-engineering/software-mission-execution-service/client";

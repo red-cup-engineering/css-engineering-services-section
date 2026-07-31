@@ -47,7 +47,7 @@ function prefixAt(log: readonly EAVTRecord[], asOf: string): readonly EAVTRecord
 
 export function projectStateAt(log: readonly EAVTRecord[], functional: ReadonlySet<string>, asOf: string): MementoSnapshot {
   return mementoSnapshotCarrier.assert(Object.freeze({
-    kind: "relating.ledger.memento.snapshot" as const,
+    kind: "witness-journal.memento.snapshot" as const,
     datetime: asOf,
     state: projectStateView(prefixAt(log, asOf), functional),
   }), "memento snapshot") as MementoSnapshot;
@@ -63,7 +63,7 @@ export function timeMap(log: readonly EAVTRecord[], original = ""): TimeMap {
     witnesses: prefixAt(log, datetime).length,
   }));
   return timeMapCarrier.assert(Object.freeze({
-    kind: "relating.ledger.memento.timemap" as const,
+    kind: "witness-journal.memento.timemap" as const,
     original,
     snapshots: Object.freeze(snapshots),
   }), "memento timemap");

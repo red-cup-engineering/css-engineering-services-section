@@ -9,7 +9,7 @@ import { decideSupplierInvestmentDemand } from "../src/supplier-investment-decis
 import { extractRmnActivity, projectRmnActivity } from "@red-cup-engineering/activitypub-services-section/rmn-activity";
 import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
 import { decodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
-import { relationalRwilDocument } from "@lenticule-science/rwil-rdf-projection-service/client";
+import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 
 const INCITER = "urn:ame:test-inciter", BOARD = "urn:test:customer-board";
 const board = { actor: BOARD, transport: "activitypub", listOperation: "list", submitOperation: "submit", activityPubActor: "https://board.example/actors/board", activityPubOutbox: "https://board.example/actors/board/outbox", activityPubInbox: "https://board.example/actors/board/inbox", a2aAgentCard: "https://board.example/.well-known/agent-card.json", supplierActivityPubActor: "https://supplier.example/actors/free-compute" };

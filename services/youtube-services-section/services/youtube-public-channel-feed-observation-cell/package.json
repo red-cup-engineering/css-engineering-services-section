@@ -6,14 +6,14 @@
   "private": true,
   "license": "Apache-2.0",
   "bin": {
-    "serve-youtube-public-channel-feed-observation": "./bin/server.mjs"
+    "serve-youtube-public-channel-feed-observation": "./scripts/server.mjs"
   },
   "exports": {
     ".": "./lib/observe.mjs",
     "./protocol": "./src/protocol.mjs"
   },
   "scripts": {
-    "check": "for file in lib/*.mjs src/*.mjs bin/*.mjs test/*.test.mjs; do node --check \"$file\" || exit; done",
+    "check": "for file in lib/*.mjs src/*.mjs scripts/*.mjs test/*.test.mjs; do node --check \"$file\" || exit; done",
     "test": "node --test test/*.test.mjs",
     "verify": "npm run check && npm test"
   },
@@ -26,6 +26,6 @@
     "@red-cup-engineering/a2a-contracted-agent-service": "2.0.4",
     "@red-cup-engineering/a2a-sovereign-operation-boundary-service": "1.0.0",
     "@red-cup-engineering/rmn-semantic-conformance": "6.0.1",
-    "@lenticule-science/rwil-rdf-projection-service": "1.0.2"
+    "@lenticule-science/witness-journal-rdf-projection-service": "1.0.2"
   }
 }

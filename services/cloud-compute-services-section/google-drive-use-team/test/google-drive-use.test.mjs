@@ -5,8 +5,8 @@ import { join } from "node:path";
 import test from "node:test";
 
 import { canonical, contentRecord, digest } from "../src/records.mjs";
-import { querySettlementRecords } from "@lenticule-science/rwil-rdf-projection-service/client";
-import { startRwilProviderProcess } from "@lenticule-science/rwil-rdf-projection-service/test-provider";
+import { querySettlementRecords } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { startRwilProviderProcess } from "@lenticule-science/witness-journal-rdf-projection-service/test-provider";
 import { ACTOR, executeGoogleDriveUseOperation, handleGoogleDriveUseOperation } from "../src/contract-google-drive-use.mjs";
 
 const CUSTOMER = "urn:ame:test-customer";

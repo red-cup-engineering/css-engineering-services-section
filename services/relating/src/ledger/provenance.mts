@@ -62,7 +62,7 @@ function digest(value: JsonValue): string {
 
 function signaturePayload(source: JsonValue, signer: string): JsonValue {
   return requireJsonValue({
-    kind: "relating.ledger.provenance.signature-payload",
+    kind: "witness-journal.provenance.signature-payload",
     scheme: "sigstore.structural",
     signer,
     source,
@@ -71,7 +71,7 @@ function signaturePayload(source: JsonValue, signer: string): JsonValue {
 
 export function signProvenanceSource(source: JsonValue, signer: string): StructuralProvenanceSignature {
   return structuralProvenanceSignatureCarrier.assert(Object.freeze({
-    kind: "relating.ledger.provenance.structural-signature" as const,
+    kind: "witness-journal.provenance.structural-signature" as const,
     scheme: "sigstore.structural" as const,
     signer,
     digest: digest(signaturePayload(source, signer)),
@@ -80,7 +80,7 @@ export function signProvenanceSource(source: JsonValue, signer: string): Structu
 
 export function signedProvenanceSource(source: JsonValue, signer: string): SignedProvenanceSource {
   return signedProvenanceSourceCarrier.assert(Object.freeze({
-    kind: "relating.ledger.provenance.signed-source" as const,
+    kind: "witness-journal.provenance.signed-source" as const,
     source,
     signature: signProvenanceSource(source, signer),
   }), "signed provenance source") as SignedProvenanceSource;
@@ -104,7 +104,7 @@ export type AttestationLinkInput = {
 
 export function attestationSourceOf(link: Omit<AttestationLink, "source" | "signature">): JsonValue {
   return requireJsonValue({
-    kind: "relating.ledger.provenance.attestation-source",
+    kind: "witness-journal.provenance.attestation-source",
     name: link.name,
     subject: link.subject,
     predicateType: link.predicateType,
@@ -117,7 +117,7 @@ export function attestationSourceOf(link: Omit<AttestationLink, "source" | "sign
 
 export function createAttestationLink(input: AttestationLinkInput): AttestationLink {
   const base = Object.freeze({
-    kind: "relating.ledger.provenance.attestation-link" as const,
+    kind: "witness-journal.provenance.attestation-link" as const,
     name: input.name,
     subject: input.subject,
     predicateType: input.predicateType,
@@ -136,7 +136,7 @@ export function createAttestationLink(input: AttestationLinkInput): AttestationL
 
 export function signedSourceOfAttestation(link: AttestationLink): SignedProvenanceSource {
   return signedProvenanceSourceCarrier.assert(Object.freeze({
-    kind: "relating.ledger.provenance.signed-source" as const,
+    kind: "witness-journal.provenance.signed-source" as const,
     source: link.source,
     signature: link.signature,
   }), "attestation signed source") as SignedProvenanceSource;
@@ -151,7 +151,7 @@ export function verifyAttestationLink(link: AttestationLink): boolean {
 export function attestationLinkToDatom(link: AttestationLink): Datom {
   const signedSource = signedSourceOfAttestation(link);
   const reading = provenanceReadingCarrier.assert(Object.freeze({
-    kind: "relating.ledger.provenance.reading" as const,
+    kind: "witness-journal.provenance.reading" as const,
     standard: "in-toto/slsa/sigstore.structural" as const,
     linkName: link.name,
     signedSource,
@@ -171,7 +171,7 @@ export function attestationLinkFromDatom(datom: Datom): AttestationLink {
   if (typeof source !== "object" || source === null || Array.isArray(source)) throw new TypeError("provenance source must be an object");
   const src = source as Record<string, JsonValue>;
   return attestationLinkCarrier.assert(Object.freeze({
-    kind: "relating.ledger.provenance.attestation-link" as const,
+    kind: "witness-journal.provenance.attestation-link" as const,
     name: String(src.name),
     subject: datom[0],
     predicateType: String(datom[1]),

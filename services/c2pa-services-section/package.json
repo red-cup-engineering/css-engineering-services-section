@@ -16,10 +16,10 @@
     "./rmn": "./src/c2pa-rmn.mjs"
   },
   "bin": {
-    "serve-c2pa-provenance-a2a": "./bin/server.mjs"
+    "serve-c2pa-provenance-a2a": "./scripts/server.mjs"
   },
   "scripts": {
-    "check": "node --check src/c2pa-rmn.mjs && node --check src/client.mjs && node --check bin/execute-a2a-task.mjs && node --check bin/server.mjs && node --check test/c2pa-provenance.test.mjs",
+    "check": "node --check src/c2pa-rmn.mjs && node --check src/client.mjs && node --check scripts/execute-a2a-task.mjs && node --check scripts/server.mjs && node --check test/c2pa-provenance.test.mjs",
     "test": "node --test test/c2pa-provenance.test.mjs",
     "verify": "npm run check && npm test"
   },
@@ -35,7 +35,7 @@
     "@red-cup-engineering/a2a-rmn-task-client-service": "1.1.0",
     "@red-cup-engineering/ethereum-services-section": "0.7.2",
     "@red-cup-engineering/rmn-semantic-conformance": "6.0.1",
-    "@lenticule-science/rwil-rdf-projection-service": "1.0.2",
+    "@lenticule-science/witness-journal-rdf-projection-service": "1.0.2",
     "@lenticule-science/wit-transition-assay": "1.0.0"
   }
 }

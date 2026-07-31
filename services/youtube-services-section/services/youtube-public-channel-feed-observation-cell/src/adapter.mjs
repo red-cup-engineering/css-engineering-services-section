@@ -1,5 +1,5 @@
 import { resolve } from "node:path";
-import { createSettlementStore } from "@lenticule-science/rwil-rdf-projection-service/client";
+import { createSettlementStore } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 
 const MAX_FEED_BYTES = 2 * 1024 * 1024;
 

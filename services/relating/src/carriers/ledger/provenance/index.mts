@@ -7,7 +7,7 @@ export const structuralProvenanceSignatureSchema = {
   type: "object",
   required: ["kind", "scheme", "signer", "digest"],
   properties: {
-    kind: { const: "relating.ledger.provenance.structural-signature" },
+    kind: { const: "witness-journal.provenance.structural-signature" },
     scheme: { const: "sigstore.structural" },
     signer: { type: "string", minLength: 1 },
     digest: { type: "string", minLength: 1 },
@@ -24,7 +24,7 @@ export const signedProvenanceSourceSchema = {
   type: "object",
   required: ["kind", "source", "signature"],
   properties: {
-    kind: { const: "relating.ledger.provenance.signed-source" },
+    kind: { const: "witness-journal.provenance.signed-source" },
     source: {},
     signature: { $ref: "relating/ledger/provenance/structural-signature" },
   },
@@ -40,7 +40,7 @@ export const attestationLinkSchema = {
   type: "object",
   required: ["kind", "name", "subject", "predicateType", "predicate", "materials", "products", "source", "signature", "t"],
   properties: {
-    kind: { const: "relating.ledger.provenance.attestation-link" },
+    kind: { const: "witness-journal.provenance.attestation-link" },
     name: { type: "string", minLength: 1 },
     subject: {},
     predicateType: { type: "string", minLength: 1 },
@@ -63,7 +63,7 @@ export const provenanceReadingSchema = {
   type: "object",
   required: ["kind", "standard", "linkName", "signedSource", "verified"],
   properties: {
-    kind: { const: "relating.ledger.provenance.reading" },
+    kind: { const: "witness-journal.provenance.reading" },
     standard: { const: "in-toto/slsa/sigstore.structural" },
     linkName: { type: "string", minLength: 1 },
     signedSource: { $ref: "relating/ledger/provenance/signed-source" },
