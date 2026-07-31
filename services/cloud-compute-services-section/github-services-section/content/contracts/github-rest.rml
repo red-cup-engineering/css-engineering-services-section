@@ -1,2 +1,0 @@
-#lang rmn/v2
-(map ("type" "GitHubRestProviderLaw") ("version" 1) ("precondition" "One customer supplies an admitted bounded GitHub REST operation and provider-held credential policy.") ("operation" "Issue only the typed GitHub REST request selected by the provider implementation.") ("postcondition" "Return the bounded protocol response without exposing credentials or claiming customer acceptance.") ("refusal" "Refuse arbitrary URLs, raw credential egress, ambient repository authority, unbounded polling, or fallback protocol."))
