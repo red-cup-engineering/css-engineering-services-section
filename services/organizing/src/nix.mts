@@ -46,7 +46,7 @@ export const NixDerivationSchema = {
   $id: "organizing/nix/derivation",
   title: "Nix derivation",
   description:
-    "A Nix/Guix derivation as a settled RMN term: deterministic evaluation reaches the normal form whose content address names the store path.",
+    "A Nix/Guix derivation as a settled RMN term. Content commitments remain storage evidence; proof witnesses are the admission surface for an earned RMN coordinate.",
   type: "object",
   additionalProperties: false,
   required: ["kind", "id", "name", "system", "term", "inputIds", "env"],
@@ -58,6 +58,7 @@ export const NixDerivationSchema = {
     term: RmnTermRefSchema,
     inputIds: { type: "array", items: { type: "string", minLength: 1 } },
     env: JsonRecordSchema,
+    proofWitnesses: { type: "array", items: JsonValueSchema },
   },
 } as const;
 
@@ -110,6 +111,7 @@ export type NixDerivation = Omit<NixDerivationCarrierType, "term" | "env" | "inp
   readonly term: Tm;
   readonly env: JsonRecord;
   readonly inputIds: readonly string[];
+  readonly proofWitnesses: readonly JsonValue[];
 };
 export type NixStorePath = Omit<NixStorePathCarrierType, "normalForm"> & {
   readonly normalForm: Tm;
@@ -126,6 +128,8 @@ export interface NixDerivationInput {
   readonly system?: string;
   readonly inputIds?: readonly string[];
   readonly env?: JsonRecord;
+  /** Explicit derivation evidence; a coordinate is refused until these earn it. */
+  readonly proofWitnesses?: readonly JsonValue[];
 }
 
 export interface SettledDerivation {
@@ -145,6 +149,7 @@ export function nixDerivation(input: NixDerivationInput): NixDerivation {
     term,
     inputIds: uniqueSorted(input.inputIds ?? []),
     env: Object.freeze({ ...(input.env ?? {}) }) as JsonRecord,
+    proofWitnesses: Object.freeze([...(input.proofWitnesses ?? [])]),
   };
   return nixDerivationCarrier.assert(value, "nixDerivation") as NixDerivation;
 }

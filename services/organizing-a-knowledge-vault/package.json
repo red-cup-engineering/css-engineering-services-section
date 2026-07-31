@@ -29,12 +29,12 @@
     "package.json"
   ],
   "dependencies": {
-    "@red-cup-engineering/json-file-codec-service": "workspace:*",
-    "@red-cup-engineering/json-schema-service": "workspace:*",
-    "@red-cup-engineering/markdown-file-codec-service": "workspace:*",
+    "@red-cup-engineering/json-file-codec-service": "0.1.1",
+    "@red-cup-engineering/json-schema-services-section": "0.1.0",
+    "@red-cup-engineering/markdown-file-codec-service": "0.1.0",
     "@red-cup-engineering/content": "0.0.1",
     "@red-cup-engineering/knowing": "0.0.0",
-    "@red-cup-engineering/relating": "0.0.0"
+    "@red-cup-engineering/relating": "0.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
@@ -74,23 +74,5 @@
       "import": "./dist/holography/index.mjs"
     },
     "./package.json": "./package.json"
-  },
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:organizing-a-knowledge-vault",
-    "operations": [
-      "organizing-a-knowledge-vault"
-    ],
-    "capabilities": [
-      {
-        "capability": "organizing-a-knowledge-vault",
-        "faces": [
-          "organizing-a-knowledge-vault"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/organizing-a-knowledge-vault"
   }
 }

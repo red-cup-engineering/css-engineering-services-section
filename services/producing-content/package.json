@@ -142,30 +142,12 @@
     "@red-cup-engineering/html-file-codec-service": "0.1.1",
     "@red-cup-engineering/communicating": "0.0.0",
     "@red-cup-engineering/communicating-in-english": "0.0.0",
-    "@red-cup-engineering/relating": "0.0.0",
+    "@red-cup-engineering/relating": "0.0.1",
     "@red-cup-engineering/markdown-file-writing-service": "0.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "typescript": "^5.8.0"
   },
-  "sideEffects": false,
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:producing-content",
-    "operations": [
-      "producing-content"
-    ],
-    "capabilities": [
-      {
-        "capability": "producing-content",
-        "faces": [
-          "producing-content"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/producing-content"
-  }
+  "sideEffects": false
 }

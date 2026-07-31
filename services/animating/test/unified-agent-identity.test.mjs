@@ -137,7 +137,7 @@ test("(c) ONE revocation fails verification on ALL five facets", () => {
   }
   // and a VC issued about the identity's own subject verifies
   const subject = vcSubjectFacet(root);
-  const vc = issueCredential(subject, subject, { mark: { value: "is-a-self-attested-agent" } }, "potential", priv, {
+  const vc = issueCredential(subject, subject, { mark: { value: "is-a-unbound-agent" } }, "potential", priv, {
     issuanceDate: "2026-06-26T00:00:00.000Z",
   });
   assert.equal(verifyCredential(vc, pub), true);

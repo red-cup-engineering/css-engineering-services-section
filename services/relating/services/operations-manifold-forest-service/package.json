@@ -27,55 +27,7 @@
     "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
     "@red-cup-engineering/a2a-rmn-task-client-service": "1.1.0",
     "@red-cup-engineering/carrier-composition-judgment-service": "0.1.0",
-    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.1",
     "@lenticule-science/rwil-rdf-projection-service": "1.0.2"
-  },
-  "x-agentic-metro-enterprise": {
-    "node-id": "operations-manifold-forest-service",
-    "actor": "urn:ame:operations-manifold-forest-service",
-    "organizational-kind": "capability-cell",
-    "owners": [
-      "relating"
-    ],
-    "admission": "one exact provider-addressed canonical RMN operation carrying package operation manifolds",
-    "refusal": "ambient carrier equality, action execution, path selection, rigidity claims, or customer acceptance",
-    "operation-catalog": {
-      "derive-operations-manifold-forest": {
-        "contract": "content/contracts/derive-operations-manifold-forest.rml",
-        "protocols": [
-          "RMN",
-          "A2A 1.0"
-        ],
-        "returns": "OperationsManifoldBondForest"
-      }
-    },
-    "x-foam-locus": {
-      "address": [
-        "relating",
-        "running",
-        "operations-manifold",
-        "forest"
-      ],
-      "proposition": "A cross-package bond forest is the witnessed carrier-composition judgments among package extrema, with unbonded extrema retained as pressure frontiers.",
-      "actor": "urn:ame:operations-manifold-forest-service"
-    }
-  },
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:operations-manifold-forest-service",
-    "operations": [
-      "derive-operations-manifold-forest"
-    ],
-    "capabilities": [
-      {
-        "capability": "operations-manifold-forest-service",
-        "faces": [
-          "derive-operations-manifold-forest"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/operations-manifold-forest-service"
   }
 }

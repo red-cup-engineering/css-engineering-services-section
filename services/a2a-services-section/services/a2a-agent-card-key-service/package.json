@@ -17,33 +17,5 @@
   "dependencies": {
     "@red-cup-engineering/a2a-agent-card-discovery-service": "1.0.0",
     "jose": "6.2.3"
-  },
-  "x-agentic-metro-enterprise": {
-    "node-id": "a2a-agent-card-key-service",
-    "organizational-kind": "public-protocol-provider",
-    "operation-catalog": {
-      "provision-agent-card-key": {
-        "protocol": "JOSE/JWK",
-        "legacyCompatibility": false
-      }
-    }
-  },
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:a2a-agent-card-key-service",
-    "operations": [
-      "provision-agent-card-key"
-    ],
-    "capabilities": [
-      {
-        "capability": "a2a-agent-card-key-service",
-        "faces": [
-          "provision-agent-card-key"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/a2a-agent-card-key-service"
   }
 }

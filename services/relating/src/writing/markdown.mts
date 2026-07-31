@@ -16,7 +16,7 @@ import {
   type MarkdownFrontmatterFormat,
   type MarkdownParseResult,
 } from "@red-cup-engineering/markdown-file-codec-service";
-import { type Schema as JsonSchema, type SchemaAssertion, unfoldSchema } from "@red-cup-engineering/json-schema-service";
+import { type Schema as JsonSchema, type SchemaAssertion, unfoldSchema } from "@red-cup-engineering/json-schema-services-section";
 import { stringProjector } from "./text.mjs";
 
 export { createMarkdown, parseMarkdown };

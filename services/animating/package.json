@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/animating",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -33,14 +33,14 @@
     "package.json"
   ],
   "dependencies": {
-    "@red-cup-engineering/json-file-codec-service": "0.1.0",
-    "@lenticule-science/articulating": "0.1.0",
+    "@red-cup-engineering/json-file-codec-service": "0.1.1",
+    "@lenticule-science/articulating": "0.1.1",
     "@lenticule-science/rwil-rdf-projection-service": "1.0.2",
     "@red-cup-engineering/communicating": "0.0.0",
     "@red-cup-engineering/knowing": "0.0.0",
     "@red-cup-engineering/playing": "0.0.1",
     "@red-cup-engineering/relating": "0.0.0",
-    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.1",
     "@ucanto/core": "10.4.6",
     "@ucanto/principal": "9.0.3",
     "@ucanto/validator": "10.0.1"
@@ -85,23 +85,5 @@
       "import": "./dist/writing/openai-chat/index.mjs"
     },
     "./package.json": "./package.json"
-  },
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:animating",
-    "operations": [
-      "animating"
-    ],
-    "capabilities": [
-      {
-        "capability": "animating",
-        "faces": [
-          "animating"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/animating"
   }
 }

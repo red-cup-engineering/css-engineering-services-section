@@ -1,0 +1,7 @@
+{
+  "name": "@red-cup-engineering/css-services-section",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Web-tier home for CSS packages: cascade computation and certification, plus a certified theming system built on top of it. Sibling to the web html-services-section; together they carry the rendering stack that used to live inside the file-format HTML codec."
+}

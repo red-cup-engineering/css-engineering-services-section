@@ -13,35 +13,6 @@
   },
   "dependencies": {
     "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
-    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0"
-  },
-  "x-agentic-metro-enterprise": {
-    "node-id": "a2a-channel-portfolio-status-service",
-    "organizational-kind": "public-protocol-provider",
-    "operation-catalog": {
-      "form-channel-portfolio-status-result": {
-        "law": "content/contracts/forms-channel-portfolio-status-result.rml",
-        "protocol": "A2A 1.0",
-        "legacyCompatibility": false
-      }
-    }
-  },
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:a2a-channel-portfolio-status-service",
-    "operations": [
-      "form-channel-portfolio-status-result"
-    ],
-    "capabilities": [
-      {
-        "capability": "a2a-channel-portfolio-status-service",
-        "faces": [
-          "form-channel-portfolio-status-result"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/a2a-channel-portfolio-status-service"
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.1"
   }
 }

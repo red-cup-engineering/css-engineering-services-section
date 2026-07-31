@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/organizing-with-the-semantic-web",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "description": "Organizing with the semantic web: linked data, RDF/Turtle/JSON-LD, Linked Data Fragments, semantic reading, hypertext projection, microformats, page metadata, taxonomy, Cool URIs, and semantic site surfaces downstream of organizing.",
@@ -64,16 +64,16 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@red-cup-engineering/markdown-file-codec-service": "workspace:*",
-    "@red-cup-engineering/markdown-file-reading-service": "workspace:*",
+    "@red-cup-engineering/markdown-file-codec-service": "0.1.0",
+    "@red-cup-engineering/markdown-file-reading-service": "0.1.0",
     "@red-cup-engineering/html-file-codec-service": "0.1.1",
-    "@red-cup-engineering/xml-file-codec-service": "workspace:*",
-    "@red-cup-engineering/animating": "0.0.0",
+    "@red-cup-engineering/xml-file-codec-service": "0.1.1",
+    "@red-cup-engineering/animating": "0.0.2",
     "@red-cup-engineering/knowing": "0.0.0",
     "@red-cup-engineering/producing-content": "0.0.1",
     "@red-cup-engineering/relating": "0.0.1",
-    "@red-cup-engineering/organizing-with-the-web": "0.0.0",
-    "@red-cup-engineering/http-server": "0.0.0"
+    "@red-cup-engineering/organizing-with-the-web": "0.0.2",
+    "@red-cup-engineering/http-server": "0.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -85,14 +85,5 @@
   "sideEffects": false,
   "keywords": [
     "decommissioned"
-  ],
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "inert-material",
-    "actor": "urn:ame:organizing-with-the-semantic-web",
-    "operations": [],
-    "capabilities": [],
-    "package": "@red-cup-engineering/organizing-with-the-semantic-web"
-  }
+  ]
 }

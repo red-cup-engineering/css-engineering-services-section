@@ -45,16 +45,16 @@
     "typescript": "^5.8.0"
   },
   "dependencies": {
-    "@lenticule-science/articulating": "workspace:*",
-    "@red-cup-engineering/file-cryptographic-integrity-service": "workspace:*",
-    "@red-cup-engineering/file-projection-kernel-service": "workspace:*",
-    "@red-cup-engineering/html-file-codec-service": "workspace:*",
-    "@red-cup-engineering/json-file-codec-service": "workspace:*",
-    "@red-cup-engineering/json-schema-service": "workspace:*",
-    "@red-cup-engineering/markdown-file-codec-service": "workspace:*",
-    "@red-cup-engineering/xml-file-codec-service": "workspace:*",
-    "@red-cup-engineering/toml-file-codec-service": "workspace:*",
-    "@red-cup-engineering/turtle-term-writing-service": "workspace:*"
+    "@lenticule-science/articulating": "0.1.1",
+    "@red-cup-engineering/file-cryptographic-integrity-service": "0.1.1",
+    "@red-cup-engineering/file-projection-kernel-service": "0.1.1",
+    "@red-cup-engineering/html-file-codec-service": "0.1.1",
+    "@red-cup-engineering/json-file-codec-service": "0.1.1",
+    "@red-cup-engineering/json-schema-services-section": "0.1.0",
+    "@red-cup-engineering/markdown-file-codec-service": "0.1.0",
+    "@red-cup-engineering/xml-file-codec-service": "0.1.1",
+    "@red-cup-engineering/toml-file-codec-service": "0.1.0",
+    "@red-cup-engineering/turtle-term-writing-service": "0.1.0"
   },
   "exports": {
     ".": {
@@ -210,23 +210,5 @@
       "types": "./dist/src/codecs/host/javascript/numbers/index.d.mts",
       "import": "./dist/src/codecs/host/javascript/numbers/index.mjs"
     }
-  },
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:relating",
-    "operations": [
-      "relating"
-    ],
-    "capabilities": [
-      {
-        "capability": "relating",
-        "faces": [
-          "relating"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/relating"
   }
 }

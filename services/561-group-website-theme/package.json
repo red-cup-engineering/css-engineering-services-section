@@ -30,20 +30,11 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@red-cup-engineering/organizing-with-the-web": "0.0.0"
+    "@red-cup-engineering/organizing-with-the-web": "0.0.2"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "typescript": "^5.8.0"
   },
-  "sideEffects": false,
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "inert-material",
-    "actor": "urn:ame:561-group-website-theme",
-    "operations": [],
-    "capabilities": [],
-    "package": "@red-cup-engineering/561-group-website-theme"
-  }
+  "sideEffects": false
 }

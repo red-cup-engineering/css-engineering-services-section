@@ -87,21 +87,12 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@lenticule-science/articulating": "workspace:*",
-    "@red-cup-engineering/relating": "0.0.0"
+    "@lenticule-science/articulating": "0.1.1",
+    "@red-cup-engineering/relating": "0.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "typescript": "^5.8.0"
   },
-  "sideEffects": false,
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "inert-material",
-    "actor": "urn:ame:communicating",
-    "operations": [],
-    "capabilities": [],
-    "package": "@red-cup-engineering/communicating"
-  }
+  "sideEffects": false
 }

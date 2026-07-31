@@ -50,29 +50,11 @@
   },
   "dependencies": {
     "@red-cup-engineering/communicating": "0.0.0",
-    "@red-cup-engineering/relating": "0.0.0"
+    "@red-cup-engineering/relating": "0.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "typescript": "^5.8.0"
   },
-  "sideEffects": false,
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:communicating-in-english",
-    "operations": [
-      "communicating-in-english"
-    ],
-    "capabilities": [
-      {
-        "capability": "communicating-in-english",
-        "faces": [
-          "communicating-in-english"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/communicating-in-english"
-  }
+  "sideEffects": false
 }

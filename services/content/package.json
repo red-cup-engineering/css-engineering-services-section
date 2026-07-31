@@ -131,32 +131,14 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@red-cup-engineering/json-file-codec-service": "workspace:*",
-    "@red-cup-engineering/html-file-codec-service": "workspace:*",
+    "@red-cup-engineering/json-file-codec-service": "0.1.1",
+    "@red-cup-engineering/html-file-codec-service": "0.1.1",
     "@red-cup-engineering/communicating-in-english": "0.0.0",
-    "@red-cup-engineering/relating": "0.0.0"
+    "@red-cup-engineering/relating": "0.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "typescript": "^5.8.0"
   },
-  "sideEffects": false,
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:content",
-    "operations": [
-      "content"
-    ],
-    "capabilities": [
-      {
-        "capability": "content",
-        "faces": [
-          "content"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/content"
-  }
+  "sideEffects": false
 }

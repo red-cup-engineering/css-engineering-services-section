@@ -6,46 +6,5 @@
   "exports": "./src/github-api.mjs",
   "scripts": {
     "test": "node --test"
-  },
-  "x-agentic-metro-enterprise": {
-    "node-id": "github-services-section",
-    "actor": "urn:ame:github-services-section",
-    "organizational-kind": "public-protocol-provider",
-    "owners": [
-      "web-services-section"
-    ],
-    "membrane": {
-      "law": "lib/",
-      "lasting-instances": "content/",
-      "append-only-instances": "data/"
-    },
-    "admission": "one typed GitHub REST operation authorized by the customer contract",
-    "refusal": "raw credential egress, ambient repository authority, foreign archive origin, arbitrary URL, timer-driven polling, or customer acceptance",
-    "operation-catalog": {
-      "github-rest": {
-        "contract": "content/contracts/github-rest.rml",
-        "protocol": "GitHub REST API",
-        "accepts": "typed repository operation",
-        "returns": "typed protocol response or refusal"
-      }
-    }
-  },
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "actor",
-    "actor": "urn:ame:github-services-section",
-    "operations": [
-      "github-rest"
-    ],
-    "capabilities": [
-      {
-        "capability": "github-services-section",
-        "faces": [
-          "github-rest"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/github-services-section"
   }
 }

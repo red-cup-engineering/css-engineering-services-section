@@ -22,5 +22,4 @@ The first migration targets are existing Red Cup Engineering dies:
   session;
 - `x402-services-section`: priced HTTP boundary and settlement.
 
-Each becomes or supplies exactly one independently assayed Capability Cell.
-
+Each becomes or supplies exactly one Capability Cell with exact attributable and assay evidence; producer identity neither proves nor disproves correctness.

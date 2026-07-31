@@ -1,9 +1,9 @@
 {
   "name": "@red-cup-engineering/http-server",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "type": "module",
-  "description": "HTTP server computing service library: application types, response representations, routing composition, middleware, Node server startup, and HTTP edge/platform helpers.",
+  "description": "Compatibility shim over the split http-services-section packages (core, edge, platform-emulation, observability) and mesh-networking-service. Its dist/ predates the split and stays as it was built; its src/ now only re-exports so a future rebuild would delegate correctly.",
   "engines": {
     "node": ">=22.18"
   },
@@ -41,12 +41,18 @@
       "types": "./dist/server/platform/index.d.mts",
       "import": "./dist/server/platform/index.mjs"
     },
+    "./observability": {
+      "types": "./dist/server/observability/index.d.mts",
+      "import": "./dist/server/observability/index.mjs"
+    },
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@red-cup-engineering/animating": "0.0.2",
-    "@red-cup-engineering/computing-with-http": "0.0.0",
-    "@red-cup-engineering/relating": "0.0.0"
+    "@red-cup-engineering/http-edge-service": "0.0.1",
+    "@red-cup-engineering/http-observability-service": "0.0.1",
+    "@red-cup-engineering/http-platform-emulation-service": "0.0.1",
+    "@red-cup-engineering/http-server-core-service": "0.0.1",
+    "@red-cup-engineering/mesh-networking-service": "0.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -55,14 +61,5 @@
     "typescript": "^5.8.0",
     "typescript-eslint": "8.61.0"
   },
-  "sideEffects": false,
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "inert-material",
-    "actor": "urn:ame:http-server",
-    "operations": [],
-    "capabilities": [],
-    "package": "@red-cup-engineering/http-server"
-  }
+  "sideEffects": false
 }

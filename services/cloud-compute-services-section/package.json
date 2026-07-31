@@ -24,75 +24,14 @@
     "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
     "@red-cup-engineering/a2a-rmn-task-client-service": "1.1.0",
     "@red-cup-engineering/acceptance-capsule-procurement-service": "1.0.0",
-    "@red-cup-engineering/activitypub-services-section": "1.0.0",
+    "@red-cup-engineering/activitypub-services-section": "1.0.2",
     "@harmonious-union/inference-work-lot-service": "4.0.0",
     "@red-cup-engineering/protected-acceptance-service": "1.0.0",
-    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.1",
     "@lenticule-science/rwil-rdf-projection-service": "1.0.2",
     "@red-cup-engineering/sandbox-command-execution-service": "1.0.0",
     "@red-cup-engineering/software-mission-execution-service": "1.0.0",
     "@red-cup-engineering/software-trajectory-memory-service": "1.0.0"
   },
-  "x-agentic-metro-enterprise": {
-    "node-id": "cloud-compute-services-section",
-    "owners": [
-      "561-group",
-      "web-services-section"
-    ],
-    "membrane": {
-      "law": "lib/",
-      "lasting-instances": "content/",
-      "append-only-instances": "data/"
-    },
-    "admission": "one addressed improvement-market incitement, public customer ActivityPub lot, exact award, customer decision, or capability-gap publication",
-    "refusal": "foreign customer package import, absent capacity evidence, uncontracted execution, provider self-attestation, customer-border overwrite, model escalation, or local filesystem queue",
-    "operation-catalog": {
-      "forage-improvement-boards": {
-        "contract": "ni:///sha-256;hvB0QtxlxnnE05tkJ6J3GDq7HOev1WvjPBwTlvpdRSY",
-        "runtimeFiles": [
-          "src/client.mjs",
-          "src/a2a-executor.mjs",
-          "src/improvement-board-forager-service.mjs",
-          "src/improvement-board-forager.mjs",
-          "src/activitypub-board-client.mjs",
-          "src/activitypub-founder-client.mjs",
-          "src/capability-gap-foldback.mjs",
-          "src/supplier-investment-decision.mjs",
-          "src/supplier-self-improvement.mjs",
-          "src/supplier-settlement-lock.mjs",
-          "src/activitypub-face.mjs",
-          "content/contracts/improvement-board-foraging.rml",
-          "content/policies/improvement-board-foraging.json"
-        ],
-        "accepts": "provider-addressed ActivityPub/A2A Create<ImprovementForagerIncitement>",
-        "protocols": [
-          "RMN",
-          "A2A 1.0",
-          "ActivityPub",
-          "RWIL/RDF"
-        ],
-        "returns": "ImprovementForagerIncitementReceipt|ImprovementMarketSupplierIncitementRefusal",
-        "legacyCompatibility": false
-      }
-    }
-  },
-  "license": "LicenseRef-561Group-1.0",
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "cloud-compute-services-section",
-    "kind": "capability-cell",
-    "actor": "urn:ame:cloud-compute-services-section",
-    "operations": [
-      "forage-improvement-boards"
-    ],
-    "capabilities": [
-      {
-        "capability": "cloud-compute-services-section",
-        "faces": [
-          "forage-improvement-boards"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/cloud-compute-services-section"
-  }
+  "license": "LicenseRef-561Group-1.0"
 }

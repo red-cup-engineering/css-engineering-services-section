@@ -22,24 +22,6 @@
   "engines": {
     "node": ">=22.18"
   },
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:paid-data-endpoint-service",
-    "operations": [
-      "paid-data-endpoint-service"
-    ],
-    "capabilities": [
-      {
-        "capability": "paid-data-endpoint-service",
-        "faces": [
-          "paid-data-endpoint-service"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/paid-data-endpoint-service"
-  },
   "dependencies": {
     "@x402/core": "2.19.0",
     "@x402/evm": "2.19.0",

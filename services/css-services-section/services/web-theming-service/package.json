@@ -1,0 +1,48 @@
+{
+  "name": "@red-cup-engineering/web-theming-service",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Derives certified light/dark CSS custom-property palettes and a shared reset and component stylesheet from design tokens. Use when a site needs a themed CSS system rather than a hand-written stylesheet.",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "clean": "rm -rf dist .tmp/test-dist",
+    "check": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "npm run rebuild",
+    "rebuild": "npm run clean && npm run build"
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./theming": {
+      "types": "./dist/theming/index.d.mts",
+      "import": "./dist/theming/index.mjs"
+    },
+    "./theming-computer": {
+      "types": "./dist/theming-computer/index.d.mts",
+      "import": "./dist/theming-computer/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@red-cup-engineering/html-file-codec-service": "0.1.1",
+    "@red-cup-engineering/knowing": "0.0.0",
+    "@red-cup-engineering/relating": "0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0"
+  },
+  "sideEffects": false
+}

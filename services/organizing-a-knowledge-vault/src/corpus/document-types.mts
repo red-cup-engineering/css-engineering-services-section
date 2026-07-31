@@ -15,8 +15,8 @@ import {
   projectSchemaAssertions,
   type Schema as JsonSchema,
   type SchemaAssertion,
-} from "@red-cup-engineering/json-schema-service";
-import * as schema from "@red-cup-engineering/json-schema-service";
+} from "@red-cup-engineering/json-schema-services-section";
+import * as schema from "@red-cup-engineering/json-schema-services-section";
 import {
   documentTypeDefinitions,
   documentTypeFragment,

@@ -1,0 +1,38 @@
+{
+  "name": "@red-cup-engineering/css-cascade-service",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Computes the CSS cascade over a node tree into one settled per-node style valuation and serializes it back to CSS text. Use when styling must be resolved deterministically in code rather than by a browser.",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "clean": "rm -rf dist .tmp/test-dist",
+    "check": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "npm run rebuild",
+    "rebuild": "npm run clean && npm run build"
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@lenticule-science/articulating": "0.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0"
+  },
+  "sideEffects": false
+}

@@ -26,55 +26,7 @@
     "@red-cup-engineering/a2a-contracted-agent-service": "2.0.4",
     "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
     "@red-cup-engineering/a2a-rmn-task-client-service": "1.1.0",
-    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.1",
     "@lenticule-science/rwil-rdf-projection-service": "1.0.2"
-  },
-  "x-agentic-metro-enterprise": {
-    "node-id": "carrier-composition-judgment-service",
-    "actor": "urn:ame:carrier-composition-judgment-service",
-    "organizational-kind": "capability-cell",
-    "owners": [
-      "relating"
-    ],
-    "admission": "one exact provider-addressed canonical RMN operation carrying producer and consumer morphism faces",
-    "refusal": "execution, planning, registry mutation, alternate-carrier search, or identity inferred from names or codecs",
-    "operation-catalog": {
-      "judge-carrier-composition": {
-        "contract": "content/contracts/judge-carrier-composition.rml",
-        "protocols": [
-          "RMN",
-          "A2A 1.0"
-        ],
-        "returns": "CarrierCompositionWitness|CarrierCompositionObstruction"
-      }
-    },
-    "x-foam-locus": {
-      "address": [
-        "relating",
-        "running",
-        "category",
-        "composition-judgment"
-      ],
-      "proposition": "A producer morphism composes with a consumer morphism exactly when the producer codomain carrier identity equals the consumer domain carrier identity.",
-      "actor": "urn:ame:carrier-composition-judgment-service"
-    }
-  },
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:carrier-composition-judgment-service",
-    "operations": [
-      "judge-carrier-composition"
-    ],
-    "capabilities": [
-      {
-        "capability": "carrier-composition-judgment-service",
-        "faces": [
-          "judge-carrier-composition"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/carrier-composition-judgment-service"
   }
 }

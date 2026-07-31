@@ -36,8 +36,8 @@
     "package.json"
   ],
   "dependencies": {
-    "@red-cup-engineering/json-file-codec-service": "workspace:*",
-    "@red-cup-engineering/relating": "0.0.0",
+    "@red-cup-engineering/json-file-codec-service": "0.1.1",
+    "@red-cup-engineering/relating": "0.0.1",
     "@red-cup-engineering/semantic-linefeed-normalization-service": "0.1.0"
   },
   "devDependencies": {
@@ -70,23 +70,5 @@
       "import": "./dist/projecting/index.mjs"
     },
     "./package.json": "./package.json"
-  },
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:knowing",
-    "operations": [
-      "knowing"
-    ],
-    "capabilities": [
-      {
-        "capability": "knowing",
-        "faces": [
-          "knowing"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/knowing"
   }
 }

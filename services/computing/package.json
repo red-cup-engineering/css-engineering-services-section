@@ -112,36 +112,18 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@red-cup-engineering/json-file-codec-service": "workspace:*",
-    "@lenticule-science/articulating": "workspace:*",
-    "@red-cup-engineering/relating": "0.0.0",
+    "@red-cup-engineering/json-file-codec-service": "0.1.1",
+    "@lenticule-science/articulating": "0.1.1",
+    "@red-cup-engineering/relating": "0.0.1",
     "@red-cup-engineering/communicating": "0.0.0",
     "@red-cup-engineering/knowing": "0.0.0",
     "@red-cup-engineering/playing": "0.0.1",
-    "@red-cup-engineering/animating": "0.0.0",
-    "@red-cup-engineering/gaming": "0.0.0"
+    "@red-cup-engineering/animating": "0.0.2",
+    "@red-cup-engineering/gaming": "0.0.2"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "typescript": "^5.8.0"
   },
-  "sideEffects": false,
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:computing",
-    "operations": [
-      "computing"
-    ],
-    "capabilities": [
-      {
-        "capability": "computing",
-        "faces": [
-          "computing"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/computing"
-  }
+  "sideEffects": false
 }

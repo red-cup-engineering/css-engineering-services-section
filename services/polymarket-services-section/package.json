@@ -12,37 +12,5 @@
   "engines": {
     "node": ">=22.18"
   },
-  "x-agentic-metro-enterprise": {
-    "node-id": "polymarket-services-section",
-    "organizational-kind": "sovereign-venue-access-enterprise",
-    "owners": [
-      "emsenn",
-      "board-of-directors",
-      "executive-office",
-      "web-services-section"
-    ],
-    "governing-office": "chief-financial-officer",
-    "legal-trader": "emsenn",
-    "membrane": {
-      "law": "lib/",
-      "lasting-instances": "content/",
-      "append-only-instances": "data/"
-    },
-    "admission": "a bounded read-only market-data request against the declared Polymarket US feed, or an ActivityStreams order request from the event-contract-arbitrage-desk citing a qualified pair, admitted only while Leader-activated credentials and a live activation policy exist",
-    "refusal": "any order while activation is refused or credentials are absent, credential disclosure or custody transfer, orders for another settlement, self-matching, withdrawal or transfer instructions not Leader-authorized, and cross-settlement writes",
-    "environment": [
-      "POLYMARKET_US_API_KEY_ID",
-      "POLYMARKET_US_PRIVATE_KEY_PATH"
-    ]
-  },
-  "license": "UNLICENSED",
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "actor",
-    "actor": "urn:ame:polymarket-services-section",
-    "operations": [],
-    "capabilities": [],
-    "package": "@red-cup-engineering/polymarket-services-section"
-  }
+  "license": "UNLICENSED"
 }

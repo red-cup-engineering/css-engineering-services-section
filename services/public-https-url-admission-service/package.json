@@ -23,23 +23,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/red-cup-engineering/public-https-url-admission-service.git"
-  },
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:public-https-url-admission-service",
-    "operations": [
-      "public-https-url-admission-service"
-    ],
-    "capabilities": [
-      {
-        "capability": "public-https-url-admission-service",
-        "faces": [
-          "public-https-url-admission-service"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/public-https-url-admission-service"
   }
 }

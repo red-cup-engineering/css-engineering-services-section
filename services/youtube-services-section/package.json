@@ -17,54 +17,12 @@
     "node": ">=22.18"
   },
   "dependencies": {
-    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0"
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.1"
   },
   "keywords": [
     "sovereign-provider",
     "youtube",
     "credential-blind"
   ],
-  "x-agentic-metro-enterprise": {
-    "node-id": "youtube-services-section",
-    "actor": "urn:ame:youtube-services-section",
-    "organizational-kind": "public-protocol-provider-settlement",
-    "owners": [
-      "red-cup-engineering"
-    ],
-    "membrane": {
-      "law": "lib/",
-      "lasting-instances": "content/",
-      "append-only-instances": "data/"
-    },
-    "operation-catalog": {
-      "youtube-data-api-protocol-operation": {
-        "contract": "ni:///sha-256;W5aGuEEr9ZMNuJJa-CpVnayiRaWGzW2EUMufmHZ9ZnE"
-      },
-      "youtube-analytics-api-protocol-operation": {
-        "contract": "ni:///sha-256;Sr7aQvRBz7B4G2kYnsDg4YSEKPpfbCz6dekODdA3Qt4"
-      }
-    },
-    "refusal": "credentials, ambient environment access, channel authority, customer record writes, unsafe upload carriers, malformed venue responses, implicit publication mode, or customer acceptance claims"
-  },
-  "license": "UNLICENSED",
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "actor",
-    "actor": "urn:ame:youtube-services-section",
-    "operations": [
-      "youtube-analytics-api-protocol-operation",
-      "youtube-data-api-protocol-operation"
-    ],
-    "capabilities": [
-      {
-        "capability": "youtube-services-section",
-        "faces": [
-          "youtube-analytics-api-protocol-operation",
-          "youtube-data-api-protocol-operation"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/youtube-services-section"
-  }
+  "license": "UNLICENSED"
 }

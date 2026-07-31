@@ -102,11 +102,11 @@
   "dependencies": {
     "@red-cup-engineering/animating": "0.0.2",
     "@red-cup-engineering/content": "0.0.1",
-    "@red-cup-engineering/html-file-codec-service": "workspace:*",
     "@red-cup-engineering/knowing": "0.0.0",
-    "@red-cup-engineering/relating": "0.0.0",
+    "@red-cup-engineering/relating": "0.0.1",
     "@red-cup-engineering/computing-with-http": "0.0.0",
-    "@red-cup-engineering/http-server": "0.0.2"
+    "@red-cup-engineering/http-server": "0.0.2",
+    "@red-cup-engineering/web-theming-service": "0.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -115,14 +115,5 @@
     "typescript": "^5.8.0",
     "typescript-eslint": "8.61.0"
   },
-  "sideEffects": false,
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "inert-material",
-    "actor": "urn:ame:organizing-with-the-web",
-    "operations": [],
-    "capabilities": [],
-    "package": "@red-cup-engineering/organizing-with-the-web"
-  }
+  "sideEffects": false
 }

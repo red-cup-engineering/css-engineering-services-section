@@ -26,7 +26,7 @@
     "@red-cup-engineering/organizing-a-newscable": "0.0.0",
     "@red-cup-engineering/organizing-a-knowledge-vault": "0.0.0",
     "@red-cup-engineering/producing-content": "0.0.1",
-    "@red-cup-engineering/relating": "0.0.0"
+    "@red-cup-engineering/relating": "0.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
@@ -39,14 +39,5 @@
     },
     "./package.json": "./package.json"
   },
-  "sideEffects": false,
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "inert-material",
-    "actor": "urn:ame:organizing-a-content-farm",
-    "operations": [],
-    "capabilities": [],
-    "package": "@red-cup-engineering/organizing-a-content-farm"
-  }
+  "sideEffects": false
 }
