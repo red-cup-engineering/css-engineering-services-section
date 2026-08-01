@@ -4,12 +4,12 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import { ACTOR, CONTEXT, bidForBoardOffer } from "../src/improvement-board-forager.mjs";
-import { CONTRACT, forageImprovementBoards, memoryForagingLedger, planTerminalInvestmentRedecisions, planTrajectoryInformedActions } from "../src/improvement-board-forager-service.mjs";
+import { forageImprovementBoards, memoryForagingLedger, planTerminalInvestmentRedecisions, planTrajectoryInformedActions } from "../src/improvement-board-forager-service.mjs";
 import { decideSupplierInvestmentDemand } from "../src/supplier-investment-decision.mjs";
 import { extractRmnActivity, projectRmnActivity } from "@red-cup-engineering/activitypub-services-section/rmn-activity";
-import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { decodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
-import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/relation-model-notation-runtime";
+import { decodeRelationalValue } from "@red-cup-engineering/relation-model-notation-runtime/relational-value";
+import { relationalWitnessJournalDocument } from "@red-cup-engineering/witness-journal-rdf-projection-service/client";
 
 const INCITER = "urn:ame:test-inciter", BOARD = "urn:test:customer-board";
 const board = { actor: BOARD, transport: "activitypub", listOperation: "list", submitOperation: "submit", activityPubActor: "https://board.example/actors/board", activityPubOutbox: "https://board.example/actors/board/outbox", activityPubInbox: "https://board.example/actors/board/inbox", a2aAgentCard: "https://board.example/.well-known/agent-card.json", supplierActivityPubActor: "https://supplier.example/actors/free-compute" };
@@ -37,7 +37,7 @@ function offer(number = 4) {
 
 test("only an exact provider-addressed incitement enters the sovereign supplier", async () => {
   const result = await forageImprovementBoards({ ...incitement, target: "urn:foreign" }, { policy, ledger: memoryForagingLedger(), invokeBoard: assert.fail });
-  assert.equal(result.type, "Reject"); assert.equal(result.object.contract, CONTRACT);
+  assert.equal(result.type, "Reject");
   const wrongKind = await forageImprovementBoards(record({ ...Object.fromEntries(Object.entries(incitement).filter(([key]) => key !== "id")), object: { type: "IndependentImprovementForagerPulse" } }), { policy, ledger: memoryForagingLedger(), invokeBoard: assert.fail });
   assert.equal(wrongKind.type, "Reject"); assert.equal(wrongKind.object.reason, "exact-provider-addressed-incitement-required");
   const staleIdentity = await forageImprovementBoards({ ...incitement, published: "2026-07-22T00:00:00.000Z" }, { policy, ledger: memoryForagingLedger(), invokeBoard: assert.fail });
