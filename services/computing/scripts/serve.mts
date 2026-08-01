@@ -11,7 +11,8 @@
  *   compute-serve            # or: PORT=8789 COMPUTING_DATA=.tmp/data compute-serve
  */
 import { fileURLToPath } from "node:url";
-import { induceBins, serve } from "@red-cup-engineering/relating";
+import { induceBins } from "@red-cup-engineering/relating/running";
+import { serve } from "@red-cup-engineering/relating/services/http";
 import { actions } from "../src/actions.mjs";
 
 function main(): void {

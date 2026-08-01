@@ -53,7 +53,7 @@ export async function observeYouTubePublicChannelFeed(request, providers, option
   if (request.kind !== "org.emsenn.youtube-public-channel-feed-observation.request.v1") throw new TypeError("wrong YouTube public-feed request kind");
   if (typeof request.requestId !== "string" || request.requestId.trim() === "") throw new TypeError("requestId must be nonempty text");
   if (!CHANNEL.test(request.channelId)) throw new TypeError("channelId must be one immutable YouTube UC identity");
-  if (!providers || typeof providers.observe !== "function" || typeof providers.record !== "function") throw new TypeError("public-web observation and RWIL providers are required");
+  if (!providers || typeof providers.observe !== "function" || typeof providers.record !== "function") throw new TypeError("public-web observation and WitnessJournal providers are required");
   const encoded = encodeRelationalValue(request), requestId = semanticId(["ascribe", encoded.type, encoded.term]);
   const sourceUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(request.channelId)}`;
   const venue = await providers.observe({ sourceUrl, channelId: request.channelId });

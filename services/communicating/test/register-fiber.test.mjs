@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 
 import {
   compiledBundleFromLanguageManifest,
-  languageManifestRwIlRows,
+  languageManifestWitnessJournalRows,
   languageRegisterFiber,
   languageRegisterFiberCarrier,
   loadLanguageManifest,
@@ -74,8 +74,8 @@ test("language bundles compile register/style/evidentiality/politeness/genre as 
   assert.ok(languageRegisterFiberCarrier.validate(compiled.registerFiber));
 });
 
-test("language manifests expose register fiber axes as RWIL evidence", () => {
-  const rows = languageManifestRwIlRows(sourceManifest());
+test("language manifests expose register fiber axes as WitnessJournal evidence", () => {
+  const rows = languageManifestWitnessJournalRows(sourceManifest());
 
   assert.ok(rows.some((row) => row.attribute === "communicating.register" && row.witness === "manifest.bundle.registerFiber.register"));
   assert.ok(rows.some((row) => row.attribute === "communicating.politeness" && row.witness === "manifest.bundle.registerFiber.politeness"));

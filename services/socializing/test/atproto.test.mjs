@@ -39,7 +39,7 @@ const repoWithNote = (text, rev, cid) => atRepo("did:plc:alice", [
   }),
 ]);
 
-test("AT repo commits round-trip as an observer-scoped RWIL witness log", () => {
+test("AT repo commits round-trip as an observer-scoped witness journal entry log", () => {
   const repo = repoWithNote("first witness", "3kq-a", "bafy-record-a");
 
   const log = witnessLogFromAtRepo(repo);

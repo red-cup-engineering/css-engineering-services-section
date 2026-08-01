@@ -16,7 +16,7 @@ import { load } from "./compile.mjs";
 import "./profile.mjs";
 import { registerFiberAxes, registerFiberDataSchema } from "./register-fiber.mjs";
 
-const rwilLiteralSchema = {
+const witnessJournalLiteralSchema = {
   type: "object",
   required: ["entity", "attribute", "value"],
   additionalProperties: false,
@@ -125,9 +125,9 @@ export const languageManifestSchema = {
   properties: {
     kind: { const: "communicating.language-manifest" },
     bundle: languageBundleSchema,
-    rwil: {
+    witnessJournal: {
       type: "array",
-      items: rwilLiteralSchema,
+      items: witnessJournalLiteralSchema,
     },
     rmn: {
       type: "array",
@@ -175,7 +175,7 @@ export const languageManifestSchema = {
 export type LanguageManifestCarrier = FromSchema<typeof languageManifestSchema>;
 export const languageManifestCarrier = carrierFrom(languageManifestSchema);
 
-export interface RwilLiteral {
+export interface WitnessJournalLiteral {
   readonly entity: string;
   readonly attribute: string;
   readonly value: unknown;
@@ -209,9 +209,9 @@ export interface DiscourseCoverManifest {
   readonly note?: string;
 }
 
-export interface LanguageManifest extends Omit<LanguageManifestCarrier, "bundle" | "rwil" | "lambek" | "sofic" | "chu" | "discourseCover"> {
+export interface LanguageManifest extends Omit<LanguageManifestCarrier, "bundle" | "witnessJournal" | "lambek" | "sofic" | "chu" | "discourseCover"> {
   readonly bundle: RawBundle;
-  readonly rwil?: readonly RwilLiteral[];
+  readonly witnessJournal?: readonly WitnessJournalLiteral[];
   readonly lambek?: LambekManifest;
   readonly sofic?: SoficManifest;
   readonly chu?: ChuManifest;
@@ -221,7 +221,7 @@ export interface LanguageManifest extends Omit<LanguageManifestCarrier, "bundle"
 export interface LanguageManifestReceipt {
   readonly kind: "communicating.language-manifest.receipts";
   readonly language: string;
-  readonly rwil: readonly RwilLiteral[];
+  readonly witnessJournal: readonly WitnessJournalLiteral[];
   readonly lambek: unknown;
   readonly sofic: unknown;
   readonly chu: unknown;
@@ -243,9 +243,9 @@ export const bundleFromLanguageManifest = (manifest: LanguageManifest): RawBundl
 export const compiledBundleFromLanguageManifest = (manifest: LanguageManifest): CompiledBundle =>
   load(bundleFromLanguageManifest(manifest));
 
-export function languageManifestRwIlRows(manifest: LanguageManifest): readonly RwilLiteral[] {
+export function languageManifestWitnessJournalRows(manifest: LanguageManifest): readonly WitnessJournalLiteral[] {
   const language = `language:${manifest.bundle.meta.code}`;
-  const rows: RwilLiteral[] = [
+  const rows: WitnessJournalLiteral[] = [
     { entity: language, attribute: "communicating.name", value: manifest.bundle.meta.name, witness: "manifest.bundle.meta.name" },
     { entity: language, attribute: "communicating.script", value: manifest.bundle.meta.script, witness: "manifest.bundle.meta.script" },
     { entity: language, attribute: "communicating.direction", value: manifest.bundle.meta.direction, witness: "manifest.bundle.meta.direction" },
@@ -269,9 +269,9 @@ export function languageManifestRwIlRows(manifest: LanguageManifest): readonly R
       witness: `manifest.bundle.registerFiber.${axis}`,
     });
   }
-  for (const [index, row] of (manifest.rwil ?? []).entries()) {
+  for (const [index, row] of (manifest.witnessJournal ?? []).entries()) {
     rows.push({
-      witness: `manifest.rwil.${index}`,
+      witness: `manifest.witnessJournal.${index}`,
       ...row,
     });
   }
@@ -356,7 +356,7 @@ export function languageManifestReceipts(manifest: LanguageManifest): LanguageMa
   return Object.freeze({
     kind: "communicating.language-manifest.receipts",
     language: manifest.bundle.meta.code,
-    rwil: languageManifestRwIlRows(manifest),
+    witnessJournal: languageManifestWitnessJournalRows(manifest),
     lambek: lambekManifestReceipt(manifest),
     sofic: soficManifestReceipt(manifest),
     chu: chuManifestReceipt(manifest),

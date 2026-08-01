@@ -1,7 +1,7 @@
 import { Activity } from "@fedify/vocab";
 import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
 import { decodeRelationalValue, encodeRelationalValue, RELATIONAL_VALUE_TYPE } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
-import { rawNiUri as sha256Ni } from "@lenticule-science/rmn-semantic-conformance-die/canonical-cbor";
+import { rawNiUri as sha256Ni } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
 import {
   agentRmnMessage,
   extractRmnPart,

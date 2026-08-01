@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Signed bounded edge compute admitted only while Deno reports the owning organization free_verified.",
   "bin": {
-    "invoke-deno-free-compute": "./bin/invoke-deno-free-compute.mjs"
+    "invoke-deno-free-compute": "./scripts/invoke-deno-free-compute.mjs"
   },
   "scripts": {
     "test": "node --test test/*.test.mjs && deno test test/*.test.ts"

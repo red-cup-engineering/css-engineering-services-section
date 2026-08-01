@@ -1,7 +1,7 @@
 /**
- * writing/sparql — SPARQL/RDF as knowing's QUERY projection over RWIL.
+ * writing/sparql — SPARQL/RDF as knowing's QUERY projection over WitnessJournal.
  *
- * A Basic Graph Pattern is a conjunction of witnessed RDF-ish triples. RWIL
+ * A Basic Graph Pattern is a conjunction of witnessed RDF-ish triples. WitnessJournal
  * already stores those as EAVT witnesses, and knowing already evaluates
  * conjunction through Datalog. This module only maps the SPARQL query shapes
  * onto that evaluator; it does not introduce a parser or a second store.

@@ -5,7 +5,7 @@ import {
   discourseCoverManifestReceipt,
   lambekManifestReceipt,
   languageManifestReceipts,
-  languageManifestRwIlRows,
+  languageManifestWitnessJournalRows,
   soficManifestReceipt,
   type LanguageManifest,
 } from "../speaking/listening/algebra/index.mjs";
@@ -18,17 +18,17 @@ export const readLanguageManifestAction = (manifest: LanguageManifest): Action =
   inputFormat: "json",
   outputFormat: "json",
   summary: "Read this package's admitted language manifest.",
-  description: "Domain: ignored JSON input. Codomain: the admitted language manifest that owns this language package's fiber, grammar profile, RWIL rows, and finite linguistic receipts.",
+  description: "Domain: ignored JSON input. Codomain: the admitted language manifest that owns this language package's fiber, grammar profile, WitnessJournal rows, and finite linguistic receipts.",
   run: () => resource(manifest, "language manifest"),
 });
 
-export const readLanguageRwIlAction = (manifest: LanguageManifest): Action => action({
-  verb: "read-language-rwil",
+export const readLanguageWitnessJournalAction = (manifest: LanguageManifest): Action => action({
+  verb: "read-language-witness-journal",
   inputFormat: "json",
   outputFormat: "json",
-  summary: "Project this language manifest as RWIL-shaped rows.",
-  description: "Domain: ignored JSON input. Codomain: RWIL-shaped EAVT rows derived from the language manifest and its explicit row declarations.",
-  run: () => resource(languageManifestRwIlRows(manifest), "language RWIL rows"),
+  summary: "Project this language manifest as witness-journal-shaped rows.",
+  description: "Domain: ignored JSON input. Codomain: witness-journal-shaped EAVT rows derived from the language manifest and its explicit row declarations.",
+  run: () => resource(languageManifestWitnessJournalRows(manifest), "language WitnessJournal rows"),
 });
 
 export const readLanguageManifestReceiptsAction = (manifest: LanguageManifest): Action => action({
@@ -36,7 +36,7 @@ export const readLanguageManifestReceiptsAction = (manifest: LanguageManifest): 
   inputFormat: "json",
   outputFormat: "json",
   summary: "Read all finite linguistic receipts for this language manifest.",
-  description: "Domain: ignored JSON input. Codomain: the Lambek, sofic, Chu, discourse-cover, and RWIL readings of this language manifest.",
+  description: "Domain: ignored JSON input. Codomain: the Lambek, sofic, Chu, discourse-cover, and WitnessJournal readings of this language manifest.",
   run: () => resource(languageManifestReceipts(manifest), "language manifest receipts"),
 });
 
@@ -78,7 +78,7 @@ export const readLanguageDiscourseCoverReceiptAction = (manifest: LanguageManife
 
 export const manifestActions = (manifest: LanguageManifest): readonly Action[] => Object.freeze([
   readLanguageManifestAction(manifest),
-  readLanguageRwIlAction(manifest),
+  readLanguageWitnessJournalAction(manifest),
   readLanguageManifestReceiptsAction(manifest),
   readLanguageLambekReceiptAction(manifest),
   readLanguageSoficReceiptAction(manifest),

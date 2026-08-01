@@ -6,7 +6,7 @@ import {
   compiledBundleFromLanguageManifest,
   languageManifestCarrier,
   languageManifestReceipts,
-  languageManifestRwIlRows,
+  languageManifestWitnessJournalRows,
   loadLanguageManifest,
   parseCommunication,
 } from "../dist/index.mjs";
@@ -83,7 +83,7 @@ const manifest = {
       abbreviations: [],
     },
   },
-  rwil: [
+  witnessJournal: [
     { entity: "language:x-mft:particle:ga", attribute: "communicating.role", value: "nsubj" },
   ],
   lambek: {
@@ -132,16 +132,16 @@ test("language manifests admit bundle data and compile into parsable fibers", ()
   assert.ok(parsed.words.find((word) => word.text === "kelu")?.feats.includes("root:k-l"));
 });
 
-test("language manifests project RWIL-shaped rows and finite math receipts", () => {
+test("language manifests project witness-journal-shaped rows and finite math receipts", () => {
   const admitted = loadLanguageManifest(manifest);
-  const rows = languageManifestRwIlRows(admitted);
+  const rows = languageManifestWitnessJournalRows(admitted);
   const receipts = languageManifestReceipts(admitted);
 
   assert.equal(rows.find((row) => row.attribute === "communicating.wordOrder")?.value, "topic-comment");
-  assert.equal(rows.find((row) => row.entity === "language:x-mft:particle:ga")?.witness, "manifest.rwil.0");
+  assert.equal(rows.find((row) => row.entity === "language:x-mft:particle:ga")?.witness, "manifest.witnessJournal.0");
   assert.equal(receipts.kind, "communicating.language-manifest.receipts");
   assert.equal(receipts.language, "x-mft");
-  assert.equal(receipts.rwil.length, rows.length);
+  assert.equal(receipts.witnessJournal.length, rows.length);
   assert.equal(receipts.chu.dualInvolution, true);
   assert.equal(receipts.discourseCover.cover.components, 1);
   assert.equal(receipts.sofic.sample.length, 4);

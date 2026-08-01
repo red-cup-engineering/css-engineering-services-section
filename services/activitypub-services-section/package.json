@@ -51,7 +51,7 @@
     "@hono/node-server": "1.19.14",
     "ethers": "6.17.0",
     "@red-cup-engineering/rmn-semantic-conformance": "6.0.2",
-    "@lenticule-science/rmn-semantic-conformance-die": "6.0.1"
+    "@red-cup-engineering/rmn-semantic-conformance-die": "6.0.1"
   },
   "engines": {
     "node": ">=22"

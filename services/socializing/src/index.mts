@@ -372,7 +372,7 @@ export {
 export type { StateCrdt, StateCrdtCell, MultiValueRegister, MultiValueRegisterWrite } from "./writing/crdt/index.mjs";
 
 // writing/atproto — Bluesky / AT Protocol as a second across-federation channel-code:
-// signed per-actor repos as RWIL witness logs, Lexicons as relating carriers, and firehose as broadcast.
+// signed per-actor repos as witness journal entry logs, Lexicons as relating carriers, and firehose as broadcast.
 export {
   AtRepoCommitSchema,
   AtRepoSchema,

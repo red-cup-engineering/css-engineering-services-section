@@ -9,14 +9,16 @@
  */
 import {
   carrierFrom,
-  printType,
   realize,
   registeredCategory,
+  writing,
   type Action,
   type Carrier,
   type FromSchema,
   type JsonValue,
 } from "@red-cup-engineering/relating";
+
+const { printType } = writing;
 import { coreActions as computingActions } from "./core-actions.mjs";
 import { capabilityDecisionCarrier } from "./capability-decision.mjs";
 import { capabilityRequestCarrier } from "./capability-request.mjs";

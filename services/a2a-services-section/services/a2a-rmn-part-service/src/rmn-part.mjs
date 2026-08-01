@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { Message, Role } from "@a2a-js/sdk";
-import { rawNiUri as rawNi } from "@lenticule-science/rmn-semantic-conformance-die/canonical-cbor";
+import { rawNiUri as rawNi } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
 
 export const RMN_MEDIA_TYPE = "application/rmn+cbor";
 const NI = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u;

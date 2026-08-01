@@ -14,8 +14,8 @@ import { documentOfFixedPoint } from "@lenticule-science/articulating/predicatin
 import { completeGraphWeights } from "@lenticule-science/articulating/predicating/positing/settling/analysis/index";
 import {
   htmlCarrierOf,
-  profile_forms_render_fiber,
-  renderHtmlFiber,
+  buildHtmlDocumentPlan,
+  renderHtmlDocument,
   type CssClassFactorMap,
   type CssDeclaration,
   type CssSystem,
@@ -125,11 +125,11 @@ function actionHtmlFiber(
     declarations: Object.freeze(declarations),
     classFactorMap: actionClassFactorMap(nodes),
   });
-  const fiber = profile_forms_render_fiber(actionHtmlProfile, carrier, system, "static");
+  const fiber = buildHtmlDocumentPlan(actionHtmlProfile, carrier, system, "static");
   if (fiber.kind !== "rendering.profile_forms_render_fiber:witness") {
     throw new TypeError(`actionHtmlFiber: profile obstructed: ${fiber.reason}:${fiber.key}`);
   }
-  return renderHtmlFiber(fiber, {
+  return renderHtmlDocument(fiber, {
     title,
     roots,
     metadata: Object.freeze({ "render-domain": "relating.projections.actions" }),

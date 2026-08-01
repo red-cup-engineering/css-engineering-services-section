@@ -2,7 +2,7 @@
  * writing/atproto — AT Protocol as a second across-federation wire for socializing.
  *
  * AT Protocol is not a second social ontology here. A per-actor signed repo is
- * read as an RWIL witness log scoped to one observer: each commit operation is a
+ * read as an witness journal entry log scoped to one observer: each commit operation is a
  * witnessed cell, Lexicon is a typed carrier declaration, and the firehose is
  * socializing.broadcast projected as repository events.
  */
@@ -59,9 +59,9 @@ const atRepoRecordSchema = {
 
 export const AtRepoCommitSchema = {
   $id: "socializing/writing/atproto/repo-commit",
-  title: "AT Protocol repo commit as RWIL witness step",
+  title: "AT Protocol repo commit as witness journal entry step",
   description:
-    "A signed per-actor AT Protocol repository commit read as one observer-scoped RWIL witness step. Operations are the witnessed cells; the signature is retained as witness metadata.",
+    "A signed per-actor AT Protocol repository commit read as one observer-scoped witness journal entry step. Operations are the witnessed cells; the signature is retained as witness metadata.",
   type: "object",
   required: ["kind", "did", "version", "rev", "data", "prev", "sig", "ops"],
   properties: {
@@ -85,9 +85,9 @@ export const atRepoCommitCarrier = carrierFrom(AtRepoCommitSchema);
 
 export const AtRepoSchema = {
   $id: "socializing/writing/atproto/repo",
-  title: "AT Protocol repo as observer RWIL log",
+  title: "AT Protocol repo as observer WitnessJournal log",
   description:
-    "A normalized AT Protocol per-actor repository: current records plus the signed commit sequence whose operations project functorially to RWIL cells.",
+    "A normalized AT Protocol per-actor repository: current records plus the signed commit sequence whose operations project functorially to WitnessJournal cells.",
   type: "object",
   required: ["kind", "did", "head", "commits", "records"],
   properties: {
@@ -267,19 +267,19 @@ export function atRepo(did: string, commits: readonly AtRepoCommit[]): AtRepo {
   })) as AtRepo;
 }
 
-/** Project a signed repo commit to RWIL rows: commits are witnesses. */
+/** Project a signed repo commit to WitnessJournal rows: commits are witnesses. */
 export function witnessLogFromAtRepoCommit(commit: AtRepoCommit): readonly WitnessRow[] {
   const admitted = atRepoCommitCarrier.assert(commit) as AtRepoCommit;
   return Object.freeze(admitted.ops.map((op) => cell(entityOf(admitted.did, op.path), attributeOf(op), valueOfOperation(op), repoWitness(admitted))));
 }
 
-/** Project a per-actor repo to its observer-scoped RWIL witness log. */
+/** Project a per-actor repo to its observer-scoped witness journal entry log. */
 export function witnessLogFromAtRepo(repo: AtRepo): readonly WitnessRow[] {
   const admitted = atRepoCarrier.assert(repo) as AtRepo;
   return Object.freeze(admitted.commits.flatMap((commit) => witnessLogFromAtRepoCommit(commit)));
 }
 
-/** Reconstruct the normalized AT repo view from the RWIL rows produced above. */
+/** Reconstruct the normalized AT repo view from the WitnessJournal rows produced above. */
 export function atRepoFromWitnessLog(rows: readonly WitnessRow[]): AtRepo {
   if (rows.length === 0) throw new TypeError("atRepoFromWitnessLog: empty witness log has no actor DID");
   const did = didOfEntity(rows[0]!.e);
