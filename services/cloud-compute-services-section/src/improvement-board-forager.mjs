@@ -1,7 +1,7 @@
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
 import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
-import { contractInferenceWork as defaultContractInferenceWork } from "@harmonious-union/inference-work-lot-service/codex-inference-market";
-import { resolutionCreditPolicy } from "@harmonious-union/inference-work-lot-service/consideration";
+import { contractInferenceWork as defaultContractInferenceWork } from "@red-cup-engineering/inference-work-lot-service/codex-inference-market";
+import { resolutionCreditPolicy } from "@red-cup-engineering/inference-work-lot-service/consideration";
 import { executeSoftwareMission as defaultExecuteSoftwareMission } from "@red-cup-engineering/software-mission-execution-service/client";
 
 export const CONTEXT = "https://www.w3.org/ns/activitystreams";

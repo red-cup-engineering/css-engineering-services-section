@@ -4,7 +4,7 @@
 // admission judgment accepts this manifest.
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
 import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
-import { validateConsiderationPolicy, RESOLUTION_CREDIT_UNIT } from "@harmonious-union/inference-work-lot-service/consideration";
+import { validateConsiderationPolicy, RESOLUTION_CREDIT_UNIT } from "@red-cup-engineering/inference-work-lot-service/consideration";
 import { ACTOR } from "./improvement-board-forager.mjs";
 
 const NI = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u;

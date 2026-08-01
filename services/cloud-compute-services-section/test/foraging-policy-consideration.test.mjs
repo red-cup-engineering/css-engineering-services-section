@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { validateConsiderationPolicy } from "@harmonious-union/inference-work-lot-service/consideration";
+import { validateConsiderationPolicy } from "@red-cup-engineering/inference-work-lot-service/consideration";
 import { loadForagingPolicy } from "../src/improvement-board-forager-service.mjs";
 import { pendingSupplierSelfImprovement } from "../src/supplier-self-improvement.mjs";
 
