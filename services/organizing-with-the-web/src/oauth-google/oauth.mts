@@ -1,24 +1,34 @@
 // OAuthServer — a small OAuth 2.0 authorization server with Google as the
 // upstream identity provider and single-allowed-email confinement.
 //
-// Lifted verbatim from sites/research.561.group/src/oauth.ts so more than one
-// service can sit behind the same login. It is provider-agnostic of what it
-// protects: it issues and validates bearer tokens, nothing more. The transport
-// (the `/oauth/*` routes) lives in ./oauth-app.mts.
+// Originally lifted verbatim from sites/research.561.group/src/oauth.ts. It has
+// since been exploded into @red-cup-engineering/oauth-services-section: every
+// transformation this class used to perform inline now lives in its own atomic
+// service, as a pure function (state in, state out). This class is a thin
+// composition over those services — it owns the parts that genuinely are
+// stateful (the in-memory Maps and their file persistence) and delegates every
+// actual transformation to the service that now owns it. The public surface
+// (every exported type and every method's name/parameters/return type) is
+// unchanged from before the explosion, so nothing that imports OAuthServer or
+// oauthApp needs to change.
+//
+// The transport (the `/oauth/*` routes) lives in ./oauth-app.mts.
 
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-export class OAuthError extends Error {
-  readonly code: string;
-  readonly description: string;
-  constructor(code: string, description = "") {
-    super(`${code}: ${description}`);
-    this.code = code;
-    this.description = description;
-  }
-}
+import { OAuthError } from "@red-cup-engineering/oauth-services-section";
+import { registerOAuthClient } from "@red-cup-engineering/register-oauth-client-service";
+import { mintAuthorizationRequest } from "@red-cup-engineering/mint-authorization-request-service";
+import { relayToGoogleConsent } from "@red-cup-engineering/relay-to-google-consent-service";
+import { exchangeGoogleCallback } from "@red-cup-engineering/exchange-google-callback-service";
+import { judgePrincipalAdmission, resolveAdmissionPolicy } from "@red-cup-engineering/judge-principal-admission-service";
+import { mintBearerTokenRecord, redeemAuthorizationCode } from "@red-cup-engineering/redeem-authorization-code-service";
+import { validateBearerToken } from "@red-cup-engineering/validate-bearer-token-service";
+import { oauthAuthorizationServerMetadata } from "@red-cup-engineering/serve-oauth-metadata-service";
+
+export { OAuthError };
 
 export type OAuthClient = {
   client_id: string;
@@ -73,30 +83,14 @@ export type OAuthConfig = {
   stateDir: string;
 };
 
+// Only completeAuthorization() still needs a raw random token directly (to
+// mint this server's own authorization code once Google's identity has been
+// judged admitted) — everything else that used to call this inline helper has
+// moved into the service that owns that transformation (see
+// register-oauth-client-service, mint-authorization-request-service,
+// redeem-authorization-code-service).
 function randomToken(bytes = 32): string {
   return crypto.randomBytes(bytes).toString("base64url");
-}
-
-function verifyPkce(verifier: string, challenge: string): boolean {
-  const hash = crypto.createHash("sha256").update(verifier, "ascii").digest("base64url");
-  return hash === challenge;
-}
-
-/** The identity claims this server cares about from a Google id_token. */
-type Identity = { email: string; emailVerified: boolean };
-
-function extractIdentity(idToken: string): Identity | null {
-  try {
-    const payload = JSON.parse(Buffer.from(idToken.split(".")[1]!, "base64url").toString("utf-8")) as Record<string, unknown>;
-    if (typeof payload["email"] !== "string") return null;
-    // Google sends email_verified as a boolean or the string "true"; treat a
-    // missing claim as verified (Google only omits it for legacy tokens).
-    const raw = payload["email_verified"];
-    const emailVerified = raw === undefined || raw === true || raw === "true";
-    return { email: payload["email"], emailVerified };
-  } catch {
-    return null;
-  }
 }
 
 type PersistedTokens = {
@@ -120,12 +114,7 @@ export class OAuthServer {
     this.config = config;
     this.clientsFile = path.join(config.stateDir, "clients.json");
     this.tokensFile = path.join(config.stateDir, "tokens.json");
-    const allowedEmail = config.allowedEmail;
-    this.admit = config.admitEmail
-      ? config.admitEmail
-      : allowedEmail !== undefined
-        ? (email) => email.toLowerCase() === allowedEmail.toLowerCase()
-        : () => true;
+    this.admit = resolveAdmissionPolicy(config);
     void this.loadClients();
     void this.loadTokens();
   }
@@ -162,38 +151,15 @@ export class OAuthServer {
   }
 
   metadata(): Record<string, unknown> {
-    const base = this.config.publicBaseUrl;
-    return {
-      issuer: base,
-      authorization_endpoint: `${base}/oauth/authorize`,
-      token_endpoint: `${base}/oauth/token`,
-      revocation_endpoint: `${base}/oauth/revoke`,
-      registration_endpoint: `${base}/oauth/register`,
-      scopes_supported: ["openid"],
-      response_types_supported: ["code"],
-      grant_types_supported: ["authorization_code", "refresh_token"],
-      code_challenge_methods_supported: ["S256"],
-      token_endpoint_auth_methods_supported: ["none", "client_secret_post"],
-    };
+    return oauthAuthorizationServerMetadata(this.config.publicBaseUrl);
   }
 
   registerClient(body: Record<string, unknown>): OAuthClient & { client_id_issued_at: number; client_secret_expires_at: number } {
-    const clientId = `client_${randomToken(12)}`;
-    const now = Math.floor(Date.now() / 1000);
-    const client: OAuthClient = {
-      client_id: clientId,
-      client_secret: randomToken(24),
-      redirect_uris: Array.isArray(body["redirect_uris"])
-        ? (body["redirect_uris"] as unknown[]).map((u) => String(u))
-        : [],
-      client_name: typeof body["client_name"] === "string" ? body["client_name"] : undefined,
-      grant_types: ["authorization_code", "refresh_token"],
-      response_types: ["code"],
-      token_endpoint_auth_method: "none",
-    };
-    this.clients.set(clientId, client);
+    const record = registerOAuthClient(body);
+    const { client_id_issued_at, client_secret_expires_at, ...client } = record;
+    this.clients.set(client.client_id, client);
     this.saveClients();
-    return { ...client, client_id_issued_at: now, client_secret_expires_at: 0 };
+    return record;
   }
 
   startAuthorization(params: {
@@ -203,34 +169,21 @@ export class OAuthServer {
     code_challenge_method: string;
     state: string;
   }): string {
-    if (!this.clients.has(params.client_id)) {
-      throw new OAuthError("invalid_client", "unknown client_id");
-    }
-    const client = this.clients.get(params.client_id)!;
-    if (!client.redirect_uris.includes(params.redirect_uri)) {
-      throw new OAuthError("invalid_request", "redirect_uri not registered");
-    }
-    if (params.code_challenge_method !== "S256") {
-      throw new OAuthError("invalid_request", "only S256 PKCE is supported");
-    }
-
-    const googleState = randomToken(24);
-    this.pending.set(googleState, {
-      client_id: params.client_id,
-      redirect_uri: params.redirect_uri,
-      code_challenge: params.code_challenge,
+    const client = this.clients.get(params.client_id);
+    const { state, record } = mintAuthorizationRequest({
+      client,
+      redirectUri: params.redirect_uri,
+      codeChallenge: params.code_challenge,
+      codeChallengeMethod: params.code_challenge_method,
       state: params.state,
-      expires_at: Date.now() + 600_000,
     });
+    this.pending.set(state, record);
 
-    const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
-    url.searchParams.set("client_id", this.config.googleClientId);
-    url.searchParams.set("redirect_uri", `${this.config.publicBaseUrl}/oauth/google/callback`);
-    url.searchParams.set("response_type", "code");
-    url.searchParams.set("scope", "openid email");
-    url.searchParams.set("state", googleState);
-    url.searchParams.set("access_type", "online");
-    return url.toString();
+    return relayToGoogleConsent({
+      state,
+      googleClientId: this.config.googleClientId,
+      publicBaseUrl: this.config.publicBaseUrl,
+    });
   }
 
   async completeAuthorization(googleState: string, googleCode: string): Promise<string> {
@@ -240,25 +193,15 @@ export class OAuthServer {
     }
     this.pending.delete(googleState);
 
-    const tokenResp = await fetch("https://oauth2.googleapis.com/token", {
-      method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        code: googleCode,
-        client_id: this.config.googleClientId,
-        client_secret: this.config.googleClientSecret,
-        redirect_uri: `${this.config.publicBaseUrl}/oauth/google/callback`,
-        grant_type: "authorization_code",
-      }).toString(),
+    const identity = await exchangeGoogleCallback(googleCode, {
+      googleClientId: this.config.googleClientId,
+      googleClientSecret: this.config.googleClientSecret,
+      publicBaseUrl: this.config.publicBaseUrl,
     });
-    if (!tokenResp.ok) throw new OAuthError("server_error", "Google token exchange failed");
 
-    const data = await tokenResp.json() as { id_token?: string };
-    const identity = data.id_token ? extractIdentity(data.id_token) : null;
-    if (!identity) throw new OAuthError("server_error", "no email in Google response");
-    if (!identity.emailVerified) throw new OAuthError("access_denied", "email not verified");
-    if (!this.admit(identity.email)) throw new OAuthError("access_denied", "account not authorized");
-    const email = identity.email;
+    const judgment = judgePrincipalAdmission(identity, this.admit);
+    if (!judgment.admitted) throw new OAuthError("access_denied", judgment.reason);
+    const email = judgment.email;
 
     const code = randomToken(24);
     this.codes.set(code, {
@@ -282,16 +225,17 @@ export class OAuthServer {
     redirect_uri: string;
   }): TokenResponse {
     const record = this.codes.get(params.code);
-    if (!record || record.expires_at < Date.now()) {
-      throw new OAuthError("invalid_grant", "code invalid or expired");
-    }
-    if (record.client_id !== params.client_id) throw new OAuthError("invalid_grant", "client_id mismatch");
-    if (record.redirect_uri !== params.redirect_uri) throw new OAuthError("invalid_grant", "redirect_uri mismatch");
-    if (!verifyPkce(params.code_verifier, record.code_challenge)) {
-      throw new OAuthError("invalid_grant", "PKCE verification failed");
-    }
+    const minted = redeemAuthorizationCode({
+      record,
+      clientId: params.client_id,
+      codeVerifier: params.code_verifier,
+      redirectUri: params.redirect_uri,
+    });
     this.codes.delete(params.code);
-    return this.mintTokens(record.client_id, record.email);
+    this.tokens.set(minted.accessToken, minted.tokenRecord);
+    this.refreshes.set(minted.refreshToken, minted.refreshRecord);
+    this.saveTokens();
+    return minted.response;
   }
 
   rotateRefreshToken(params: { client_id: string; refresh_token: string }): TokenResponse {
@@ -301,23 +245,15 @@ export class OAuthServer {
     }
     if (record.client_id !== params.client_id) throw new OAuthError("invalid_grant", "client_id mismatch");
     this.refreshes.delete(params.refresh_token);
-    return this.mintTokens(record.client_id, record.email);
-  }
-
-  private mintTokens(clientId: string, email: string): TokenResponse {
-    const accessToken = randomToken(32);
-    const refreshToken = randomToken(32);
-    const now = Date.now();
-    this.tokens.set(accessToken, { client_id: clientId, email, expires_at: now + 3_600_000 });
-    this.refreshes.set(refreshToken, { client_id: clientId, email, expires_at: now + 2_592_000_000 });
+    const minted = mintBearerTokenRecord(record.client_id, record.email);
+    this.tokens.set(minted.accessToken, minted.tokenRecord);
+    this.refreshes.set(minted.refreshToken, minted.refreshRecord);
     this.saveTokens();
-    return { access_token: accessToken, refresh_token: refreshToken, token_type: "Bearer", expires_in: 3600 };
+    return minted.response;
   }
 
   validateToken(token: string): { client_id: string; email: string } | null {
-    const record = this.tokens.get(token);
-    if (!record || record.expires_at < Date.now()) return null;
-    return { client_id: record.client_id, email: record.email };
+    return validateBearerToken(token, this.tokens);
   }
 
   revoke(token: string): void {

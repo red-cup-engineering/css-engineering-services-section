@@ -1,0 +1,21 @@
+{
+  "name": "@red-cup-engineering/guard-http-request-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Turn one request's headers, a validate die (bearer token -> identity claims | null) and a judge die (identity claims -> boolean) into a bearer-auth decision: {status: 200, claims} when a token validates and the judge admits it, {status: 401, challenge} when no bearer token was presented, or {status: 403, challenge} when a token validates but the judge refuses it. Use it to guard an HTTP resource behind a bearer token without hard-coding any one site's realm or transport framework.",
+  "exports": {
+    ".": {
+      "types": "./src/guard-http-request-service.d.mts",
+      "import": "./src/guard-http-request-service.mjs"
+    }
+  },
+  "scripts": {
+    "check": "node --check src/guard-http-request-service.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

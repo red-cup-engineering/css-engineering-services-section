@@ -106,7 +106,16 @@
     "@red-cup-engineering/relating": "0.0.1",
     "@red-cup-engineering/computing-with-http": "0.0.0",
     "@red-cup-engineering/http-server": "0.0.2",
-    "@red-cup-engineering/web-theming-service": "0.0.1"
+    "@red-cup-engineering/web-theming-service": "0.0.1",
+    "@red-cup-engineering/oauth-services-section": "0.1.0",
+    "@red-cup-engineering/register-oauth-client-service": "0.1.0",
+    "@red-cup-engineering/mint-authorization-request-service": "0.1.0",
+    "@red-cup-engineering/redeem-authorization-code-service": "0.1.0",
+    "@red-cup-engineering/validate-bearer-token-service": "0.1.0",
+    "@red-cup-engineering/serve-oauth-metadata-service": "0.1.0",
+    "@red-cup-engineering/judge-principal-admission-service": "0.1.0",
+    "@red-cup-engineering/relay-to-google-consent-service": "0.1.0",
+    "@red-cup-engineering/exchange-google-callback-service": "0.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

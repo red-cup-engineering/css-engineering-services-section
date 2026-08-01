@@ -5,6 +5,8 @@
 
 import process from "node:process";
 
+import { protectedResourceMetadata as protectedResourceMetadataService } from "@red-cup-engineering/serve-oauth-metadata-service";
+
 import type { OAuthConfig, OAuthServer } from "./oauth.mjs";
 
 export { OAuthServer, OAuthError } from "./oauth.mjs";
@@ -69,10 +71,10 @@ export function authorizationServerMetadata(oauth: OAuthServer): Record<string, 
  * resource's path>` so a client probing the resource's metadata (per the
  * `resource_metadata` pointer in the 401 challenge) finds it regardless of
  * whether the resource lives at a path or a subdomain root.
+ *
+ * Moved to @red-cup-engineering/serve-oauth-metadata-service; this is a thin
+ * re-export so the public signature stays put.
  */
 export function protectedResourceMetadata(resourceUrl: string, authorizationServer: string): Record<string, unknown> {
-  return {
-    resource: resourceUrl,
-    authorization_servers: [authorizationServer.replace(/\/$/, "")],
-  };
+  return protectedResourceMetadataService(resourceUrl, authorizationServer);
 }

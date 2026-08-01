@@ -1,0 +1,21 @@
+{
+  "name": "@red-cup-engineering/judge-principal-admission-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Judge one verified identity's admission: resolveAdmissionPolicy turns an authorization server's config (an explicit admitEmail predicate, a single legacy allowedEmail, or neither) into a policy die (email -> boolean); judgePrincipalAdmission applies that die (plus the email-verified claim) to one identity and returns admitted or refused with a reason. Use it right after an upstream IdP confirms who someone is, before minting anything on their behalf.",
+  "exports": {
+    ".": {
+      "types": "./src/judge-principal-admission-service.d.mts",
+      "import": "./src/judge-principal-admission-service.mjs"
+    }
+  },
+  "scripts": {
+    "check": "node --check src/judge-principal-admission-service.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
