@@ -102,7 +102,7 @@ function requestFrom(activity) {
 
 function effectsFor(request) {
   const selected = PURPOSES[request.purpose];
-  return [selected.effect, "contract-google-drive-v3", "provider-local-rwil-rdf-evidence"];
+  return [selected.effect, "contract-google-drive-v3", "provider-local-witness-journal-rdf-evidence"];
 }
 
 function solicit(activity, now) {
@@ -330,9 +330,9 @@ export async function handleGoogleDriveUseOperation(operation, input, now, optio
   throw new Error(`unsupported operation ${operation}`);
 }
 
-export async function executeGoogleDriveUseOperation({ operation, input, now, dataRoot, rwilAgentUrl,
+export async function executeGoogleDriveUseOperation({ operation, input, now, dataRoot, witnessJournalAgentUrl,
   settlementRoot = ROOT, accessToken, configuredCredentialGrantId, fetchImpl }) {
-  const evidence = createSettlementStore({ settlementRoot, agentUrl: rwilAgentUrl });
+  const evidence = createSettlementStore({ settlementRoot, agentUrl: witnessJournalAgentUrl });
   let result, capabilityId = null;
   try {
     capabilityId = input?.capability?.id ?? input?.object?.capability?.id ?? null;

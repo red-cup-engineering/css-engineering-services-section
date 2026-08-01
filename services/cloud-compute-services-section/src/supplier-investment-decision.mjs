@@ -1,10 +1,10 @@
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { ACTOR, CONTEXT } from "./improvement-board-forager.mjs";
 
 export const PUBLIC = "https://www.w3.org/ns/activitystreams#Public";
 const OPPORTUNITY_TYPES = new Set(["SupplierCapacityInvestmentOpportunity", "SupplierCapabilityInvestmentOpportunity"]);
-function rmnId(value) { return semanticId(relationalRwilDocument(value)); }
+function rmnId(value) { return semanticId(relationalWitnessJournalDocument(value)); }
 function record(body) { return Object.freeze({ id: rmnId(body), ...body }); }
 function exact(value) { return value?.id === rmnId(Object.fromEntries(Object.entries(value ?? {}).filter(([key]) => key !== "id"))); }
 function uniqueStrings(value, minimum = 0, maximum = 64) { return Array.isArray(value) && value.length >= minimum && value.length <= maximum && new Set(value).size === value.length && value.every((item) => typeof item === "string" && item); }

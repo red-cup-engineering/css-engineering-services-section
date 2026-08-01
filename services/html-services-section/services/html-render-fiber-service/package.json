@@ -30,7 +30,7 @@
   "dependencies": {
     "@red-cup-engineering/css-cascade-service": "0.0.1",
     "@lenticule-science/articulating": "0.1.1",
-    "@red-cup-engineering/json-file-codec-service": "0.1.1"
+    "@red-cup-engineering/json-file-codec-service": "0.1.2"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

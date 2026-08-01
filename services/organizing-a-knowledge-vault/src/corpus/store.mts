@@ -14,7 +14,7 @@
  * proof-pathed Markdown codec owns frontmatter and body decoding. knowing re-enacts no I/O. Reads stay SCOPED: a node's
  * ancestry (walk up) and its generated frontier (one listing), never a full corpus walk.
  */
-import { listContentEntries, readContentResource } from "@red-cup-engineering/relating/ledger";
+import { listContentEntries, readContentResource } from "@red-cup-engineering/content-tree-reading-service";
 import { parseMarkdown } from "@red-cup-engineering/markdown-file-codec-service";
 import type { CorpusNode } from "./carriers.mjs";
 import { KNOWLEDGE_VAULT_SUPPORT_PREFIXES } from "./root.mjs";

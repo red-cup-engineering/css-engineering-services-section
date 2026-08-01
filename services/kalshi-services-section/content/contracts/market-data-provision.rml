@@ -8,4 +8,4 @@
   ("postcondition" "The customer receives the bounded snapshot, source provenance, and exact provider law identity; the venue and provider interiors are unchanged.")
   ("refusal" "Refuse unbounded requests, credential use, customer filesystem authority, changed law identity, or cross-settlement writes.")
   ("protocol" "ActivityStreams-2.0")
-  ("evidence" "RWIL-RDF"))
+  ("evidence" "WITNESS-JOURNAL-RDF"))

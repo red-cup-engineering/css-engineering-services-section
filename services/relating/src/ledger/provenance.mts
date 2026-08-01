@@ -1,5 +1,5 @@
 /**
- * ledger/provenance - in-toto/SLSA/Sigstore as RWIL signed provenance.
+ * ledger/provenance - in-toto/SLSA/Sigstore as WitnessJournal signed provenance.
  *
  * This is a structural model, not a Sigstore client: signatures are deterministic
  * commitments over canonical JSON so the record-tier law can be tested without

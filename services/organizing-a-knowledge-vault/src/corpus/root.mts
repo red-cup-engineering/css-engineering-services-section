@@ -8,7 +8,7 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { confine } from "@red-cup-engineering/relating/ledger";
+import { confine } from "@red-cup-engineering/content-tree-reading-service";
 import type { KnowledgeVaultRoot } from "./carriers.mjs";
 
 export const KNOWLEDGE_VAULT_ROOT_PATHS: readonly string[] = Object.freeze([

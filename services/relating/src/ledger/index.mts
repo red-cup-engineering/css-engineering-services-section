@@ -1,7 +1,7 @@
 /**
  * @packageDocumentation
  *
- * ledger (RWIL) is the witness ledger as boundary-to-bulk holography — a first-class
+ * ledger (WitnessJournal) is the witness ledger as boundary-to-bulk holography — a first-class
  * capability peer to `writing`/`evaluating`/`running`, not a child of `running`. The
  * witness ROW codecs (EAVT/Datom/triple) live under
  * `@red-cup-engineering/json-file-codec-service/jsonl/eavt`; this is their projection
@@ -61,8 +61,8 @@ export {
   logReadings,
   type ReadingDescriptor,
   type LogReadingDescriptor,
-  type RWILWitness,
-  type RWILWitnessLog,
+  type WitnessJournalEntry,
+  type WitnessJournal,
   type Reading,
   type LogReading,
   type CoherenceReport,

@@ -8,7 +8,7 @@
  */
 import path from "node:path";
 import { statSync, type Stats } from "node:fs";
-import { confine, listContentEntries, readContentTree, type ContentEntry } from "@red-cup-engineering/relating/ledger";
+import { confine, listContentEntries, readContentTree, type ContentEntry } from "@red-cup-engineering/content-tree-reading-service";
 import { knowledgeVaultPathAllowedInRoot, normalizeKnowledgeVaultPath } from "../corpus/root.mjs";
 export {
   addressedNameMatchCarrier,

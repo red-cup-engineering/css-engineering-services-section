@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { resolutionCreditPolicy } from "@harmonious-union/inference-work-lot-service/consideration";
 import { ACTOR } from "../src/improvement-board-forager.mjs";
 import { executeSupplierSelfImprovement, pendingSupplierSelfImprovement, settleNextSupplierSelfImprovement } from "../src/supplier-self-improvement.mjs";
 
-const record = (body) => Object.freeze({ id: semanticId(relationalRwilDocument(body)), ...body });
+const record = (body) => Object.freeze({ id: semanticId(relationalWitnessJournalDocument(body)), ...body });
 const recipe = Object.freeze({ type: "SupplierCapabilityImplementationRecipe", capability: "code-review", objective: "gain code review", focusPaths: ["src/route.mjs"], writablePaths: ["src/route.mjs"], acceptanceArtifactPath: "union-acceptance/code-review.test.mjs", testVectors: ["review"], given: ["missing review"], when: "a lot arrives", then: ["return a proposal"], forbidden: ["host mutation"], constraints: ["proposal only"] });
 const policy = Object.freeze({ type: "SupplierSelfImprovementExecutionPolicy", enabled: true, customer: ACTOR, spendAuthorized: true, refusalDisposition: "terminal", acceptanceConsiderationPolicy: resolutionCreditPolicy(8), implementationConsiderationPolicy: resolutionCreditPolicy(23), capacityInvestmentDisposition: "typed-residue-until-distinct-capacity-oracle", recipes: { "code-review": recipe } });
 const contract = `ni:///sha-256;${"C".repeat(43)}`;

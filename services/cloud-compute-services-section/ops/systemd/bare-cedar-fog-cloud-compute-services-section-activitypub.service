@@ -1,8 +1,8 @@
 [Unit]
 Description=Cloud Compute Services supplier self-improvement ActivityPub market face
-After=network-online.target rwil-rdf-projection-service.service
+After=network-online.target witness-journal-rdf-projection-service.service
 Wants=network-online.target
-Requires=rwil-rdf-projection-service.service
+Requires=witness-journal-rdf-projection-service.service
 
 [Service]
 Type=simple
@@ -17,7 +17,7 @@ Environment=ACTIVITYPUB_KEYS_PATH=/home/emsenn/info/lib/emsenn/services/561-grou
 Environment=ACTIVITYPUB_STATE_PATH=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/web-services-section/services/cloud-compute-services-section/data/activitypub/state.jsonl
 Environment=ACTIVITYPUB_INBOX_BEARER_TOKEN_FILE=/home/emsenn/.local/share/emsenn/activitypub/cloud-compute-services-section-inbox.token
 Environment=SUPPLIER_ACTIVITYPUB_AGENT_CARD=https://bare-cedar-fog.561.group/a2a/improvement-market-supplier/.well-known/agent-card.json
-Environment=RWIL_RDF_AGENT=http://127.0.0.1:19764/.well-known/agent-card.json
+Environment=WITNESS_JOURNAL_RDF_AGENT=http://127.0.0.1:19764/.well-known/agent-card.json
 Environment=SETTLEMENT_CAIP2=eip155:5615610
 ExecStart=/home/emsenn/.config/nvm/versions/node/v24.13.1/bin/node src/serve-activitypub-face.mjs
 Restart=on-failure

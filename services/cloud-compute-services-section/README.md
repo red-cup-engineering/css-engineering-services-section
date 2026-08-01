@@ -3,7 +3,7 @@
 A sovereign improvement-market supplier whose inference and implementation work
 is purchased through typed provider offers. The supplier observes only contracted
 customer ActivityPub faces, binds its own capacity, buys bounded A2A work, and
-records its settlements through the hired RWIL/RDF provider.
+records its settlements through the hired witness-journal RDF provider.
 
 Claude Code and every other model are suppliers, never ambient executables. The
 inference-work-lot market selects among capability-complete provider-authored
@@ -59,7 +59,7 @@ formation demand, not authority over this supplier's interior.
 - Acceptance-capsule, software-mission, protected-acceptance, sandbox execution,
   and trajectory-memory providers perform their separately owned faculties.
 - ScheduleDelivery authors exact scheduled ActivityStreams pulses.
-- RWIL/RDF retains append-only authoritative settlement history.
+- witness-journal RDF retains append-only authoritative settlement history.
 - RMN semantic conformance supplies normalized identity and assay.
 
 The package manifest is the authoritative list of executable surfaces and runtime

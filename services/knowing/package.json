@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/knowing",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -36,7 +36,7 @@
     "package.json"
   ],
   "dependencies": {
-    "@red-cup-engineering/json-file-codec-service": "0.1.1",
+    "@red-cup-engineering/json-file-codec-service": "0.1.2",
     "@red-cup-engineering/relating": "0.0.1",
     "@red-cup-engineering/semantic-linefeed-normalization-service": "0.1.0"
   },

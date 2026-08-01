@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/organizing-a-content-mill",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -23,7 +23,7 @@
     "package.json"
   ],
   "dependencies": {
-    "@red-cup-engineering/producing-content": "0.0.1",
+    "@red-cup-engineering/producing-content": "0.0.2",
     "@red-cup-engineering/relating": "0.0.1"
   },
   "devDependencies": {

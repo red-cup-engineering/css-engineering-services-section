@@ -3,11 +3,11 @@ import { Message, Role } from "@a2a-js/sdk";
 import { a2aResultParts, sendRmnTask } from "@red-cup-engineering/a2a-rmn-task-client-service";
 import { extractRmnPart, rmnPart } from "@red-cup-engineering/a2a-rmn-part-service";
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { operationBytes, operationFromBytes } from "./a2a-executor.mjs";
 import { ACTOR } from "./improvement-board-forager.mjs";
 
-function rmnId(value) { return semanticId(relationalRwilDocument(value)); }
+function rmnId(value) { return semanticId(relationalWitnessJournalDocument(value)); }
 function record(body) { return Object.freeze({ id: rmnId(body), ...body }); }
 const responseParts = a2aResultParts;
 

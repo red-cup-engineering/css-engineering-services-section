@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/a2a-sovereign-operation-boundary-service",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Separately hireable A2A 1.0 boundary machinery for canonical typed-RMN sovereign operations with fail-closed runtime admission.",
   "type": "module",
   "license": "Apache-2.0",
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@a2a-js/sdk": "1.0.0-beta.0",
-    "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
-    "@red-cup-engineering/rmn-semantic-conformance": "6.0.1"
+    "@red-cup-engineering/a2a-rmn-part-service": "1.0.1",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.2"
   }
 }

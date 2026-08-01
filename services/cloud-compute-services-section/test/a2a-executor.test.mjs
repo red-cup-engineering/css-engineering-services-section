@@ -4,12 +4,12 @@ import test from "node:test";
 import { Message, Role } from "@a2a-js/sdk";
 import { extractRmnPart, rmnPart } from "@red-cup-engineering/a2a-rmn-part-service";
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { executeA2aMessage, operationBytes, operationFromBytes } from "../src/a2a-executor.mjs";
 import { inciteImprovementMarketSupplier } from "../src/client.mjs";
 import { ACTOR } from "../src/improvement-board-forager.mjs";
 
-const exact = (body) => ({ id: semanticId(relationalRwilDocument(body)), ...body });
+const exact = (body) => ({ id: semanticId(relationalWitnessJournalDocument(body)), ...body });
 const incitement = exact({ type: "Create", actor: "urn:ame:test-inciter", target: ACTOR, object: { type: "ImprovementForagerIncitement", evidence: ["urn:evidence:test"], sequence: 1 } });
 
 test("the advertised incitement entry crosses only the authenticated A2A client boundary", () => {
@@ -31,7 +31,7 @@ test("the supplier invocation declares its stateless runtime contract in the ope
   /* Retired host-unit assertions retained only as migration history. */
   /* const unit = readFileSync(new URL("../ops/systemd/bare-cedar-fog-cloud-compute-services-section-a2a.service", import.meta.url), "utf8");
   for (const exactLine of [
-    "Environment=RWIL_RDF_AGENT=http://127.0.0.1:19764/.well-known/agent-card.json",
+    "Environment=WITNESS_JOURNAL_RDF_AGENT=http://127.0.0.1:19764/.well-known/agent-card.json",
     "Environment=CLOUD_COMPUTE_ACTIVITYPUB_ORIGIN=https://bare-cedar-fog.561.group",
     "Environment=CLOUD_COMPUTE_ACTIVITYPUB_IDENTIFIER=cloud-compute-services-section",
     "Environment=CLOUD_COMPUTE_A2A_AGENT_CARD=https://bare-cedar-fog.561.group/a2a/improvement-market-supplier/.well-known/agent-card.json",

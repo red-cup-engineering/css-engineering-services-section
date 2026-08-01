@@ -2,8 +2,8 @@ import { carrierFrom } from "../kernel/carrier.mjs";
 
 export const readingDescriptorSchema = {
   $id: "relating/ledger/reading",
-  title: "RWIL Reading",
-  description: "A named isomorphism between one RWIL witness row and one wire form.",
+  title: "WitnessJournal Reading",
+  description: "A named isomorphism between one witness journal entry row and one wire form.",
   type: "object",
   required: ["id"],
   properties: {
@@ -16,8 +16,8 @@ export const readingDescriptorCarrier = carrierFrom(readingDescriptorSchema);
 
 export const logReadingDescriptorSchema = {
   $id: "relating/ledger/log-reading",
-  title: "RWIL Log Reading",
-  description: "A named isomorphism between an ordered RWIL witness log and one wire form.",
+  title: "WitnessJournal Log Reading",
+  description: "A named isomorphism between an ordered witness journal entry log and one wire form.",
   type: "object",
   required: ["id"],
   properties: {
@@ -30,8 +30,8 @@ export const logReadingDescriptorCarrier = carrierFrom(logReadingDescriptorSchem
 
 export const coherenceReportSchema = {
   $id: "relating/ledger/coherence-report",
-  title: "RWIL Coherence Report",
-  description: "The law report for two RWIL readings checked against one witness pivot.",
+  title: "WitnessJournal Coherence Report",
+  description: "The law report for two WitnessJournal readings checked against one witness pivot.",
   type: "object",
   required: ["kind", "left", "right", "witness", "leftIso", "rightIso", "leftToRight", "rightToLeft", "ok"],
   properties: {
@@ -52,8 +52,8 @@ export const coherenceReportCarrier = carrierFrom(coherenceReportSchema);
 
 export const logCoherenceReportSchema = {
   $id: "relating/ledger/log-coherence-report",
-  title: "RWIL Log Coherence Report",
-  description: "The law report for two RWIL log readings checked against one ordered witness-log pivot.",
+  title: "WitnessJournal Log Coherence Report",
+  description: "The law report for two WitnessJournal log readings checked against one ordered witness-log pivot.",
   type: "object",
   required: ["kind", "left", "right", "witnessLog", "leftIso", "rightIso", "leftToRight", "rightToLeft", "ok"],
   properties: {

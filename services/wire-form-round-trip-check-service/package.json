@@ -1,0 +1,39 @@
+{
+  "name": "@red-cup-engineering/wire-form-round-trip-check",
+  "version": "0.0.1",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "description": "Checks that a declared reading (a named toWire/fromWire pair between one EAVT witness row, or an ordered log of them, and some wire form) round-trips losslessly, and that two readings agree when hopped through a shared witness pivot. Generic wire-boundary round-trip checking with no witness-journal domain law of its own — extracted from relating's ledger, where it was fused with the journal-specific coherence judgement built on top of it.",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "clean": "rm -rf dist .tmp",
+    "check": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json",
+    "test": "node --test \"test/**/*.test.mjs\"",
+    "verify": "npm run check && npm run build && npm test"
+  },
+  "main": "./dist/src/index.mjs",
+  "types": "./dist/src/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.mts",
+      "import": "./dist/src/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "package.json"
+  ],
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0"
+  },
+  "dependencies": {
+    "@red-cup-engineering/json-file-codec-service": "0.1.2"
+  }
+}

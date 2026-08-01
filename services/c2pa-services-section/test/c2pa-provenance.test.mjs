@@ -10,7 +10,7 @@ import { Reader } from "@contentauth/c2pa-node";
 import { serveContractedAgent } from "@red-cup-engineering/a2a-contracted-agent-service";
 import { ephemeralAgentCardSigning } from "@red-cup-engineering/a2a-agent-card-key-service/testing";
 import { startRmnProviderProcess } from "@red-cup-engineering/rmn-semantic-conformance/test-provider";
-import { startRwilProviderProcess } from "@lenticule-science/witness-journal-rdf-projection-service/test-provider";
+import { startWitnessJournalProviderProcess } from "@lenticule-science/witness-journal-rdf-projection-service/test-provider";
 import { startWitTransitionAssayProcess } from "@lenticule-science/wit-transition-assay/test-provider";
 import { C2PA_BINDING_PREDICATE, publishArticle50Asset } from "../src/client.mjs";
 
@@ -44,9 +44,9 @@ function signingFixture(root) {
 
 test("official C2PA 2.4 signs and validates an AI asset through typed RMN over A2A 1.0", async () => {
   const fixtureRoot = mkdtempSync(join(tmpdir(), "c2pa-provider-")), fixture = signingFixture(fixtureRoot);
-  const prior = { rmn: process.env.RMN_CONFORMANCE_AGENT, rwil: process.env.RWIL_RDF_AGENT, wit: process.env.WIT_TRANSITION_ASSAY_AGENT, cert: process.env.C2PA_SIGNING_CERTIFICATE, key: process.env.C2PA_SIGNING_PRIVATE_KEY };
-  const rmn = await startRmnProviderProcess(), rwil = await startRwilProviderProcess(), wit = await startWitTransitionAssayProcess({ rwilAgentUrl: rwil.agentCardUrl }), port = await freePort(), baseUrl = `http://127.0.0.1:${port}`;
-  process.env.RMN_CONFORMANCE_AGENT = rmn.agentCardUrl; process.env.RWIL_RDF_AGENT = rwil.agentCardUrl; process.env.WIT_TRANSITION_ASSAY_AGENT = wit.agentCardUrl; process.env.C2PA_SIGNING_CERTIFICATE = fixture.certificate; process.env.C2PA_SIGNING_PRIVATE_KEY = fixture.privateKey;
+  const prior = { rmn: process.env.RMN_CONFORMANCE_AGENT, witnessJournal: process.env.WITNESS_JOURNAL_RDF_AGENT, wit: process.env.WIT_TRANSITION_ASSAY_AGENT, cert: process.env.C2PA_SIGNING_CERTIFICATE, key: process.env.C2PA_SIGNING_PRIVATE_KEY };
+  const rmn = await startRmnProviderProcess(), witnessJournal = await startWitnessJournalProviderProcess(), wit = await startWitTransitionAssayProcess({ witnessJournalAgentUrl: witnessJournal.agentCardUrl }), port = await freePort(), baseUrl = `http://127.0.0.1:${port}`;
+  process.env.RMN_CONFORMANCE_AGENT = rmn.agentCardUrl; process.env.WITNESS_JOURNAL_RDF_AGENT = witnessJournal.agentCardUrl; process.env.WIT_TRANSITION_ASSAY_AGENT = wit.agentCardUrl; process.env.C2PA_SIGNING_CERTIFICATE = fixture.certificate; process.env.C2PA_SIGNING_PRIVATE_KEY = fixture.privateKey;
   const running = await serveContractedAgent({ port, host: "127.0.0.1", baseUrl, agentCard: join(ROOT, "content/agent-cards/c2pa-provenance.json"), executor: process.execPath, executorArgs: [join(ROOT, "bin/execute-a2a-task.mjs")], timeoutMs: 20_000, maxBytes: 8 * 1024 * 1024, ...ephemeralAgentCardSigning(baseUrl, "c2pa-provider-test") });
   try {
     let projected;
@@ -82,7 +82,7 @@ test("official C2PA 2.4 signs and validates an AI asset through typed RMN over A
     assert.equal(projected.subject, result.assetNi); assert.equal(projected.object, result.manifestNi); assert.equal(projected.evidenceRoot, result.evidenceRoot);
     assert.equal(result.commitment.finality.status, "assay-required");
   } finally {
-    await new Promise((accept) => running.server.close(accept)); await wit.close(); await rwil.close(); await rmn.close(); rmSync(fixtureRoot, { recursive: true, force: true });
-    for (const [key, name] of [["rmn", "RMN_CONFORMANCE_AGENT"], ["rwil", "RWIL_RDF_AGENT"], ["wit", "WIT_TRANSITION_ASSAY_AGENT"], ["cert", "C2PA_SIGNING_CERTIFICATE"], ["key", "C2PA_SIGNING_PRIVATE_KEY"]]) if (prior[key] === undefined) delete process.env[name]; else process.env[name] = prior[key];
+    await new Promise((accept) => running.server.close(accept)); await wit.close(); await witnessJournal.close(); await rmn.close(); rmSync(fixtureRoot, { recursive: true, force: true });
+    for (const [key, name] of [["rmn", "RMN_CONFORMANCE_AGENT"], ["witnessJournal", "WITNESS_JOURNAL_RDF_AGENT"], ["wit", "WIT_TRANSITION_ASSAY_AGENT"], ["cert", "C2PA_SIGNING_CERTIFICATE"], ["key", "C2PA_SIGNING_PRIVATE_KEY"]]) if (prior[key] === undefined) delete process.env[name]; else process.env[name] = prior[key];
   }
 });

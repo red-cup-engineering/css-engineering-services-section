@@ -1,5 +1,5 @@
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { contractInferenceWork as defaultContractInferenceWork } from "@harmonious-union/inference-work-lot-service/codex-inference-market";
 import { resolutionCreditPolicy } from "@harmonious-union/inference-work-lot-service/consideration";
 import { executeSoftwareMission as defaultExecuteSoftwareMission } from "@red-cup-engineering/software-mission-execution-service/client";
@@ -7,7 +7,7 @@ import { executeSoftwareMission as defaultExecuteSoftwareMission } from "@red-cu
 export const CONTEXT = "https://www.w3.org/ns/activitystreams";
 export const ACTOR = "urn:ame:cloud-compute-services-section";
 
-function rmnId(value) { return semanticId(relationalRwilDocument(value)); }
+function rmnId(value) { return semanticId(relationalWitnessJournalDocument(value)); }
 function record(body) { return Object.freeze({ id: rmnId(body), ...body }); }
 function fail(code, message) { const error = new Error(message); error.code = code; throw error; }
 const safeArgument = (value) => typeof value === "string" && /^[A-Za-z0-9_./:@=+,%-]+$/u.test(value);

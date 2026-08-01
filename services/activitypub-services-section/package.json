@@ -34,15 +34,15 @@
     "generate-activitypub-keys": "./src/keys.mjs",
     "generate-encrypted-evm-wallet": "./src/generate-encrypted-evm-wallet.mjs",
     "serve-onchain-activitypub-provider": "./src/onchain-server.mjs",
-    "materialize-rmn-outbox-activity": "./bin/materialize-rmn-outbox-activity.mjs"
+    "materialize-rmn-outbox-activity": "./scripts/materialize-rmn-outbox-activity.mjs"
   },
   "scripts": {
-    "check": "node --check src/provider.mjs && node --check src/server.mjs && node --check src/cloud-runtime.mjs && node --check src/cloud-server.mjs && node --check src/onchain.mjs && node --check src/onchain-r2-external-body.mjs && node --check src/onchain-server.mjs && node --check src/generate-encrypted-evm-wallet.mjs && node --check src/deliver.mjs && node --check src/exchange.mjs && node --check src/network-mcp.mjs && node --check src/keys.mjs && node --check src/rmn-activity.mjs && node --check src/rmn-history.mjs && node --check src/rmn-outbox-client.mjs && node --check src/r2-custody.mjs && node --check bin/materialize-rmn-outbox-activity.mjs && node --check test/provider.test.mjs && node --check test/cloud-runtime.test.mjs && node --check test/cloud-server.test.mjs && node --check test/deliver.test.mjs && node --check test/exchange.test.mjs && node --check test/network-mcp.test.mjs && node --check test/onchain.test.mjs && node --check test/generate-encrypted-evm-wallet.test.mjs && node --check test/rmn-outbox-client.test.mjs && node --check test/rmn-history.test.mjs && node --check test/r2-custody.test.mjs",
+    "check": "node --check src/provider.mjs && node --check src/server.mjs && node --check src/cloud-runtime.mjs && node --check src/cloud-server.mjs && node --check src/onchain.mjs && node --check src/onchain-r2-external-body.mjs && node --check src/onchain-server.mjs && node --check src/generate-encrypted-evm-wallet.mjs && node --check src/deliver.mjs && node --check src/exchange.mjs && node --check src/network-mcp.mjs && node --check src/keys.mjs && node --check src/rmn-activity.mjs && node --check src/rmn-history.mjs && node --check src/rmn-outbox-client.mjs && node --check src/r2-custody.mjs && node --check scripts/materialize-rmn-outbox-activity.mjs && node --check test/provider.test.mjs && node --check test/cloud-runtime.test.mjs && node --check test/cloud-server.test.mjs && node --check test/deliver.test.mjs && node --check test/exchange.test.mjs && node --check test/network-mcp.test.mjs && node --check test/onchain.test.mjs && node --check test/generate-encrypted-evm-wallet.test.mjs && node --check test/rmn-outbox-client.test.mjs && node --check test/rmn-history.test.mjs && node --check test/r2-custody.test.mjs",
     "test": "node --test test/provider.test.mjs test/cloud-runtime.test.mjs test/cloud-server.test.mjs test/deliver.test.mjs test/exchange.test.mjs test/network-mcp.test.mjs test/onchain.test.mjs test/generate-encrypted-evm-wallet.test.mjs test/rmn-outbox-client.test.mjs test/rmn-history.test.mjs test/r2-custody.test.mjs",
     "verify": "npm run check && npm test"
   },
   "dependencies": {
-    "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
+    "@red-cup-engineering/a2a-rmn-part-service": "1.0.1",
     "@red-cup-engineering/resource-brokerage-service-section": "2.0.3",
     "@red-cup-engineering/gcloud-runtime-authorities-service": "1.0.0",
     "@red-cup-engineering/immutable-content-custody-service": "1.0.1",
@@ -50,7 +50,7 @@
     "@fedify/vocab": "2.3.1",
     "@hono/node-server": "1.19.14",
     "ethers": "6.17.0",
-    "@red-cup-engineering/rmn-semantic-conformance": "6.0.1",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.2",
     "@lenticule-science/rmn-semantic-conformance-die": "6.0.1"
   },
   "engines": {

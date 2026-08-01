@@ -1,5 +1,5 @@
 /**
- * writing/otlp - OpenTelemetry OTLP JSON as a channel-code of RWIL.
+ * writing/otlp - OpenTelemetry OTLP JSON as a channel-code of WitnessJournal.
  *
  * OTLP is not a second trace ontology here. A span is the familiar witnessed
  * invocation row: E = caller/resource, A = operation+args/scope, V = result,
@@ -37,11 +37,11 @@ export type AgentEventChronicle = Omit<AgentEventChronicleCarrier, "witnesses"> 
   readonly witnesses: readonly EAVTRecord[];
 };
 
-const RWIL_ENTITY = "rwil.entity";
-const RWIL_ATTRIBUTE = "rwil.attribute";
-const RWIL_VALUE = "rwil.value";
-const RWIL_TIME = "rwil.time";
-const RWIL_EAVT_ID = "rwil.eavt_id";
+const WITNESS_JOURNAL_ENTITY = "witnessJournal.entity";
+const WITNESS_JOURNAL_ATTRIBUTE = "witnessJournal.attribute";
+const WITNESS_JOURNAL_VALUE = "witnessJournal.value";
+const WITNESS_JOURNAL_TIME = "witnessJournal.time";
+const WITNESS_JOURNAL_EAVT_ID = "witnessJournal.eavt_id";
 
 const jsonString = (value: JsonValue): string => canonical(value);
 const jsonValue = (text: string, context: string): JsonValue => requireJsonValue(JSON.parse(text), context);
@@ -82,7 +82,7 @@ function timeUnixNano(time: JsonValue): string {
   return "0";
 }
 
-/** Encode one RWIL witness row as an OTLP span. */
+/** Encode one witness journal entry row as an OTLP span. */
 export function spanFromWitness(row: EAVT | EAVTRecord): OtlpSpan {
   const witness = eavtRecord(row);
   const id = eavtId(witness);
@@ -96,24 +96,24 @@ export function spanFromWitness(row: EAVT | EAVTRecord): OtlpSpan {
     startTimeUnixNano: start,
     endTimeUnixNano: start,
     attributes: Object.freeze([
-      attr(RWIL_ENTITY, witness.e),
-      attr(RWIL_ATTRIBUTE, witness.a),
-      attr(RWIL_VALUE, witness.v),
-      attr(RWIL_TIME, witness.t),
-      attrString(RWIL_EAVT_ID, id),
+      attr(WITNESS_JOURNAL_ENTITY, witness.e),
+      attr(WITNESS_JOURNAL_ATTRIBUTE, witness.a),
+      attr(WITNESS_JOURNAL_VALUE, witness.v),
+      attr(WITNESS_JOURNAL_TIME, witness.t),
+      attrString(WITNESS_JOURNAL_EAVT_ID, id),
     ]),
     status: Object.freeze({ code: 1 }),
   }));
 }
 
-/** Decode one OTLP span produced by {@link spanFromWitness} back to its RWIL row. */
+/** Decode one OTLP span produced by {@link spanFromWitness} back to its WitnessJournal row. */
 export function witnessFromSpan(span: OtlpSpan): EAVTRecord {
   const admitted = otlpSpanCarrier.assert(span, "otlp span");
   return eavtRecord({
-    e: jsonValue(readAttr(admitted.attributes, RWIL_ENTITY), RWIL_ENTITY),
-    a: jsonValue(readAttr(admitted.attributes, RWIL_ATTRIBUTE), RWIL_ATTRIBUTE),
-    v: jsonValue(readAttr(admitted.attributes, RWIL_VALUE), RWIL_VALUE),
-    t: jsonValue(readAttr(admitted.attributes, RWIL_TIME), RWIL_TIME),
+    e: jsonValue(readAttr(admitted.attributes, WITNESS_JOURNAL_ENTITY), WITNESS_JOURNAL_ENTITY),
+    a: jsonValue(readAttr(admitted.attributes, WITNESS_JOURNAL_ATTRIBUTE), WITNESS_JOURNAL_ATTRIBUTE),
+    v: jsonValue(readAttr(admitted.attributes, WITNESS_JOURNAL_VALUE), WITNESS_JOURNAL_VALUE),
+    t: jsonValue(readAttr(admitted.attributes, WITNESS_JOURNAL_TIME), WITNESS_JOURNAL_TIME),
   });
 }
 
@@ -140,12 +140,12 @@ export function otlpFromWitnesses(rows: readonly (EAVT | EAVTRecord)[]): OtlpTra
   }
   return otlpTracesCarrier.assert(Object.freeze({
     resourceSpans: Object.freeze([...resources.values()].map((resource) => Object.freeze({
-      resource: Object.freeze({ attributes: Object.freeze([attr(RWIL_ENTITY, resource.entity)]) }),
+      resource: Object.freeze({ attributes: Object.freeze([attr(WITNESS_JOURNAL_ENTITY, resource.entity)]) }),
       scopeSpans: Object.freeze([...resource.scopes.values()].map((scope) => Object.freeze({
         scope: Object.freeze({
-          name: "rwil.attribute",
+          name: "witnessJournal.attribute",
           version: "1",
-          attributes: Object.freeze([attr(RWIL_ATTRIBUTE, scope.attribute)]),
+          attributes: Object.freeze([attr(WITNESS_JOURNAL_ATTRIBUTE, scope.attribute)]),
         }),
         spans: Object.freeze(scope.spans),
       }))),
@@ -153,18 +153,18 @@ export function otlpFromWitnesses(rows: readonly (EAVT | EAVTRecord)[]): OtlpTra
   }));
 }
 
-/** Export a hub agent-event chronicle through the existing OTLP/RWIL bridge. */
+/** Export a hub agent-event chronicle through the existing OTLP/WitnessJournal bridge. */
 export function otlpFromAgentEventChronicle(chronicle: AgentEventChronicle): OtlpTraces {
   agentEventChronicleCarrier.assert(chronicle, "otlpFromAgentEventChronicle chronicle");
   return otlpFromWitnesses(chronicle.witnesses.map(eavtRecord));
 }
 
-/** Decode a hub agent-event OTLP export back to RWIL witnesses. */
+/** Decode a hub agent-event OTLP export back to witness journal entries. */
 export function agentEventWitnessesFromOtlp(traces: OtlpTraces): readonly EAVTRecord[] {
   return witnessesFromOtlp(traces);
 }
 
-/** Decode all RWIL witnesses carried by an OTLP ExportTraceServiceRequest. */
+/** Decode all witness journal entries carried by an OTLP ExportTraceServiceRequest. */
 export function witnessesFromOtlp(traces: OtlpTraces): readonly EAVTRecord[] {
   const admitted = otlpTracesCarrier.assert(traces, "otlp traces");
   return Object.freeze(admitted.resourceSpans.flatMap((resourceSpans) =>

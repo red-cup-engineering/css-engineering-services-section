@@ -53,7 +53,7 @@ export {
   lambekManifestReceipt,
   languageManifestCarrier,
   languageManifestReceipts,
-  languageManifestRwIlRows,
+  languageManifestWitnessJournalRows,
   languageManifestSchema,
   loadLanguageManifest,
   loadLanguageManifestFile,
@@ -75,7 +75,7 @@ export type {
   LanguageManifest,
   LanguageManifestCarrier,
   LanguageManifestReceipt,
-  RwilLiteral,
+  WitnessJournalLiteral,
   SoficManifest,
 } from "./manifest.mjs";
 export { conjugate, pluralize, indefiniteArticle, lemma } from "./morphology.mjs";

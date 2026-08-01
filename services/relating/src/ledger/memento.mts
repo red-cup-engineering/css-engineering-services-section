@@ -1,5 +1,5 @@
 /**
- * ledger/memento - RFC 7089 datetime negotiation as state@T over RWIL.
+ * ledger/memento - RFC 7089 datetime negotiation as state@T over WitnessJournal.
  */
 import type { ServedResponse } from "../running/serving.mjs";
 import type { FromSchema } from "../carriers/kernel/carrier.mjs";

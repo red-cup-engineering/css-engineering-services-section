@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/organizing-with-the-web",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "type": "module",
   "description": "Web computing library: the web tier topology, IndieWeb auth and posting, ActivityPub, syndication feeds, pagination, theming, and web-domain app surfaces built on the HTTP primitives and HTTP server.",
@@ -101,8 +101,8 @@
   },
   "dependencies": {
     "@red-cup-engineering/animating": "0.0.2",
-    "@red-cup-engineering/content": "0.0.1",
-    "@red-cup-engineering/knowing": "0.0.0",
+    "@red-cup-engineering/content": "0.0.2",
+    "@red-cup-engineering/knowing": "0.0.1",
     "@red-cup-engineering/relating": "0.0.1",
     "@red-cup-engineering/computing-with-http": "0.0.0",
     "@red-cup-engineering/http-server": "0.0.2",

@@ -6,7 +6,7 @@
  * GitHub Pages directories without re-learning the vault.
  */
 import { statSync } from "node:fs";
-import { confine } from "@red-cup-engineering/relating/ledger";
+import { confine } from "@red-cup-engineering/content-tree-reading-service";
 import { corpusReadBounds } from "./bounds.mjs";
 import { gatherResources, readDocument } from "./documents.mjs";
 import type { PublishedCorpusDocument } from "./carriers.mjs";

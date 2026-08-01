@@ -21,7 +21,7 @@
       "x402-border-clearing-cell",
       "provider-operation-cell",
       "independent-outcome-witness-cell",
-      "rwil-receipt-append-cell",
+      "witness-journal-receipt-append-cell",
       "settlement-residue-commitment-cell"
     ]],
     ["fold", [
@@ -32,7 +32,7 @@
       "priced-border-to-x402-clearing",
       "admitted-invocation-to-provider-execution",
       "result-to-independent-witness",
-      "receipt-to-each-partys-rwil-record",
+      "receipt-to-each-partys-witness-journal-record",
       "nonfactorable-residue-to-eip155-5615610"
     ]],
     ["reconstructionChain", "eip155:5615610"]

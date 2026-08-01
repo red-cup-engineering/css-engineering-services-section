@@ -6,7 +6,7 @@
   "runtimeAdapterModule": "./src/adapter.mjs",
   "requiredProviders": [
     "public-web/fetch-exact-youtube-atom-feed",
-    "rwil-rdf-projection-service/serve-witness-journal-rdf-a2a"
+    "witness-journal-rdf-projection-service/serve-witness-journal-rdf-a2a"
   ],
   "writableRoots": ["data/"],
   "ambientFilesystemRead": false,

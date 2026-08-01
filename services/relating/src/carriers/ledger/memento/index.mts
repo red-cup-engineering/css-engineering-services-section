@@ -2,7 +2,7 @@ import { carrierFrom } from "../../kernel/carrier.mjs";
 
 export const mementoSnapshotSchema = {
   $id: "relating/ledger/memento/snapshot",
-  title: "RWIL Memento Snapshot",
+  title: "WitnessJournal Memento Snapshot",
   description: "A ledger state projection as of one datetime.",
   type: "object",
   required: ["kind", "datetime", "state"],
@@ -18,7 +18,7 @@ export const mementoSnapshotCarrier = carrierFrom(mementoSnapshotSchema);
 
 export const timeMapSchema = {
   $id: "relating/ledger/memento/timemap",
-  title: "RWIL Memento TimeMap",
+  title: "WitnessJournal Memento TimeMap",
   description: "The available record snapshots for one ledger projection.",
   type: "object",
   required: ["kind", "original", "snapshots"],

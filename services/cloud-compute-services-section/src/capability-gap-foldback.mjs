@@ -1,5 +1,5 @@
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { ACTOR, CONTEXT } from "./improvement-board-forager.mjs";
 
 const PUBLIC = "https://www.w3.org/ns/activitystreams#Public";
@@ -8,7 +8,7 @@ const GAP_TYPES = Object.freeze({
   ImprovementGameCapabilityGap: "publish-gap-and-preserve-opportunity",
 });
 const NI = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u;
-function rmnId(value) { return semanticId(relationalRwilDocument(value)); }
+function rmnId(value) { return semanticId(relationalWitnessJournalDocument(value)); }
 function record(body) { return Object.freeze({ id: rmnId(body), ...body }); }
 function exact(value) { return value?.id === rmnId(Object.fromEntries(Object.entries(value ?? {}).filter(([key]) => key !== "id"))); }
 function samePublic(value) { return [PUBLIC, "as:Public"].includes(value); }

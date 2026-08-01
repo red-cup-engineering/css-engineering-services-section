@@ -1,0 +1,33 @@
+{
+  "name": "@red-cup-engineering/operations-manifold-forest-service",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "description": "Autonomous Actor purchasing atomic carrier judgments to derive an operations-manifold bond forest.",
+  "exports": {
+    ".": "./src/client.mjs",
+    "./forest": "./src/forest.mjs",
+    "./executor": "./src/a2a-executor.mjs"
+  },
+  "bin": {
+    "execute-operations-manifold-forest-a2a-message": "./scripts/execute-a2a-message.mjs",
+    "serve-operations-manifold-forest-a2a": "./scripts/serve-a2a.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/forest.mjs && node --check src/a2a-executor.mjs && node --check src/client.mjs && node --check scripts/execute-a2a-message.mjs && node --check scripts/serve-a2a.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@a2a-js/sdk": "1.0.0-beta.0",
+    "@red-cup-engineering/a2a-contracted-agent-service": "2.0.5",
+    "@red-cup-engineering/a2a-rmn-part-service": "1.0.1",
+    "@red-cup-engineering/a2a-rmn-task-client-service": "1.1.1",
+    "@red-cup-engineering/carrier-composition-judgment-service": "0.1.1",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.2",
+    "@lenticule-science/witness-journal-rdf-projection-service": "1.0.3"
+  }
+}

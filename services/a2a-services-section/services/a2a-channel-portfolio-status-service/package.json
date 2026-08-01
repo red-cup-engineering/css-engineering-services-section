@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/a2a-channel-portfolio-status-service",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "exports": {
@@ -12,7 +12,7 @@
     "verify": "npm run check && npm test"
   },
   "dependencies": {
-    "@red-cup-engineering/a2a-rmn-part-service": "1.0.0",
-    "@red-cup-engineering/rmn-semantic-conformance": "6.0.1"
+    "@red-cup-engineering/a2a-rmn-part-service": "1.0.1",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.2"
   }
 }

@@ -49,7 +49,7 @@ export {
   readLanguageLambekReceiptAction,
   readLanguageManifestAction,
   readLanguageManifestReceiptsAction,
-  readLanguageRwIlAction,
+  readLanguageWitnessJournalAction,
   readLanguageSoficReceiptAction,
 } from "./communicate/manifest-actions.mjs";
 export { communicateAction, semioseAction, memeActions, MEME_CARRIER_ID } from "./communicate/meme.mjs";
@@ -211,7 +211,7 @@ export {
   languageGrammarProfileSchema,
   languageManifestCarrier,
   languageManifestReceipts,
-  languageManifestRwIlRows,
+  languageManifestWitnessJournalRows,
   languageManifestSchema,
   lemma,
   load,
@@ -252,7 +252,7 @@ export type {
   RegisterFiberDegradationReceipt,
   RegisterFiberSelection,
   RawBundle,
-  RwilLiteral,
+  WitnessJournalLiteral,
   SoficManifest,
   SuffixRule,
   TranslationChargeMapEntry,

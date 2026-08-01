@@ -23,7 +23,7 @@ import {
 } from "@red-cup-engineering/content/codecs";
 import { createMarkdown } from "@red-cup-engineering/markdown-file-codec-service";
 import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
-import { confine } from "@red-cup-engineering/relating/ledger";
+import { confine } from "@red-cup-engineering/content-tree-reading-service";
 import { readDocument } from "../corpus/documents.mjs";
 import { knowledgeVaultAllowedPrefixes, knowledgeVaultPathAllowedInRoot } from "../corpus/root.mjs";
 import {

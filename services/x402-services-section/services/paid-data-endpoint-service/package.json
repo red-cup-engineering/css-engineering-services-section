@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/paid-data-endpoint-service",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "description": "Forms one durable x402 actor for one paid read, write, or data-rights trade operation.",
@@ -29,6 +29,6 @@
     "ethers": "6.17.0",
     "express": "5.2.1",
     "viem": "2.55.8",
-    "@red-cup-engineering/x402-services-section": "1.2.0"
+    "@red-cup-engineering/x402-services-section": "1.2.1"
   }
 }

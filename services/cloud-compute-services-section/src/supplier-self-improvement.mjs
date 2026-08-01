@@ -3,13 +3,13 @@
 // Those are the one JS Mark's host effects, after an independently purchased
 // admission judgment accepts this manifest.
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { validateConsiderationPolicy, RESOLUTION_CREDIT_UNIT } from "@harmonious-union/inference-work-lot-service/consideration";
 import { ACTOR } from "./improvement-board-forager.mjs";
 
 const NI = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u;
 const CLOSED = new Set(["SupplierSelfImprovementSettlement", "SupplierSelfImprovementAttemptResidue", "SupplierSelfImprovementPatchManifest"]);
-const rmnId = (value) => semanticId(relationalRwilDocument(value));
+const rmnId = (value) => semanticId(relationalWitnessJournalDocument(value));
 const record = (body) => Object.freeze({ id: rmnId(body), ...body });
 const exact = (value) => value?.id === rmnId(Object.fromEntries(Object.entries(value ?? {}).filter(([key]) => key !== "id")));
 const strings = (value, minimum = 0) => Array.isArray(value) && value.length >= minimum && new Set(value).size === value.length && value.every((item) => typeof item === "string" && item);

@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { ACTOR } from "../src/improvement-board-forager.mjs";
 import { PUBLIC, decideSupplierInvestmentDemand } from "../src/supplier-investment-decision.mjs";
 
-const record = (body) => Object.freeze({ id: semanticId(relationalRwilDocument(body)), ...body });
+const record = (body) => Object.freeze({ id: semanticId(relationalWitnessJournalDocument(body)), ...body });
 const policy = {
   type: "SupplierSelfInvestmentDemandPolicy", enabled: true, authoredBy: ACTOR, standingDecision: "publish-provider-neutral-proposal-lot",
   admittedOpportunityTypes: ["SupplierCapacityInvestmentOpportunity", "SupplierCapabilityInvestmentOpportunity"],

@@ -1,11 +1,11 @@
 import { deliverFromEnvironment } from "@red-cup-engineering/activitypub-services-section/deliver";
 import { projectRmnActivity } from "@red-cup-engineering/activitypub-services-section/rmn-activity";
 import { semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { activityPubSenderFromEnvironment } from "./activitypub-board-client.mjs";
 import { ACTOR, CONTEXT } from "./improvement-board-forager.mjs";
 
-function rmnId(value) { return semanticId(relationalRwilDocument(value)); }
+function rmnId(value) { return semanticId(relationalWitnessJournalDocument(value)); }
 function record(body) { return Object.freeze({ id: rmnId(body), ...body }); }
 function exact(value) { return value?.id === rmnId(Object.fromEntries(Object.entries(value ?? {}).filter(([key]) => key !== "id"))); }
 function validHttps(value) { try { return new URL(value).protocol === "https:"; } catch { return false; } }
@@ -20,7 +20,7 @@ export async function deliverFounderFormationLead(founder, signal, { sender, del
   const exactSender = sender ?? activityPubSenderFromEnvironment();
   if (exactSender?.actor !== ACTOR || typeof exactSender.origin !== "string" || typeof exactSender.identifier !== "string" || !validHttps(exactSender.agentCard)) throw new Error("founder lead delivery requires this supplier's exact ActivityPub sender");
   const activity = founderLeadActivity(signal, founder);
-  const projection = projectRmnActivity({ type: activity.type, origin: exactSender.origin, identifier: exactSender.identifier, recipient: founder.activityPubActor, objectBytes: semanticBytes(relationalRwilDocument(activity)), agentCard: exactSender.agentCard });
+  const projection = projectRmnActivity({ type: activity.type, origin: exactSender.origin, identifier: exactSender.identifier, recipient: founder.activityPubActor, objectBytes: semanticBytes(relationalWitnessJournalDocument(activity)), agentCard: exactSender.agentCard });
   const receipt = await deliver(projection, { ...exactSender, recipient: founder.activityPubActor, inbox: founder.activityPubInbox });
   return Object.freeze({ activity, receipt });
 }

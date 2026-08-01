@@ -1,11 +1,11 @@
 import { materializeRmnActivity } from "@red-cup-engineering/activitypub-services-section/rmn-activity";
 import { semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { ACTOR, CONTEXT } from "./improvement-board-forager.mjs";
 import { PUBLIC } from "./supplier-investment-decision.mjs";
 
-function activityBytes(activity) { return semanticBytes(relationalRwilDocument(activity)); }
-function exact(value) { return value?.id === semanticId(relationalRwilDocument(Object.fromEntries(Object.entries(value ?? {}).filter(([key]) => key !== "id")))); }
+function activityBytes(activity) { return semanticBytes(relationalWitnessJournalDocument(activity)); }
+function exact(value) { return value?.id === semanticId(relationalWitnessJournalDocument(Object.fromEntries(Object.entries(value ?? {}).filter(([key]) => key !== "id")))); }
 
 export function createSupplierActivityPubCallbacks({ origin, identifier, agentCard, ledger, pageSize = 50 }) {
   if (!ledger?.read || typeof origin !== "string" || !origin || typeof identifier !== "string" || !identifier || typeof agentCard !== "string" || !agentCard || !Number.isSafeInteger(pageSize) || pageSize < 1 || pageSize > 100) {

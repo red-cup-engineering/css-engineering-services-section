@@ -5,7 +5,7 @@
   "requiredBindings": {
     "a2aTransportProvider": "urn:ame:a2a-contracted-agent-service",
     "rmnConformanceProvider": "urn:ame:rmn-semantic-conformance",
-    "rwilRdfProvider": null,
+    "witnessJournalRdfProvider": null,
     "payoutAccount": null
   },
   "forbiddenClaims": [

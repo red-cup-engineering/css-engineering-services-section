@@ -78,7 +78,7 @@ Apply this procedure to any package change before moving tests or examples:
 | Package action realization | `src/actions` | Registered action family, domain/codomain carrier identity, dispatch result, `runTerm` gate for morphisms, boundary-action exemptions, and action count/export stability. | Action apex path: one action family projects into dispatch, OpenAPI, MCP, forms, carrier-node topology, and inspection. |
 | Package codec/projection realization | `src/codecs`, `src/projections` | Decode/encode round trips, canonicalization, media type lookup, finite wire vocabulary, projector grading, deep representation-tree imports, and refusal of undecidable/wrong-rung wires. | Wire/projection path: textual JSON/JSONL/EAVT/Datom, textual XML/HTML/SVG, HTTP fields, diagram projections, and authored projector restrictions without opening a port. |
 | Live exposure | `services/` | CLI/HTTP/service entrypoint smokes and route/process behavior: argv/stdin/stdout/env/port/request/response/exit. Generated projections must be usable without process binding. | Live mount path: run `relate`, `relate-serve`, or route through a service-like boundary and show the response/witness. |
-| Exposure ledger / RWIL | Split: `lib/persistence`, `lib/closure`, `lib/relational`, `src/codecs`, `src/stores`, `services/filesystem-store`, `apps/inspector` | Witness-row identity, append-only law, fold/coherence law, codec normal form, in-memory store substitution, filesystem persistence as host exposure, and no second ontology for protocols. | Exposure ledger path: dispatch writes an invocation witness, projects state/record/content, shows source/channel separation. |
+| Exposure ledger / WitnessJournal | Split: `lib/persistence`, `lib/closure`, `lib/relational`, `src/codecs`, `src/stores`, `services/filesystem-store`, `apps/inspector` | Witness-row identity, append-only law, fold/coherence law, codec normal form, in-memory store substitution, filesystem persistence as host exposure, and no second ontology for protocols. | Exposure ledger path: dispatch writes an invocation witness, projects state/record/content, shows source/channel separation. |
 | Authored optics | `apps/` when shipped | App tests only after an app exists: app source must not redefine data, service lifecycle, or package law. Generated forms/docs remain projection tests. | Workbench/inspector/atlas/cockpit tours that choose a visual or interaction grammar over generated projections. |
 | Node ESM / PNPM package law | package manifest, tsconfigs, `dist/` | Export-map resolution, bins resolve to `dist/services`, NodeNext `.mjs` import discipline, self-import smokes, and no old owner exports for moved surfaces. | Minimal package-use examples that import only committed public subpaths. |
 | Negative ownership | all roots | Boundary check: `lib` cannot import `src/services/apps/node:*` or package self; `src` cannot import `services/apps`; services cannot import apps; `running` cannot re-export codec ownership. | No examples. Negative ownership is not a tour; it is a guardrail. |
@@ -238,7 +238,7 @@ routing; it is not material law. `session.test.mjs`, `ws-session.test.mjs`,
 `transport-work.test.mjs`, and `ledger-stream.test.mjs` are live or generated
 runtime-boundary invariants, not examples.
 
-### Split RWIL law, codec, store, and service obligations
+### Split WitnessJournal law, codec, store, and service obligations
 
 ```text
 holography.test.mjs
@@ -254,7 +254,7 @@ Verdict:
   the appropriate OTLP substrate/syntax codec test,
   `test/src/projections-witness-content.test.mjs`,
   and `test/services/filesystem-store.test.mjs`.
-- `ledger-standards.test.mjs` proves standards-as-RWIL readings; split pure
+- `ledger-standards.test.mjs` proves standards-as-witness-journal readings; split pure
   provenance/time/Memento law from codec/projection tests.
 - `reading.test.mjs` proves same-witness/coherence law and should become a
   `lib/relational` law test, with any writing/EAVT pieces in codec tests.
@@ -499,7 +499,7 @@ test/
     lean-golden-vectors.test.mjs
   fixtures/
     lean-*.jsonl
-    rwil-*.jsonl
+    witness-journal-*.jsonl
 
 examples/
   material/
@@ -655,7 +655,7 @@ These examples are required by the camera/exposure model:
 - No app tests until `apps/` exists as an authored package surface.
 - No examples preserving `writing/http/*` as if it owns live HTTP process
   dynamics.
-- No RWIL tests that keep law, row codec, store interface, filesystem store,
+- No WitnessJournal tests that keep law, row codec, store interface, filesystem store,
   service feed, and inspector collapsed as one `ledger` ontology.
 - No test naming by product nickname when the asserted invariant is a Hoare
   class/root-mode law.
@@ -730,7 +730,7 @@ Missing obligations:
    `test/src/codecs/text/xml/svg.test.mjs`. Stop using `writing` as the
    directory name for new tests.
 
-4. Split RWIL:
+4. Split WitnessJournal:
    divide `holography.test.mjs`, `ledger-standards.test.mjs`, and
    `reading.test.mjs` into persistence law, closure fold, relational coherence,
    codec, projection, store, and filesystem-service tests.

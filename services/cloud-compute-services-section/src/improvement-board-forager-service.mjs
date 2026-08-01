@@ -3,7 +3,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
 import { compileRmlLaw } from "@red-cup-engineering/rmn-semantic-conformance/law";
-import { createSettlementStore, querySettlementRecords, relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { createSettlementStore, querySettlementRecords, relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { ACTOR, CONTEXT, DEFAULT_FORAGER_POLICY, bidForBoardOffer, fulfillBoardAward, qualifiedBoardOfferKind } from "./improvement-board-forager.mjs";
 import { admitCustomerTrajectoryFoldback, recallSoftwareTrajectories } from "@red-cup-engineering/software-trajectory-memory-service/client";
 import { invokeActivityPubBoardOperation } from "./activitypub-board-client.mjs";
@@ -19,7 +19,7 @@ export const CONTRACT = FORAGING_LAW.id;
 export const CATEGORY = "cloud-compute-services-section.improvement-board-foraging";
 const INVESTMENT_OPPORTUNITIES = new Set(["SupplierCapacityInvestmentOpportunity", "SupplierCapabilityInvestmentOpportunity"]);
 const SELF_IMPROVEMENT_TERMINALS = new Set(["SupplierSelfImprovementAttemptResidue", "SupplierSelfImprovementSettlement", "SupplierSelfImprovementPatchManifest"]);
-function rmnId(value) { return semanticId(relationalRwilDocument(value)); }
+function rmnId(value) { return semanticId(relationalWitnessJournalDocument(value)); }
 function record(body) { return Object.freeze({ id: rmnId(body), ...body }); }
 function exact(value) { return value?.id === rmnId(Object.fromEntries(Object.entries(value ?? {}).filter(([key]) => key !== "id"))); }
 
@@ -144,7 +144,7 @@ export async function foragingLedger(options = {}) {
   const rows = (await foragingReadLedger({ ...options, dataRoot })).read();
   const settlement = createSettlementStore({
     settlementRoot: ROOT,
-    agentUrl: options.rwilAgentUrl ?? process.env.RWIL_RDF_AGENT,
+    agentUrl: options.witnessJournalAgentUrl ?? process.env.WITNESS_JOURNAL_RDF_AGENT,
     caip2: options.caip2 ?? process.env.SETTLEMENT_CAIP2,
     custody: options.custody,
     categoryIndex: options.categoryIndex,

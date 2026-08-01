@@ -2,7 +2,7 @@
  * corpus/catalog  -  bounded faceted catalog over the persistent memorystore.
  */
 import { statSync } from "node:fs";
-import { confine } from "@red-cup-engineering/relating/ledger";
+import { confine } from "@red-cup-engineering/content-tree-reading-service";
 import { gatherResources, readDocument } from "./documents.mjs";
 import { corpusReadBounds, MAX_CORPUS_LIMIT } from "./bounds.mjs";
 import type { Catalog, CatalogDocument, CatalogFacet, CatalogGroup } from "./carriers.mjs";

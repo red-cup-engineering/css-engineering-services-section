@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/computing-with-the-web",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "description": "Web computing library: the web tier topology, IndieWeb auth and posting, ActivityPub, syndication feeds, pagination, theming, and web-domain app surfaces built on the HTTP primitives and HTTP server.",

@@ -5,7 +5,7 @@
   "mapped": {
     "standard": "SPARQL/RDF QUERY",
     "face": "knowing/IN/QUERY",
-    "math": "A SPARQL Basic Graph Pattern is a finite conjunction of RDF triple patterns. RWIL stores witnessed RDF-ish triples as eavt(entity, attribute, value, time), so each BGP triple lowers to an eavt atom with existential time and the whole BGP lowers to a Datalog conjunctive query.",
+    "math": "A SPARQL Basic Graph Pattern is a finite conjunction of RDF triple patterns. WitnessJournal stores witnessed RDF-ish triples as eavt(entity, attribute, value, time), so each BGP triple lowers to an eavt atom with existential time and the whole BGP lowers to a Datalog conjunctive query.",
     "answerCompleteness": "Completeness is governed by the knowledge order <=k: the query returns all bindings witnessed by the current EAVT extent. A top cell is told-both and must surface both witnessed sides, not collapse to one value.",
     "realizingFiles": [
       "lib/knowing/src/writing/sparql/index.mts",

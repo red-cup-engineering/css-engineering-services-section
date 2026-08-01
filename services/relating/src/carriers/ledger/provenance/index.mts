@@ -35,8 +35,8 @@ export const signedProvenanceSourceCarrier = carrierFrom(signedProvenanceSourceS
 
 export const attestationLinkSchema = {
   $id: "relating/ledger/provenance/attestation-link",
-  title: "RWIL Provenance Attestation Link",
-  description: "An in-toto/SLSA link carried as one RWIL record-tier provenance witness.",
+  title: "WitnessJournal Provenance Attestation Link",
+  description: "An in-toto/SLSA link carried as one WitnessJournal record-tier provenance witness.",
   type: "object",
   required: ["kind", "name", "subject", "predicateType", "predicate", "materials", "products", "source", "signature", "t"],
   properties: {
@@ -58,7 +58,7 @@ export const attestationLinkCarrier = carrierFrom(attestationLinkSchema);
 
 export const provenanceReadingSchema = {
   $id: "relating/ledger/provenance/reading",
-  title: "RWIL Provenance Reading",
+  title: "WitnessJournal Provenance Reading",
   description: "The fifth Datom slot for a settled provenance judgement.",
   type: "object",
   required: ["kind", "standard", "linkName", "signedSource", "verified"],

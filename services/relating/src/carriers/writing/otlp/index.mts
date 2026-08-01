@@ -45,7 +45,7 @@ export const keyValueSchema = {
 
 export const otlpSpanSchema = {
   $id: "relating/writing/otlp/span",
-  title: "RWIL OTLP span",
+  title: "WitnessJournal OTLP span",
   description: "A witnessed EAVT row encoded as an OTLP span.",
   type: "object",
   required: ["traceId", "spanId", "name", "kind", "startTimeUnixNano", "endTimeUnixNano", "attributes"],
@@ -74,8 +74,8 @@ export const otlpSpanCarrier = carrierFrom(otlpSpanSchema);
 
 export const otlpTracesSchema = {
   $id: "relating/writing/otlp/traces",
-  title: "RWIL OTLP traces",
-  description: "An OTLP ExportTraceServiceRequest carrying RWIL witnesses.",
+  title: "WitnessJournal OTLP traces",
+  description: "An OTLP ExportTraceServiceRequest carrying witness journal entries.",
   type: "object",
   required: ["resourceSpans"],
   properties: {
@@ -128,7 +128,7 @@ export const agentEventChronicleSchema = {
   $id: "relating/writing/otlp/agent-event-chronicle",
   title: "AgentEventChronicle",
   description:
-    "A hub agent-event chronicle read as EAVT witnesses, ready for the OTLP/RWIL channel-code.",
+    "A hub agent-event chronicle read as EAVT witnesses, ready for the OTLP/WitnessJournal channel-code.",
   type: "object",
   required: ["kind", "feed", "witnesses"],
   properties: {

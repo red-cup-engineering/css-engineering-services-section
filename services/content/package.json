@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/content",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "description": "Content — the domain of accountable content production, operationalized as one package. The former content-* and syndication-* libraries are now module subpaths: ./topology (the producing-content algebra — demand, production, gates, copyedit, article, documentation, and the news subject core), ./codecs (frontmatter, ninjs, references, search-console, vault), ./markdown (CommonMark markdown → HTML/text encoder), ./image (PNG/JPEG/GIF/WebP container header codecs), ./syndication (syndication-format codecs + ./syndication/holography projection), and ./propaganda. Content is a configuration of the relationality apex.",
@@ -131,9 +131,9 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@red-cup-engineering/json-file-codec-service": "0.1.1",
-    "@red-cup-engineering/html-file-codec-service": "0.1.1",
-    "@red-cup-engineering/communicating-in-english": "0.0.0",
+    "@red-cup-engineering/json-file-codec-service": "0.1.2",
+    "@red-cup-engineering/html-file-codec-service": "0.1.2",
+    "@red-cup-engineering/communicating-in-english": "0.0.1",
     "@red-cup-engineering/relating": "0.0.1"
   },
   "devDependencies": {

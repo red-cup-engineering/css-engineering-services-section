@@ -2,13 +2,13 @@ import { Message, Role } from "@a2a-js/sdk";
 import { extractRmnPart, rmnPart } from "@red-cup-engineering/a2a-rmn-part-service";
 import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
 import { decodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
-import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { forageImprovementBoards } from "./improvement-board-forager-service.mjs";
 import { ACTOR } from "./improvement-board-forager.mjs";
 
-function rmnId(value) { return semanticId(relationalRwilDocument(value)); }
+function rmnId(value) { return semanticId(relationalWitnessJournalDocument(value)); }
 function record(body) { return Object.freeze({ id: rmnId(body), ...body }); }
-export function operationBytes(value) { return semanticBytes(relationalRwilDocument(value)); }
+export function operationBytes(value) { return semanticBytes(relationalWitnessJournalDocument(value)); }
 export function operationFromBytes(bytes) {
   const term = decodeSemantic(bytes);
   if (term?.[0] !== "ascribe" || term.length !== 3) throw new Error("supplier operation is not one typed relational RMN document");

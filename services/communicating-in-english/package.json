@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/communicating-in-english",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "description": "Communicating in English — the English fiber over @emsenn/communicating: the compiled English bundle, English realization (generate/realizeClause/section), English prose conformance, and the runnable communicate/communicate-serve surface wired to English.",
@@ -49,7 +49,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@red-cup-engineering/communicating": "0.0.0",
+    "@red-cup-engineering/communicating": "0.0.1",
     "@red-cup-engineering/relating": "0.0.1"
   },
   "devDependencies": {

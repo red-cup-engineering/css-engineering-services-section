@@ -8,7 +8,7 @@
  */
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { confine } from "@red-cup-engineering/relating/ledger";
+import { confine } from "@red-cup-engineering/content-tree-reading-service";
 import { createMarkdown, parseMarkdown } from "@red-cup-engineering/markdown-file-codec-service";
 import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import {

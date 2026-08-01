@@ -5,7 +5,7 @@ mesh:
 
 `RMN demand -> ActivityPub offer discovery -> bounded comparison -> OCap grant
 -> CapTP/A2A invocation -> x402 clearing -> provider execution -> independent
-witness -> each party's RWIL record -> eip155:5615610 residue when required`
+witness -> each party's WitnessJournal record -> eip155:5615610 residue when required`
 
 The marketplace does not own a global catalog. Each provider publishes its own
 offer through an ActivityPub actor. Discovery cells observe addressed or public

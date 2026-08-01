@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/producing-content",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "description": "Producing content: the content domain (@emsenn/content, the WHAT) organized through @emsenn/organizing into cultivated, witnessed, distributable content. The package root is the fused producing-content surface; facet subpaths expose farm and mill modules while the category tree is being cut.",
@@ -139,9 +139,9 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@red-cup-engineering/html-file-codec-service": "0.1.1",
-    "@red-cup-engineering/communicating": "0.0.0",
-    "@red-cup-engineering/communicating-in-english": "0.0.0",
+    "@red-cup-engineering/html-file-codec-service": "0.1.2",
+    "@red-cup-engineering/communicating": "0.0.1",
+    "@red-cup-engineering/communicating-in-english": "0.0.1",
     "@red-cup-engineering/relating": "0.0.1",
     "@red-cup-engineering/markdown-file-writing-service": "0.1.0"
   },

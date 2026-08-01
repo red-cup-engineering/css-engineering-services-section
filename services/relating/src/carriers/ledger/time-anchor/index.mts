@@ -2,7 +2,7 @@ import { carrierFrom } from "../../kernel/carrier.mjs";
 
 export const timeAnchorSchema = {
   $id: "relating/ledger/time-anchor/anchor",
-  title: "RWIL Time Anchor",
+  title: "WitnessJournal Time Anchor",
   description: "A structural OpenTimestamps/RFC-3161-style time attestation over one witness hash.",
   type: "object",
   required: ["kind", "standard", "calendar", "authority", "witnessHash", "witnessTime", "attestedTime", "commitment", "digest"],
@@ -24,7 +24,7 @@ export const timeAnchorCarrier = carrierFrom(timeAnchorSchema);
 
 export const timestampedWitnessSchema = {
   $id: "relating/ledger/time-anchor/timestamped-witness",
-  title: "Timestamped RWIL Witness",
+  title: "Timestamped WitnessJournal Witness",
   description: "One EAVT witness paired with its external time anchor.",
   type: "object",
   required: ["kind", "witness", "anchor"],
@@ -40,7 +40,7 @@ export const timestampedWitnessCarrier = carrierFrom(timestampedWitnessSchema);
 
 export const timeAnchorReadingSchema = {
   $id: "relating/ledger/time-anchor/reading",
-  title: "RWIL Time Anchor Reading",
+  title: "WitnessJournal Time Anchor Reading",
   description: "The fifth Datom slot for an externally anchored T judgement.",
   type: "object",
   required: ["kind", "standard", "anchor", "verified"],

@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/a2a-agent-card-key-service",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "exports": {
@@ -15,7 +15,7 @@
     "verify": "npm run check && npm test"
   },
   "dependencies": {
-    "@red-cup-engineering/a2a-agent-card-discovery-service": "1.0.0",
+    "@red-cup-engineering/a2a-agent-card-discovery-service": "1.0.1",
     "jose": "6.2.3"
   }
 }

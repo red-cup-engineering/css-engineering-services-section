@@ -2,13 +2,13 @@
  * corpus/documents  -  reading the corpus through Relating's content reader and the proof-pathed Markdown codec.
  *
  * knowing re-enacts NONE of the I/O: the fs walking and confinement are relating's
- * (`@red-cup-engineering/relating/ledger`  -  the one effectful binding), and decoding is
+ * (`@red-cup-engineering/content-tree-reading-service`  -  the one effectful binding), and decoding is
  * the proof-pathed Markdown codec. This package names the result as corpus carriers. A document is a
  * holography `Resource` decoded by `markdownDataform`; listing and gathering are the
  * reader's confined enumeration. (The former hand-rolled fs walk + the `find` path-scan are
  * gone  -  reading the corpus belongs to relating's capability surface; `find` is proof search.)
  */
-import { confine, readContentResource, listContentEntries, readContentTree } from "@red-cup-engineering/relating/ledger";
+import { confine, readContentResource, listContentEntries, readContentTree } from "@red-cup-engineering/content-tree-reading-service";
 import { statSync } from "node:fs";
 import { markdown } from "@red-cup-engineering/relating/writing";
 import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
