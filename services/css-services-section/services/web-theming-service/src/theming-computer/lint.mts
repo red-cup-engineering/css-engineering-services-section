@@ -7,7 +7,7 @@
 // The result is data a build step (or admitTheme) can gate on.
 
 import { contrastRatio, apcaLc, meetsWcag, type WcagLevel } from "./contrast.mjs";
-import { toOklch } from "./color.mjs";
+import { isColor, toOklch } from "./color.mjs";
 import type { DerivedPalette } from "./palette.mjs";
 
 export type ContrastCheck = {
@@ -78,6 +78,9 @@ export function scarcityReport(palette: DerivedPalette, opts: { chromaThreshold?
   const loud: string[] = [];
   for (const [role, value] of Object.entries(palette)) {
     if (value === undefined) continue;
+    // Palettes handed back by decodeTheme carry type tokens (font stacks)
+    // alongside colours; scarcity judges colours only.
+    if (typeof value !== "string" || !isColor(value)) continue;
     if (toOklch(value).c > chromaThreshold) loud.push(role);
   }
   return { loud, count: loud.length, budget, within: loud.length <= budget };

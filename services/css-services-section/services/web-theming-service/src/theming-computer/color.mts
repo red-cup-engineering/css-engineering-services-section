@@ -136,6 +136,16 @@ export function toOklch(input: string): Oklch {
   return rgbToOklch(parseColor(input));
 }
 
+/** Whether a token value is a colour this module can parse — font stacks and other non-colour tokens answer false. */
+export function isColor(input: string): boolean {
+  try {
+    parseColor(input);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /** Format OKLCH as a CSS `oklch()` string (gamut-clamped on the sRGB round-trip). */
 export function formatOklch(o: Oklch, places = 4): string {
   const L = (o.l * 100).toFixed(2);

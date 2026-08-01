@@ -1,26 +1,26 @@
 /**
- * html-render-fiber-service — the carrier/render-fiber engine: admits HTML
- * only as a semantic carrier of a settled document spine, selects the valid
- * fiber of carrier/CSS-system pairs for a render profile, and serializes the
- * result to a complete HTML document string.
+ * html-document-render-service — the carrier/document-render engine: admits
+ * HTML only as a semantic carrier of a settled document spine, selects the
+ * valid document plan of carrier/CSS-system pairs for a render profile, and
+ * serializes the result to a complete HTML document string.
  *
  * Extracted from @red-cup-engineering/html-file-codec-service (src/html/index.mts),
  * which now re-exports this surface unchanged. Depends on
- * @red-cup-engineering/css-cascade-service by package name for the CSS system
+ * @red-cup-engineering/css-style-resolution-service by package name for the CSS system
  * and valuation it renders.
  */
 import {
-  css_settles_to_valuation,
-  css_classes_are_factor_maps,
+  checkStyleResolutionSettled,
+  checkClassMapsValid,
   classByNodeId,
-  cssTextFromVisualValuation,
+  cssTextFromResolvedStyles,
   firstDuplicate,
   nodeIdSet,
   type CssSystem,
   type CssVisualValuation,
   type CssClassFactorMap,
   type CssSettleWitness,
-} from "@red-cup-engineering/css-cascade-service";
+} from "@red-cup-engineering/css-style-resolution-service";
 import type { FormatRegime } from "@lenticule-science/articulating/predicating/positing/settling/analysis/formats-four";
 import {
   html_is_carrier_not_document,
@@ -40,7 +40,7 @@ import { canonical, type JsonValue } from "@red-cup-engineering/json-file-codec-
  * can hold. Splitting escaping into its own package is a later job.
  */
 
-/** Values a render-fiber carrier is allowed to inspect and stringify at its boundary. */
+/** Values a document-render carrier is allowed to inspect and stringify at its boundary. */
 export type HtmlValue = JsonValue | { readonly const: JsonValue } | { readonly ref: string };
 
 const REF_PREFIX = "shp-ref:";
@@ -158,7 +158,7 @@ export function htmlCarrierOf<D extends Document>(
   });
 }
 
-/* ── render profile / fiber ────────────────────────────────────────────── */
+/* ── render profile / document plan ──────────────────────────────────────── */
 
 export type StyleBehavior = "none" | "static" | "settled-interactive";
 export type PreservationLaw =
@@ -179,7 +179,7 @@ export interface RenderProfile {
   readonly preservationLaws: readonly PreservationLaw[];
 }
 
-export interface RenderFiber<H extends HtmlCarrierOf = HtmlCarrierOf> {
+export interface RenderDocumentPlan<H extends HtmlCarrierOf = HtmlCarrierOf> {
   readonly kind: "rendering.profile.fiber";
   readonly profile: RenderProfile;
   readonly carrier: H;
@@ -188,15 +188,15 @@ export interface RenderFiber<H extends HtmlCarrierOf = HtmlCarrierOf> {
   readonly styleBehavior: StyleBehavior;
 }
 
-export interface RenderFiberWitness<H extends HtmlCarrierOf = HtmlCarrierOf> {
+export interface RenderDocumentPlanWitness<H extends HtmlCarrierOf = HtmlCarrierOf> {
   readonly kind: "rendering.profile_forms_render_fiber:witness";
-  readonly fiber: RenderFiber<H>;
+  readonly fiber: RenderDocumentPlan<H>;
   readonly cssSettled: CssSettleWitness<H>;
   readonly carrierPreservesDocument: true;
   readonly profileConstrainsFiber: true;
 }
 
-export interface RenderFiberObstruction {
+export interface RenderDocumentPlanObstruction {
   readonly kind: "rendering.profile_forms_render_fiber-obstruction";
   readonly reason:
     | "carrier-system-mismatch"
@@ -209,7 +209,7 @@ export interface RenderFiberObstruction {
   readonly key: string;
 }
 
-export type RenderFiberJudgment<H extends HtmlCarrierOf = HtmlCarrierOf> = RenderFiberWitness<H> | RenderFiberObstruction;
+export type RenderDocumentPlanJudgment<H extends HtmlCarrierOf = HtmlCarrierOf> = RenderDocumentPlanWitness<H> | RenderDocumentPlanObstruction;
 
 const requiredLaws: readonly PreservationLaw[] = Object.freeze([
   "preserve-addresses",
@@ -221,17 +221,17 @@ const requiredLaws: readonly PreservationLaw[] = Object.freeze([
 ]);
 
 const renderFiberObstruction = (
-  reason: RenderFiberObstruction["reason"],
+  reason: RenderDocumentPlanObstruction["reason"],
   key: string,
-): RenderFiberObstruction => Object.freeze({ kind: "rendering.profile_forms_render_fiber-obstruction" as const, reason, key });
+): RenderDocumentPlanObstruction => Object.freeze({ kind: "rendering.profile_forms_render_fiber-obstruction" as const, reason, key });
 
-/** A profile selects the valid fiber of carrier/CSS-system pairs for a use regime. */
-export function profile_forms_render_fiber<H extends HtmlCarrierOf>(
+/** A profile selects the valid document plan of carrier/CSS-system pairs for a use regime. */
+export function buildHtmlDocumentPlan<H extends HtmlCarrierOf>(
   profile: RenderProfile,
   carrier: H,
   system: CssSystem<H>,
   styleBehavior: StyleBehavior,
-): RenderFiberJudgment<H> {
+): RenderDocumentPlanJudgment<H> {
   if (system.carrier !== carrier) return renderFiberObstruction("carrier-system-mismatch", system.carrier.kind);
   const allowedElements = new Set(profile.allowedElements);
   for (const node of carrier.nodes) {
@@ -251,12 +251,12 @@ export function profile_forms_render_fiber<H extends HtmlCarrierOf>(
     for (const nodeId of system.classFactorMap.nodeIds) {
       if (!carrierNodes.has(nodeId)) return renderFiberObstruction("class-factor-map-carrier-mismatch", nodeId);
     }
-    const factor = css_classes_are_factor_maps(system.classFactorMap);
+    const factor = checkClassMapsValid(system.classFactorMap);
     if (factor.kind !== "rendering.css_classes_are_factor_maps:witness") {
       return renderFiberObstruction("class-factor-map-obstructed", factor.reason);
     }
   }
-  const cssSettled = css_settles_to_valuation(system);
+  const cssSettled = checkStyleResolutionSettled(system);
   return Object.freeze({
     kind: "rendering.profile_forms_render_fiber:witness" as const,
     fiber: Object.freeze({
@@ -275,7 +275,7 @@ export function profile_forms_render_fiber<H extends HtmlCarrierOf>(
 
 /* ── projector ──────────────────────────────────────────────────────────── */
 
-export interface HtmlFiberDocumentOptions {
+export interface HtmlDocumentPlanOptions {
   readonly title?: HtmlValue;
   readonly lang?: string;
   readonly roots?: readonly string[];
@@ -285,9 +285,9 @@ export interface HtmlFiberDocumentOptions {
   readonly head?: readonly string[];
 }
 
-export interface HtmlFiberDocument<H extends HtmlCarrierOf = HtmlCarrierOf> {
+export interface HtmlDocumentPlan<H extends HtmlCarrierOf = HtmlCarrierOf> {
   readonly kind: "rendering.htmlFiber.document";
-  readonly fiber: RenderFiberWitness<H>;
+  readonly fiber: RenderDocumentPlanWitness<H>;
   readonly html: string;
 }
 
@@ -300,7 +300,7 @@ function renderCarrierNode(
   classNames: ReadonlyMap<string, string>,
   seen: ReadonlySet<string>,
 ): string {
-  if (seen.has(node.nodeId)) throw new TypeError(`renderHtmlFiber: cyclic carrier node ${node.nodeId}`);
+  if (seen.has(node.nodeId)) throw new TypeError(`renderHtmlDocument: cyclic carrier node ${node.nodeId}`);
   const nextSeen = new Set(seen);
   nextSeen.add(node.nodeId);
   const className = classNames.get(node.nodeId);
@@ -314,7 +314,7 @@ function renderCarrierNode(
   };
   const body = `${node.text === undefined ? "" : escapeText(node.text)}${node.html ?? ""}${(node.children ?? []).map((childId) => {
     const child = byId.get(childId);
-    if (child === undefined) throw new TypeError(`renderHtmlFiber: missing child carrier node ${childId}`);
+    if (child === undefined) throw new TypeError(`renderHtmlDocument: missing child carrier node ${childId}`);
     return renderCarrierNode(child, byId, classNames, nextSeen);
   }).join("")}`;
   return `<${node.element}${Object.entries(attributes).map(renderHtmlAttr).join("")}>${body}</${node.element}>`;
@@ -326,25 +326,25 @@ function rootNodeIds(nodes: readonly HtmlCarrierNode[], requested: readonly stri
   return Object.freeze(nodes.filter((node) => !childIds.has(node.nodeId)).map((node) => node.nodeId));
 }
 
-/** Serialize the single admitted render codomain: a profile fiber over an HTML carrier and settled CSS valuation. */
-export function renderHtmlFiber<H extends HtmlCarrierOf>(
-  fiber: RenderFiberWitness<H>,
-  options: HtmlFiberDocumentOptions = {},
-): HtmlFiberDocument<H> {
+/** Serialize the single admitted render codomain: a document plan over an HTML carrier and settled CSS valuation. */
+export function renderHtmlDocument<H extends HtmlCarrierOf>(
+  fiber: RenderDocumentPlanWitness<H>,
+  options: HtmlDocumentPlanOptions = {},
+): HtmlDocumentPlan<H> {
   const byId = new Map(fiber.fiber.carrier.nodes.map((node) => [node.nodeId, node] as const));
   const roots = rootNodeIds(fiber.fiber.carrier.nodes, options.roots);
   const classes: CssClassFactorMap | undefined = fiber.fiber.system.classFactorMap;
   const classNames = classByNodeId(classes);
   const body = roots.map((rootId) => {
     const root = byId.get(rootId);
-    if (root === undefined) throw new TypeError(`renderHtmlFiber: missing root carrier node ${rootId}`);
+    if (root === undefined) throw new TypeError(`renderHtmlDocument: missing root carrier node ${rootId}`);
     return renderCarrierNode(root, byId, classNames, new Set());
   }).join("\n");
   const metadata = Object.entries(options.metadata ?? {})
     .map(([key, value]) => `    <meta name="${escapeAttr(key)}" content="${escapeAttr(value)}">`)
     .join("\n");
   const head = (options.head ?? []).map((fragment) => `    ${fragment}`).join("\n");
-  const css = cssTextFromVisualValuation(fiber.fiber.valuation, classes);
+  const css = cssTextFromResolvedStyles(fiber.fiber.valuation, classes);
   const title = options.title ?? fiber.fiber.profile.name;
   const bodyAttributes = Object.entries(options.bodyAttributes ?? {}).map(renderHtmlAttr).join("");
   const html = `<!DOCTYPE html>

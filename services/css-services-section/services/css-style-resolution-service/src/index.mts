@@ -1,11 +1,11 @@
 /**
- * css-cascade-service — computes the CSS cascade over a node tree into one
- * settled per-node style valuation, certifies that closure is idempotent and
- * that class tokens are a finite factor map/proper coloring, and serializes
- * a settled valuation back to CSS text.
+ * css-style-resolution-service — resolves the CSS cascade over a node tree
+ * into one settled per-node style valuation, certifies that closure is
+ * idempotent and that class tokens are a finite factor map/proper coloring,
+ * and serializes a settled valuation back to CSS text.
  *
  * Extracted from @red-cup-engineering/html-file-codec-service (src/html/index.mts),
- * which now re-exports this surface unchanged. `html-render-fiber-service`
+ * which now re-exports this surface unchanged. `html-document-render-service`
  * depends on this package by name for its carrier/CSS-system types.
  */
 import {
@@ -17,7 +17,7 @@ import type { FormatRegime } from "@lenticule-science/articulating/predicating/p
 
 /* ── carrier shape ──────────────────────────────────────────────────────────
  * A minimal structural carrier shape, not the full `HtmlCarrierOf` witness
- * (that stays in html-render-fiber-service, which depends on this package —
+ * (that stays in html-document-render-service, which depends on this package —
  * not the other way around). `HtmlCarrierOf` satisfies `CssCarrier`
  * structurally, so `CssSystem<HtmlCarrierOf>` type-checks there unchanged.
  */
@@ -103,7 +103,7 @@ export interface CssClassFactorMapObstruction {
 export type CssClassFactorMapJudgment = CssClassFactorMapWitness | CssClassFactorMapObstruction;
 
 /* ── shared helpers ─────────────────────────────────────────────────────────
- * Exported because html-render-fiber-service needs the same finite-set
+ * Exported because html-document-render-service needs the same finite-set
  * checks over its own (structurally wider) carrier nodes.
  */
 
@@ -134,7 +134,7 @@ const chooseDeclaration = (left: CssDeclaration, right: CssDeclaration): CssDecl
 };
 
 /** Compute the finite cascade closure as one visual valuation per node/property. */
-export function cssVisualValuation<H extends CssCarrier>(system: CssSystem<H>): CssVisualValuation<H> {
+export function resolveNodeStyles<H extends CssCarrier>(system: CssSystem<H>): CssVisualValuation<H> {
   const carrierNodeIds = nodeIdSet(system.carrier.nodes);
   const bySite = new Map<string, CssDeclaration>();
   for (const declaration of system.declarations) {
@@ -165,8 +165,8 @@ const sameVisualValuation = (left: CssVisualValuation, right: CssVisualValuation
   === JSON.stringify(right.sites.map(({ nodeId, property, value }) => [nodeId, property, value]));
 
 /** The cascade settles to an idempotent visual valuation over carrier nodes. */
-export function css_settles_to_valuation<H extends CssCarrier>(system: CssSystem<H>): CssSettleWitness<H> {
-  const valuation = cssVisualValuation(system);
+export function checkStyleResolutionSettled<H extends CssCarrier>(system: CssSystem<H>): CssSettleWitness<H> {
+  const valuation = resolveNodeStyles(system);
   const declarations = Object.freeze(valuation.sites.map((site, sourceOrder) => Object.freeze({
     kind: "rendering.css.declaration" as const,
     nodeId: site.nodeId,
@@ -189,8 +189,8 @@ export function css_settles_to_valuation<H extends CssCarrier>(system: CssSystem
       declarations,
       classFactorMap: system.classFactorMap,
     });
-  if (!sameVisualValuation(valuation, cssVisualValuation(closedSystem))) {
-    throw new TypeError("css_settles_to_valuation: cascade closure is not idempotent");
+  if (!sameVisualValuation(valuation, resolveNodeStyles(closedSystem))) {
+    throw new TypeError("checkStyleResolutionSettled: cascade closure is not idempotent");
   }
   return Object.freeze({
     kind: "rendering.css_settles_to_valuation:witness" as const,
@@ -211,7 +211,7 @@ const cssClassFactorMapObstruction = (
   : Object.freeze({ kind: "rendering.css_classes_are_factor_maps-obstruction" as const, classes, reason, key, factorMap });
 
 /** CSS class tokens are admitted as a finite factor map/proper coloring. */
-export function css_classes_are_factor_maps(classes: CssClassFactorMap): CssClassFactorMapJudgment {
+export function checkClassMapsValid(classes: CssClassFactorMap): CssClassFactorMapJudgment {
   if (classes.nodeIds.length !== classes.classes.length) {
     return cssClassFactorMapObstruction(classes, "length-mismatch", `${classes.nodeIds.length}/${classes.classes.length}`);
   }
@@ -257,7 +257,7 @@ function escapeAttrText(value: string): string {
 }
 
 /** Serialize a settled visual valuation to CSS text, one rule per site, selecting by structural class where assigned. */
-export function cssTextFromVisualValuation(
+export function cssTextFromResolvedStyles(
   valuation: CssVisualValuation,
   classes?: CssClassFactorMap,
 ): string {
