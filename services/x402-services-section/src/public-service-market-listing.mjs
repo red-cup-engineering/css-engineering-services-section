@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { rawNiUri } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
 
 import {
   agentCardSignatureEvidence,
@@ -24,7 +24,7 @@ function stableValue(value) {
 }
 
 function digest(value) {
-  return `ni:///sha-256;${createHash("sha256").update(JSON.stringify(stableValue(value))).digest("base64url")}`;
+  return rawNiUri(JSON.stringify(stableValue(value)));
 }
 
 function deepFreeze(value) {

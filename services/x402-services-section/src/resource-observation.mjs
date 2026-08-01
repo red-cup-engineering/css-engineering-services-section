@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { rawNiUri } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
 import {
   admitPublicHttpsUrl,
 } from "@red-cup-engineering/public-https-url-admission-service";
@@ -30,7 +30,7 @@ function stableValue(value) {
 
 function ni(value) {
   const bytes = JSON.stringify(stableValue(value));
-  return `ni:///sha-256;${createHash("sha256").update(bytes).digest("base64url")}`;
+  return rawNiUri(bytes);
 }
 
 export function publicHttpsUrl(value, label = "URL") {

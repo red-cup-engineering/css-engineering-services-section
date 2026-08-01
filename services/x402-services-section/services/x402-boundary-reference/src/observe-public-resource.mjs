@@ -1,7 +1,7 @@
-import { createHash } from "node:crypto";
 import { isIP } from "node:net";
 import { decodePaymentRequiredHeader } from "@x402/core/http";
 import { validatePaymentRequired } from "@x402/core/schemas";
+import { rawNiUri } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
 
 const EVM_NETWORK = /^eip155:[1-9][0-9]*$/u;
 const EVM_ADDRESS = /^0x[0-9a-fA-F]{40}$/u;
@@ -12,7 +12,7 @@ function stable(value) {
   if (value !== null && typeof value === "object") return Object.fromEntries(Object.keys(value).sort().map((key) => [key, stable(value[key])]));
   return value;
 }
-function ni(value) { return `ni:///sha-256;${createHash("sha256").update(JSON.stringify(stable(value))).digest("base64url")}`; }
+function ni(value) { return rawNiUri(JSON.stringify(stable(value))); }
 
 /** Refuse credential-bearing, local, and literal-IP targets before fetch. */
 export function publicHttpsUrl(value) {

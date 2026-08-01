@@ -36,6 +36,7 @@
     "@red-cup-engineering/ethereum-services-section": "0.7.2",
     "@red-cup-engineering/rmn-semantic-conformance": "6.0.2",
     "@lenticule-science/witness-journal-rdf-projection-service": "1.0.3",
-    "@lenticule-science/wit-transition-assay": "1.0.1"
+    "@lenticule-science/wit-transition-assay": "1.0.1",
+    "@red-cup-engineering/rmn-semantic-conformance-die": "6.0.1"
   }
 }
