@@ -10,7 +10,6 @@ import {
   resourceObservations,
 } from "./records.mjs";
 import { createSettlementStore } from "@lenticule-science/witness-journal-rdf-projection-service/client";
-import { GOOGLE_DRIVE_USE_SERVICE_LAW } from "./law.mjs";
 
 export const ACTOR = "urn:ame:google-drive-use-team";
 const NODE_ID = "google-drive-use-team";
@@ -19,7 +18,6 @@ const DRIVE_API = "https://www.googleapis.com/drive/v3";
 const DRIVE_UPLOAD_API = "https://www.googleapis.com/upload/drive/v3";
 const FILE_FIELDS = "id,name,mimeType,size,parents,modifiedTime";
 const MAXIMUM_BYTES = 10 * 1024 * 1024;
-export const CONTRACT = GOOGLE_DRIVE_USE_SERVICE_LAW.id;
 
 export const PURPOSES = Object.freeze({
   "store one new file in Google Drive": Object.freeze({
@@ -110,7 +108,6 @@ function solicit(activity, now) {
   const selected = PURPOSES[request.purpose];
   const object = contentRecord({
     type: "GoogleDriveUseOffer",
-    contract: CONTRACT,
     providerContract: "google-drive-v3-bounded-use",
     request,
     requestDigest: digest(request),
@@ -174,7 +171,6 @@ async function readBounded(response, maximumBytes) {
 function typedRefusal(source, offer, capability, code, detail, evidence, now, observations) {
   const object = contentRecord({
     type: "GoogleDriveUseRefusal",
-    contract: CONTRACT,
     code,
     detail,
     requestDigest: offer?.object?.requestDigest ?? null,
@@ -208,7 +204,6 @@ async function invoke(activity, now, options) {
   if (request.executionMode === "dry-run") {
     const product = contentRecord({
       type: "GoogleDriveUseProduct",
-      contract: CONTRACT,
       disposition: "ready",
       requestDigest: offer.object.requestDigest,
       capabilityId: capability.id,
@@ -294,7 +289,6 @@ async function invoke(activity, now, options) {
     }
     const product = contentRecord({
       type: "GoogleDriveUseProduct",
-      contract: CONTRACT,
       disposition: "completed",
       requestDigest: offer.object.requestDigest,
       capabilityId: capability.id,
@@ -341,7 +335,7 @@ export async function executeGoogleDriveUseOperation({ operation, input, now, da
       usedCapabilityIds: usedCapabilityIds(evidence),
     });
   } catch (error) {
-    const object = contentRecord({ type: "GoogleDriveUseRefusal", contract: CONTRACT,
+    const object = contentRecord({ type: "GoogleDriveUseRefusal",
       code: "google-drive-use-contract-refused", detail: error.message, credentialMaterialRecorded: false,
       customerMutation: false, recordedAt: now });
     result = contentRecord({ type: "Reject", actor: ACTOR, target: input?.actor ?? "urn:ame:unidentified-customer",

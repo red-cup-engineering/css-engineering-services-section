@@ -1,8 +1,0 @@
-#lang rmn/v2
-(map
-  ("type" "PublicHttpsUrlAdmissionLaw")
-  ("version" 1)
-  ("precondition" "Receive one bounded absolute URL and an optional requirement that its host be a DNS name.")
-  ("operation" "Parse and canonicalize the URL without network access, rejecting credentials, fragments, local names, and non-public literal IP addresses.")
-  ("postcondition" "Return one canonical credential-free public HTTPS URL.")
-  ("refusal" "Refuse malformed, oversized, non-HTTPS, credential-bearing, fragment-bearing, local, private, reserved, multicast, or otherwise non-public targets."))

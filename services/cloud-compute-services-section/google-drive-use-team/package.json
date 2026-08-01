@@ -14,7 +14,7 @@
     "serve-google-drive-use-a2a": "./scripts/serve-a2a.mjs"
   },
   "scripts": {
-    "check": "node --check src/law.mjs && node --check src/records.mjs && node --check src/contract-google-drive-use.mjs && node --check src/google-oauth-refresh.mjs && node --check src/client.mjs && node --check src/a2a-executor.mjs && node --check scripts/execute-a2a-message.mjs && node --check scripts/serve-a2a.mjs && node --check examples/use-google-drive.mjs && node --check test/google-drive-use.test.mjs && node --check test/google-oauth-refresh.test.mjs",
+    "check": "node --check src/records.mjs && node --check src/contract-google-drive-use.mjs && node --check src/google-oauth-refresh.mjs && node --check src/client.mjs && node --check src/a2a-executor.mjs && node --check scripts/execute-a2a-message.mjs && node --check scripts/serve-a2a.mjs && node --check examples/use-google-drive.mjs && node --check test/google-drive-use.test.mjs && node --check test/google-oauth-refresh.test.mjs",
     "test": "node --test --test-isolation=none test/*.test.mjs"
   },
   "engines": {

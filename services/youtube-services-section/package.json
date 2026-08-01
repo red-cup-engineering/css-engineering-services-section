@@ -5,11 +5,10 @@
   "type": "module",
   "description": "Credential-blind reusable YouTube Data and Analytics API protocol mechanics for sovereign channel customers.",
   "exports": {
-    ".": "./src/index.mjs",
-    "./law": "./src/law.mjs"
+    ".": "./src/index.mjs"
   },
   "scripts": {
-    "check": "node --check src/law.mjs && node --check src/index.mjs && node --check test/index.test.mjs",
+    "check": "node --check src/index.mjs && node --check test/index.test.mjs",
     "test": "node --test test/index.test.mjs",
     "verify": "npm run check && npm test"
   },

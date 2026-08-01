@@ -1,5 +1,3 @@
-export { YOUTUBE_ANALYTICS_PROTOCOL_LAW, YOUTUBE_PROTOCOL_LAW } from "./law.mjs";
-
 const API_ORIGIN = "https://www.googleapis.com";
 const VIDEO_INSERT = `${API_ORIGIN}/upload/youtube/v3/videos?uploadType=resumable&part=snippet%2Cstatus`;
 const CHANNEL_MINE = `${API_ORIGIN}/youtube/v3/channels?part=id%2Csnippet&mine=true`;
