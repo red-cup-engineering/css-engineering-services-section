@@ -1,0 +1,21 @@
+{
+  "name": "@red-cup-engineering/uniform-resource-name-rendering-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Transforms admitted RFC 8141 Uniform Resource Name parts {nid, nss, rComponent, qComponent, fComponent} into the canonical URN string that denotes them, or a typed refusal naming the exact ABNF rule a part breaks. Use when a system holds URN parts as structured data and needs the one wire string RFC 8141 says represents them, without re-deriving the '?+'/'?='/'#' delimiter placement by hand at every call site.",
+  "exports": {
+    ".": {
+      "types": "./src/uniform-resource-name-rendering-service.d.mts",
+      "import": "./src/uniform-resource-name-rendering-service.mjs"
+    }
+  },
+  "scripts": {
+    "check": "node --check src/uniform-resource-name-rendering-service.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

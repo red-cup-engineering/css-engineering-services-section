@@ -1,0 +1,21 @@
+{
+  "name": "@red-cup-engineering/uniform-resource-name-equivalence-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Transforms two surface strings into whether they are URN-equivalent per RFC 8141: the NID compared case-insensitively, the NSS compared exactly (with only percent-encoded hex digits normalized to uppercase, never decoded), and the r-component, q-component, and f-component excluded from equivalence entirely because they are not part of the assigned-name. Use when a system must decide two URNs name the same resource without hand-rolling RFC 8141's comparison rule at every call site.",
+  "exports": {
+    ".": {
+      "types": "./src/uniform-resource-name-equivalence-service.d.mts",
+      "import": "./src/uniform-resource-name-equivalence-service.mjs"
+    }
+  },
+  "scripts": {
+    "check": "node --check src/uniform-resource-name-equivalence-service.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
