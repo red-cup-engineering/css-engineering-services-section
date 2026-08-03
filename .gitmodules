@@ -1,3 +1,24 @@
 [submodule "services/web-game-services-section"]
 	path = services/web-game-services-section
 	url = https://github.com/red-cup-engineering/web-game-services-section.git
+[submodule "services/capability-marketplace-services-section/services/federated-capability-offer-discovery-cell"]
+	path = services/capability-marketplace-services-section/services/federated-capability-offer-discovery-cell
+	url = https://github.com/red-cup-engineering/federated-capability-offer-discovery-cell.git
+[submodule "services/capability-marketplace-services-section/services/federated-capability-offer-publication-cell"]
+	path = services/capability-marketplace-services-section/services/federated-capability-offer-publication-cell
+	url = https://github.com/red-cup-engineering/federated-capability-offer-publication-cell.git
+[submodule "services/cloud-services-section/services/cloudflare-services-section/services/linux-cloudflare-authentication-service"]
+	path = services/cloud-services-section/services/cloudflare-services-section/services/linux-cloudflare-authentication-service
+	url = https://github.com/red-cup-engineering/linux-cloudflare-authentication-cell.git
+[submodule "services/object-capability-services-section/services/ocapn-sturdyref-admission-service"]
+	path = services/object-capability-services-section/services/ocapn-sturdyref-admission-service
+	url = https://github.com/red-cup-engineering/ocapn-sturdyref-admission-service.git
+[submodule "services/systemd-services-section/services/systemd-unit-inventory-observation-service"]
+	path = services/systemd-services-section/services/systemd-unit-inventory-observation-service
+	url = https://github.com/red-cup-engineering/systemd-unit-inventory-observation-service.git
+[submodule "services/web-gui-services-section"]
+	path = services/web-gui-services-section
+	url = https://github.com/red-cup-engineering/web-gui-services-section.git
+[submodule "services/x402-services-section/services/x402-exact-purchase-service"]
+	path = services/x402-services-section/services/x402-exact-purchase-service
+	url = https://github.com/red-cup-engineering/x402-exact-purchase-service.git
