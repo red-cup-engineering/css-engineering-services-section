@@ -8,20 +8,20 @@ import { Message, Role } from "@a2a-js/sdk";
 import { extractRmnPart, rmnPart } from "@red-cup-engineering/a2a-rmn-part-service";
 import { conformTerm } from "@red-cup-engineering/rmn-semantic-conformance/client";
 import { assayWitTransition } from "@lenticule-science/wit-transition-assay/client";
-import { decodeSemantic, semanticBytes } from "@red-cup-engineering/rmn-semantic-conformance";
-import { C2PA_LAW, C2PA_OPERATION_TYPE, C2PA_RESPONSE_TYPE, decodeC2paOperation, encodeC2paPayload, signAiAsset } from "../src/c2pa-rmn.mjs";
+import { makeNiUri } from "@red-cup-engineering/ni-uri-services-section";
+import { admitC2paTerm, C2PA_LAW, C2PA_OPERATION_TYPE, C2PA_RESPONSE_TYPE, decodeC2paOperation, encodeC2paPayload, identifyC2paTerm, signAiAsset } from "../src/c2pa-rmn.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ACCOUNT = JSON.parse(readFileSync(join(ROOT, "content/evm/accounts/eip155-31337.json"), "utf8")).account.caip10;
 function rmnAgent() { if (!process.env.RMN_CONFORMANCE_AGENT) throw new Error("RMN_CONFORMANCE_AGENT must name the hired RMN provider's A2A 1.0 Agent Card"); return process.env.RMN_CONFORMANCE_AGENT; }
 function witAgent() { if (!process.env.WIT_TRANSITION_ASSAY_AGENT) throw new Error("WIT_TRANSITION_ASSAY_AGENT must name the hired WIT transition provider's signed A2A 1.0 Agent Card"); return process.env.WIT_TRANSITION_ASSAY_AGENT; }
-const rawNi = (await import(new URL("../../../../../../lenticule-science/services/obsmetrological-services-section/services/rmn-semantic-conformance-die/src/canonical-cbor.mjs", import.meta.url).href)).rawNiUri;
+const rawNi = (value) => makeNiUri(Buffer.from(value));
 
 const source = Message.fromJSON(JSON.parse(readFileSync(0, "utf8")));
 if (source.role !== Role.ROLE_USER) throw new Error("C2PA provenance requires an A2A ROLE_USER message");
 const input = extractRmnPart(source.parts);
-const request = decodeSemantic(input.bytes), requestType = ["product", ["effect"], C2PA_OPERATION_TYPE];
-if (request?.[0] !== "ascribe" || request.length !== 3 || JSON.stringify(request[1]) !== JSON.stringify(requestType) || !semanticBytes(request).equals(input.bytes)) throw new Error("C2PA A2A ingress requires one canonical explicitly typed RMN effect bundle");
+const request = admitC2paTerm(input.bytes, input.ni).envelope.settledBody, requestType = ["product", ["effect"], C2PA_OPERATION_TYPE];
+if (request?.[0] !== "ascribe" || request.length !== 3 || JSON.stringify(request[1]) !== JSON.stringify(requestType)) throw new Error("C2PA A2A ingress requires one canonical explicitly typed RMN effect bundle");
 const proposal = await conformTerm({ agentUrl: rmnAgent(), term: request[2], expectedType: request[1] });
 const cell = proposal.effectCell, operation = proposal.normalForm[2], operationValue = decodeC2paOperation(operation);
 if (cell.law !== C2PA_LAW || cell.provider !== ACCOUNT) throw new Error("C2PA effect is not addressed to this law, account, and service scale");
@@ -45,6 +45,6 @@ const transition = await assayWitTransition({ agentUrl: witAgent(), proposalCell
 const responseTerm = ["pair", ["pair", ["effect", completionCell], operation], ["pair", transition.witnessTerm, encodeC2paPayload({ disposition, ...output })]];
 const response = await conformTerm({ agentUrl: rmnAgent(), term: responseTerm, expectedType: C2PA_RESPONSE_TYPE });
 const message = Message.toJSON({ messageId: randomUUID(), contextId: source.contextId, taskId: source.taskId, role: Role.ROLE_AGENT,
-  parts: [rmnPart(semanticBytes(response.response), "c2pa-provenance.rmn.cbor"), { content: { $case: "text", value: output.accessibleDisclosure }, metadata: {}, filename: "", mediaType: "text/plain" }],
+  parts: [rmnPart(identifyC2paTerm(response.response, "c2pa.response").bytes, "c2pa-provenance.rmn.cbor"), { content: { $case: "text", value: output.accessibleDisclosure }, metadata: {}, filename: "", mediaType: "text/plain" }],
   metadata: { disposition, proposalNi: proposal.term, completionNi: response.term, witnessNi: transition.witness, assetNi: output.assetNi, manifestNi: output.manifestNi, c2pa: "2.4" }, extensions: [], referenceTaskIds: [] });
 process.stdout.write(`${JSON.stringify(message)}\n`);

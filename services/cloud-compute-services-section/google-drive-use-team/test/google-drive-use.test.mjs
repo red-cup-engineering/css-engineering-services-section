@@ -5,23 +5,17 @@ import { join } from "node:path";
 import test from "node:test";
 
 import { canonical, contentRecord, digest } from "../src/records.mjs";
-import { querySettlementRecords } from "@lenticule-science/witness-journal-rdf-projection-service/client";
-import { startWitnessJournalProviderProcess } from "@lenticule-science/witness-journal-rdf-projection-service/test-provider";
+import { queryGoogleDriveSemanticContent } from "../src/semantic-custody.mjs";
 import { ACTOR, executeGoogleDriveUseOperation, handleGoogleDriveUseOperation } from "../src/contract-google-drive-use.mjs";
 
 const CUSTOMER = "urn:ame:test-customer";
 const NOW = "2026-07-19T05:20:00.000Z";
-let witnessJournal;
-test.before(async () => { witnessJournal = await startWitnessJournalProviderProcess(); });
-test.after(async () => { await witnessJournal.close(); });
-
 function request(purpose, input = {}, executionMode = "dry-run") {
   return {
     type: "GoogleDriveUseRequest",
     purpose,
     executionMode,
     credentialGrantId: "urn:grant:test-google-drive",
-    maximumWallMilliseconds: 1000,
     maximumBytes: 4096,
     input,
   };
@@ -139,19 +133,20 @@ test("simulated list use is bounded and provider refusal never returns credentia
   assert.equal(Object.hasOwn(refused.object.evidence, "body"), false);
 });
 
-test("advertised provider entry records canonical witness-journal RDF and rejects a replayed capability", async () => {
-  const dataRoot = mkdtempSync(join(tmpdir(), "google-drive-use-data-"));
+test("advertised provider entry records immutable semantic custody and rejects a replayed capability", async () => {
+  const semanticRoot = mkdtempSync(join(tmpdir(), "google-drive-use-semantic-"));
+  const dataRoot = join(semanticRoot, "data");
   const requestValue = request("retrieve one file from Google Drive", { fileId: "one" });
   const source = solicitation(requestValue);
-  const offered = await executeGoogleDriveUseOperation({ operation: "solicit-service", input: source, now: NOW, dataRoot, witnessJournalAgentUrl: witnessJournal.agentCardUrl });
+  const offered = await executeGoogleDriveUseOperation({ operation: "solicit-service", input: source, now: NOW, dataRoot });
   const cap = capability(offered);
   const invoke = invocation(offered, cap);
-  const first = await executeGoogleDriveUseOperation({ operation: "invoke-service", input: invoke, now: NOW, dataRoot, witnessJournalAgentUrl: witnessJournal.agentCardUrl });
+  const first = await executeGoogleDriveUseOperation({ operation: "invoke-service", input: invoke, now: NOW, dataRoot });
   assert.equal(first.type, "Accept");
-  const second = await executeGoogleDriveUseOperation({ operation: "invoke-service", input: invoke, now: NOW, dataRoot, witnessJournalAgentUrl: witnessJournal.agentCardUrl });
+  const second = await executeGoogleDriveUseOperation({ operation: "invoke-service", input: invoke, now: NOW, dataRoot });
   assert.equal(second.type, "Reject");
   assert.match(second.object.detail, /capability replay/u);
-  const records = await querySettlementRecords("service-outcomes");
+  const records = await queryGoogleDriveSemanticContent("google-drive.service-outcomes", { root: semanticRoot });
   assert.equal(records.length, 3);
   assert.equal(records.every((record) => record.credentialMaterialRecorded === false), true);
 });

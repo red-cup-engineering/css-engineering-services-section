@@ -18,7 +18,7 @@ function requiredFunction(value, label) {
 
 function identityAttachments(cell, controller) {
   if (cell === undefined && controller === undefined) return [];
-  if (typeof cell !== "string" || !/^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u.test(cell)) {
+  if (typeof cell !== "string" || !/^ni:\/\/\/sha-256;[A-Za-z0-9_-]{42}[AEIMQUYcgkosw048]$/u.test(cell)) {
     throw new TypeError("ActivityPub cell identity must be one canonical SHA-256 ni URI");
   }
   if (typeof controller !== "string" || !/^did:pkh:eip155:\d+:0x[0-9a-fA-F]{40}$/u.test(controller)) {

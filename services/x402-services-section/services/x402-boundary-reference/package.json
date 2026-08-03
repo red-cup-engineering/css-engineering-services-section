@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/x402-boundary-reference",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Open reference implementation for a bounded x402 v2 Express payment boundary and unpaid public challenge inspection.",
   "license": "Apache-2.0",
   "type": "module",
@@ -14,7 +14,8 @@
     "verify": "npm run check && npm test"
   },
   "dependencies": {
-    "@red-cup-engineering/rmn-semantic-conformance-die": "6.0.1",
+    "@red-cup-engineering/ni-uri-services-section": "0.1.1",
+    "@red-cup-engineering/semantic-content-identify-service": "0.2.2",
     "@x402/core": "2.19.0",
     "@x402/evm": "2.19.0",
     "@x402/express": "2.19.0",

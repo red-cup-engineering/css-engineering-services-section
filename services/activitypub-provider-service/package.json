@@ -1,0 +1,48 @@
+{
+  "name": "@red-cup-engineering/activitypub-provider-service",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "ActivityPub actor, receiver, retained-inbox projection, key material, and Node server faces.",
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "src",
+    "types",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "types": "./types/provider.d.mts",
+      "import": "./src/provider.mjs"
+    },
+    "./server": {
+      "types": "./types/server.d.mts",
+      "import": "./src/server.mjs"
+    },
+    "./keys": "./src/keys.mjs",
+    "./runtime-adapters": {
+      "types": "./types/runtime-adapters.d.mts",
+      "import": "./src/runtime-adapters.mjs"
+    }
+  },
+  "bin": {
+    "serve-activitypub-provider": "src/server.mjs",
+    "generate-activitypub-keys": "src/keys.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/provider.mjs && node --check src/server.mjs && node --check src/keys.mjs && node --check src/runtime-adapters.mjs && node --check test/provider.test.mjs",
+    "test": "node --test test/provider.test.mjs",
+    "verify": "npm run check && npm test && npm pack --dry-run"
+  },
+  "dependencies": {
+    "@fedify/fedify": "2.3.1",
+    "@fedify/vocab": "2.3.1",
+    "@hono/node-server": "1.19.14"
+  },
+  "overrides": {
+    "@opentelemetry/core": "2.8.0",
+    "@opentelemetry/resources": "2.8.0",
+    "@opentelemetry/sdk-metrics": "2.8.0"
+  }
+}

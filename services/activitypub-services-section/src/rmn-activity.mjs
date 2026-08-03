@@ -1,12 +1,13 @@
 import { Activity } from "@fedify/vocab";
-import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { decodeRelationalValue, encodeRelationalValue, RELATIONAL_VALUE_TYPE } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
-import { rawNiUri as sha256Ni } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
+import { validateInstance } from "@red-cup-engineering/json-schema-services-section";
+import { makeNiUri as sha256Ni } from "@red-cup-engineering/ni-uri-services-section";
 import {
   agentRmnMessage,
   extractRmnPart,
   parseA2aMessage
 } from "@red-cup-engineering/a2a-rmn-part-service";
+import { admitNormalizedSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
+import { admitJsonDocument, identifyJsonDocument } from "./rmn-json-document.mjs";
 
 export const ACTIVITYSTREAMS_CONTEXT = "https://www.w3.org/ns/activitystreams";
 export const ACTIVITYSTREAMS_PUBLIC = "https://www.w3.org/ns/activitystreams#Public";
@@ -15,8 +16,27 @@ export const CLOUDEVENTS_MEDIA_TYPE = "application/cloudevents+json";
 export const A2A_MEDIA_TYPE = "application/a2a+json";
 export const AGENTIC_ACTIVITY_PROFILE = "org.harmonious-union.activitypub.cloudevent.a2a-rmn.v1";
 const MAXIMUM_INLINE_RMN_BYTES = 256 * 1024;
-const NI = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u;
+const NI = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{42}[AEIMQUYcgkosw048]$/u;
 const TYPES = new Set(["Accept", "Announce", "Create", "Offer", "Reject", "Update"]);
+const CLOUD_EVENT_SCHEMA = Object.freeze({
+  $schema: "https://json-schema.org/draft/2020-12/schema",
+  $id: "urn:red-cup-engineering:activitypub:cloud-event-a2a-rmn:v1",
+  type: "object",
+  required: ["id", "specversion", "source", "type", "time", "subject", "datacontenttype", "data"],
+  properties: {
+    id: { type: "string", minLength: 1 }, specversion: { const: "1.0" }, source: { type: "string", minLength: 1 },
+    type: { type: "string", minLength: 1 }, time: { type: "string", minLength: 1 }, subject: { type: "string", minLength: 1 },
+    datacontenttype: { const: A2A_MEDIA_TYPE },
+    data: { type: "object", required: ["profile", "transport", "message"], properties: { profile: { const: AGENTIC_ACTIVITY_PROFILE }, transport: { const: "A2A" }, message: { type: "object" } }, additionalProperties: false },
+  },
+  additionalProperties: false,
+});
+
+function validateCloudEvent(value) {
+  const verdict = validateInstance(value, CLOUD_EVENT_SCHEMA);
+  if (!verdict.ok) throw new TypeError(`ActivityPub RMN object has an invalid CloudEvents JSON boundary: ${verdict.errors[0]?.pointer || "/"} ${verdict.errors[0]?.message || "invalid"}`);
+  return value;
+}
 
 function exactUrl(value, label, { https = true } = {}) {
   let url;
@@ -77,18 +97,12 @@ function cloudEventBytes({ type, actor, recipient, objectBytes, a2aMessage, even
     datacontenttype: A2A_MEDIA_TYPE,
     data,
   };
-  const encodedBody = encodeRelationalValue(body);
-  const event = { id: semanticId(["ascribe", encodedBody.type, encodedBody.term]), ...body };
-  const encoded = encodeRelationalValue(event);
-  return semanticBytes(["ascribe", encoded.type, encoded.term]);
+  const event = validateCloudEvent({ id: identifyJsonDocument(body).ni, ...body });
+  return identifyJsonDocument(event).bytes;
 }
 
 function unwrapCloudEvent(bytes, expectedType, expectedActor, expectedRecipient) {
-  const term = decodeSemantic(bytes);
-  if (!Array.isArray(term) || term[0] !== "ascribe" || JSON.stringify(term[1]) !== JSON.stringify(RELATIONAL_VALUE_TYPE)) {
-    throw new TypeError("ActivityPub RMN object must carry the canonical CloudEvents/A2A membrane envelope");
-  }
-  const event = decodeRelationalValue(term[1], term[2]);
+  const event = validateCloudEvent(admitJsonDocument(bytes, "ActivityPub CloudEvents/A2A membrane envelope").value);
   if (event?.specversion !== "1.0" || event.source !== expectedActor || event.subject !== expectedRecipient || event.type !== `org.harmonious-union.activitypub.${expectedType.toLowerCase()}.v1` || event.datacontenttype !== A2A_MEDIA_TYPE || event.data?.profile !== AGENTIC_ACTIVITY_PROFILE || event.data?.transport !== "A2A") {
     throw new TypeError("ActivityPub RMN object has the wrong canonical CloudEvents/A2A envelope");
   }
@@ -96,8 +110,7 @@ function unwrapCloudEvent(bytes, expectedType, expectedActor, expectedRecipient)
     throw new TypeError("CloudEvents data is not one A2A ROLE_USER or ROLE_AGENT message");
   }
   const { id: eventId, ...eventBody } = event;
-  const encodedBody = encodeRelationalValue(eventBody);
-  if (eventId !== semanticId(["ascribe", encodedBody.type, encodedBody.term])) {
+  if (eventId !== identifyJsonDocument(eventBody).ni) {
     throw new TypeError("CloudEvents id does not name its canonical RMN body");
   }
   if (typeof event.time !== "string" || !Number.isFinite(Date.parse(event.time))) {
@@ -110,7 +123,8 @@ function unwrapCloudEvent(bytes, expectedType, expectedActor, expectedRecipient)
     throw new TypeError(`CloudEvents A2A message does not carry one exact RMN part: ${error instanceof Error ? error.message : String(error)}`);
   }
   const objectBytes = Buffer.from(part.bytes);
-  if (!semanticBytes(decodeSemantic(objectBytes)).equals(objectBytes)) throw new TypeError("CloudEvents/A2A payload RMN is noncanonical");
+  try { admitNormalizedSemanticContent(objectBytes, part.ni); }
+  catch { throw new TypeError("CloudEvents/A2A payload must contain admitted semantic RMN content"); }
   return Object.freeze({
     objectBytes,
     objectNi: part.ni,
@@ -124,7 +138,7 @@ export function projectRmnActivity({ type, origin, identifier, recipient, object
   const bytes = Buffer.from(objectBytes ?? []);
   if (bytes.length < 1 || bytes.length > MAXIMUM_INLINE_RMN_BYTES) throw new TypeError("ActivityPub RMN projection requires bounded nonempty canonical bytes");
   try {
-    if (!semanticBytes(decodeSemantic(bytes)).equals(bytes)) throw new Error("noncanonical");
+    admitNormalizedSemanticContent(bytes);
   } catch {
     throw new TypeError("ActivityPub RMN projection requires canonical RMN bytes");
   }
@@ -134,8 +148,7 @@ export function projectRmnActivity({ type, origin, identifier, recipient, object
   if (!["ROLE_USER", "ROLE_AGENT"].includes(a2aRole)) throw new TypeError("ActivityPub RMN projection requires A2A ROLE_USER or ROLE_AGENT");
   const envelopeBytes = cloudEventBytes({ type, actor, recipient: to, objectBytes: bytes, a2aMessage, eventTime, a2aRole });
   const ni = sha256Ni(envelopeBytes);
-  const projectionBody = encodeRelationalValue({ type, actor, to, envelopeNi: ni, agentCard: card });
-  const projectionDigest = semanticId(["ascribe", projectionBody.type, projectionBody.term]).slice("ni:///sha-256;".length);
+  const projectionDigest = identifyJsonDocument({ type, actor, to, envelopeNi: ni, agentCard: card }).ni.slice("ni:///sha-256;".length);
   const id = new URL(`/activities/rmn-${projectionDigest}`, exactUrl(origin, "ActivityPub origin")).href;
   return Object.freeze({
     "@context": ACTIVITYSTREAMS_CONTEXT, id, type, actor, to,

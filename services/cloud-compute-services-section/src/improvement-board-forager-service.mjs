@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { semanticId } from "@red-cup-engineering/relation-model-notation-runtime";
-import { createSettlementStore, querySettlementRecords, relationalWitnessJournalDocument } from "@red-cup-engineering/witness-journal-rdf-projection-service/client";
+import { cloudComputeTermId } from "./semantic-content.mjs";
+import { queryCloudComputeSemanticContent, recordCloudComputeSemanticContent } from "./semantic-custody.mjs";
 import { ACTOR, CONTEXT, DEFAULT_FORAGER_POLICY, bidForBoardOffer, fulfillBoardAward, qualifiedBoardOfferKind } from "./improvement-board-forager.mjs";
 import { admitCustomerTrajectoryFoldback, recallSoftwareTrajectories } from "@red-cup-engineering/software-trajectory-memory-service/client";
 import { invokeActivityPubBoardOperation } from "./activitypub-board-client.mjs";
@@ -16,7 +16,7 @@ export const ROOT = fileURLToPath(new URL("..", import.meta.url));
 export const CATEGORY = "cloud-compute-services-section.improvement-board-foraging";
 const INVESTMENT_OPPORTUNITIES = new Set(["SupplierCapacityInvestmentOpportunity", "SupplierCapabilityInvestmentOpportunity"]);
 const SELF_IMPROVEMENT_TERMINALS = new Set(["SupplierSelfImprovementAttemptResidue", "SupplierSelfImprovementSettlement", "SupplierSelfImprovementPatchManifest"]);
-function rmnId(value) { return semanticId(relationalWitnessJournalDocument(value)); }
+function rmnId(value) { return cloudComputeTermId(value, "cloud-compute.improvement-market-record"); }
 function record(body) { return Object.freeze({ id: rmnId(body), ...body }); }
 function exact(value) { return value?.id === rmnId(Object.fromEntries(Object.entries(value ?? {}).filter(([key]) => key !== "id"))); }
 
@@ -132,24 +132,18 @@ function incitementProblem(activity) {
 
 export async function foragingReadLedger(options = {}) {
   const dataRoot = resolve(options.dataRoot ?? process.env.CLOUD_COMPUTE_DATA_ROOT ?? new URL("../data", import.meta.url).pathname);
-  const rows = await querySettlementRecords(CATEGORY, { custody: options.custody, categoryIndex: options.categoryIndex });
+  const rows = await queryCloudComputeSemanticContent(CATEGORY, { root: resolve(dataRoot, "..") });
   return Object.freeze({ read: () => [...rows] });
 }
 
 export async function foragingLedger(options = {}) {
   const dataRoot = resolve(options.dataRoot ?? process.env.CLOUD_COMPUTE_DATA_ROOT ?? new URL("../data", import.meta.url).pathname);
   const rows = (await foragingReadLedger({ ...options, dataRoot })).read();
-  const settlement = createSettlementStore({
-    settlementRoot: ROOT,
-    agentUrl: options.witnessJournalAgentUrl ?? process.env.WITNESS_JOURNAL_RDF_AGENT,
-    caip2: options.caip2 ?? process.env.SETTLEMENT_CAIP2,
-    custody: options.custody,
-    categoryIndex: options.categoryIndex,
-  });
+  const root = resolve(dataRoot, "..");
   return Object.freeze({
     read: () => [...rows],
     append: async (value, at) => {
-      const recorded = await settlement.record({ category: CATEGORY, recordedAt: at, record: value, signal: options.signal });
+      const recorded = await recordCloudComputeSemanticContent(root, CATEGORY, value, at);
       if (!rows.some((row) => row?.id === value?.id)) rows.push(value);
       return recorded;
     },

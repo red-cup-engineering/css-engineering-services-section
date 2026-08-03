@@ -1,12 +1,15 @@
 {
   "name": "@red-cup-engineering/youtube-services-section",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
   "description": "Credential-blind reusable YouTube Data and Analytics API protocol mechanics for sovereign channel customers.",
   "exports": {
     ".": "./src/index.mjs"
   },
+  "files": [
+    "src"
+  ],
   "scripts": {
     "check": "node --check src/index.mjs && node --check test/index.test.mjs",
     "test": "node --test test/index.test.mjs",
@@ -14,9 +17,6 @@
   },
   "engines": {
     "node": ">=22.18"
-  },
-  "dependencies": {
-    "@red-cup-engineering/rmn-semantic-conformance": "6.0.2"
   },
   "keywords": [
     "sovereign-provider",

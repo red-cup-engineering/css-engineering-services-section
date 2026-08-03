@@ -348,9 +348,12 @@ function isSettlementFiltration(value: unknown): value is SettlementFiltration {
 function isSettlementFiltrationGenerators(value: unknown): value is SettlementFiltrationGenerators {
   return typeof value === "object"
     && value !== null
-    && (value as { readonly kind?: unknown }).kind === "predication.settlement.filtration"
+    && (value as { readonly kind?: unknown }).kind === "predication.settlement.filtration.presentation"
     && Array.isArray((value as { readonly cells?: unknown }).cells)
-    && Array.isArray((value as { readonly specializations?: unknown }).specializations);
+    && Array.isArray((value as { readonly specializations?: unknown }).specializations)
+    && Array.isArray((value as { readonly assignments?: unknown }).assignments)
+    && typeof (value as { readonly closureProfile?: unknown }).closureProfile === "object"
+    && (value as { readonly closureProfile?: { readonly kind?: unknown } }).closureProfile?.kind === "predication.settlement.closureProfile";
 }
 
 function approximationChain(stdout: string): readonly unknown[] {

@@ -11,114 +11,38 @@
  * but the root remains the stable carrier/action surface.
  */
 
-import {
-  intentOfExtentTerm,
-  extentOfIntentTerm,
-  closeExtentTerm,
-  isConceptPairTerm,
-  formalConceptTerm,
-} from "./evaluating/connecting/index.mjs";
-import {
-  chuDualTerm,
-  chuLookupTerm,
-  chuDualInvolutionTerm,
-} from "./evaluating/pairing/index.mjs";
-import {
-  classifyRegimeTerm,
-  cohomologyVanishesInRegimeTerm,
-  measureIsValuationTerm,
-  conditionalViaFiberAdjointTerm,
-  markovStationaryIsClosureFixpointTerm,
-  stochasticIsValueSettlingTerm,
-  realUnitIntervalValueCategoryTerm,
-  expectationLawsTerm,
-  detailedBalanceImpliesStationaryTerm,
-  poissonSettlingTerm,
-  rankVanishingTerm,
-  rankIdentityTerm,
-  rankComparisonTerm,
-  cohomologyCarrierTerm,
-  cohomologyLaplacianTerm,
-  bigradedCohomologyTerm,
-  settlingFirstCohomologyTerm,
-} from "./evaluating/measuring/index.mjs";
-
 export * from "@lenticule-science/articulating/index";
 export * from "@lenticule-science/articulating/predicating/index";
 export * from "@lenticule-science/articulating/predicating/positing/index";
 export * from "@lenticule-science/articulating/predicating/positing/settling/index";
 export * from "@lenticule-science/articulating/predicating/positing/settling/analysis/index";
-export * from "../lib/notating/index.mjs";
-
 export * from "./carriers/index.mjs";
-export * from "./actions/index.mjs";
 export * from "./running/index.mjs";
 export * from "./projections/index.mjs";
 export * from "./ledger/index.mjs";
-export * from "./evaluating/index.mjs";
-export * from "./evaluating/projecting/index.mjs";
-export * from "./evaluating/descending/index.mjs";
-export * from "./evaluating/counting/index.mjs";
-export * from "./evaluating/measuring/index.mjs";
-export * from "./evaluating/connecting/index.mjs";
-export * from "./evaluating/pairing/index.mjs";
 export * from "@red-cup-engineering/json-file-codec-service";
 export { parse as parseJson } from "@red-cup-engineering/json-file-codec-service";
+// RMN program execution remains a real boundary operation. Export the current
+// evaluator directly; the retired local evaluator/catalog is not recreated.
+export { evaluateRunTerm } from "@red-cup-engineering/relation-model-notation-eval";
+export { tm } from "@red-cup-engineering/relation-model-notation";
 // Former TypeBox-authored clients named the same schema-to-carrier functor
 // `carrier`; retain that address while the one implementation remains
 // `carrierFrom` in the carrier kernel.
 
 export { Claim, claim } from "@lenticule-science/articulating/index";
 export { cell, cohere } from "@lenticule-science/articulating/predicating/index";
-export { bigradedCohomology, divides, settle } from "@lenticule-science/articulating/predicating/positing/settling/index";
+export { bigradedCohomology, divides } from "@lenticule-science/articulating/predicating/positing/settling/index";
 
 export * as analysis from "@lenticule-science/articulating/predicating/positing/settling/analysis/index";
 export * as geometry from "@lenticule-science/articulating/predicating/geometry/index";
 export * as settling from "@lenticule-science/articulating/predicating/positing/settling/index";
-export * as notating from "../lib/notating/index.mjs";
+export * as notating from "@red-cup-engineering/relation-model-notation";
+export * as evaluating from "@red-cup-engineering/relation-model-notation-eval";
+export * as typing from "@red-cup-engineering/relation-model-notation-typing";
 export * as carriers from "./carriers/index.mjs";
 export * as running from "./running/index.mjs";
 export * as projections from "./projections/index.mjs";
 export * as writing from "./writing/index.mjs";
 export * as codecs from "./codecs/index.mjs";
 export * as ledger from "./ledger/index.mjs";
-
-export const measurement = Object.freeze({
-  classifyRegime: classifyRegimeTerm,
-  cohomologyVanishesInRegime: cohomologyVanishesInRegimeTerm,
-});
-
-export const probability = Object.freeze({
-  measureIsValuation: measureIsValuationTerm,
-  conditionalViaFiberAdjoint: conditionalViaFiberAdjointTerm,
-  markovStationaryIsClosureFixpoint: markovStationaryIsClosureFixpointTerm,
-  stochasticIsValueSettling: stochasticIsValueSettlingTerm,
-  realUnitIntervalValueCategory: realUnitIntervalValueCategoryTerm,
-  expectationLaws: expectationLawsTerm,
-  detailedBalanceImpliesStationary: detailedBalanceImpliesStationaryTerm,
-  poissonSettling: poissonSettlingTerm,
-});
-
-export const cohomologyTerms = Object.freeze({
-  rankVanishing: rankVanishingTerm,
-  rankIdentity: rankIdentityTerm,
-  rankComparison: rankComparisonTerm,
-  carrier: cohomologyCarrierTerm,
-  laplacian: cohomologyLaplacianTerm,
-  bigraded: bigradedCohomologyTerm,
-  settlingFirst: settlingFirstCohomologyTerm,
-});
-
-export const fca = Object.freeze({
-  intentOfExtent: intentOfExtentTerm,
-  extentOfIntent: extentOfIntentTerm,
-  closeExtent: closeExtentTerm,
-  isConceptPair: isConceptPairTerm,
-  formalConcept: formalConceptTerm,
-});
-
-export const chu = Object.freeze({
-  dual: chuDualTerm,
-  lookup: chuLookupTerm,
-  dualInvolution: chuDualInvolutionTerm,
-});

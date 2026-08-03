@@ -1,21 +1,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { curriculumAction, learningAction, researchAction } from "../dist/index.mjs";
+import { admitDocument, curriculumAction, learningAction, researchAction } from "../dist/index.mjs";
 
-const document = (path, title) => Object.freeze({
-  kind: "knowing.memory.document",
-  term: `doc:${path}`,
+const document = (path, title) => admitDocument("test", Object.freeze({
   path,
-  hadFrontMatter: true,
-  frontMatter: Object.freeze({ title }),
-  body: `${title}\n\nSeeded memory.`,
-  genre: Object.freeze({ value: null }),
-  findings: Object.freeze([]),
-  facts: Object.freeze([]),
-  typings: Object.freeze([]),
-  utterances: Object.freeze([]),
-});
+  content: `---\ntitle: ${title}\ngenre: research\n---\n${title}\n\nSeeded memory.\n`,
+}));
 
 const memory = Object.freeze({
   kind: "knowing.memory",

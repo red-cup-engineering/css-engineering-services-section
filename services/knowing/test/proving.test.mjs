@@ -4,7 +4,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { ty, hasTy } from "@red-cup-engineering/relating";
+import { ty } from "@red-cup-engineering/relation-model-notation";
+import { hasTy } from "@red-cup-engineering/relation-model-notation-typing";
 import { find, inhabit } from "@red-cup-engineering/knowing";
 
 const A = ty.base(), U = ty.unit();

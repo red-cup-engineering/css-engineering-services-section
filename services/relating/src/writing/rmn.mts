@@ -17,10 +17,12 @@
  * the interpreter itself.
  */
 
-import { evaluate, inferTy, isClosed } from "../evaluating/index.mjs";
-import type { Tm } from "../../lib/notating/index.mjs";
+import { evaluate } from "@red-cup-engineering/relation-model-notation-eval";
+import { inferTy, isClosed } from "@red-cup-engineering/relation-model-notation-typing";
 import { jsonProjector, parse as parseJson, type JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import { type Projector, restrict } from "@red-cup-engineering/file-projection-kernel-service";
+
+type Tm = JsonValue;
 
 /** The IANA-style media type for an RMN body. */
 export const RMN_JSON = "application/rmn+json; charset=utf-8";

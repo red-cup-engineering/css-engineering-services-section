@@ -1,4 +1,4 @@
-import { rawNiUri } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
+import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
 import {
   admitPublicHttpsUrl,
 } from "@red-cup-engineering/public-https-url-admission-service";
@@ -28,10 +28,7 @@ function stableValue(value) {
   return value;
 }
 
-function ni(value) {
-  const bytes = JSON.stringify(stableValue(value));
-  return rawNiUri(bytes);
-}
+const identity = (objectKind, value) => identifyJsonSemanticContent({ objectKind, value: stableValue(value), witnessRoot: EMPTY_WITNESS_ROOT }).token;
 
 export function publicHttpsUrl(value, label = "URL") {
   return admitPublicHttpsUrl(value, label);
@@ -152,7 +149,7 @@ export async function observeX402Resource({
     ...(normalized.resource.mimeType === undefined ? {} : { mimeType: normalized.resource.mimeType }),
     ...sanitizeResourceServiceMetadata(normalized.resource),
   });
-  const observationDigest = ni({ method: verb, paymentRequired: normalized });
+  const observationDigest = identity("x402.public-resource-observation", { method: verb, paymentRequired: normalized });
   return Object.freeze({
     profile: PROFILE,
     method: verb,
@@ -160,7 +157,7 @@ export async function observeX402Resource({
     transport: Object.freeze({
       status: 402,
       redirected: false,
-      paymentRequiredHeaderDigest: ni(header),
+      paymentRequiredHeaderDigest: identity("x402.payment-required-header", header),
     }),
     paymentRequired: normalized,
     catalogResource,

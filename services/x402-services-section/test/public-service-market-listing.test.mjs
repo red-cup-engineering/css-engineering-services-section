@@ -136,7 +136,7 @@ test("admits one signed A2A and x402 Bazaar listing without paying", async () =>
   assert.equal(listing.sellerPolicy.asset, ASSET);
   assert.equal(listing.verification.agentCardSignature, "verified");
   assert.equal(listing.verification.x402SignedOffers, "not-performed");
-  assert.match(listing.listingDigest, /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u);
+  assert.match(listing.listingDigest, /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{42}[AEIMQUYcgkosw048]$/u);
   assert.deepEqual(listing.authority, {
     publicReadOnly: true,
     paymentAttempted: false,

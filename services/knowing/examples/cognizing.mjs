@@ -17,8 +17,9 @@ import {
   consolidateAction,
   knowNecessarilyAction,
   knowPossiblyAction,
+  stateFromMemes,
 } from "@red-cup-engineering/knowing";
-import { meme, cell, token, mark, charge, chargeValue } from "@red-cup-engineering/relating";
+import { meme, cell, token, mark, charge, chargeValue, canonical } from "@red-cup-engineering/relating";
 
 // ── build a meme (the comonad's carrier) ─────────────────────────────────────────
 const pred = {
@@ -34,7 +35,7 @@ const m = makeMeme("knower", "thing", "potential", [[mark("obs")], []]);
 // ── cognize: the ε-counit (faithful extract) ────────────────────────────────────
 const out = cognizeAction.run(m, {});
 console.log("cognize kind:", out.kind);   // "predication.fiber.meme"
-console.log("cell preserved:", JSON.stringify(out.cell) === JSON.stringify(JSON.parse(JSON.stringify(m.cell)))); // true
+console.log("cell preserved:", canonical(out.cell) === canonical(m.cell)); // true
 
 // ── absorb: a ≤_k increment (adds evidence, raises knowledge order) ──────────────
 const learned = absorbAction.run(m, { evidence: "counter", side: "against" });
@@ -50,18 +51,18 @@ console.log("reflect kind:", reflected.kind);   // meme — converges (finite)
 const ruminated = ruminateAction.run(stable, {});
 console.log("ruminate kind:", ruminated.kind);  // meme — never-settling (aperiodic)
 
-// ── doubt: suspend evidence, return to undecidable ───────────────────────────────
+// ── doubt: suspend evidence ───────────────────────────────
 const doubted = doubtAction.run(stable, {});
 console.log("doubt kind:", doubted.kind);        // meme — suspended
 
 // ── forget: erase both sides of evidence ─────────────────────────────────────────
 const forgotten = forgetAction.run(stable, {});
 const forgottenStanding = assessAction.run(forgotten, {});
-console.log("forgotten standing:", forgottenStanding.standing); // "undecidable"
+console.log("forgotten standing:", forgottenStanding.standing); // "absurd" (no evidence)
 
 // ── modalities: necessarily / possibly — box/diamond over a world-set W ──────────
-// Each world is a knowledge-state: { kind, memes, state }
-const world = { kind: "knowing.knowledge-state", memes: [m], state: { [JSON.stringify(m.cell)]: "potential" } };
+// Each world is a canonical knowledge-state produced from a folded section of memes.
+const world = stateFromMemes("example", [m]);
 const necessarily = knowNecessarilyAction.run({ meme: m, worlds: [world] }, {});
 const possibly    = knowPossiblyAction.run({ meme: m, worlds: [world] }, {});
 console.log("necessarily kind:", necessarily.kind);   // "knowing.modal-standing"

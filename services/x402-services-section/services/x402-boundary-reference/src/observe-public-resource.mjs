@@ -1,7 +1,7 @@
 import { isIP } from "node:net";
 import { decodePaymentRequiredHeader } from "@x402/core/http";
 import { validatePaymentRequired } from "@x402/core/schemas";
-import { rawNiUri } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
+import { makeNiUri as rawNiUri } from "@red-cup-engineering/ni-uri-services-section";
 
 const EVM_NETWORK = /^eip155:[1-9][0-9]*$/u;
 const EVM_ADDRESS = /^0x[0-9a-fA-F]{40}$/u;
@@ -12,7 +12,7 @@ function stable(value) {
   if (value !== null && typeof value === "object") return Object.fromEntries(Object.keys(value).sort().map((key) => [key, stable(value[key])]));
   return value;
 }
-function ni(value) { return rawNiUri(JSON.stringify(stable(value))); }
+function ni(value) { return rawNiUri(Buffer.from(JSON.stringify(stable(value)), "utf8")); }
 
 /** Refuse credential-bearing, local, and literal-IP targets before fetch. */
 export function publicHttpsUrl(value) {

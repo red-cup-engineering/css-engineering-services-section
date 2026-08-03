@@ -36,7 +36,6 @@ describe("no compatibility ownership shims", () => {
     const pkg = JSON.parse(readFileSync(resolve(root, "package.json"), "utf8"));
     for (const subpath of [
       "./carriers",
-      "./actions",
       "./codecs",
       "./codecs/text",
       "./carriers/codecs/text/json/jsonl/eavt/lean/serialization",
@@ -44,6 +43,7 @@ describe("no compatibility ownership shims", () => {
     ]) {
       assert.ok(pkg.exports[subpath], `${subpath} must be an explicit export`);
     }
+    assert.equal(pkg.exports["./actions"], undefined);
     assert.equal(pkg.exports["./running/codecs"], undefined);
     assert.equal(pkg.exports["./codecs/wire"], undefined);
     assert.equal(pkg.exports["./codecs/eavt"], undefined);

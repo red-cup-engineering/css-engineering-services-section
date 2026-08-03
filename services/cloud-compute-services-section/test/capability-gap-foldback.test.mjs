@@ -1,12 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { cloudComputeTermId } from "../src/semantic-content.mjs";
 import { ACTOR, CONTEXT, DEFAULT_FORAGER_POLICY } from "../src/improvement-board-forager.mjs";
 import { foldCapabilityGap } from "../src/capability-gap-foldback.mjs";
 
 const PUBLIC = "https://www.w3.org/ns/activitystreams#Public", BOARD = "urn:test:customer-board", CONTRACT = `ni:///sha-256;${"A".repeat(43)}`;
-const record = (body) => Object.freeze({ id: semanticId(relationalWitnessJournalDocument(body)), ...body });
+const record = (body) => Object.freeze({ id: cloudComputeTermId(body, "cloud-compute.capability-gap-foldback-record"), ...body });
 const policy = { type: "SupplierCapabilityGapFoldbackPolicy", enabled: true, investableCapabilities: ["code-review", "repository-analysis"], founderAudience: { settlement: "561-group", office: "founder" }, investmentDecision: "separate-supplier-local-decision", protectedOracleRequired: true };
 function gap(requiredCapabilities) {
   const object = record({ type: "ImprovementMarketCapabilityGap", contract: CONTRACT, customer: BOARD, lot: "urn:lot", observedAtSequence: 9, considerationCeiling: { amount: 31, unit: "relative-resolution-milliquanta-v1" }, requiredCapabilities, disposition: "publish-gap-and-keep-lot-open", strongerModelAuthorized: false });

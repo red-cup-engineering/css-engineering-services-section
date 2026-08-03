@@ -6,12 +6,11 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { MemoryKvStore } from "@fedify/fedify";
-import { semanticBytes } from "@red-cup-engineering/rmn-semantic-conformance";
-import { encodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
 import { rawNi } from "@red-cup-engineering/a2a-rmn-part-service";
 import { createActivityPubProvider, importActorKeyPairs } from "../src/provider.mjs";
 import { ACTIVITYSTREAMS_PUBLIC, extractRmnActivity, projectRmnActivity } from "../src/rmn-activity.mjs";
 import { generateActorKeyMaterial } from "../src/keys.mjs";
+import { identifyJsonDocument } from "../src/rmn-json-document.mjs";
 import { loadActivityPubOutbox, serveActivityPubProvider } from "../src/server.mjs";
 import { deliverFromEnvironment } from "../src/deliver.mjs";
 
@@ -133,8 +132,7 @@ test("an unsigned inbox POST is refused before the customer callback", async () 
 });
 
 test("a standard ActivityStreams Link carries canonical RMN bytes and names the A2A task face", async () => {
-  const encoded = encodeRelationalValue({ type: "TestOffer", sequence: 1 });
-  const bytes = semanticBytes(["ascribe", encoded.type, encoded.term]);
+  const bytes = identifyJsonDocument({ type: "TestOffer", sequence: 1 }).bytes;
   const projected = projectRmnActivity({ type: "Offer", origin: "https://supplier.example/", identifier: "supplier", recipient: "https://customer.example/actors/customer", objectBytes: bytes, agentCard: "https://supplier.example/.well-known/agent-card.json" });
   const transported = await (await import("@fedify/vocab")).Activity.fromJsonLd(projected).then((activity) => activity.toJsonLd({ format: "compact" }));
   const extracted = extractRmnActivity(transported, { expectedActor: "https://supplier.example/actors/supplier", expectedRecipient: "https://customer.example/actors/customer", expectedAgentCard: "https://supplier.example/.well-known/agent-card.json" });
@@ -149,8 +147,7 @@ test("a standard ActivityStreams Link carries canonical RMN bytes and names the 
 });
 
 test("the cone preserves only supplied real A2A extensions and forgets exactly to the same RMN bytes", () => {
-  const encoded = encodeRelationalValue({ type: "CapabilityResult", reference: "urn:authority:one" });
-  const bytes = semanticBytes(["ascribe", encoded.type, encoded.term]);
+  const bytes = identifyJsonDocument({ type: "CapabilityResult", reference: "urn:authority:one" }).bytes;
   const message = {
     messageId: "urn:a2a:capability-result:one",
     role: "ROLE_AGENT",
@@ -166,8 +163,7 @@ test("the cone preserves only supplied real A2A extensions and forgets exactly t
 });
 
 test("an addressed Create may carry one exact A2A ROLE_USER work message", () => {
-  const encoded = encodeRelationalValue({ type: "CloudRunReconciliationRequest", sequence: 1 });
-  const bytes = semanticBytes(["ascribe", encoded.type, encoded.term]);
+  const bytes = identifyJsonDocument({ type: "CloudRunReconciliationRequest", sequence: 1 }).bytes;
   const message = {
     messageId: "urn:a2a:cloud-run-work:one", role: "ROLE_USER",
     parts: [{ raw: bytes.toString("base64"), metadata: { ni: rawNi(bytes) }, filename: "work.rmn.cbor", mediaType: "application/rmn+cbor" }],
@@ -189,7 +185,7 @@ test("the generic provider loads a customer-authored durable outbox", async () =
       origin: "https://supplier.example/",
       identifier: "supplier",
       recipient: "https://www.w3.org/ns/activitystreams#Public",
-      objectBytes: semanticBytes(["ascribe", encodeRelationalValue({ type: "TestOffer" }).type, encodeRelationalValue({ type: "TestOffer" }).term]),
+      objectBytes: identifyJsonDocument({ type: "TestOffer" }).bytes,
       agentCard: "https://supplier.example/.well-known/agent-card.json",
     });
     await writeFile(outboxPath, `${JSON.stringify([projected])}\n`);

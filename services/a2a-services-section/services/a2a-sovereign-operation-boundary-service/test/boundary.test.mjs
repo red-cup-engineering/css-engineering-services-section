@@ -5,7 +5,6 @@ import { join } from "node:path";
 import test from "node:test";
 import { Message, Role } from "@a2a-js/sdk";
 import { extractRmnPart, rmnPart } from "@red-cup-engineering/a2a-rmn-part-service";
-import { decodeSemantic, semanticBytes } from "@red-cup-engineering/rmn-semantic-conformance";
 import {
   createRelationalOperationProtocol,
   executeRelationalOperationMessage,
@@ -25,7 +24,7 @@ function message(operation) {
     contextId: "",
     taskId: "",
     role: Role.ROLE_USER,
-    parts: [rmnPart(semanticBytes(request.term))],
+    parts: [rmnPart(request.bytes)],
     metadata: {},
     extensions: [],
     referenceTaskIds: [],
@@ -33,7 +32,21 @@ function message(operation) {
 }
 
 function response(output) {
-  return protocol.decodeResponse(decodeSemantic(extractRmnPart(Message.fromJSON(output).parts).bytes));
+  const input = extractRmnPart(Message.fromJSON(output).parts);
+  return protocol.admitResponse(input.bytes, input.ni);
+}
+
+function messageWithBytes(bytes) {
+  return Message.toJSON({
+    messageId: "hostile",
+    contextId: "",
+    taskId: "",
+    role: Role.ROLE_USER,
+    parts: [rmnPart(bytes)],
+    metadata: {},
+    extensions: [],
+    referenceTaskIds: [],
+  });
 }
 
 test("an unknown operation never reaches a runtime loader", async () => {
@@ -77,6 +90,37 @@ test("one admitted active runtime executes exactly once", async () => {
   });
   assert.equal(calls, 1);
   assert.equal(response(output).result.provider, "urn:provider:one");
+});
+
+test("foreign bytes are refused before runtime loading", async () => {
+  let loaded = false;
+
+  await assert.rejects(
+    executeRelationalOperationMessage(messageWithBytes(Buffer.from("foreign carrier", "utf8")), {
+      protocol,
+      operations: { owned: async () => ({}) },
+      runtimeLoader: async () => { loaded = true; return {}; },
+    }),
+    /canonical RMN normalized-content envelope/u,
+  );
+  assert.equal(loaded, false);
+});
+
+test("token drift is refused before runtime loading", async () => {
+  const request = protocol.encodeRequest("owned", { value: "one" });
+  const hostile = messageWithBytes(request.bytes);
+  hostile.parts[0].metadata.ni = rmnPart(Buffer.from("foreign bytes", "utf8")).metadata.ni;
+  let loaded = false;
+
+  await assert.rejects(
+    executeRelationalOperationMessage(hostile, {
+      protocol,
+      operations: { owned: async () => ({}) },
+      runtimeLoader: async () => { loaded = true; return {}; },
+    }),
+    /bytes do not match their ni identity/u,
+  );
+  assert.equal(loaded, false);
 });
 
 test("a relative runtime adapter cannot escape the customer membrane", async (t) => {

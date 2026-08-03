@@ -1,21 +1,18 @@
-import { articulate, mark, predicating, utterance } from "@lenticule-science/articulating";
-import { freeSettlementFiltration, induceRelation, settle } from "@lenticule-science/articulating/predicating/positing/settling";
+import { articulate, mark, utterance } from "@lenticule-science/articulating";
+import { predicate, presentPredicationSite } from "@lenticule-science/articulating/predicating";
 
 const aperture = utterance(mark("support"), mark("relation can land"));
 const lens = articulate(aperture);
-const sensor = predicating.positing.posit(predicating.predicate(lens));
-const developmentBath = settle(sensor);
+const sensor = presentPredicationSite(predicate(lens));
 const exposureLedgerHandle = {
   specimen: "support/relation can land",
-  descentEqualsNamedInduction: JSON.stringify(developmentBath) === JSON.stringify(freeSettlementFiltration(induceRelation(aperture))),
+  obstruction: "no admitted valuation; predication is exposed without positing or settlement",
 };
 
 console.log(JSON.stringify({
   aperture: aperture.kind,
   lens: lens.kind,
   sensor: sensor.kind,
-  developmentBath: developmentBath.kind,
-  phasePlate: developmentBath.kind,
-  projection: developmentBath.stages[0].designated.cells.length,
+  projection: sensor.cells.length,
   exposureLedgerHandle,
 }, null, 2));

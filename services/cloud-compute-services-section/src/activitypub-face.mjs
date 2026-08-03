@@ -1,11 +1,10 @@
 import { materializeRmnActivity } from "@red-cup-engineering/activitypub-services-section/rmn-activity";
-import { semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { cloudComputeTermBytes, cloudComputeTermId } from "./semantic-content.mjs";
 import { ACTOR, CONTEXT } from "./improvement-board-forager.mjs";
 import { PUBLIC } from "./supplier-investment-decision.mjs";
 
-function activityBytes(activity) { return semanticBytes(relationalWitnessJournalDocument(activity)); }
-function exact(value) { return value?.id === semanticId(relationalWitnessJournalDocument(Object.fromEntries(Object.entries(value ?? {}).filter(([key]) => key !== "id")))); }
+function activityBytes(activity) { return cloudComputeTermBytes(activity, "cloud-compute.activitypub-activity"); }
+function exact(value) { return value?.id === cloudComputeTermId(Object.fromEntries(Object.entries(value ?? {}).filter(([key]) => key !== "id")), "cloud-compute.activitypub-record"); }
 
 export function createSupplierActivityPubCallbacks({ origin, identifier, agentCard, ledger, pageSize = 50 }) {
   if (!ledger?.read || typeof origin !== "string" || !origin || typeof identifier !== "string" || !identifier || typeof agentCard !== "string" || !agentCard || !Number.isSafeInteger(pageSize) || pageSize < 1 || pageSize > 100) {

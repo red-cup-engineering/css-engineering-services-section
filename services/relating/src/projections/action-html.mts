@@ -7,65 +7,28 @@
  */
 import type { ActionDiscovery, ActionEndpoint, InducedBins } from "../running/induce.mjs";
 import { articulate, mark, utterance } from "@lenticule-science/articulating/utterance";
-import { predicate } from "@lenticule-science/articulating/predicating/predication";
-import { posit } from "@lenticule-science/articulating/predicating/positing/fiber";
-import { fixedPoints } from "@lenticule-science/articulating/predicating/positing/settling/fixed-point";
-import { documentOfFixedPoint } from "@lenticule-science/articulating/predicating/positing/settling/document";
-import { completeGraphWeights } from "@lenticule-science/articulating/predicating/positing/settling/analysis/index";
-import {
-  htmlCarrierOf,
-  buildHtmlDocumentPlan,
-  renderHtmlDocument,
-  type CssClassFactorMap,
-  type CssDeclaration,
-  type CssSystem,
-  type HtmlCarrierNode,
-  type RenderProfile,
-} from "@red-cup-engineering/html-file-codec-service";
+import { predicate, presentPredicationSite } from "@lenticule-science/articulating/predicating/predication";
 
 export interface ProjectionMount {
   readonly name: string;
   readonly induced: InducedBins;
 }
 
-const ACTION_HTML_COMPLETION = "ordinal.closure.regime.finite" as const;
+interface ActionHtmlNode {
+  readonly nodeId: string;
+  readonly element: string;
+  readonly text?: string;
+  readonly attributes?: Readonly<Record<string, string>>;
+  readonly children?: readonly string[];
+}
 
-const actionHtmlProfile: RenderProfile = Object.freeze({
-  kind: "rendering.profile" as const,
-  name: "relating-action-html",
-  allowedElements: Object.freeze([
-    "a",
-    "button",
-    "code",
-    "form",
-    "h1",
-    "h2",
-    "header",
-    "label",
-    "li",
-    "main",
-    "nav",
-    "ol",
-    "p",
-    "section",
-    "small",
-    "span",
-    "textarea",
-  ]),
-  allowedStyleBehavior: Object.freeze(["static"] as const),
-  allowedCompletionRegimes: Object.freeze([ACTION_HTML_COMPLETION]),
-  obligations: Object.freeze(["same-action-apex", "manual-call-boundary", "no-sidecar-renderer"]),
-  preservationLaws: Object.freeze([
-    "preserve-addresses",
-    "preserve-order",
-    "preserve-references",
-    "preserve-valuation-sites",
-    "carrier-not-document",
-    "css-settles",
-  ] as const),
-});
-
-type ActionHtmlNode = Omit<HtmlCarrierNode, "kind" | "semanticAddress" | "valuationSite">;
+interface CssDeclaration {
+  readonly kind: "rendering.css.declaration";
+  readonly nodeId: string;
+  readonly property: string;
+  readonly value: string;
+  readonly sourceOrder: number;
+}
 
 const actionDecl = (nodeId: string, property: string, value: string, sourceOrder: number): CssDeclaration => Object.freeze({
   kind: "rendering.css.declaration" as const,
@@ -75,20 +38,48 @@ const actionDecl = (nodeId: string, property: string, value: string, sourceOrder
   sourceOrder,
 });
 
-function actionClassFactorMap(nodes: readonly HtmlCarrierNode[]): CssClassFactorMap {
-  return Object.freeze({
-    kind: "rendering.css.classFactorMap" as const,
-    constraintGraph: completeGraphWeights(nodes.length),
-    nodeIds: Object.freeze(nodes.map((node) => node.nodeId)),
-    classes: Object.freeze(nodes.map((_node, index) => index)),
-    alphabet: Object.freeze(nodes.map((node, index) => `rel-action-${node.element}-${index}`)),
-  });
+const VOID_ELEMENTS = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"]);
+
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
-function actionDocument(token: string, claim: string): ReturnType<typeof documentOfFixedPoint> {
-  return documentOfFixedPoint(
-    fixedPoints(posit(predicate(articulate(utterance(mark(token), mark(claim)))))),
-  );
+function renderActionNodes(
+  nodes: readonly ActionHtmlNode[],
+  declarations: readonly CssDeclaration[],
+  roots: readonly string[],
+): string {
+  const byId = new Map(nodes.map((node) => [node.nodeId, node] as const));
+  const styleById = new Map<string, string[]>();
+  for (const declaration of [...declarations].sort((left, right) => left.sourceOrder - right.sourceOrder)) {
+    const styles = styleById.get(declaration.nodeId) ?? [];
+    styles.push(`${declaration.property}:${declaration.value}`);
+    styleById.set(declaration.nodeId, styles);
+  }
+  const render = (nodeId: string, ancestry: ReadonlySet<string>): string => {
+    if (ancestry.has(nodeId)) throw new TypeError(`actionHtmlFiber: cyclic node reference: ${nodeId}`);
+    const node = byId.get(nodeId);
+    if (node === undefined) throw new TypeError(`actionHtmlFiber: unknown node reference: ${nodeId}`);
+    const attributes = { ...(node.attributes ?? {}) };
+    const styles = styleById.get(nodeId);
+    if (styles !== undefined && styles.length > 0) attributes["style"] = styles.join(";");
+    attributes["data-node-id"] = nodeId;
+    const encodedAttributes = Object.entries(attributes)
+      .map(([name, value]) => ` ${escapeHtml(name)}="${escapeHtml(value)}"`)
+      .join("");
+    if (VOID_ELEMENTS.has(node.element)) return `<${node.element}${encodedAttributes}>`;
+    const next = new Set([...ancestry, nodeId]);
+    const body = node.text !== undefined
+      ? escapeHtml(node.text)
+      : (node.children ?? []).map((child) => render(child, next)).join("");
+    return `<${node.element}${encodedAttributes}>${body}</${node.element}>`;
+  };
+  return roots.map((root) => render(root, new Set())).join("");
 }
 
 function actionHtmlFiber(
@@ -99,41 +90,13 @@ function actionHtmlFiber(
   declarations: readonly CssDeclaration[],
   roots: readonly string[],
 ): string {
-  const document = actionDocument(token, claim);
-  if (document.kind !== "settledDocument.fixedPoint") {
-    throw new TypeError(`actionHtmlFiber: document did not settle: ${document.reason}`);
-  }
-  const address = document.addresses[0]?.key;
-  const valuationSite = document.valuationSites[0]?.address;
-  if (address === undefined || valuationSite === undefined) {
-    throw new TypeError("actionHtmlFiber: document settled without an address");
-  }
-  const nodes: readonly HtmlCarrierNode[] = Object.freeze(nodeInputs.map((node) => Object.freeze({
-    ...node,
-    kind: "rendering.htmlCarrier.node" as const,
-    semanticAddress: address,
-    valuationSite,
-  })));
-  const carrier = htmlCarrierOf(document, nodes);
-  if (carrier.kind !== "rendering.htmlCarrier") {
-    throw new TypeError(`actionHtmlFiber: carrier obstructed: ${carrier.reason}:${carrier.key}`);
-  }
-  const system: CssSystem<typeof carrier> = Object.freeze({
-    kind: "rendering.css.system" as const,
-    carrier,
-    completionRegime: ACTION_HTML_COMPLETION,
-    declarations: Object.freeze(declarations),
-    classFactorMap: actionClassFactorMap(nodes),
-  });
-  const fiber = buildHtmlDocumentPlan(actionHtmlProfile, carrier, system, "static");
-  if (fiber.kind !== "rendering.profile_forms_render_fiber:witness") {
-    throw new TypeError(`actionHtmlFiber: profile obstructed: ${fiber.reason}:${fiber.key}`);
-  }
-  return renderHtmlDocument(fiber, {
-    title,
-    roots,
-    metadata: Object.freeze({ "render-domain": "relating.projections.actions" }),
-  }).html;
+  // This boundary has action metadata but no admitted evidence about its truth.
+  // Preserve the lawful spine at predication and expose those exact generators;
+  // do not fabricate a charge merely to satisfy the settled-document renderer.
+  const generators = presentPredicationSite(predicate(articulate(utterance(mark(token), mark(claim)))));
+  const body = renderActionNodes(nodeInputs, declarations, roots);
+  const generatorsJson = JSON.stringify(generators).replaceAll("<", "\\u003c");
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="render-domain" content="relating.projections.actions"><title>${escapeHtml(title)}</title></head><body>${body}<script id="predication-generators" type="application/json">${generatorsJson}</script></body></html>`;
 }
 
 function actionChrome(nodeIds: {

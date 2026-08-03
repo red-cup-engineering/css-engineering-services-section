@@ -7,9 +7,7 @@ import { ACTOR, CONTEXT, bidForBoardOffer } from "../src/improvement-board-forag
 import { forageImprovementBoards, memoryForagingLedger, planTerminalInvestmentRedecisions, planTrajectoryInformedActions } from "../src/improvement-board-forager-service.mjs";
 import { decideSupplierInvestmentDemand } from "../src/supplier-investment-decision.mjs";
 import { extractRmnActivity, projectRmnActivity } from "@red-cup-engineering/activitypub-services-section/rmn-activity";
-import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/relation-model-notation-runtime";
-import { decodeRelationalValue } from "@red-cup-engineering/relation-model-notation-runtime/relational-value";
-import { relationalWitnessJournalDocument } from "@red-cup-engineering/witness-journal-rdf-projection-service/client";
+import { admitCloudComputeTerm, cloudComputeTermBytes, cloudComputeTermId } from "../src/semantic-content.mjs";
 
 const INCITER = "urn:ame:test-inciter", BOARD = "urn:test:customer-board";
 const board = { actor: BOARD, transport: "activitypub", listOperation: "list", submitOperation: "submit", activityPubActor: "https://board.example/actors/board", activityPubOutbox: "https://board.example/actors/board/outbox", activityPubInbox: "https://board.example/actors/board/inbox", a2aAgentCard: "https://board.example/.well-known/agent-card.json", supplierActivityPubActor: "https://supplier.example/actors/free-compute" };
@@ -23,11 +21,11 @@ const supplierInvestmentDemand = {
   publicationAuthority: { proposalInquiryOnly: true, spendAuthorized: false, customerMutationAuthorized: false, capacityChangeAuthorized: false, capabilityClaimAuthorized: false, providerSelectionAuthorized: false },
 };
 const policy = { capabilityGapFoldback: gapPolicy, founderFormationDemandBoundary: founder, supplierInvestmentDemand, boards: [board] };
-const record = (body) => ({ id: semanticId(relationalWitnessJournalDocument(body)), ...body });
+const record = (body) => ({ id: cloudComputeTermId(body, "cloud-compute.improvement-market-record"), ...body });
 const incitementAt = (sequence) => record({ "@context": CONTEXT, type: "Create", actor: INCITER, target: ACTOR, object: { type: "ImprovementForagerIncitement", evidence: [`urn:evidence:${sequence}`], sequence } });
 const incitement = incitementAt(4);
-const bytes = (value) => semanticBytes(relationalWitnessJournalDocument(value));
-const value = (encoded) => { const term = decodeSemantic(encoded); return decodeRelationalValue(term[1], term[2]); };
+const bytes = (value) => cloudComputeTermBytes(value, "cloud-compute.board-activity");
+const value = (encoded, token) => admitCloudComputeTerm(encoded, "cloud-compute.board-activity", token);
 
 function offer(number = 4) {
   const lot = record({ type: "SoftwareDevelopmentWorkLot", consumer: BOARD, requestedChanges: ["repair"], ownedTargetRoots: ["src"], sourceDigests: [`sha256:test:${number}`], acceptanceCommands: [{ runner: "node", argv: ["--test", "test/a.test.mjs"] }], productContract: { validationChecks: ["node --test"], prohibitedFields: [] }, boardTerms: { taskClass: "test", territory: "/tmp/customer", requiredCapabilities: ["software-engineering", "json-schema-output"], upwardEscalationAuthorized: false } });
@@ -311,7 +309,7 @@ test("one incitement discovers and bids through the configured ActivityPub treat
   const result = await forageImprovementBoards(incitement, { policy, ledger: memoryForagingLedger(), activityPub: { sender, fetcher, deliver: async (activity) => (delivered.push(activity), { type: "Accept", object: { type: "ActivityPubDeliveryReceipt" } }) } });
   assert.equal(result.object.outcomes[0].status, "submitted"); assert.equal(delivered.length, 1);
   const projection = extractRmnActivity(delivered[0], { expectedActor: "https://supplier.example/actors/free-compute", expectedRecipient: board.activityPubActor, expectedAgentCard: sender.agentCard });
-  const bid = value(projection.objectBytes);
+  const bid = value(projection.objectBytes, projection.objectNi);
   assert.equal(bid.object.type, "ImprovementServiceBid"); assert.equal(bid.object.resourceObservation.type, "SupplierResourcePressureObservation");
 });
 

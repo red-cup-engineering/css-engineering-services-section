@@ -14,18 +14,14 @@
  * `find` searches are the very CHL.Tm IR relating proves and evaluates.
  */
 import {
-  ty,
-  tm,
-  hasTy,
-  tyEqual,
   action,
   jsonResource,
-  type Ty,
-  type Tm,
   type Action,
   type JsonValue,
   type JsonRecord,
 } from "@red-cup-engineering/relating";
+import { ty, tm, type Ty, type Tm } from "@red-cup-engineering/relation-model-notation";
+import { hasTy, tyEqual } from "@red-cup-engineering/relation-model-notation-typing";
 
 /**
  * Search for a proof of `goal` under the de-Bruijn hypothesis context `ctx`, fuel-bounded

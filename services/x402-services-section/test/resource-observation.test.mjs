@@ -57,7 +57,7 @@ test("observes and normalizes an official x402 v2 Bazaar challenge without payin
   assert.equal(observation.bazaar.present, true);
   assert.equal(observation.bazaar.info.input.method, "GET");
   assert.deepEqual(observation.signedOffers, []);
-  assert.match(observation.observationDigest, /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u);
+  assert.match(observation.observationDigest, /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{42}[AEIMQUYcgkosw048]$/u);
   assert.deepEqual(observation.authority, {
     publicReadOnly: true,
     paymentAttempted: false,

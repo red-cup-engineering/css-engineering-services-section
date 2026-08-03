@@ -12,13 +12,13 @@ import { startRmnProviderProcess } from "@red-cup-engineering/rmn-semantic-confo
 import { startWitnessJournalProviderProcess } from "@lenticule-science/witness-journal-rdf-projection-service/test-provider";
 import { startWitTransitionAssayProcess } from "@lenticule-science/wit-transition-assay/test-provider";
 import { C2PA_BINDING_PREDICATE, publishArticle50Asset } from "../src/client.mjs";
-import { rawNiUri } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
+import { makeNiUri } from "@red-cup-engineering/ni-uri-services-section";
 
 const ROOT = resolve(import.meta.dirname, "..");
 const ACCOUNT = JSON.parse(readFileSync(join(ROOT, "content/evm/accounts/eip155-31337.json"), "utf8")).account.caip10;
 const CALLER = `eip155:31337:0x${"44".repeat(20)}`;
 const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=", "base64");
-const ni = rawNiUri;
+const ni = (value) => makeNiUri(Buffer.from(value));
 
 async function freePort() {
   const server = createServer(); await new Promise((accept) => server.listen(0, "127.0.0.1", accept));

@@ -36,6 +36,13 @@ export {
   type ActionSpec,
 } from "./action.mjs";
 
+export {
+  carrierSchemaIdentity,
+  carrierSchemaAssertions,
+  schemaAssertionUtterance,
+  carrierSchemaUtterances,
+} from "./schema.mjs";
+
 // ── the MORPHISM half of the single-source category kernel (objects live in
 //    src/carriers). The action constructor itself is the acting-boundary
 //    wrapper above; these are the registry, the IR audit, and the serializable

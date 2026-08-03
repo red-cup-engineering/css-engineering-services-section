@@ -4,24 +4,17 @@ import { pathToFileURL } from "node:url";
 import { randomUUID } from "node:crypto";
 import { Message, Role } from "@a2a-js/sdk";
 import { extractRmnPart, rmnPart } from "@red-cup-engineering/a2a-rmn-part-service";
-import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
 import {
-  decodeRelationalValue,
-  encodeRelationalValue,
-  RELATIONAL_VALUE_TYPE,
-} from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
-
-function ascription(value) {
-  const encoded = encodeRelationalValue(value);
-  return ["ascribe", encoded.type, encoded.term];
-}
+  EMPTY_WITNESS_ROOT,
+  admitJsonSemanticContent,
+  identifyJsonSemanticContent,
+} from "@red-cup-engineering/semantic-content-identify-service";
+import { termToJson } from "@red-cup-engineering/relation-model-notation-json-codec";
 
 function decodeAscription(term, kind, label) {
-  if (!Array.isArray(term) || term.length !== 3 || term[0] !== "ascribe"
-    || JSON.stringify(term[1]) !== JSON.stringify(RELATIONAL_VALUE_TYPE)) {
-    throw new TypeError(`${label} requires one typed relational RMN ascription`);
-  }
-  const value = decodeRelationalValue(term[1], term[2]);
+  let value;
+  try { value = termToJson(term); }
+  catch { throw new TypeError(`${label} requires one admitted JSON semantic term`); }
   if (value?.kind !== kind) throw new TypeError(`${label} expected ${kind}`);
   return value;
 }
@@ -32,18 +25,24 @@ export function createRelationalOperationProtocol({ requestKind, responseKind, l
   }
   return Object.freeze({
     encodeRequest(operation, input) {
-      const term = ascription({ kind: requestKind, operation, input });
-      return { term, id: semanticId(term) };
+      const payload = identifyJsonSemanticContent({ objectKind: requestKind, value: { kind: requestKind, operation, input }, witnessRoot: EMPTY_WITNESS_ROOT });
+      return { term: payload.envelope.settledBody, id: payload.token, bytes: payload.bytes };
     },
     decodeRequest(term) {
       return decodeAscription(term, requestKind, label);
     },
+    admitRequest(bytes, token) {
+      return admitJsonSemanticContent({ bytes, token, objectKind: requestKind }).value;
+    },
     encodeResponse({ request, disposition, result = null, reason = null }) {
-      const term = ascription({ kind: responseKind, request, disposition, result, reason });
-      return { term, id: semanticId(term) };
+      const payload = identifyJsonSemanticContent({ objectKind: responseKind, value: { kind: responseKind, request, disposition, result, reason }, witnessRoot: EMPTY_WITNESS_ROOT });
+      return { term: payload.envelope.settledBody, id: payload.token, bytes: payload.bytes };
     },
     decodeResponse(term) {
       return decodeAscription(term, responseKind, label);
+    },
+    admitResponse(bytes, token) {
+      return admitJsonSemanticContent({ bytes, token, objectKind: responseKind }).value;
     },
   });
 }
@@ -91,9 +90,7 @@ export async function executeRelationalOperationMessage(source, {
   const message = Message.fromJSON(source);
   if (message.role !== Role.ROLE_USER) throw new Error("sovereign operation requires an A2A ROLE_USER message");
   const input = extractRmnPart(message.parts);
-  const term = decodeSemantic(input.bytes);
-  if (!semanticBytes(term).equals(input.bytes)) throw new Error("sovereign operation requires canonical typed RMN CBOR");
-  const request = protocol.decodeRequest(term);
+  const request = protocol.admitRequest(input.bytes, input.ni);
   let response;
   try {
     const handler = operations[request.operation];
@@ -113,7 +110,7 @@ export async function executeRelationalOperationMessage(source, {
     contextId: message.contextId,
     taskId: message.taskId,
     role: Role.ROLE_AGENT,
-    parts: [rmnPart(semanticBytes(response.term), responseFilename)],
+    parts: [rmnPart(response.bytes, responseFilename)],
     metadata: { responseNi: response.id },
     extensions: [],
     referenceTaskIds: [],

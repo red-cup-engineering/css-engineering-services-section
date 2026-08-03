@@ -25,7 +25,7 @@ import {
   type FromSchema,
 } from "../carriers/kernel/carrier.mjs";
 import { MorphismSchema } from "../carriers/running/index.mjs";
-import type { Tm } from "../../lib/notating/index.mjs";
+type Tm = JsonValue;
 
 /** Carrier object accepted by the morphism half. */
 export type CategoryCarrier = Carrier<unknown>;

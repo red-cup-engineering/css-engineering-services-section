@@ -5,14 +5,16 @@
 // opaque provenance carried only at the learning layer. Its bedrock form is the
 // single utterance articulating the cell — a relational token mark `{subject,
 // object}` for a three-place entry, the diagonal (`subject` alone) for a two-place
-// one. An entry carries NO charge: charges are measured from the induced world,
-// never seeded, and a contrary fact is its own entry claiming a contrary
-// predicate. Derived on @red-cup-engineering/relating's mark/utterance only.
+// one. Its articulated token is the explicit positive witness admitted at
+// positing; no negative witness is inferred. A contrary fact remains its own
+// evidence-bearing entry rather than an invented refutation.
 
 import {
   articulate,
+  composeFibers,
   fixedPointReadings,
   fixedPoints,
+  meme,
   predicate,
   predicationSite,
   posit,
@@ -24,6 +26,7 @@ import {
   type PredicationPredicate,
   type SectionCarrier,
   type UtteranceCarrier,
+  witnessedPotential,
 } from "@red-cup-engineering/relating";
 import { mark, cellIdentity, utterance } from "@red-cup-engineering/relating";
 import { task as knowingTask } from "../dreaming/task.mjs";
@@ -32,8 +35,8 @@ import type { Task } from "../dreaming/task.mjs";
 /**
  * One evidential claim for learning: names a cell `subject -predicate-> object`
  * (two-place when `object` is absent, articulated on the diagonal) plus an opaque
- * provenance carried only at the learning layer. An entry carries no charge — a
- * contrary fact is a separate entry asserting a contrary predicate.
+ * provenance carried only at the learning layer. Its token mark supplies the
+ * positive articulation witness; a contrary fact is a separately admitted entry.
  */
 export interface LessonEvidence {
   readonly subject: string;
@@ -196,6 +199,8 @@ function taskMatches(task: Task, subject: string, predicate: string, object?: st
 function settleLearningUtterances(utterances: readonly UtteranceCarrier[]): MemeTopologyFixedPointReadings {
   const generated = utterances.map((carrier) => predicate(articulate(carrier)));
   const predicated = predicationSite(generated.flatMap((site) => [...site.cells.cells, ...site.specializations]));
-  const posited = posit(predicated);
+  const admitted = generated.flatMap((site, index) => site.cells.cells.map((carrier) =>
+    meme(carrier, witnessedPotential(utterances[index]!.token.mark))));
+  const posited = posit(predicated, composeFibers(admitted, predicated.base));
   return fixedPointReadings(fixedPoints(posited));
 }

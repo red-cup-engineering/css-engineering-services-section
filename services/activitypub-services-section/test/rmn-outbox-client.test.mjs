@@ -1,12 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { semanticBytes } from "@red-cup-engineering/rmn-semantic-conformance";
-import { encodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
 import { listAddressedRmnOutbox } from "../src/rmn-outbox-client.mjs";
 import { ACTIVITYSTREAMS_PUBLIC, projectRmnActivity } from "../src/rmn-activity.mjs";
+import { identifyJsonDocument } from "../src/rmn-json-document.mjs";
 
-const encoded = encodeRelationalValue({ type: "TestOffer", sequence: 1 });
-const bytes = semanticBytes(["ascribe", encoded.type, encoded.term]), actor = "https://board.example/actors/board", card = "https://board.example/.well-known/agent-card.json", recipient = "https://supplier.example/actors/supplier";
+const bytes = identifyJsonDocument({ type: "TestOffer", sequence: 1 }).bytes, actor = "https://board.example/actors/board", card = "https://board.example/.well-known/agent-card.json", recipient = "https://supplier.example/actors/supplier";
 const envelope = (to) => projectRmnActivity({ type: "Offer", origin: "https://board.example/", identifier: "board", recipient: to, objectBytes: bytes, agentCard: card });
 const fetcherFor = (orderedItems) => async () => ({ ok: true, json: async () => ({ type: "OrderedCollection", orderedItems }) });
 

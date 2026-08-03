@@ -17,5 +17,8 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "dependencies": {
+    "@red-cup-engineering/uniform-resource-name-admission-service": "0.1.0"
   }
 }

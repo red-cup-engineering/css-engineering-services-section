@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { createHash, randomBytes } from "node:crypto";
+import { resolve } from "node:path";
 import {
   activityObject,
   assertContentRecord,
@@ -9,7 +10,7 @@ import {
   digest,
   resourceObservations,
 } from "./records.mjs";
-import { createSettlementStore } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { queryGoogleDriveSemanticContent, recordGoogleDriveSemanticContent } from "./semantic-custody.mjs";
 
 export const ACTOR = "urn:ame:google-drive-use-team";
 const NODE_ID = "google-drive-use-team";
@@ -100,7 +101,7 @@ function requestFrom(activity) {
 
 function effectsFor(request) {
   const selected = PURPOSES[request.purpose];
-  return [selected.effect, "contract-google-drive-v3", "provider-local-witness-journal-rdf-evidence"];
+  return [selected.effect, "contract-google-drive-v3", "provider-local-immutable-semantic-custody"];
 }
 
 function solicit(activity, now) {
@@ -324,15 +325,16 @@ export async function handleGoogleDriveUseOperation(operation, input, now, optio
   throw new Error(`unsupported operation ${operation}`);
 }
 
-export async function executeGoogleDriveUseOperation({ operation, input, now, dataRoot, witnessJournalAgentUrl,
+export async function executeGoogleDriveUseOperation({ operation, input, now, dataRoot,
   settlementRoot = ROOT, accessToken, configuredCredentialGrantId, fetchImpl }) {
-  const evidence = createSettlementStore({ settlementRoot, agentUrl: witnessJournalAgentUrl });
+  const semanticRoot = dataRoot ? resolve(dataRoot, "..") : settlementRoot;
+  const priorEvidence = await queryGoogleDriveSemanticContent("google-drive.service-outcomes", { root: semanticRoot });
   let result, capabilityId = null;
   try {
     capabilityId = input?.capability?.id ?? input?.object?.capability?.id ?? null;
     result = await handleGoogleDriveUseOperation(operation, input, now, {
       accessToken, configuredCredentialGrantId, fetchImpl,
-      usedCapabilityIds: usedCapabilityIds(evidence),
+      usedCapabilityIds: usedCapabilityIds(priorEvidence),
     });
   } catch (error) {
     const object = contentRecord({ type: "GoogleDriveUseRefusal",
@@ -341,14 +343,14 @@ export async function executeGoogleDriveUseOperation({ operation, input, now, da
     result = contentRecord({ type: "Reject", actor: ACTOR, target: input?.actor ?? "urn:ame:unidentified-customer",
       inReplyTo: input?.id ?? "urn:activity:unidentified", object, recordedAt: now });
   }
-  await evidence.record({ category: "service-outcomes", recordedAt: now,
-    record: contentRecord({ type: "GoogleDriveUseServiceOutcome", operation, requestActivity: input?.id ?? null,
-      capabilityId, result, credentialMaterialRecorded: false, recordedAt: now }) });
+  await recordGoogleDriveSemanticContent(semanticRoot, "google-drive.service-outcomes",
+    contentRecord({ type: "GoogleDriveUseServiceOutcome", operation, requestActivity: input?.id ?? null,
+      capabilityId, result, credentialMaterialRecorded: false, recordedAt: now }), now);
   return result;
 }
 
-function usedCapabilityIds(evidence) {
-  return new Set(evidence.records("service-outcomes")
+function usedCapabilityIds(records) {
+  return new Set(records
     .map((record) => record.capabilityId)
     .filter((capabilityId) => finiteString(capabilityId, 256)));
 }

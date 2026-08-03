@@ -1,11 +1,15 @@
 import { randomUUID } from "node:crypto";
 import { Message, Role } from "@a2a-js/sdk";
-import { rawNiUri as rawNi } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
+import {
+  EMPTY_WITNESS_ROOT,
+  identifyBytesSemanticContent,
+  isCanonicalSha256NiUri,
+} from "@red-cup-engineering/semantic-content-identify-service";
 
 export const RMN_MEDIA_TYPE = "application/rmn+cbor";
-const NI = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u;
 
-export { rawNi };
+/** Compatibility name for callers which already treat this as raw byte identity. */
+export const rawNi = (bytes) => identifyBytesSemanticContent({ objectKind: "a2a-rmn-part.carrier", bytes: Buffer.from(bytes), mediaType: RMN_MEDIA_TYPE, witnessRoot: EMPTY_WITNESS_ROOT }).token;
 
 export function rmnPart(bytes, filename = "operation.rmn.cbor") {
   const body = Buffer.from(bytes), ni = rawNi(body);
@@ -21,8 +25,8 @@ export function extractRmnPart(parts) {
   const candidates = (Array.isArray(parts) ? parts : []).filter((part) => part?.mediaType === RMN_MEDIA_TYPE && part?.content?.$case === "raw");
   if (candidates.length !== 1) throw new Error("an A2A RMN operation must carry exactly one application/rmn+cbor raw part");
   const part = candidates[0], bytes = Buffer.from(part.content.value ?? []), claimed = part.metadata?.ni;
-  if (typeof claimed !== "string" || !NI.test(claimed)) throw new Error("the RMN part must carry an RFC 6920 SHA-256 ni identity");
-  if (rawNi(bytes) !== claimed) throw new Error("the RMN part bytes do not match their ni identity");
+  if (!isCanonicalSha256NiUri(claimed)) throw new Error("the RMN part must carry a canonical RFC 6920 SHA-256 ni identity");
+  if (rawNi(bytes) !== claimed) throw new Error("the RMN part bytes do not match their semantic carrier identity");
   return { bytes, ni: claimed, filename: part.filename || "operation.rmn.cbor" };
 }
 

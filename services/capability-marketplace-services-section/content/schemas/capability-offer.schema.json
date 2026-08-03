@@ -17,10 +17,10 @@
   ],
   "properties": {
     "profile": {"const": "org.emsenn.capability-offer.v1"},
-    "semanticId": {"type": "string", "pattern": "^ni:///sha-256;[A-Za-z0-9_-]{43}$"},
+    "semanticId": {"type": "string", "pattern": "^ni:///sha-256;[A-Za-z0-9_-]{42}[AEIMQUYcgkosw048]$"},
     "provider": {"type": "string", "format": "uri"},
     "operation": {"type": "string", "minLength": 1},
-    "law": {"type": "string", "pattern": "^ni:///sha-256;[A-Za-z0-9_-]{43}$"},
+    "law": {"type": "string", "pattern": "^ni:///sha-256;[A-Za-z0-9_-]{42}[AEIMQUYcgkosw048]$"},
     "agentCard": {"type": "string", "format": "uri"},
     "authorization": {
       "type": "object",

@@ -1,7 +1,9 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { Builder, LocalSigner, Reader } from "@contentauth/c2pa-node";
-import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
+import { admitNormalizedSemanticContent, EMPTY_WITNESS_ROOT, identifyNormalizedSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
+import { inferTy } from "@red-cup-engineering/relation-model-notation-typing";
+import { makeNiUri } from "@red-cup-engineering/ni-uri-services-section";
 
 const MARK = ["mark"], NI = ["base", "Ni"], EFFECT = ["effect"];
 const EVIDENCE = ["base", "Evidence"];
@@ -14,7 +16,9 @@ const SOURCE_TYPES = new Set([
 ]);
 const OVERSIGHT = new Set(["none", "human-directed", "human-reviewed", "human-authored-with-ai-assistance"]);
 
-export const C2PA_LAW = semanticId(["mark", "org.emsenn.c2pa.article50-media-signing.v1"]);
+export function identifyC2paTerm(term, objectKind) { return identifyNormalizedSemanticContent({ objectKind, semanticType: inferTy([], term), term, witnessRoot: EMPTY_WITNESS_ROOT }); }
+export function admitC2paTerm(bytes, token) { return admitNormalizedSemanticContent(bytes, token); }
+export const C2PA_LAW = identifyC2paTerm(["mark", "org.emsenn.c2pa.article50-media-signing.v1"], "c2pa.law").token;
 export const C2PA_OPERATION_TYPE = ["product", MARK, ["product", MARK, ["product", MARK, ["product", MARK, ["product", MARK, ["product", MARK, MARK]]]]]];
 export const C2PA_PAYLOAD_TYPE = ["product", MARK, ["product", MARK, ["product", MARK, ["product", NI, ["product", NI, ["product", MARK, MARK]]]]]];
 export const C2PA_RESPONSE_TYPE = ["product", ["product", EFFECT, C2PA_OPERATION_TYPE], ["product", WIT, C2PA_PAYLOAD_TYPE]];
@@ -26,7 +30,7 @@ function mark(value) { return ["mark", value]; }
 function marked(term) { if (term?.[0] !== "mark") fail("expected C2PA RMN Mark"); return term[1]; }
 function niTerm(value) { return ["constant", NI, value]; }
 function niValue(term) { if (term?.[0] !== "constant" || term[1]?.[0] !== "base" || term[1]?.[1] !== "Ni") fail("expected C2PA ni constant"); return term[2]; }
-const rawNi = (await import(new URL("../../../../../../lenticule-science/services/obsmetrological-services-section/services/rmn-semantic-conformance-die/src/canonical-cbor.mjs", import.meta.url).href)).rawNiUri;
+const rawNi = (value) => makeNiUri(Buffer.from(value));
 function nonempty(value, label) { if (typeof value !== "string" || value.trim() !== value || value.length === 0) fail(`${label} must be nonempty text`); return value; }
 function mediaType(value) { nonempty(value, "mediaType"); if (!/^(?:image|audio|video)\/[A-Za-z0-9.+-]+$|^application\/pdf$/u.test(value)) fail("asset mediaType is outside the C2PA media profile"); return value; }
 

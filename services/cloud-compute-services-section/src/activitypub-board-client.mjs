@@ -1,9 +1,7 @@
 import { deliverFromEnvironment } from "@red-cup-engineering/activitypub-services-section/deliver";
 import { projectRmnActivity } from "@red-cup-engineering/activitypub-services-section/rmn-activity";
 import { listAddressedRmnOutbox } from "@red-cup-engineering/activitypub-services-section/rmn-outbox-client";
-import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { decodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
-import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { admitCloudComputeTerm, cloudComputeTermBytes, cloudComputeTermId } from "./semantic-content.mjs";
 import { ACTOR, CONTEXT } from "./improvement-board-forager.mjs";
 
 const PUBLIC = "https://www.w3.org/ns/activitystreams#Public";
@@ -14,14 +12,14 @@ export function activityPubSenderFromEnvironment(overrides = {}) {
   return Object.freeze({ actor: ACTOR, origin, identifier, agentCard: overrides.agentCard ?? process.env.CLOUD_COMPUTE_A2A_AGENT_CARD ?? requiredEnvironment("IMPROVEMENT_MARKET_SUPPLIER_AGENT_CARD_URL"), keyPath: overrides.keyPath ?? requiredEnvironment("CLOUD_COMPUTE_ACTIVITYPUB_KEYS_PATH"), actorName: overrides.actorName ?? "Cloud Compute Services Supplier", summary: overrides.summary ?? "A sovereign development supplier observing improvement markets." });
 }
 
-function activityBytes(activity) { return semanticBytes(relationalWitnessJournalDocument(activity)); }
-function activityFromBytes(bytes) { const ascribed = decodeSemantic(bytes); if (ascribed?.[0] !== "ascribe" || ascribed.length !== 3) throw new Error("ActivityPub RMN object is not one typed relational document"); return decodeRelationalValue(ascribed[1], ascribed[2]); }
+function activityBytes(activity) { return cloudComputeTermBytes(activity, "cloud-compute.board-activity"); }
+function activityFromBytes(bytes, token) { return admitCloudComputeTerm(bytes, "cloud-compute.board-activity", token); }
 function assertDeterministicIdentities(value, path = "activity") {
   if (Array.isArray(value)) { value.forEach((item, index) => assertDeterministicIdentities(item, `${path}[${index}]`)); return; }
   if (!value || typeof value !== "object") return;
   if (Object.hasOwn(value, "id")) {
     const body = Object.fromEntries(Object.entries(value).filter(([key]) => key !== "id"));
-    if (value.id !== semanticId(relationalWitnessJournalDocument(body))) throw new Error(`ActivityPub RMN ${path} has a non-deterministic identity`);
+    if (value.id !== cloudComputeTermId(body, "cloud-compute.board-record")) throw new Error(`ActivityPub projection ${path} has a non-deterministic semantic identity`);
   }
   for (const [key, item] of Object.entries(value)) if (key !== "id") assertDeterministicIdentities(item, `${path}.${key}`);
 }
@@ -40,7 +38,7 @@ export async function listActivityPubBoardOutbox(board, { fetcher = fetch, suppl
   const projections = await listAddressedRmnOutbox({ outboxUrl: board.activityPubOutbox, expectedActor: board.activityPubActor, expectedAgentCard: board.a2aAgentCard, recipient: supplierActor, fetcher: routedFetcher });
   const items = [];
   for (const projection of projections) {
-      const activity = activityFromBytes(projection.objectBytes);
+      const activity = activityFromBytes(projection.objectBytes, projection.objectNi);
       if (activity?.type !== projection.type || activity?.actor !== board.actor || ![PUBLIC, ACTOR].includes(activity?.target)) throw new Error("ActivityPub projection and RMN activity disagree on type, actor, or target");
       assertDeterministicIdentities(activity);
       items.push(activity);

@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/relating",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -15,9 +15,9 @@
   "scripts": {
     "clean": "rm -rf dist .tmp",
     "check": "tsc --noEmit",
-    "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.services.json && node copy-dist-assets.mjs && chmod +x dist/services/cli/main.mjs dist/services/http/main.mjs",
+    "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.services.json && node copy-dist-assets.mjs",
     "test": "node --test \"test/**/*.test.mjs\"",
-    "examples": "node examples/material/camera-exposure.mjs && node examples/package/package-phase.mjs && node examples/package/action-projection.mjs && node examples/services/cli-exposure.mjs",
+    "examples": "node examples/material/camera-exposure.mjs",
     "verify": "npm run check && npm run build && npm test && npm run examples",
     "docs:api": "typedoc",
     "prepack": "npm run rebuild",
@@ -25,10 +25,6 @@
   },
   "main": "./dist/src/index.mjs",
   "types": "./dist/src/index.d.mts",
-  "bin": {
-    "relate": "./dist/services/cli/main.mjs",
-    "relate-serve": "./dist/services/http/main.mjs"
-  },
   "files": [
     "dist",
     "docs",
@@ -45,37 +41,32 @@
     "typescript": "^5.8.0"
   },
   "dependencies": {
-    "@lenticule-science/articulating": "0.1.1",
+    "@lenticule-science/articulating": "0.2.0",
     "@red-cup-engineering/content-tree-reading-service": "0.1.0",
-    "@red-cup-engineering/relation-term-reduction-and-typing": "0.0.1",
-    "@red-cup-engineering/wire-form-round-trip-check": "0.0.1",
-    "@red-cup-engineering/witness-journal-coherence": "0.0.1",
     "@red-cup-engineering/file-cryptographic-integrity-service": "0.1.1",
     "@red-cup-engineering/file-projection-kernel-service": "0.1.1",
     "@red-cup-engineering/html-file-codec-service": "0.1.2",
-    "@red-cup-engineering/json-file-codec-service": "0.1.2",
-    "@red-cup-engineering/json-schema-services-section": "0.1.1",
-    "@red-cup-engineering/markdown-file-codec-service": "0.1.0",
-    "@red-cup-engineering/xml-file-codec-service": "0.1.2",
-    "@red-cup-engineering/toml-file-codec-service": "0.1.0",
-    "@red-cup-engineering/turtle-term-writing-service": "0.1.0"
+    "@red-cup-engineering/json-file-codec-service": "0.1.3",
+    "@red-cup-engineering/json-schema-services-section": "0.1.3",
+    "@red-cup-engineering/markdown-file-codec-service": "0.1.2",
+    "@red-cup-engineering/relation-model-notation": "0.0.1",
+    "@red-cup-engineering/relation-model-notation-eval": "0.0.2",
+    "@red-cup-engineering/relation-model-notation-typing": "0.0.1",
+    "@red-cup-engineering/wire-form-round-trip-check": "0.0.1",
+    "@red-cup-engineering/witness-journal-coherence": "0.0.1",
+    "@red-cup-engineering/xml-file-codec-service": "0.1.2"
+  },
+  "overrides": {
+    "@red-cup-engineering/toml-file-codec-service": "0.1.1"
   },
   "exports": {
     ".": {
       "types": "./dist/src/index.d.mts",
       "import": "./dist/src/index.mjs"
     },
-    "./notating": {
-      "types": "./dist/lib/notating/index.d.mts",
-      "import": "./dist/lib/notating/index.mjs"
-    },
     "./carriers": {
       "types": "./dist/src/carriers/index.d.mts",
       "import": "./dist/src/carriers/index.mjs"
-    },
-    "./actions": {
-      "types": "./dist/src/actions/index.d.mts",
-      "import": "./dist/src/actions/index.mjs"
     },
     "./codecs": {
       "types": "./dist/src/codecs/index.d.mts",
@@ -84,6 +75,10 @@
     "./writing": {
       "types": "./dist/src/writing/index.d.mts",
       "import": "./dist/src/writing/index.mjs"
+    },
+    "./writing/path": {
+      "types": "./dist/src/writing/path.d.mts",
+      "import": "./dist/src/writing/path.mjs"
     },
     "./typing": {
       "types": "./dist/src/writing/print.d.mts",
@@ -136,42 +131,6 @@
     "./ledger": {
       "types": "./dist/src/ledger/index.d.mts",
       "import": "./dist/src/ledger/index.mjs"
-    },
-    "./evaluating": {
-      "types": "./dist/src/evaluating/index.d.mts",
-      "import": "./dist/src/evaluating/index.mjs"
-    },
-    "./evaluating/projecting": {
-      "types": "./dist/src/evaluating/projecting/index.d.mts",
-      "import": "./dist/src/evaluating/projecting/index.mjs"
-    },
-    "./evaluating/descending": {
-      "types": "./dist/src/evaluating/descending/index.d.mts",
-      "import": "./dist/src/evaluating/descending/index.mjs"
-    },
-    "./evaluating/reading": {
-      "types": "./dist/src/evaluating/reading/index.d.mts",
-      "import": "./dist/src/evaluating/reading/index.mjs"
-    },
-    "./evaluating/measuring": {
-      "types": "./dist/src/evaluating/measuring/index.d.mts",
-      "import": "./dist/src/evaluating/measuring/index.mjs"
-    },
-    "./evaluating/counting": {
-      "types": "./dist/src/evaluating/counting/index.d.mts",
-      "import": "./dist/src/evaluating/counting/index.mjs"
-    },
-    "./evaluating/pairing": {
-      "types": "./dist/src/evaluating/pairing/index.d.mts",
-      "import": "./dist/src/evaluating/pairing/index.mjs"
-    },
-    "./evaluating/connecting": {
-      "types": "./dist/src/evaluating/connecting/index.d.mts",
-      "import": "./dist/src/evaluating/connecting/index.mjs"
-    },
-    "./evaluating/settling": {
-      "types": "./dist/src/evaluating/settling/index.d.mts",
-      "import": "./dist/src/evaluating/settling/index.mjs"
     },
     "./package.json": "./package.json",
     "./codecs/text": {

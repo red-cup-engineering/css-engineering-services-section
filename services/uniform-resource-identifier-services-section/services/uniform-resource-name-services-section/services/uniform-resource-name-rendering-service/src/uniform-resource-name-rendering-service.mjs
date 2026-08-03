@@ -22,24 +22,12 @@
 // This service refuses that case rather than emit a string that would not
 // round-trip through admitUniformResourceName.
 
-const NID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9-]{0,30}[A-Za-z0-9]$/u;
-const NSS_CHAR = /^[A-Za-z0-9\-._~!$&'()*+,;=:@/]$/u;
-const RQ_CHAR = /^[A-Za-z0-9\-._~!$&'()*+,;=:@/?]$/u;
+import { admitUniformResourceName } from "@red-cup-engineering/uniform-resource-name-admission-service";
 
-function fullyMatches(value, charClass) {
-  let i = 0;
-  while (i < value.length) {
-    const ch = value[i];
-    if (ch === "%") {
-      const hex = value.slice(i + 1, i + 3);
-      if (!/^[0-9A-Fa-f]{2}$/u.test(hex)) return { ok: false, position: i };
-      i += 3;
-      continue;
-    }
-    if (charClass.test(ch)) { i += 1; continue; }
-    return { ok: false, position: i };
-  }
-  return { ok: true, position: -1 };
+function invalidPart(rule, value, allowEmpty = false) {
+  return typeof value !== "string" || (!allowEmpty && value.length === 0)
+    ? { ok: false, rule, message: `${rule} must be ${allowEmpty ? "a string" : "a non-empty string"} when present` }
+    : null;
 }
 
 /**
@@ -52,28 +40,15 @@ export function renderUniformResourceName(parts) {
   }
   const { nid, nss, rComponent = null, qComponent = null, fComponent = null } = parts;
 
-  if (typeof nid !== "string" || !NID_PATTERN.test(nid)) {
-    return { ok: false, rule: "NID", message: `NID ${JSON.stringify(nid)} must be 2-32 characters of alphanumerics and hyphens, starting and ending with an alphanumeric character` };
-  }
-
-  if (typeof nss !== "string" || nss.length === 0) {
-    return { ok: false, rule: "NSS", message: "NSS must be a non-empty string" };
-  }
-  const nssCheck = fullyMatches(nss, NSS_CHAR);
-  if (!nssCheck.ok) {
-    return { ok: false, rule: "NSS", message: `NSS contains a disallowed character at position ${nssCheck.position}` };
-  }
+  if (typeof nid !== "string") return { ok: false, rule: "NID", message: "NID must be a string" };
+  const invalidNss = invalidPart("NSS", nss);
+  if (invalidNss) return invalidNss;
 
   let rendered = `urn:${nid}:${nss}`;
 
   if (rComponent !== null && rComponent !== undefined) {
-    if (typeof rComponent !== "string" || rComponent.length === 0) {
-      return { ok: false, rule: "r-component", message: "rComponent must be a non-empty string when present" };
-    }
-    const check = fullyMatches(rComponent, RQ_CHAR);
-    if (!check.ok) {
-      return { ok: false, rule: "r-component", message: `rComponent contains a disallowed character at position ${check.position}` };
-    }
+    const invalid = invalidPart("r-component", rComponent);
+    if (invalid) return invalid;
     if (rComponent.includes("?=") || rComponent.includes("#")) {
       return { ok: false, rule: "r-component", message: 'rComponent must not contain the literal sequence "?=" or "#": either would be re-parsed as ending the r-component' };
     }
@@ -81,13 +56,8 @@ export function renderUniformResourceName(parts) {
   }
 
   if (qComponent !== null && qComponent !== undefined) {
-    if (typeof qComponent !== "string" || qComponent.length === 0) {
-      return { ok: false, rule: "q-component", message: "qComponent must be a non-empty string when present" };
-    }
-    const check = fullyMatches(qComponent, RQ_CHAR);
-    if (!check.ok) {
-      return { ok: false, rule: "q-component", message: `qComponent contains a disallowed character at position ${check.position}` };
-    }
+    const invalid = invalidPart("q-component", qComponent);
+    if (invalid) return invalid;
     if (qComponent.includes("#")) {
       return { ok: false, rule: "q-component", message: 'qComponent must not contain the literal "#": it would be re-parsed as ending the q-component' };
     }
@@ -95,14 +65,28 @@ export function renderUniformResourceName(parts) {
   }
 
   if (fComponent !== null && fComponent !== undefined) {
-    if (typeof fComponent !== "string") {
-      return { ok: false, rule: "f-component", message: "fComponent must be a string when present" };
-    }
-    const check = fullyMatches(fComponent, RQ_CHAR);
-    if (!check.ok) {
-      return { ok: false, rule: "f-component", message: `fComponent contains a disallowed character at position ${check.position}` };
-    }
+    const invalid = invalidPart("f-component", fComponent, true);
+    if (invalid) return invalid;
     rendered += `#${fComponent}`;
+  }
+
+  // The admission service owns the ABNF. Re-admission also proves that the
+  // constructed surface parses back to the same component tuple, rather than
+  // allowing data to be reinterpreted as a delimiter.
+  const admitted = admitUniformResourceName(rendered);
+  if (!admitted.ok) return { ok: false, rule: admitted.rule, message: admitted.message };
+
+  const expected = {
+    nid,
+    nss,
+    rComponent: rComponent ?? null,
+    qComponent: qComponent ?? null,
+    fComponent: fComponent ?? null,
+  };
+  for (const [field, rule] of [["nid", "NID"], ["nss", "NSS"], ["rComponent", "r-component"], ["qComponent", "q-component"], ["fComponent", "f-component"]]) {
+    if (admitted[field] !== expected[field]) {
+      return { ok: false, rule, message: `${field} cannot be rendered without changing its RFC 8141 component boundaries` };
+    }
   }
 
   return { ok: true, urn: rendered };

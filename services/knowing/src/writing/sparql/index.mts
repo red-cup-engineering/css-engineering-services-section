@@ -13,11 +13,6 @@ type EAVT = codecs.text.json.jsonl.eavt.EAVT;
 type EAVTRecord = codecs.text.json.jsonl.eavt.EAVTRecord;
 import { readWitnessLog, type WitnessStore } from "@red-cup-engineering/relating/services/filesystem-store";
 import {
-  iriRef,
-  turtleLiteral,
-} from "@red-cup-engineering/relating/writing";
-
-import {
   evaluateDatalog,
   variable as datalogVariable,
   type DatalogAtom,
@@ -140,7 +135,7 @@ export const sparqlResultSchema = {
   $id: "knowing/writing/sparql/result",
   title: "SparqlResult",
   type: "object",
-  required: ["kind", "type", "variables", "bindings", "ask", "triples", "turtle", "datalog"],
+  required: ["kind", "type", "variables", "bindings", "ask", "triples", "datalog"],
   additionalProperties: false,
   properties: {
     kind: { const: "knowing.sparql.result" },
@@ -149,7 +144,6 @@ export const sparqlResultSchema = {
     bindings: { type: "array", items: jsonObjectSchema },
     ask: { type: "boolean" },
     triples: { type: "array", items: sparqlTriplePatternSchema },
-    turtle: { type: "string" },
     datalog: { type: "object" },
   },
 } as const;
@@ -195,7 +189,6 @@ export function evaluateSparql(rows: readonly (EAVT | EAVTRecord)[], query: Spar
     bindings,
     ask: bindings.length > 0,
     triples,
-    turtle: triplesToTurtle(triples),
     datalog,
   });
   sparqlResultCarrier.assert(result);
@@ -327,20 +320,6 @@ function valueOf(term: SparqlTerm, binding: SparqlBinding): JsonValue {
   const value = binding[term.name];
   if (value === undefined) throw new TypeError(`sparql: unbound variable ${term.name} in CONSTRUCT template`);
   return value;
-}
-
-export function triplesToTurtle(triples: readonly RdfTriple[]): string {
-  if (triples.length === 0) return "";
-  return `${triples.map((triple) =>
-    `${subjectOrPredicate(triple.s)} ${subjectOrPredicate(triple.p)} ${objectTerm(triple.o)} .`).join("\n")}\n`;
-}
-
-function subjectOrPredicate(value: JsonValue): string {
-  return iriRef(typeof value === "string" ? value : canonical(value));
-}
-
-function objectTerm(value: JsonValue): string {
-  return typeof value === "string" && /^[a-z][a-z0-9+.-]*:/i.test(value) ? iriRef(value) : turtleLiteral(value);
 }
 
 export function triplesFromEavt(rows: readonly (EAVT | EAVTRecord)[]): readonly RdfTriple[] {

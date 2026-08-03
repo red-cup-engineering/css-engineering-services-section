@@ -4,7 +4,7 @@ import {
   createGoogleOidcVerifier,
 } from "@red-cup-engineering/gcloud-runtime-authorities-service";
 import { createImmutableContentCustody } from "@red-cup-engineering/immutable-content-custody-service";
-import { createR2RestClient, r2RestConfiguration } from "@red-cup-engineering/resource-brokerage-service-section/src/r2-rest.js";
+import { createR2RestClient, r2RestConfiguration } from "@red-cup-engineering/immutable-content-custody-service/r2-rest";
 
 function required(environment, name) {
   const value = environment[name];

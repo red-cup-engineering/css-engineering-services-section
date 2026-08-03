@@ -8,38 +8,43 @@
  *
  * It depends on no package but `@red-cup-engineering/relating`: document parsing
  * comes from the proof-pathed Markdown codec (`parseMarkdown`), and settlement from
- * `induceRelation` + `relateRelations`. The genre, frontmatter-legibility
+ * explicit fact valuation + `relateRelations`. The genre, frontmatter-legibility
  * conformance, and internal-reference helpers are ported into knowing (below) — the
  * capability lives here. knowing writes no settlement engine.
  *
- * Memory is settled by directed relational research: each document's
- * (path → claim) relation is induced to its own SettlementFiltration and the
- * relations are folded into one settled topology, whose closure regime is the
- * memory's certification (relating-experimental has no `settleUtterances` shortcut).
+ * Memory is settled by directed relational research: each codec-admitted fact's
+ * exact charged predication is presented under knowledge closure and the
+ * presentations are folded into one settled topology, whose closure regime is
+ * the memory's certification.
  */
 import {
   cell,
+  charge,
+  chargeValue,
   claim,
   cohomologyLaplacianOfCells,
-  cohomologyTerms,
-  evaluateRunTerm,
+  articulate,
   mark,
+  posit,
+  predicate,
   predicateOfClaim,
+  presentSettlementFiltration,
+  settlementClosureProfile,
   token,
   utterance,
-  induceRelation,
   relateRelations,
   freeSettlementFiltration,
   readClassificationOfSettlementFiltration,
+  valuationOfCharge,
   type Cell,
   type JsonRecord,
-  type JsonValue as RelatingJsonValue,
   type UtteranceCarrier,
   type SettlementFiltrationGenerators,
   type JsonValue,
 } from "@red-cup-engineering/relating";
 import { markdown } from "@red-cup-engineering/relating/writing";
 import type { Resource } from "@red-cup-engineering/relating/projections";
+import { jsonResource } from "@red-cup-engineering/json-file-codec-service";
 
 // The memory readings are interface-first derived producers for now; their generated
 // schema mirrors were retired in the FromSchema migration. The spine carriers — term,
@@ -139,6 +144,8 @@ export interface MemoryFact {
   readonly object: JsonValue;
   /** the charge standing over FOUR (codec-admitted facts carry positive witness → potential). */
   readonly standing: "potential" | "active" | "stable" | "absurd";
+  /** Exact proof-path witnesses admitted by the codec, indexed [positive, negative]. */
+  readonly evidence: readonly [readonly string[], readonly string[]];
 }
 
 /** A typing: a term inhabits a predicate-type (the predication's predicate/sort). */
@@ -195,7 +202,7 @@ export function admitDocument(root: string, resource: Resource): MemoryDocument 
   } catch (cause) {
     // A resource the codec cannot decode (malformed frontmatter) is admitted as a
     // fact-less document carrying a broken-frontmatter finding — never an abort of the
-    // whole memory. The codec is the law; this records its refusal as an active fact.
+    // whole memory. No carrier law turns a decode refusal into negative evidence.
     const message = cause instanceof Error ? cause.message : String(cause);
     return Object.freeze({
       kind: "knowing.memory.document" as const,
@@ -222,6 +229,10 @@ export function admitDocument(root: string, resource: Resource): MemoryDocument 
     predicate: c.cell.predicate,
     object: c.cell.object,
     standing: standingOf(c.charge.value),
+    evidence: Object.freeze([
+      Object.freeze([...c.charge.evidence[0]]),
+      Object.freeze([...c.charge.evidence[1]]),
+    ] as const),
   })));
   const seenPredicates = new Set<string>();
   const typings: MemoryTyping[] = [];
@@ -231,7 +242,7 @@ export function admitDocument(root: string, resource: Resource): MemoryDocument 
     typings.push(Object.freeze({ kind: "knowing.memory.typing" as const, term, predicate: f.predicate }));
   }
   const utterances: readonly UtteranceCarrier[] = Object.freeze(
-    facts.map((f) => utterance(mark({ subject: f.subject, object: f.object }), mark(f.predicate))),
+    facts.map(utteranceOfFact),
   );
   return Object.freeze({
     kind: "knowing.memory.document" as const,
@@ -280,24 +291,31 @@ export interface MemoryProof {
   readonly certified: boolean;
 }
 
-function claimOf(document: MemoryDocument): string {
-  const title = document.frontMatter["title"];
-  if (typeof title === "string" && title.trim() !== "") return title;
-  const line = document.body.split("\n").map((l) => l.trim()).find((l) => l !== "" && !l.startsWith("#"));
-  return line ?? document.path;
+function utteranceOfFact(fact: MemoryFact): UtteranceCarrier {
+  return utterance(mark({ subject: fact.subject, object: fact.object }), mark(fact.predicate));
 }
 
 /**
  * Fold memory into one settled topology by directed relational research: induce
- * each document's (path → claim) relation and relate them. The raw
+ * each fact's codec-admitted charged predication and relate them. The raw
  * SettlementFiltration — the carrier downstream agency morphisms (becoming →
- * doing → learning) admit. Null only for empty memory.
+ * doing → learning) admit. Null when memory contains no admitted facts.
  */
 export function settleMemoryFiltration(memory: MemoryCarrier): SettlementFiltrationGenerators | null {
   let folded: SettlementFiltrationGenerators | null = null;
+  const closureProfile = settlementClosureProfile("knowledge");
   for (const document of memory.documents) {
-    const relation = induceRelation(utterance(mark(document.path), mark(claimOf(document))));
-    folded = folded === null ? relation : relateRelations(folded, relation);
+    for (const fact of document.facts) {
+      const articulation = articulate(utteranceOfFact(fact));
+      const predication = predicate(articulation);
+      const admitted = charge(chargeValue(fact.standing), [
+        fact.evidence[0].map(mark),
+        fact.evidence[1].map(mark),
+      ]);
+      const positing = posit(predication, valuationOfCharge(predication, admitted));
+      const presentation = presentSettlementFiltration(positing, closureProfile);
+      folded = folded === null ? presentation : relateRelations(folded, presentation);
+    }
   }
   return folded;
 }
@@ -309,13 +327,14 @@ export function settleMemoryFiltration(memory: MemoryCarrier): SettlementFiltrat
  */
 export function settleMemory(memory: MemoryCarrier): MemoryProof {
   const folded = settleMemoryFiltration(memory);
+  const facts = memory.documents.reduce((n, d) => n + d.facts.length, 0);
   const regime = folded === null ? null : readClassificationOfSettlementFiltration(freeSettlementFiltration(folded)).regime.kind;
   const onShell = regime !== null && regime !== "ordinal.closure.regime.aperiodic";
   return Object.freeze({
     kind: "knowing.memory.proof" as const,
     documents: memory.documents.length,
-    facts: memory.documents.reduce((n, d) => n + d.facts.length, 0),
-    relationsFolded: memory.documents.length,
+    facts,
+    relationsFolded: facts,
     regime,
     onShell,
     certified: onShell,
@@ -496,15 +515,17 @@ function conceptEdgeCell(edge: ConceptEdge): Cell {
 function conceptMapCohomologyReceipt(nodes: number, edges: readonly ConceptEdge[]): JsonRecord {
   const cells = edges.map(conceptEdgeCell);
   const laplacian = cohomologyLaplacianOfCells(cells);
+  const vanishing = jsonResource(laplacian.cohomology.firstCohomology.vanishing, "concept-map H1 vanishing judgment");
+  const laplacianPresentation = jsonResource(laplacian, "concept-map cohomology Laplacian");
   return Object.freeze({
     kind: "knowing.memory.concept-map.cohomology" as const,
     nodes,
     edges: edges.length,
     h0: laplacian.cohomology.zeroCohomology.rank.members.length,
     h1: laplacian.cohomology.firstCohomology.rank.members.length,
-    vanishing: evaluateRunTerm(cohomologyTerms.rankVanishing, laplacian.cohomology.firstCohomology.vanishing as unknown as RelatingJsonValue),
-    laplacian: evaluateRunTerm(cohomologyTerms.laplacian, laplacian as unknown as RelatingJsonValue),
-  }) as JsonRecord;
+    vanishing,
+    laplacian: laplacianPresentation,
+  });
 }
 
 /**

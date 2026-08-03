@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import {
   createR2RestClient,
   r2RestConfiguration,
-} from "@red-cup-engineering/resource-brokerage-service-section/src/r2-rest.js";
+} from "@red-cup-engineering/immutable-content-custody-service/r2-rest";
 
 const SHA256 = /^0x[a-f0-9]{64}$/u;
 const PREFIX = "activitypub-services-section/onchain-data-resource-service/external-bodies/sha256";

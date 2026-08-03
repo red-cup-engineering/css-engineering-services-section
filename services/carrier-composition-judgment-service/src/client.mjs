@@ -2,12 +2,12 @@ import { randomUUID } from "node:crypto";
 import { Message, Role } from "@a2a-js/sdk";
 import { a2aResultParts, sendRmnTask } from "@red-cup-engineering/a2a-rmn-task-client-service";
 import { extractRmnPart, rmnPart } from "@red-cup-engineering/a2a-rmn-part-service";
-import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
+import { identifyOperationTerm } from "./semantic-content.mjs";
 import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { ACTOR } from "./judgment.mjs";
 import { operationBytes, operationFromBytes } from "./a2a-executor.mjs";
 
-const id = (value) => semanticId(relationalWitnessJournalDocument(value));
+const id = (value) => identifyOperationTerm(relationalWitnessJournalDocument(value)).token;
 const record = (body) => Object.freeze({ id: id(body), ...body });
 export async function purchaseCarrierCompositionJudgment(producer, consumer, {
   agentCardUrl = process.env.CARRIER_COMPOSITION_JUDGMENT_AGENT_CARD_URL,

@@ -8,9 +8,10 @@
  */
 import { mark, utterance, type UtteranceCarrier } from "@lenticule-science/articulating/index";
 import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
-import { evaluateRunTerm } from "../evaluating/index.mjs";
-import { tm } from "../../lib/notating/index.mjs";
+import { evaluateRunTerm } from "@red-cup-engineering/relation-model-notation-eval";
+import { tm } from "@red-cup-engineering/relation-model-notation";
 import { action as kernelAction, composes, type Action, type ActionSpec } from "./category.mjs";
+import { carrierSchemaIdentity } from "./schema.mjs";
 import { wireCodec } from "../codecs/boundary/wire/index.mjs";
 
 export type { Action, ActionSpec };
@@ -106,6 +107,14 @@ export function actionUtterances(act: Action): readonly UtteranceCarrier[] {
   if (act.description !== undefined) facts.push(fact(term, "relating.action.description", act.description));
   if (act.domain !== undefined) facts.push(fact(term, "relating.action.domain", act.domain.id));
   if (act.codomain !== undefined) facts.push(fact(term, "relating.action.codomain", act.codomain.id));
+  if (act.domain !== undefined) facts.push(fact(term, "relating.action.domain-schema-identity", Object.freeze({
+    carrier: act.domain.id,
+    schema: carrierSchemaIdentity(act.domain),
+  })));
+  if (act.codomain !== undefined) facts.push(fact(term, "relating.action.codomain-schema-identity", Object.freeze({
+    carrier: act.codomain.id,
+    schema: carrierSchemaIdentity(act.codomain),
+  })));
   if (act.runTerm !== undefined) facts.push(fact(term, "relating.action.run-term", act.runTerm));
   return Object.freeze(facts);
 }

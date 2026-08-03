@@ -1,8 +1,7 @@
-import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { decodeRelationalValue, encodeRelationalValue, RELATIONAL_VALUE_TYPE } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
 import { ACTIVITYSTREAMS_CONTEXT, A2A_MEDIA_TYPE, RMN_MEDIA_TYPE, extractRmnActivity } from "./rmn-activity.mjs";
+import { admitJsonDocument, admitTermBytes, identifyJsonDocument } from "./rmn-json-document.mjs";
 
-const NI = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u;
+const NI = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{42}[AEIMQUYcgkosw048]$/u;
 const POSITIVE = new Set(["Accept", "Announce", "Create", "Offer", "Update"]);
 const NEGATIVE = new Set(["Reject"]);
 
@@ -13,19 +12,18 @@ function immutable(value) {
 }
 
 function canonical(value) {
-  const encoded = encodeRelationalValue(value);
-  const term = ["ascribe", encoded.type, encoded.term];
-  return Object.freeze({ bytes: semanticBytes(term), ni: semanticId(term) });
+  const carrier = value?.type === "FederationCarrierAdmissionReceipt" && typeof value.support?.value === "string"
+    ? { ...value, support: { value: value.support.value } }
+    : value;
+  return identifyJsonDocument(carrier);
 }
 
 function decodeCanonical(bytes, label) {
-  const source = Buffer.from(bytes ?? []);
-  let term;
-  try { term = decodeSemantic(source); } catch { throw new TypeError(`${label} must be canonical RMN bytes`); }
-  if (!semanticBytes(term).equals(source) || term?.[0] !== "ascribe" || JSON.stringify(term[1]) !== JSON.stringify(RELATIONAL_VALUE_TYPE)) {
-    throw new TypeError(`${label} must be one canonical typed relational RMN document`);
-  }
-  return immutable(decodeRelationalValue(term[1], term[2]));
+  const value = admitJsonDocument(bytes, label).value;
+  if (value?.type !== "FederationCarrierAdmissionReceipt" || typeof value.support?.value !== "string") return value;
+  const positive = ["potential", "stable"].includes(value.support.value);
+  const negative = ["active", "stable"].includes(value.support.value);
+  return immutable({ ...value, support: { positive, negative, value: value.support.value } });
 }
 
 function polarityOf(type) {
@@ -102,9 +100,10 @@ function admitStoredRecord(record) {
   const receipt = decodeCanonical(record.receiptBytes, "federation admission receipt");
   if (receipt.type !== "FederationCarrierAdmissionReceipt" || receipt.version !== 1 || canonical(receipt).ni !== record.receiptNi) throw new TypeError("federation admission receipt identity or type is invalid");
   const objectBytes = Buffer.from(record.objectBytes ?? []);
-  let objectTerm;
-  try { objectTerm = decodeSemantic(objectBytes); } catch { throw new TypeError("federation history object differs from its admitted canonical RMN identity"); }
-  if (semanticId(objectTerm) !== receipt.objectNi || !semanticBytes(objectTerm).equals(objectBytes)) throw new TypeError("federation history object differs from its admitted canonical RMN identity");
+  let admittedObject;
+  try { admittedObject = admitTermBytes(objectBytes, "federation history object"); }
+  catch { throw new TypeError("federation history object differs from its admitted canonical RMN identity"); }
+  if (admittedObject.ni !== receipt.objectNi) throw new TypeError("federation history object differs from its admitted canonical RMN identity");
   if (receipt.standards?.activityStreamsContext !== "https://www.w3.org/ns/activitystreams" || receipt.standards?.cloudEventsSpecversion !== "1.0" || receipt.standards?.cloudEventDataContentType !== A2A_MEDIA_TYPE || receipt.standards?.a2aRole !== "ROLE_AGENT" || receipt.standards?.a2aPartMediaType !== RMN_MEDIA_TYPE) throw new TypeError("federation admission receipt does not bind the required standards stack");
   const expectedValue = fourValue(receipt.support ?? {});
   if (receipt.support?.value !== expectedValue || expectedValue === "absurd") throw new TypeError("federation admission receipt carries incoherent truth support");

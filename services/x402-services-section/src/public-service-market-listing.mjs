@@ -1,4 +1,4 @@
-import { rawNiUri } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
+import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
 
 import {
   agentCardSignatureEvidence,
@@ -12,7 +12,7 @@ const SOVEREIGN_PROFILE = "org.emsenn.rmn.sovereign-circuit-interface.v1";
 const AGENT_CARD_SUFFIX = "/.well-known/agent-card.json";
 const EVM_ADDRESS = /^0x[0-9a-fA-F]{40}$/u;
 const EVM_NETWORK = /^eip155:[1-9][0-9]*$/u;
-const NI_SHA256 = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u;
+const NI_SHA256 = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{42}[AEIMQUYcgkosw048]$/u;
 const MAX_A2A_DISCOVERY_BYTES = 1_048_576;
 
 function stableValue(value) {
@@ -23,9 +23,7 @@ function stableValue(value) {
   return value;
 }
 
-function digest(value) {
-  return rawNiUri(JSON.stringify(stableValue(value)));
-}
+const digest = (value) => identifyJsonSemanticContent({ objectKind: "x402.public-service-market-listing", value: stableValue(value), witnessRoot: EMPTY_WITNESS_ROOT }).token;
 
 function deepFreeze(value) {
   if (value !== null && typeof value === "object" && !Object.isFrozen(value)) {

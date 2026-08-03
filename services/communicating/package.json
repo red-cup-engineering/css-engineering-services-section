@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/communicating",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "private": true,
   "type": "module",
   "keywords": [
@@ -88,7 +88,8 @@
   },
   "dependencies": {
     "@lenticule-science/articulating": "0.1.1",
-    "@red-cup-engineering/relating": "0.0.1"
+    "@red-cup-engineering/relating": "0.0.1",
+    "@red-cup-engineering/semantic-content-identify-service": "0.2.2"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

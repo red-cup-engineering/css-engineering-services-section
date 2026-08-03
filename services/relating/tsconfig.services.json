@@ -9,6 +9,6 @@
     "outDir": "dist",
     "paths": {}
   },
-  "include": ["services/**/*.mts"],
+  "include": ["lib/current-rmn.d.mts", "services/**/*.mts"],
   "exclude": ["services/**/*.test.mts"]
 }

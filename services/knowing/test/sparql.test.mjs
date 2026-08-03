@@ -72,10 +72,7 @@ test("SPARQL ASK and CONSTRUCT are projections of the same BGP evaluation", () =
     { s: "urn:node:a", p: "urn:derivedEdge", o: "urn:node:b" },
     { s: "urn:node:b", p: "urn:derivedEdge", o: "urn:node:c" },
   ]);
-  assert.equal(
-    construct.turtle,
-    "<urn:node:a> <urn:derivedEdge> <urn:node:b> .\n<urn:node:b> <urn:derivedEdge> <urn:node:c> .\n",
-  );
+  assert.equal(Object.hasOwn(construct, "turtle"), false);
 });
 
 test("a knowledge-top cell is query-complete: both witnessed sides surface as bindings", () => {

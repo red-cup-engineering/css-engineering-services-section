@@ -9,6 +9,6 @@
     "outDir": "dist",
     "paths": {}
   },
-  "include": ["scripts/**/*.mts"],
+  "include": ["src/current-rmn.d.mts", "scripts/**/*.mts"],
   "exclude": ["scripts/**/*.test.mts"]
 }

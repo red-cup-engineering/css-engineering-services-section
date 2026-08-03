@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
 import { HTTPFacilitatorClient } from "@x402/core/server";
 import { decodePaymentSignatureHeader } from "@x402/core/http";
 import { ExactEvmScheme } from "@x402/evm/exact/server";
@@ -6,19 +6,11 @@ import { BatchSettlementEvmScheme } from "@x402/evm/batch-settlement/server";
 import { paymentMiddleware, x402ResourceServer } from "@x402/express";
 export { declareDiscoveryExtension } from "@x402/extensions/bazaar";
 
-function canonical(value) {
-  if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
-  if (value !== null && typeof value === "object") {
-    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonical(value[key])}`).join(",")}}`;
-  }
-  return JSON.stringify(value);
-}
-
 /** Identify one exact x402 payment payload consistently at HTTP and hook faces. */
 export function x402PaymentIdentity(value) {
   const payload = typeof value === "string" ? decodePaymentSignatureHeader(value) : value;
   if (payload?.x402Version !== 2) throw new TypeError("one x402 v2 payment payload is required");
-  return `sha256:${createHash("sha256").update(canonical(payload)).digest("hex")}`;
+  return identifyJsonSemanticContent({ objectKind: "x402.payment-payload", value: payload, witnessRoot: EMPTY_WITNESS_ROOT }).token;
 }
 
 /**

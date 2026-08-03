@@ -2,12 +2,11 @@ import { randomUUID } from "node:crypto";
 import { Message, Role } from "@a2a-js/sdk";
 import { a2aResultParts, sendRmnTask } from "@red-cup-engineering/a2a-rmn-task-client-service";
 import { extractRmnPart, rmnPart } from "@red-cup-engineering/a2a-rmn-part-service";
-import { semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
-import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { cloudComputeTermId } from "./semantic-content.mjs";
 import { operationBytes, operationFromBytes } from "./a2a-executor.mjs";
 import { ACTOR } from "./improvement-board-forager.mjs";
 
-function rmnId(value) { return semanticId(relationalWitnessJournalDocument(value)); }
+function rmnId(value) { return cloudComputeTermId(value, "cloud-compute.supplier-operation"); }
 function record(body) { return Object.freeze({ id: rmnId(body), ...body }); }
 const responseParts = a2aResultParts;
 
@@ -16,7 +15,8 @@ export async function inciteImprovementMarketSupplier(incitement, { agentCardUrl
   const request = record({ type: "ImprovementMarketSupplierIncitementRequest", provider: ACTOR, incitement });
   const message = Message.toJSON({ messageId: randomUUID(), contextId: "", taskId: "", role: Role.ROLE_USER, parts: [rmnPart(operationBytes(request))], metadata: {}, extensions: [], referenceTaskIds: [] });
   const transport = await send({ agentUrl: agentCardUrl, message, requireSignature: true, bearerTokenFile, signal });
-  const response = operationFromBytes(extractRmnPart(responseParts(transport.result)).bytes);
+  const output = extractRmnPart(responseParts(transport.result));
+  const response = operationFromBytes(output.bytes, output.ni);
   if (response?.type !== "ImprovementMarketSupplierIncitementResult" || response.provider !== ACTOR || response.request !== request.id || response.incitement !== incitement.id) throw new Error("improvement supplier returned a foreign incitement result");
   return Object.freeze({ ...response.result, supplierProvider: ACTOR, supplierReceipt: { inputNi: transport.inputNi, outputNi: transport.outputNi, agentCard: transport.agentCard } });
 }

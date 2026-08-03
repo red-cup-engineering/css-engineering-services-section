@@ -16,6 +16,7 @@
  * register richer resources/prompts via `resource()`/`prompt()`.
  */
 import type { UtteranceCarrier } from "@lenticule-science/articulating/index";
+import type { JsonValue } from "@red-cup-engineering/json-file-codec-service";
 import { registeredCategory } from "./category.mjs";
 import { actionUtterances, fact, isAction, type Action } from "./action.mjs";
 import { wireCodec } from "../codecs/boundary/wire/index.mjs";
@@ -38,6 +39,7 @@ import {
 } from "./prompt.mjs";
 import { operationsManifoldResource } from "./manifold.mjs";
 import { actionSettlementSignature, type ActionSettlementSignature } from "./settlement-signature.mjs";
+import { carrierSchemaIdentity, carrierSchemaUtterances } from "./schema.mjs";
 
 /** One action projected as a POST endpoint over the stdio process boundary. */
 export interface ActionEndpoint {
@@ -60,7 +62,7 @@ export interface ActionEndpoint {
   /** JSON Schema ref for the produced carrier, when the action declares one. */
   readonly codomainSchema?: Record<string, unknown>;
   /** RMN body projected into discovery when the action carries behavior as data. */
-  readonly runTerm?: import("../../lib/notating/index.mjs").Tm;
+  readonly runTerm?: JsonValue;
   /** Derived termination/transport signature, read from the codomain's settlement classification. */
   readonly settlement: ActionSettlementSignature;
 }
@@ -257,6 +259,11 @@ export function induceBins(
   for (const act of actions) {
     utterances.push(fact(term, "relating.package.has-action", act.verb));
     for (const u of actionUtterances(act)) utterances.push(u);
+  }
+  for (const carrier of [...registeredCategory.carriers()].sort((left, right) => left.id.localeCompare(right.id))) {
+    const schemaIdentity = carrierSchemaIdentity(carrier);
+    utterances.push(fact(term, "relating.package.has-carrier-schema", Object.freeze({ carrier: carrier.id, schema: schemaIdentity })));
+    for (const assertionUtterance of carrierSchemaUtterances(carrier)) utterances.push(assertionUtterance);
   }
 
   // The discovery carrier is itself a resource; its read thunk closes over the

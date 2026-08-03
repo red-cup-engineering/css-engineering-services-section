@@ -2435,14 +2435,15 @@ const worldMethodInterventionPlanCarrier = dreamObjectCarrier(
 
 const worldMethodFeedbackCarrier = dreamObjectCarrier(
   "knowing/dreaming/world-method-feedback",
-  ["kind", "regime", "settles", "plan", "effects", "feedback", "loop", "theory"],
+  ["kind", "regime", "settles", "plan", "effects", "adapted", "summary", "loop", "theory"],
   {
     kind: { const: "knowing.dream.world-method-feedback" },
     regime: { const: "aperiodic" },
     settles: { const: false },
     plan: { type: "object" },
     effects: { type: "array" },
-    feedback: { type: "object" },
+    adapted: { type: "array" },
+    summary: { type: "object" },
     loop: { type: "object" },
     theory: { type: "object" },
   },

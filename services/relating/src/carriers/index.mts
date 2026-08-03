@@ -21,7 +21,7 @@ export * from "./writing/index.mjs";
 import { carrierFrom } from "./kernel/carrier.mjs";
 import { utteranceSchema, articulationCellSchema } from "@lenticule-science/articulating/utterance";
 import { memeSchema } from "@lenticule-science/articulating/predicating/positing/fiber";
-import { TySchema, TmSchema } from "../../lib/notating/index.mjs";
+import { TySchema, TmSchema } from "@red-cup-engineering/relation-model-notation/schema";
 
 /** The base admission carrier: a token and a claim, each carrying a Mark. */
 export const utteranceCarrier = carrierFrom(utteranceSchema);

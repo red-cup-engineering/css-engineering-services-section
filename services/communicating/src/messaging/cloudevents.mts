@@ -6,10 +6,7 @@
  * the witness time `T`, and JSON `data` carries the claim. The bridge is a
  * functorial view of `UtteranceCarrier`, not a parallel event ontology.
  */
-import { createHash } from "node:crypto";
-
 import {
-  canonical,
   carrierFrom,
   mark,
   requireJsonValue,
@@ -19,6 +16,7 @@ import {
   type JsonValue,
   type UtteranceCarrier,
 } from "@red-cup-engineering/relating";
+import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
 
 import type { IllocutionaryForce } from "../speaking/illocuting/index.mjs";
 
@@ -73,10 +71,11 @@ export interface CloudEventOptions {
 }
 
 function cloudEventId(source: string, type: IllocutionaryForce, time: string, data: JsonValue): string {
-  const digest = createHash("sha256")
-    .update(canonical({ source, type, time, data }))
-    .digest("hex");
-  return `urn:sha256:${digest}`;
+  return identifyJsonSemanticContent({
+    objectKind: "communicating.cloud-event",
+    value: { source, type, time, data },
+    witnessRoot: EMPTY_WITNESS_ROOT,
+  }).token;
 }
 
 /** Read a membrane utterance as a CloudEvents structured JSON envelope. */

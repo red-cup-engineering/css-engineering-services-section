@@ -2,8 +2,8 @@
  * cognizing/expressing — CHL terms for the meme-comonad cognizing morphisms.
  *
  * These terms express knowing's five pure meme→meme cognizing morphisms in
- * Relation Model Notation, using the RMN grammar and JSON bridge from
- * `@red-cup-engineering/relating`. No knowing-specific term primitive is introduced here —
+ * Relation Model Notation, using the atomized RMN grammar and JSON bridge.
+ * No knowing-specific term primitive is introduced here —
  * every construction is a composition of the product, fold, conditional,
  * coincidence, and bilattice-charge constructors already in the evaluator.
  */
@@ -11,9 +11,8 @@ import {
   arrayTerm,
   objectTerm,
   stringTerm,
-  tm,
-  type Tm,
-} from "@red-cup-engineering/relating";
+} from "@red-cup-engineering/relation-model-notation-json-codec";
+import { tm, type Tm } from "@red-cup-engineering/relation-model-notation";
 
 // ── charge carrier wire helpers ───────────────────────────────────────────────
 

@@ -8,6 +8,7 @@ import {
   utteranceCarrier,
 } from "@red-cup-engineering/relating/carriers";
 import { articulate, mark, utterance } from "@lenticule-science/articulating";
+import { evaluateRunTerm, tm } from "@red-cup-engineering/relating";
 
 describe("src/carriers package realization", () => {
   it("realizes pure shapes as runtime carriers with stable ids", () => {
@@ -17,8 +18,8 @@ describe("src/carriers package realization", () => {
         "relating/articulating/utterance",
         "relating/articulating/articulation-cell",
         "relating/articulating/predicating/positing/meme",
-        "relating/term/ty",
-        "relating/term/tm",
+        "relation-model-notation/term/ty",
+        "relation-model-notation/term/tm",
       ],
     );
   });
@@ -28,5 +29,9 @@ describe("src/carriers package realization", () => {
     assert.equal(utteranceCarrier.validate(admitted), true);
     assert.equal(utteranceCarrier.validate({ kind: "utterance.carrier" }), false);
     assert.equal(articulationCellCarrier.validate(articulate(admitted)), true);
+  });
+
+  it("executes RMN run terms through the current evaluator", () => {
+    assert.deepEqual(evaluateRunTerm(tm.lam(tm.var(0)), { value: "carried", admitted: true }), { value: "carried", admitted: true });
   });
 });

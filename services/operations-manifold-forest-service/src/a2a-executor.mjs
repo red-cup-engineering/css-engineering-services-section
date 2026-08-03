@@ -1,16 +1,16 @@
 import { Message, Role } from "@a2a-js/sdk";
 import { extractRmnPart, rmnPart } from "@red-cup-engineering/a2a-rmn-part-service";
-import { decodeSemantic, semanticBytes, semanticId } from "@red-cup-engineering/rmn-semantic-conformance";
+import { admitOperationTerm, identifyOperationTerm } from "./semantic-content.mjs";
 import { decodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
 import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { ACTOR, deriveOperationsManifoldForest } from "./forest.mjs";
 
-const id = (value) => semanticId(relationalWitnessJournalDocument(value));
+const id = (value) => identifyOperationTerm(relationalWitnessJournalDocument(value)).token;
 const record = (body) => Object.freeze({ id: id(body), ...body });
 const exact = (value) => value?.id === id(Object.fromEntries(Object.entries(value ?? {}).filter(([key]) => key !== "id")));
-export const operationBytes = (value) => semanticBytes(relationalWitnessJournalDocument(value));
+export const operationBytes = (value) => identifyOperationTerm(relationalWitnessJournalDocument(value)).bytes;
 export function operationFromBytes(bytes) {
-  const term = decodeSemantic(bytes);
+  const term = admitOperationTerm(bytes);
   if (term?.[0] !== "ascribe" || term.length !== 3) throw new Error("operations forest is not one typed relational RMN document");
   return decodeRelationalValue(term[1], term[2]);
 }
