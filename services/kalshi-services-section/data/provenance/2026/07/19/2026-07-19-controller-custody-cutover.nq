@@ -1,4 +1,0 @@
-<urn:ame:kalshi-venue-access-enterprise> <urn:emsenn:evm:retired-controller-artifact> <ni:///sha-256;DWjdQmot5wrG7WJHGHNu7g0iF5YIaNfibo0coaLJZgM> <urn:ame:kalshi-venue-access-enterprise:controller-custody-cutover:eip155-31337> .
-<ni:///sha-256;DWjdQmot5wrG7WJHGHNu7g0iF5YIaNfibo0coaLJZgM> <urn:emsenn:evm:retired-path> "data/evm/controller-eip155-31337.env" <urn:ame:kalshi-venue-access-enterprise:controller-custody-cutover:eip155-31337> .
-<urn:ame:kalshi-venue-access-enterprise> <urn:emsenn:evm:controller-keystore-format> "Ethereum Secret Storage v3" <urn:ame:kalshi-venue-access-enterprise:controller-custody-cutover:eip155-31337> .
-<urn:ame:kalshi-venue-access-enterprise> <urn:emsenn:evm:controller-chain> <eip155:31337> <urn:ame:kalshi-venue-access-enterprise:controller-custody-cutover:eip155-31337> .
