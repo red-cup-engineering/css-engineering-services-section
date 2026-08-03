@@ -1,0 +1,3 @@
+[submodule "services/web-game-services-section"]
+	path = services/web-game-services-section
+	url = https://github.com/red-cup-engineering/web-game-services-section.git
