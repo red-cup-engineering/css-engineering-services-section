@@ -1,0 +1,11 @@
+.DS_Store
+Thumbs.db
+*.tmp
+*.tmp.*
+*.swp
+*~
+
+node_modules/
+dist/
+.tmp/
+*.schema.types.mts
