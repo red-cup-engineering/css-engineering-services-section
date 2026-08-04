@@ -19,6 +19,13 @@ const manifolds = [
   },
 ];
 
+test("requires a caller-supplied judgment function", async () => {
+  await assert.rejects(
+    deriveOperationsManifoldForest(manifolds),
+    { name: "TypeError", message: "purchase must be a judgment function" },
+  );
+});
+
 test("buys every bond judgment and retains pressure frontiers", async () => {
   const calls = [];
   const forest = await deriveOperationsManifoldForest(manifolds, {

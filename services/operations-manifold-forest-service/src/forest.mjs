@@ -1,5 +1,3 @@
-import { purchaseCarrierCompositionJudgment } from "@red-cup-engineering/carrier-composition-judgment-service";
-
 export const ACTOR = "urn:ame:operations-manifold-forest-service";
 
 function words(value, label) {
@@ -45,13 +43,13 @@ const frontier = (side, packageName, extremum) => Object.freeze({
 });
 
 /**
- * Derive possible molecular bonds without owning the atomic equality formula.
- * Every producer-consumer pair is submitted to the purchased judgment Actor.
+ * Derive possible bonds using a judgment supplied by the caller.
  */
 export async function deriveOperationsManifoldForest(values, {
-  purchase = purchaseCarrierCompositionJudgment,
+  purchase,
   judgmentOptions = {},
 } = {}) {
+  if (typeof purchase !== "function") throw new TypeError("purchase must be a judgment function");
   if (!Array.isArray(values) || values.length === 0) throw new TypeError("at least one operations manifold is required");
   const manifolds = Object.freeze(values.map(manifold));
   const candidates = [];

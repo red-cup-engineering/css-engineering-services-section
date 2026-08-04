@@ -3,7 +3,7 @@
   "version": "0.1.3",
   "private": true,
   "type": "module",
-  "description": "Autonomous Actor purchasing atomic carrier judgments to derive an operations-manifold bond forest.",
+  "description": "Autonomous Actor using caller-provided atomic carrier judgments to derive an operations-manifold bond forest.",
   "exports": {
     ".": "./src/client.mjs",
     "./forest": "./src/forest.mjs",
@@ -28,7 +28,6 @@
     "@red-cup-engineering/a2a-contracted-agent-service": "2.0.5",
     "@red-cup-engineering/a2a-rmn-part-service": "1.0.1",
     "@red-cup-engineering/a2a-rmn-task-client-service": "1.1.1",
-    "@red-cup-engineering/carrier-composition-judgment-service": "0.1.1",
     "@red-cup-engineering/rmn-semantic-conformance": "6.0.2",
     "@lenticule-science/witness-journal-rdf-projection-service": "1.0.3"
   }
