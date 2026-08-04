@@ -1,7 +1,0 @@
-{
-  "name": "@red-cup-engineering/html-services-section",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "description": "Web-tier home for HTML rendering packages, currently the carrier/render-fiber engine that turns a data-backed node tree into a complete HTML document. Not the file-format html-services-section under serialization-services-section, which owns the SHP codec."
-}
