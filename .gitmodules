@@ -7,11 +7,8 @@
 [submodule "services/object-capability-services-section/services/ocapn-sturdyref-admission-service"]
 	path = services/object-capability-services-section/services/ocapn-sturdyref-admission-service
 	url = https://github.com/red-cup-engineering/ocapn-sturdyref-admission-service.git
-[submodule "services/systemd-services-section/services/systemd-unit-inventory-observation-service"]
-	path = services/systemd-services-section/services/systemd-unit-inventory-observation-service
-	url = https://github.com/red-cup-engineering/systemd-unit-inventory-observation-service.git
-[submodule "services/web-gui-services-section"]
-	path = services/web-gui-services-section
+[submodule "services/web-interface-services-section/web-gui-services-section"]
+	path = services/web-interface-services-section/web-gui-services-section
 	url = https://github.com/red-cup-engineering/web-gui-services-section.git
 [submodule "services/x402-services-section/services/x402-exact-purchase-service"]
 	path = services/x402-services-section/services/x402-exact-purchase-service
