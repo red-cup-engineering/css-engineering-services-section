@@ -1,8 +1,8 @@
 [submodule "services/web-game-services-section"]
 	path = services/web-game-services-section
 	url = https://github.com/red-cup-engineering/web-game-services-section.git
-[submodule "services/cloud-services-section/services/cloudflare-services-section/services/linux-cloudflare-authentication-service"]
-	path = services/cloud-services-section/services/cloudflare-services-section/services/linux-cloudflare-authentication-service
+[submodule "services/web-platform-services-section/cloud-services-section/services/cloudflare-services-section/services/linux-cloudflare-authentication-service"]
+	path = services/web-platform-services-section/cloud-services-section/services/cloudflare-services-section/services/linux-cloudflare-authentication-service
 	url = https://github.com/red-cup-engineering/linux-cloudflare-authentication-cell.git
 [submodule "services/web-protocol-services-section/object-capability-services-section/services/ocapn-sturdyref-admission-service"]
 	path = services/web-protocol-services-section/object-capability-services-section/services/ocapn-sturdyref-admission-service
