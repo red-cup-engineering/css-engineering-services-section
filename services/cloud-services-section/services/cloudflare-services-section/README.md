@@ -8,3 +8,5 @@
   routing config matches its declared hostname and local service.
 - `services/linux-cloudflare-authentication-service/` — authenticates a
   Linux host with Cloudflare (own repo).
+- `services/cloudflare-r2-services-section/` — R2 clients, custody rules,
+  verified reads, and free-tier admission.
