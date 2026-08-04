@@ -1,12 +1,6 @@
 [submodule "services/web-game-services-section"]
 	path = services/web-game-services-section
 	url = https://github.com/red-cup-engineering/web-game-services-section.git
-[submodule "services/capability-marketplace-services-section/services/federated-capability-offer-discovery-cell"]
-	path = services/capability-marketplace-services-section/services/federated-capability-offer-discovery-cell
-	url = https://github.com/red-cup-engineering/federated-capability-offer-discovery-cell.git
-[submodule "services/capability-marketplace-services-section/services/federated-capability-offer-publication-cell"]
-	path = services/capability-marketplace-services-section/services/federated-capability-offer-publication-cell
-	url = https://github.com/red-cup-engineering/federated-capability-offer-publication-cell.git
 [submodule "services/cloud-services-section/services/cloudflare-services-section/services/linux-cloudflare-authentication-service"]
 	path = services/cloud-services-section/services/cloudflare-services-section/services/linux-cloudflare-authentication-service
 	url = https://github.com/red-cup-engineering/linux-cloudflare-authentication-cell.git
