@@ -10,3 +10,10 @@ capability itself carries no site-specific configuration.
 
 - `services/tailscale-services-section/` — Tailscale private mesh networking.
 - `services/cloudflare-services-section/` — Cloudflare Tunnel ingress.
+- `services/discord-services-section/` — Discord integration services.
+- `services/gcloud-services-section/` — Google Cloud provider services.
+- `services/google-drive-use-team/` — Google Drive contracted-agent integration.
+- `services/deno-deploy-free-compute-provider/` — Deno Deploy compute provider.
+- `services/github-actions-public-compute-provider/` — GitHub Actions compute provider.
+- `services/hugging-face-cpu-compute-provider/` — Hugging Face CPU compute provider.
+- `services/jsnode-function-movement-cloud-provider/` — JSNode function-movement compute provider.
