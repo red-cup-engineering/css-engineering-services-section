@@ -1,0 +1,16 @@
+{
+  "name": "@red-cup-engineering/ni-uri-services-section",
+  "version": "0.1.1",
+  "description": "Builds and validates canonical RFC 6920 ni URIs for byte strings without admitting or identifying semiotic content.",
+  "type": "module",
+  "private": true,
+  "exports": "./src/ni-uri.mjs",
+  "scripts": {
+    "check": "node --check src/ni-uri.mjs && node --check test/ni-uri.test.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
