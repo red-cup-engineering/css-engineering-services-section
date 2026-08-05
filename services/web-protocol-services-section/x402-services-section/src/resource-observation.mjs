@@ -1,7 +1,7 @@
 import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
 import {
-  admitPublicHttpsUrl,
-} from "@red-cup-engineering/public-https-url-admission-service";
+  canonicalizeHttpsUrl,
+} from "@red-cup-engineering/canonicalize-https-url-service";
 
 import { decodePaymentRequiredHeader } from "@x402/core/http";
 import { validatePaymentRequired } from "@x402/core/schemas";
@@ -31,7 +31,7 @@ function stableValue(value) {
 const identity = (objectKind, value) => identifyJsonSemanticContent({ objectKind, value: stableValue(value), witnessRoot: EMPTY_WITNESS_ROOT }).token;
 
 export function publicHttpsUrl(value, label = "URL") {
-  return admitPublicHttpsUrl(value, label);
+  return canonicalizeHttpsUrl(value, label);
 }
 
 function selectedMethod(value) {

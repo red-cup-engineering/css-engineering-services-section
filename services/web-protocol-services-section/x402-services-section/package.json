@@ -21,7 +21,7 @@
     "verify-public-reference": "node src/verify-public-x402-boundary-reference.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/public-https-url-admission-service": "0.1.0",
+    "@red-cup-engineering/canonicalize-https-url-service": "0.1.0",
     "@red-cup-engineering/semantic-content-identify-service": "0.2.2",
     "@x402/core": "2.19.0",
     "@x402/evm": "2.19.0",
