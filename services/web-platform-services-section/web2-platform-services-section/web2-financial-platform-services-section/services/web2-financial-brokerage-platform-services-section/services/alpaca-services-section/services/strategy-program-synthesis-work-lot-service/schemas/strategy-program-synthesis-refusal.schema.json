@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "urn:schema:rsc-quiescent:strategy-program-synthesis-refusal:1",
+  "type": "object", "additionalProperties": true,
+  "required": ["index", "disposition"],
+  "properties": {
+    "index": { "type": "integer", "minimum": 0 }, "disposition": { "type": "string", "minLength": 1 },
+    "reason": { "type": "string" }, "provider": { "type": "string" }, "settlementResidues": { "type": "array", "items": { "type": "object" } }
+  }
+}

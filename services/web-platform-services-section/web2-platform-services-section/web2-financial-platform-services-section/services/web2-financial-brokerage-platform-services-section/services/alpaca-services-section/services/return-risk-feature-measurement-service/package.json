@@ -1,0 +1,13 @@
+{
+  "name": "@rsc-quiescent/return-risk-feature-measurement-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Measures causal return, relative-return, volatility, drawdown, volume, and price-reference features.",
+  "exports": {
+    ".": "./src/measure.mjs"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}

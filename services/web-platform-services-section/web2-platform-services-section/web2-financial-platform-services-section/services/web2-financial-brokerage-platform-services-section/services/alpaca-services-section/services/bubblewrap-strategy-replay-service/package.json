@@ -1,0 +1,17 @@
+{
+  "name": "@rsc-quiescent/bubblewrap-strategy-replay-service",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "description": "Executes an admitted generated strategy module twice in a networkless bubblewrap sandbox under a hard wall-clock bound.",
+  "exports": {
+    ".": "./src/replay.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/semantic-content-identify-service": "0.2.2"
+  },
+  "scripts": {
+    "check": "node --check src/replay.mjs && node --check src/runner.mjs",
+    "test": "node --test test/*.test.mjs"
+  }
+}

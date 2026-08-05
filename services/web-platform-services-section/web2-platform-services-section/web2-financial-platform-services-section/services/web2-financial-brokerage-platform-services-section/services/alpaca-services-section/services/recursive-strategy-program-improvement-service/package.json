@@ -1,0 +1,15 @@
+{
+  "name": "@rsc-quiescent/recursive-strategy-program-improvement-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Runs a bounded generate-assay-replay-tournament-review lineage loop that can promote only witnessed paper strategy programs.",
+  "exports": {
+    ".": "./src/improve.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/improve.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@rsc-quiescent/issuer-research-media-service",
+  "version": "0.1.2",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/evidence-packet.mjs",
+    "./src/evidence-packet.mjs": "./src/evidence-packet.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/evidence-packet.mjs"
+  },
+  "description": "issuer-research-media-service sovereign enterprise",
+  "dependencies": {
+    "@red-cup-engineering/semantic-content-identify-service": "0.2.2"
+  }
+}

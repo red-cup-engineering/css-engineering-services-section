@@ -1,0 +1,13 @@
+{
+  "name": "@rsc-quiescent/agent-section-descent-assay-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Assays whether independently produced local forecast sections glue, and preserves contradiction without forced consensus.",
+  "exports": {
+    ".": "./src/assay.mjs"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}

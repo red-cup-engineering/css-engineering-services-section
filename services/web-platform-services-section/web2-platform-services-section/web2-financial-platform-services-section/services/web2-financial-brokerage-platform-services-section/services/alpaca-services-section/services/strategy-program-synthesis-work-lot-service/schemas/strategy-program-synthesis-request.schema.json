@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "urn:schema:rsc-quiescent:strategy-program-synthesis-request:1",
+  "type": "object", "additionalProperties": false,
+  "required": ["customerActor", "contextProduct", "incumbentProgram", "acceptanceSuite", "abi", "populationSize", "maxTokensPerCandidate", "generation", "evidenceFacts", "allowedFeatureDependencies", "failureHistory"],
+  "properties": {
+    "customerActor": { "type": "string", "minLength": 1 },
+    "contextProduct": { "type": "string", "pattern": "^ni:///sha-256;[A-Za-z0-9_-]{43}$" },
+    "incumbentProgram": { "type": "string", "pattern": "^ni:///sha-256;[A-Za-z0-9_-]{43}$" },
+    "acceptanceSuite": { "type": "string", "pattern": "^ni:///sha-256;[A-Za-z0-9_-]{43}$" },
+    "abi": { "const": "export function decide(input) -> plain JSON target scores or weights" },
+    "populationSize": { "type": "integer", "minimum": 1, "maximum": 16 },
+    "maxTokensPerCandidate": { "type": "integer", "minimum": 512, "maximum": 8192 },
+    "generation": { "type": "integer", "minimum": 0 },
+    "evidenceFacts": { "type": "array", "minItems": 1, "items": {} },
+    "allowedFeatureDependencies": { "type": "array", "items": { "type": "string" } },
+    "failureHistory": { "type": "array", "items": {} },
+    "routingProfile": { "type": "string", "enum": ["bounded", "extended"] },
+    "difficulty": { "type": "number", "minimum": 0, "maximum": 1 },
+    "maximumWallClockMs": { "type": "integer", "minimum": 1 }
+  }
+}

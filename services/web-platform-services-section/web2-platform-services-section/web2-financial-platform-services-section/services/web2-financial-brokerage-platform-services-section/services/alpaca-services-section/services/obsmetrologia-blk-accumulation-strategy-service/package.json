@@ -1,0 +1,14 @@
+{
+  "name": "@rsc-quiescent/obsmetrologia-blk-accumulation-strategy-service",
+  "version": "0.1.2",
+  "private": true,
+  "type": "module",
+  "description": "Causal topological BLK accumulation strategy benchmarked to SPY.",
+  "exports": {
+    ".": "./src/strategy.mjs",
+    "./src/strategy.mjs": "./src/strategy.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/semantic-content-identify-service": "0.2.2"
+  }
+}

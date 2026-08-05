@@ -1,0 +1,14 @@
+{
+  "name": "@rsc-quiescent/causal-portfolio-learning-service",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "description": "A conductor that contracts atomic causal metrology, fitting, evaluation, allocation, and witnessing dies without owning their implementations.",
+  "exports": {
+    ".": "./src/circuit.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/circuit.mjs",
+    "test": "node --test test/*.test.mjs"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@rsc-quiescent/deterministic-ridge-fit-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Fits and applies a deterministic standardized ridge model to bounded numeric samples.",
+  "exports": {
+    ".": "./src/ridge.mjs"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}
