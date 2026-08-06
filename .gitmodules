@@ -16,3 +16,6 @@
 [submodule "services/web-platform-services-section/services/web2-platform-services-section/services/web2-software-platform-services-section/services/github-services-section/services/github-models-inference-team"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-software-platform-services-section/services/github-services-section/services/github-models-inference-team
 	url = https://github.com/red-cup-engineering/github-models-inference-team.git
+[submodule "services/web-platform-services-section/services/cloud-services-section/services/gcloud-services-section/services/gcloud-cloud-run-actuator-service"]
+	path = services/web-platform-services-section/services/cloud-services-section/services/gcloud-services-section/services/gcloud-cloud-run-actuator-service
+	url = https://github.com/red-cup-engineering/gcloud-cloud-run-actuator-service.git
