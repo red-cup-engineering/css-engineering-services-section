@@ -1,0 +1,13 @@
+{
+  "type": "ResourceValueAccount",
+  "version": 1,
+  "owner": "urn:ame:a2a-sovereign-operation-boundary-service",
+  "inputs": {
+    "a2aTransport": "hired-from-a2a-contracted-agent-service",
+    "rmnConformance": "hired-from-rmn-semantic-conformance",
+    "execution": "measured-per-message"
+  },
+  "settlementAccount": null,
+  "revenueRecognized": "only from exact settlement evidence",
+  "zeroInferredFromUnknown": false
+}

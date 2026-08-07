@@ -1,0 +1,72 @@
+{
+  "name": "@red-cup-engineering/activitypub-services-section",
+  "version": "1.0.9",
+  "type": "module",
+  "description": "The Union's canonical public transport: ActivityPub federation carrying CloudEvents whose data is an A2A message with one canonical RMN part.",
+  "files": [
+    "README.md",
+    "scripts/materialize-rmn-outbox-activity.mjs",
+    "src",
+    "types"
+  ],
+  "exports": {
+    ".": {
+      "types": "./types/provider.d.mts",
+      "import": "./src/provider.mjs"
+    },
+    "./server": {
+      "types": "./types/server.d.mts",
+      "import": "./src/server.mjs"
+    },
+    "./deliver": "./src/deliver.mjs",
+    "./bounded-exchange": "./src/exchange.mjs",
+    "./network-mcp": "./src/network-mcp.mjs",
+    "./cloud-runtime": "./src/cloud-runtime.mjs",
+    "./cloud-server": "./src/cloud-server.mjs",
+    "./rmn-activity": "./src/rmn-activity.mjs",
+    "./rmn-history": "./src/rmn-history.mjs",
+    "./rmn-outbox-client": "./src/rmn-outbox-client.mjs",
+    "./r2-custody": "./src/r2-custody.mjs",
+    "./keys": "./src/keys.mjs",
+    "./onchain": "./src/onchain.mjs",
+    "./src/onchain.mjs": "./src/onchain.mjs",
+    "./src/server.mjs": "./src/server.mjs"
+  },
+  "bin": {
+    "serve-activitypub-provider": "./src/server.mjs",
+    "serve-cloud-activitypub-provider": "./src/cloud-server.mjs",
+    "deliver-activitypub-activity": "./src/deliver.mjs",
+    "serve-activitypub-network-mcp": "./src/network-mcp.mjs",
+    "generate-activitypub-keys": "./src/keys.mjs",
+    "generate-encrypted-evm-wallet": "./src/generate-encrypted-evm-wallet.mjs",
+    "serve-onchain-activitypub-provider": "./src/onchain-server.mjs",
+    "materialize-rmn-outbox-activity": "./scripts/materialize-rmn-outbox-activity.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/provider.mjs && node --check src/server.mjs && node --check src/cloud-runtime.mjs && node --check src/cloud-server.mjs && node --check src/onchain.mjs && node --check src/onchain-r2-external-body.mjs && node --check src/onchain-server.mjs && node --check src/generate-encrypted-evm-wallet.mjs && node --check src/deliver.mjs && node --check src/exchange.mjs && node --check src/network-mcp.mjs && node --check src/keys.mjs && node --check src/rmn-json-document.mjs && node --check src/rmn-activity.mjs && node --check src/rmn-history.mjs && node --check src/rmn-outbox-client.mjs && node --check src/r2-custody.mjs && node --check scripts/materialize-rmn-outbox-activity.mjs && node --check test/provider.test.mjs && node --check test/cloud-runtime.test.mjs && node --check test/cloud-server.test.mjs && node --check test/deliver.test.mjs && node --check test/exchange.test.mjs && node --check test/network-mcp.test.mjs && node --check test/onchain.test.mjs && node --check test/generate-encrypted-evm-wallet.test.mjs && node --check test/rmn-outbox-client.test.mjs && node --check test/rmn-history.test.mjs && node --check test/r2-custody.test.mjs",
+    "test": "node --test test/provider.test.mjs test/cloud-runtime.test.mjs test/cloud-server.test.mjs test/deliver.test.mjs test/exchange.test.mjs test/network-mcp.test.mjs test/onchain.test.mjs test/generate-encrypted-evm-wallet.test.mjs test/rmn-outbox-client.test.mjs test/rmn-history.test.mjs test/r2-custody.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "dependencies": {
+    "@fedify/fedify": "2.3.1",
+    "@fedify/vocab": "2.3.1",
+    "@hono/node-server": "1.19.14",
+    "@red-cup-engineering/a2a-rmn-part-service": "1.0.1",
+    "@red-cup-engineering/gcloud-runtime-authorities-service": "1.0.0",
+    "@red-cup-engineering/immutable-content-custody-service": "1.0.3",
+    "@red-cup-engineering/json-schema-services-section": "0.1.3",
+    "@red-cup-engineering/ni-uri-services-section": "0.1.1",
+    "@red-cup-engineering/relation-model-notation-cbor-codec": "0.0.1",
+    "@red-cup-engineering/relation-model-notation-json-codec": "0.0.3",
+    "@red-cup-engineering/semantic-content-identify-service": "0.2.2",
+    "ethers": "6.17.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "overrides": {
+    "@opentelemetry/core": "2.8.0",
+    "@opentelemetry/resources": "2.8.0",
+    "@opentelemetry/sdk-metrics": "2.8.0"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "@rsc-quiescent/strategy-program-synthesis-work-lot-service",
+  "version": "0.1.2",
+  "private": true,
+  "type": "module",
+  "description": "Contracts provider-distinct inference workers to generate bounded executable strategy programs and falsification tests from an exact evidence context.",
+  "exports": {
+    ".": "./src/synthesis.mjs",
+    "./inference-market-runtime": "./src/inference-market-runtime.mjs",
+    "./src/inference-market-runtime.mjs": "./src/inference-market-runtime.mjs",
+    "./src/synthesis.mjs": "./src/synthesis.mjs",
+    "./schemas": "./src/schemas.mjs"
+  },
+  "files": ["schemas/", "src/"],
+  "dependencies": {
+    "@red-cup-engineering/json-schema-services-section": "0.1.2"
+  },
+  "peerDependencies": {
+    "@red-cup-engineering/inference-work-lot-service": "4.0.1"
+  },
+  "peerDependenciesMeta": {
+    "@red-cup-engineering/inference-work-lot-service": { "optional": true }
+  },
+  "scripts": {
+    "check": "node --check src/synthesis.mjs && node --check src/inference-market-runtime.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test && npm pack --dry-run"
+  }
+}

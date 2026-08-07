@@ -1,0 +1,8 @@
+{
+  "name": "@red-cup-engineering/http-services-section",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Red Cup Engineering's section for HTTP computing, server, edge, platform-emulation, and observability services. Holds the packages split out of the former monolithic http-server package plus the protocol codec package they share.",
+  "license": "UNLICENSED"
+}

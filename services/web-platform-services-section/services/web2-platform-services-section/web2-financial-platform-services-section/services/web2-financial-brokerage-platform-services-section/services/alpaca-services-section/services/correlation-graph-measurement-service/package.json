@@ -1,0 +1,13 @@
+{
+  "name": "@rsc-quiescent/correlation-graph-measurement-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Constructs a finite weighted relation from causally bounded entity-return histories.",
+  "exports": {
+    ".": "./src/measure.mjs"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}

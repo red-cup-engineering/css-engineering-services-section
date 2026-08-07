@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:schema:rsc-quiescent:investment-research-result:1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "version", "contextProduct", "seats", "residues", "providerDistinct", "committeeComplete", "customerAcceptanceEstablished", "allocationEstablished", "executionEstablished", "effect"],
+  "properties": {
+    "type": { "const": "InvestmentResearchCommitteeResult" },
+    "version": { "const": 1 },
+    "contextProduct": { "type": "string", "pattern": "^ni:///sha-256;[A-Za-z0-9_-]{43}$" },
+    "seats": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role", "provider", "candidate", "receipt"],
+        "properties": {
+          "role": { "type": "string", "minLength": 1 },
+          "provider": { "type": "string", "minLength": 1 },
+          "candidate": { "$ref": "#/$defs/candidate" },
+          "receipt": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "residues": { "type": "array", "items": { "$ref": "urn:schema:rsc-quiescent:investment-research-refusal:1" } },
+    "providerDistinct": { "type": "boolean" },
+    "committeeComplete": { "type": "boolean" },
+    "customerAcceptanceEstablished": { "const": false },
+    "allocationEstablished": { "const": false },
+    "executionEstablished": { "const": false },
+    "effect": { "const": "untrusted-research-sections-only" }
+  },
+  "$defs": {
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "sections", "assumptions", "falsifiers", "nonClaims"],
+      "properties": {
+        "role": { "type": "string", "minLength": 1 },
+        "sections": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["symbol", "horizonDays", "expectedExcessReturn", "confidence", "evidenceReferences", "basisFactIds", "thesis"],
+            "properties": {
+              "symbol": { "type": "string" },
+              "horizonDays": { "type": "integer", "minimum": 1 },
+              "expectedExcessReturn": { "type": "number" },
+              "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+              "evidenceReferences": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+              "basisFactIds": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+              "thesis": { "type": "string" }
+            }
+          }
+        },
+        "assumptions": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "falsifiers": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "nonClaims": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "@rsc-quiescent/alpaca-esther-paper-trading-loop",
+  "version": "0.1.2",
+  "private": true,
+  "type": "module",
+  "description": "Standing PAPER-ONLY order loop for Esther Davis's Alpaca paper account: pulls BLK/SPY bars, runs the existing obsmetrologia BLK accumulation strategy signal unmodified, sizes conservatively, places paper orders, and journals every decision. Hard-refuses (nonzero exit) unless the trading host is paper-api.alpaca.markets and the account is verified paper-flagged; refuses outright if any Alpaca *_LIVE_* credential is present in its environment.",
+  "bin": {
+    "alpaca-esther-paper-trading-loop": "./src/run-loop.mjs"
+  },
+  "scripts": {
+    "run": "node src/run-loop.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/semantic-content-identify-service": "0.2.2",
+    "@rsc-quiescent/obsmetrologia-blk-accumulation-strategy-service": "0.1.2",
+    "@rsc-quiescent/alpaca-market-data-read-service": "0.1.2",
+    "@rsc-quiescent/alpaca-paper-trading-guards-service": "0.1.0"
+  }
+}

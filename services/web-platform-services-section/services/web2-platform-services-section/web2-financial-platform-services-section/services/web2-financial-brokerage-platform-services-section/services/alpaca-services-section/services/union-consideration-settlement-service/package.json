@@ -1,0 +1,17 @@
+{
+  "name": "@rsc-quiescent/union-consideration-settlement-service",
+  "version": "0.1.2",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/settlement-provider.mjs",
+    "./src/settlement-provider.mjs": "./src/settlement-provider.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/settlement-provider.mjs"
+  },
+  "description": "Exact opaque-grant consumption boundary for Union brokerage product consideration.",
+  "dependencies": {
+    "@red-cup-engineering/semantic-content-identify-service": "0.2.2"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "@red-cup-engineering/judge-request-mutability-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Judges one request's method against the mutability of the face it arrived on: reads pass everywhere, mutations pass only on a mutable face. Use when a serving process exposes read-only faces whose inertness must be decided before authentication.",
+  "exports": { ".": { "types": "./src/judge-request-mutability.d.mts", "import": "./src/judge-request-mutability.mjs" } },
+  "scripts": { "check": "node --check src/judge-request-mutability.mjs", "test": "node --test test/*.test.mjs" }
+}

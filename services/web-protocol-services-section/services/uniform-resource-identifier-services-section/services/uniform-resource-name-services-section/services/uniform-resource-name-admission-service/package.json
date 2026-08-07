@@ -1,0 +1,21 @@
+{
+  "name": "@red-cup-engineering/uniform-resource-name-admission-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Transforms a surface string into its admitted RFC 8141 Uniform Resource Name parts {nid, nss, rComponent, qComponent, fComponent}, or a typed refusal naming the exact ABNF rule the string breaks. Use when a system boundary receives a string that claims to be a URN and must decide, before doing anything else with it, whether that claim is lexically true. NSS legally contains colons, so this never mistakes an NSS colon for a component boundary.",
+  "exports": {
+    ".": {
+      "types": "./src/uniform-resource-name-admission-service.d.mts",
+      "import": "./src/uniform-resource-name-admission-service.mjs"
+    }
+  },
+  "scripts": {
+    "check": "node --check src/uniform-resource-name-admission-service.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

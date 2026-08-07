@@ -1,0 +1,14 @@
+name = "ObsmetrologiaAlphaSelection"
+defaultTargets = ["ObsmetrologiaAlphaSelection"]
+
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+
+[[require]]
+name = "Obsmetrologia"
+path = "../../../../../lenticule-science/services/obsmetrological-services-section/src/services/obsmetrologia"
+
+[[lean_lib]]
+name = "ObsmetrologiaAlphaSelection"
+srcDir = "lean"

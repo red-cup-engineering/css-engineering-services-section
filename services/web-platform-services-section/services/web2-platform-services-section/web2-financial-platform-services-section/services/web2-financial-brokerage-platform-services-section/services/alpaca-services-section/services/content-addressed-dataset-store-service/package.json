@@ -1,0 +1,17 @@
+{
+  "name": "@rsc-quiescent/content-addressed-dataset-store-service",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Stores bounded typed datasets as deterministic RMN/CBOR blobs and returns small immutable manifests.",
+  "exports": {
+    ".": "./src/store.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/semantic-content-identify-service": "0.2.2"
+  },
+  "scripts": {
+    "check": "node --check src/store.mjs",
+    "test": "node --test test/*.test.mjs"
+  }
+}

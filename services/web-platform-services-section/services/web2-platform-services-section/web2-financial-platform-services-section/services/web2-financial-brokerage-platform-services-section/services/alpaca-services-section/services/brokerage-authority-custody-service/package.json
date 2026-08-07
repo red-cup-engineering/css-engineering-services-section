@@ -1,0 +1,18 @@
+{
+  "name": "@rsc-quiescent/brokerage-authority-custody-service",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/authority-custody.mjs",
+    "./alpaca-connect-oauth": "./src/alpaca-connect-oauth.mjs",
+    "./src/authority-custody.mjs": "./src/authority-custody.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/authority-custody.mjs && node --check src/alpaca-connect-oauth.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/authority-custody-actuator": "1.0.0"
+  },
+  "description": "brokerage-authority-custody-service sovereign enterprise"
+}

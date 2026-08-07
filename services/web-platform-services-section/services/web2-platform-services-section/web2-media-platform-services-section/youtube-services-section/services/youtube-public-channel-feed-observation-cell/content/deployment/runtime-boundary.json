@@ -1,0 +1,16 @@
+{
+  "id": "urn:deployment-boundary:youtube-public-channel-feed-observation-cell:v1",
+  "type": "DeploymentBoundary",
+  "version": 1,
+  "status": "active",
+  "runtimeAdapterModule": "./src/adapter.mjs",
+  "requiredProviders": [
+    "public-web/fetch-exact-youtube-atom-feed",
+    "witness-journal-rdf-projection-service/serve-witness-journal-rdf-a2a"
+  ],
+  "writableRoots": ["data/"],
+  "ambientFilesystemRead": false,
+  "globalRegistryRead": false,
+  "port": 15636
+}
+

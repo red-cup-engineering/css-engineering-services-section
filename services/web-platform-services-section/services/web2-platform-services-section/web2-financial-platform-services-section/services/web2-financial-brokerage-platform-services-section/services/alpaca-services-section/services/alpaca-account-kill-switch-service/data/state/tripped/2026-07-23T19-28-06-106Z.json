@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-07-23T19:28:06.106Z",
+  "outcome": "tripped",
+  "reasons": [
+    "drawdown 49.993% exceeds 10% high-water-mark limit"
+  ],
+  "equity": 100014.23,
+  "lastEquity": null,
+  "priorHighWaterMark": 200000,
+  "highWaterMark": 200000,
+  "drawdownPct": 0.49992885000000004,
+  "dailyPnlPct": 0,
+  "dailyLossPct": 0,
+  "disabledUnits": [
+    {
+      "unit": "alpaca-esther-paper-redistributor-loop.timer",
+      "disabled": true,
+      "error": null
+    },
+    {
+      "unit": "alpaca-esther-paper-trading-loop.timer",
+      "disabled": true,
+      "error": null
+    }
+  ]
+}

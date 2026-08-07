@@ -1,0 +1,13 @@
+{
+  "name": "@rsc-quiescent/purged-walk-forward-fold-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Forms deterministic chronological train, validation, and holdout coordinates with an explicit label purge.",
+  "exports": {
+    ".": "./src/folds.mjs"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}

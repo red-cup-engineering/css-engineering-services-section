@@ -1,0 +1,16 @@
+{
+  "name": "@rsc-quiescent/metered-compute-payment-service",
+  "version": "0.1.3",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/metered-payment.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/metered-payment.mjs"
+  },
+  "description": "metered-compute-payment-service sovereign enterprise",
+  "dependencies": {
+    "@red-cup-engineering/semantic-content-identify-service": "0.2.2"
+  }
+}

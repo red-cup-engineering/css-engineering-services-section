@@ -1,0 +1,24 @@
+{
+  "name": "@red-cup-engineering/redeem-authorization-code-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Turn an authorization code, its PKCE verifier, and the pending auth-code record it names into a minted bearer token record. Use it at the POST /oauth/token resource for the authorization_code grant; the same token-minting primitive it exposes (mintBearerTokenRecord) is also the right thing to reuse for refresh_token rotation, which mints tokens the same way without redeeming a code.",
+  "exports": {
+    ".": {
+      "types": "./src/redeem-authorization-code-service.d.mts",
+      "import": "./src/redeem-authorization-code-service.mjs"
+    }
+  },
+  "scripts": {
+    "check": "node --check src/redeem-authorization-code-service.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "dependencies": {
+    "@red-cup-engineering/oauth-services-section": "0.1.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
