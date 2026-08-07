@@ -1,0 +1,15 @@
+{
+  "name": "Channel Analytics Commission Processing",
+  "description": "Processes one exact same-principal channel commission and returns bounded interpretation, offer, and candidate identities without analytics measurements.",
+  "supportedInterfaces": [
+    { "url": "${BASE_URL}/a2a/jsonrpc", "protocolBinding": "JSONRPC", "tenant": "", "protocolVersion": "1.0" },
+    { "url": "${BASE_URL}/a2a/rest", "protocolBinding": "HTTP+JSON", "tenant": "", "protocolVersion": "1.0" }
+  ],
+  "provider": { "url": "https://emsenn.net/", "organization": "Channel Analytics Interpretation Broker via A2A Services Section" },
+  "version": "1.0.0",
+  "capabilities": { "streaming": false, "pushNotifications": false, "extensions": [], "extendedAgentCard": false },
+  "securitySchemes": {}, "securityRequirements": [],
+  "defaultInputModes": ["application/rmn+cbor"], "defaultOutputModes": ["application/rmn+cbor"],
+  "skills": [{ "id": "process-analytics-commission", "name": "Process analytics commission", "description": "Processes or deterministically replays one exact settled commission and returns only bounded product identities or a typed refusal.", "tags": ["analytics", "commission", "interpretation", "curiosity"], "examples": [], "inputModes": ["application/rmn+cbor"], "outputModes": ["application/rmn+cbor"], "securityRequirements": [] }],
+  "signatures": []
+}

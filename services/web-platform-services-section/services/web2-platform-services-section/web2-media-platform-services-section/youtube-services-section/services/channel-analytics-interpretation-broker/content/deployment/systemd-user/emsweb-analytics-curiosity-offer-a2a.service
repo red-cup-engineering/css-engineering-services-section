@@ -1,0 +1,20 @@
+[Unit]
+Description=Signed analytics curiosity-offer A2A provider
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/emsenn/info/lib/emsenn/services/561-group/services/rsc-quiescent/services/emsweb/services/channel-analytics-interpretation-broker
+ExecStart=/home/emsenn/.config/nvm/versions/node/v24.13.1/bin/node src/serve-curiosity-offer-a2a.mjs
+Environment=ANALYTICS_BROKER_DATA_ROOT=/home/emsenn/info/lib/emsenn/services/561-group/services/rsc-quiescent/services/emsweb/services/channel-analytics-interpretation-broker/data
+Restart=on-failure
+RestartSec=5s
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/emsenn/info/lib/emsenn/services/561-group/services/rsc-quiescent/services/emsweb/services/channel-analytics-interpretation-broker/data/a2a/tasks
+UMask=0077
+
+[Install]
+WantedBy=default.target
