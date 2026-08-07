@@ -1,7 +1,0 @@
-{
-  "name": "@red-cup-engineering/uniform-resource-identifier-services-section",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "description": "Groups the firm's RFC 3986 Uniform Resource Identifier services: generic, machine-agnostic syntax that carries no firm-specific semantics. Use when adding or finding software that parses, renders, or compares URIs and the schemes built on them (starting with the RFC 8141 Uniform Resource Name family below it)."
-}

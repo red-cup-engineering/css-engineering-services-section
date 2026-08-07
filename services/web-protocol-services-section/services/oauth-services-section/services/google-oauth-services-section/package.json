@@ -1,7 +1,0 @@
-{
-  "name": "@red-cup-engineering/google-oauth-services-section",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "description": "The Google-specific vendor protocol nested under oauth-services-section: everything that talks to accounts.google.com or oauth2.googleapis.com directly, so the surrounding OAuth 2.0 authorization-server logic (client registration, PKCE, code redemption, bearer validation, metadata, admission judgment) stays free of any one upstream identity provider's wire format."
-}
