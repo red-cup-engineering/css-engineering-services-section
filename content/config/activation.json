@@ -1,0 +1,20 @@
+{
+  "status": "active-same-principal-minimized-processing",
+  "dryContractVerification": "granted",
+  "liveProcessing": "granted-same-principal",
+  "leaderInputsStillRequired": [],
+  "activationEvidence": {
+    "authenticatedDelivery": "pinned signed emsenn0 analytics commission Agent Card ni:///sha-256;tttmx5IxL5mb16Xkqlk1w2Qp9fdYwNA-pePt6qqp8gg",
+    "settlementVerification": "exact same-legal-body 5000 USD-micros cost-allocation receipt with payer, payee, input and contract binding",
+    "platformPolicy": "urn:policy:emsenn0:analytics-custody-and-trade revalidated by the channel at commission time and bounded to 30 days",
+    "disclosureReview": "deterministic curiosity-output gate refuses metric names, numeric values, and any restrictedMeasurementDisclosure other than none",
+    "interPrincipalProcessing": "refused",
+    "sovereignSettlementAccount": "eip155:31337:0xefa121c5c132c2d3474c800377159840a5bf8d9b",
+    "accountProvisioningTransaction": "0x405014ab97e66b65f558486a902ad42d849f33a9089079a9cd91173ebcf3ebc3",
+    "firstInterpretation": "urn:sha256:f38417289dedad65f1cd90d3f3f51790cd1146af3761c4634139fb0b33d972fa",
+    "firstCuriosityOffer": "urn:sha256:65302abe68576b30ce0d7ac1959f30a2d492d9af7487f9b7f354540ab088c1e5",
+    "curiosityOfferDeliveryAgent": "pinned signed A2A Agent Card ni:///sha-256;B5iNl2JoLtyOfc-VLAnNe_xDGMI0zuJC3rZCp7JrFmA",
+    "curiosityOfferDeliverySignature": "ni:///sha-256;OpZRzHakKqIRIoT4OV_sFIjxhhDmbyNMN2hdPnr2ZfQ"
+  },
+  "neverEvidence": "An interpretation or curiosity candidate is not YouTube truth, research evidence, a research assignment, a bid, or authority to spend."
+}
