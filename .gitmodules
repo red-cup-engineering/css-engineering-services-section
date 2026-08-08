@@ -7,9 +7,6 @@
 [submodule "services/web-protocol-services-section/services/object-capability-services-section/services/ocapn-sturdyref-admission-service"]
 	path = services/web-protocol-services-section/services/object-capability-services-section/services/ocapn-sturdyref-admission-service
 	url = https://github.com/red-cup-engineering/ocapn-sturdyref-admission-service.git
-[submodule "services/web-interface-services-section/services/web-gui-services-section"]
-	path = services/web-interface-services-section/services/web-gui-services-section
-	url = https://github.com/red-cup-engineering/web-gui-services-section.git
 [submodule "services/web-protocol-services-section/services/x402-services-section/services/x402-exact-purchase-service"]
 	path = services/web-protocol-services-section/services/x402-services-section/services/x402-exact-purchase-service
 	url = https://github.com/red-cup-engineering/x402-exact-purchase-service.git
