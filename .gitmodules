@@ -16,3 +16,6 @@
 [submodule "services/web-platform-services-section/services/cloud-services-section/services/gcloud-services-section/services/gcloud-cloud-run-actuator-service"]
 	path = services/web-platform-services-section/services/cloud-services-section/services/gcloud-services-section/services/gcloud-cloud-run-actuator-service
 	url = https://github.com/red-cup-engineering/gcloud-cloud-run-actuator-service.git
+[submodule "services/web-interface-services-section/lib/legacy"]
+	path = services/web-interface-services-section/lib/legacy
+	url = https://github.com/red-cup-engineering/web-interface-services-section-legacy.git
