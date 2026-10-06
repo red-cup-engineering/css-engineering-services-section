@@ -93,7 +93,7 @@ export async function serveActivityPubProvider(options = {}) {
     ...(options.inboxIndex === undefined ? {} : { inboxIndex: options.inboxIndex }),
     listOutbox,
   });
-  const port = Number(options.port ?? process.env.PORT ?? origin.port ?? "8000");
+  const port = Number(options.port ?? process.env.PORT ?? (origin.port || "8000"));
   const hostname = options.hostname ?? process.env.HOST ?? "127.0.0.1";
   const wellKnownResources = options.wellKnownResources ?? {};
   for (const [resourcePath, document] of Object.entries(wellKnownResources)) {
