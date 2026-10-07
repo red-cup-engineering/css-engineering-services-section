@@ -1,0 +1,76 @@
+{
+  "name": "@red-cup-engineering/web-page-tiling-engine",
+  "version": "0.12.0",
+  "type": "module",
+  "description": "web-page-tiling-engine (TUFTE): the Tiling User Form Topology Engine, a graphical-user-interface engine over the HTTP substrate with semantic tiling, forms, topology, server rendering, and progressive enhancement.",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/render-tufte-document.mjs",
+    "./browser": "./src/tufte-browser.mjs",
+    "./topology": "./src/tufte-topology.mjs",
+    "./theme": "./src/tufte-theme.mjs",
+    "./search": "./src/tufte-search.mjs",
+    "./publication": "./src/tufte-publication.mjs",
+    "./application": "./src/tufte-application.mjs",
+    "./composition": "./src/tufte-composition.mjs",
+    "./packet": "./src/tufte-packet.mjs",
+    "./rendering": "./src/tufte-rendering.mjs",
+    "./storefront": "./src/tufte-storefront.mjs",
+    "./runtime": "./src/tufte-runtime.mjs",
+    "./modules": "./src/browser-modules.mjs",
+    "./storefront/application": "./src/tufte-storefront-application.mjs"
+  },
+  "deliberateEntries": [
+    {
+      "path": "src/tufte-storefront-browser.mjs",
+      "reason": "A browser-safe entry read as raw source by src/tufte-runtime.mjs to serve the storefront module directly from git, with no bundler step."
+    }
+  ],
+  "bin": {
+    "render-tufte-document": "./scripts/render-tufte-document.mjs"
+  },
+  "files": [
+    "src",
+    "scripts",
+    "docs",
+    "content",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "keywords": [
+    "server-rendering",
+    "progressive-enhancement",
+    "semantic-html",
+    "tiles",
+    "forms",
+    "web-framework",
+    "application-runtime",
+    "topology",
+    "layout-engine"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/computer-data-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/computer-data-serialization-services-section": "workspace:*",
+    "@red-cup-engineering/computer-text-content-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/csl-json-services-section": "workspace:*",
+    "@red-cup-engineering/html-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/html-structural-projection-service": "workspace:*",
+    "@red-cup-engineering/http-services-section": "workspace:*",
+    "@red-cup-engineering/knowledge-system-server": "workspace:*",
+    "@red-cup-engineering/markdown-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/rdf-data-model-services-section": "workspace:*",
+    "@red-cup-engineering/web-theming-service": "workspace:*",
+    "@red-cup-engineering/signcell": "workspace:*"
+  }
+}
