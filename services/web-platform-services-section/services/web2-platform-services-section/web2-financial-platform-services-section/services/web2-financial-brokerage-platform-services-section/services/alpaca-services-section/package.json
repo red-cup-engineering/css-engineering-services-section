@@ -15,7 +15,12 @@
     "./obsmetrologia-promotion": "./services/obsmetrologia-alpha-selection-proof-service/src/promotion-certificate.mjs",
     "./readiness": "./src/readiness.mjs",
     "./src/relational-id.mjs": "./src/relational-id.mjs",
-    "./relational-id": "./src/relational-id.mjs"
+    "./relational-id": "./src/relational-id.mjs",
+    "./live-runtime": "./src/live-runtime.mjs",
+    "./live-mcp": "./src/live-mcp.mjs",
+    "./principal-brokerage-system": "./src/principal-brokerage-system.mjs",
+    "./autonomous-portfolio": "./src/autonomous-portfolio.mjs",
+    "./principal-account-read": "./scripts/principal-account-read.mjs"
   },
   "scripts": {
     "start:x402": "node src/market-runtime.mjs",
@@ -41,6 +46,11 @@
     "@rsc-quiescent/alpaca-market-data-read-service": "0.1.1",
     "@rsc-quiescent/union-brokerage-products-market-border": "0.1.1",
     "@rsc-quiescent/union-consideration-settlement-service": "0.1.1",
-    "@rsc-quiescent/virtuals-brokerage-products-border": "0.1.1"
+    "@rsc-quiescent/virtuals-brokerage-products-border": "0.1.1",
+    "@red-cup-engineering/mandate-portfolio-allocation-service": "0.2.0",
+    "@red-cup-engineering/alpha-portfolio-order-intent-service": "0.1.6",
+    "@red-cup-engineering/brokerage-authority-custody-service": "0.1.4",
+    "@red-cup-engineering/brokerage-execution-transport-service": "0.1.6",
+    "@red-cup-engineering/pluggable-venue-adapter-service": "0.1.6"
   }
 }
