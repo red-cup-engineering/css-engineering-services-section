@@ -1,10 +1,11 @@
 #!/usr/bin/env node
-import { createHash, createPrivateKey, sign } from "node:crypto";
+import { createPrivateKey, sign } from "node:crypto";
 import { execFile } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { findFreeVerifiedOrganization } from "../src/plan-admission.mjs";
+import { sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 
 const runFile = promisify(execFile);
 
@@ -30,7 +31,7 @@ if (textBytes.length > 4096) throw new Error("text exceeds 4096 UTF-8 bytes");
 const body = Buffer.from(JSON.stringify({ text }), "utf8");
 if (body.length > 6144) throw new Error("body exceeds 6144 bytes");
 const timestamp = String(Math.floor(Date.now() / 1000));
-const message = Buffer.from(`POST\n${endpoint.pathname}\n${timestamp}\n${createHash("sha256").update(body).digest("hex")}`, "utf8");
+const message = Buffer.from(`POST\n${endpoint.pathname}\n${timestamp}\n${sha256Hex(body)}`, "utf8");
 const keyPath = process.env.DENO_FREE_COMPUTE_SIGNING_KEY
   ?? fileURLToPath(new URL("../data/request-signing-private.pem", import.meta.url));
 const privateKey = createPrivateKey(await readFile(keyPath));
