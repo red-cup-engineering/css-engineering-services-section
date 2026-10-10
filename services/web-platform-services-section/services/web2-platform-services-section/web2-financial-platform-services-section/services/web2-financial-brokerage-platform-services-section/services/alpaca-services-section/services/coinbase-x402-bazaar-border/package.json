@@ -38,7 +38,7 @@
     "@rsc-quiescent/account-evidence-reconciliation-service": "0.1.2",
     "@rsc-quiescent/alpaca-principal-account-read-service": "0.1.2",
     "@rsc-quiescent/brokerage-independent-witness-and-books": "0.1.2",
-    "@lenticule-science/divination-services-section": "2.0.0",
+    "@lenticule-science/divination-computer-system-service": "2.0.0",
     "@red-cup-engineering/x402-settlement-witness-identity": "0.2.0"
   },
   "peerDependenciesMeta": {
@@ -51,7 +51,7 @@
     "@rsc-quiescent/account-evidence-reconciliation-service": { "optional": true },
     "@rsc-quiescent/alpaca-principal-account-read-service": { "optional": true },
     "@rsc-quiescent/brokerage-independent-witness-and-books": { "optional": true },
-    "@lenticule-science/divination-services-section": { "optional": true },
+    "@lenticule-science/divination-computer-system-service": { "optional": true },
     "@red-cup-engineering/x402-settlement-witness-identity": { "optional": true }
   },
   "description": "coinbase-x402-bazaar-border sovereign enterprise"

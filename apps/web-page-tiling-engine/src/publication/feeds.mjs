@@ -1,4 +1,4 @@
-import { projectWebFeedArtifacts } from '@red-cup-engineering/computer-data-serialization-services-section/project-web-feed';
+import { projectWebFeedArtifacts } from '@red-cup-engineering/computer-serialized-content-engineering-services-section/project-web-feed';
 import { renderBody } from '@red-cup-engineering/markdown-engineering-services-section/relational-markdown';
 
 /** Map publication cells onto the neutral shared feed item contract. */

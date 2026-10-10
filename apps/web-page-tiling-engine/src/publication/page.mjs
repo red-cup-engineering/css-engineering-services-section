@@ -5,7 +5,7 @@ import { html, raw } from '@red-cup-engineering/html-engineering-services-sectio
 import { renderBody, tocOf } from '@red-cup-engineering/markdown-engineering-services-section/relational-markdown';
 import { formatReferenceEntry, schemaOrgCitation } from '@red-cup-engineering/csl-json-services-section/record-formatting';
 import { socialMetaTags } from '@red-cup-engineering/html-engineering-services-section/page-metadata';
-import { schemaTypeOfNote } from '@red-cup-engineering/rdf-data-model-services-section/schema-org';
+import { schemaTypeOfNote } from '@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section/schema-org';
 import { renderTufteDocument } from '../tufte-rendering.mjs';
 
 export function renderPage(cell, { site, cells, incoming, resolve, searchEnabled = true, tufteEnabled = true, discovery = {}, canonicalUrl = `${site.baseIri}${cell.name}/` }) {

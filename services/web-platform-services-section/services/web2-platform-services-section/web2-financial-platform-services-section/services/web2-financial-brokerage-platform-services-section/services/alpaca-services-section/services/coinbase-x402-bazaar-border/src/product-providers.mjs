@@ -13,13 +13,13 @@ import { normalizeAlpacaSnapshot, reconcileSnapshots } from "@rsc-quiescent/acco
 import { createStrategySynthesisProvider } from "./strategy-synthesis-provider.mjs";
 import { createAlpacaPrincipalAccountReadService } from "@rsc-quiescent/alpaca-principal-account-read-service";
 import { createBrokerageMarketEventRecorder } from "@rsc-quiescent/brokerage-independent-witness-and-books";
-import { computeDailyReadingTerm } from "@lenticule-science/divination-services-section/rmn-daily-reading";
+import { computeDailyReadingTerm } from "@lenticule-science/divination-computer-system-service/rmn-daily-reading";
 import {
   ACCOUNT as DIVINATION_ACCOUNT,
   ACTOR as DIVINATION_ACTOR,
   CONTEXT as DIVINATION_CONTEXT,
   CONTRACT as DIVINATION_CONTRACT,
-} from "@lenticule-science/divination-services-section/contract-daily-reading";
+} from "@lenticule-science/divination-computer-system-service/contract-daily-reading";
 
 // Divination's own precondition/postcondition/refusal terms are private to
 // its module (not exported) but are content-addressed and stable; this

@@ -1,3 +1,4 @@
 # runtime signing material — provisioned at deploy time, never committed
 **/data/agent-card-signing/*.pem
 **/content/request-signing-public.pem
+node_modules/

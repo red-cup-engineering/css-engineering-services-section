@@ -60,7 +60,7 @@
   "dependencies": {
     "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*",
     "@red-cup-engineering/computer-data-engineering-services-section": "workspace:*",
-    "@red-cup-engineering/computer-data-serialization-services-section": "workspace:*",
+    "@red-cup-engineering/computer-serialized-content-engineering-services-section": "workspace:*",
     "@red-cup-engineering/computer-text-content-engineering-services-section": "workspace:*",
     "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "workspace:*",
     "@red-cup-engineering/csl-json-services-section": "workspace:*",
@@ -69,7 +69,7 @@
     "@red-cup-engineering/http-services-section": "workspace:*",
     "@red-cup-engineering/knowledge-system-server": "workspace:*",
     "@red-cup-engineering/markdown-engineering-services-section": "workspace:*",
-    "@red-cup-engineering/rdf-data-model-services-section": "workspace:*",
+    "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section": "workspace:*",
     "@red-cup-engineering/web-theming-service": "workspace:*",
     "@red-cup-engineering/signcell": "workspace:*"
   }

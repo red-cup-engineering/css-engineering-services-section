@@ -1,6 +1,6 @@
 import { makeResolver } from '@red-cup-engineering/knowledge-system-server/catalog';
-import { projectWebFeedArtifacts } from '@red-cup-engineering/computer-data-serialization-services-section/project-web-feed';
-import { robots, sitemap } from '@red-cup-engineering/computer-data-serialization-services-section/web-feed';
+import { projectWebFeedArtifacts } from '@red-cup-engineering/computer-serialized-content-engineering-services-section/project-web-feed';
+import { robots, sitemap } from '@red-cup-engineering/computer-serialized-content-engineering-services-section/web-feed';
 import { generateStylesheet } from '@red-cup-engineering/web-theming-service/theming';
 import { renderBody } from '@red-cup-engineering/markdown-engineering-services-section/relational-markdown';
 import { createTufteApplication } from '../tufte-application.mjs';
