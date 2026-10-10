@@ -23,13 +23,13 @@
     "./design-tokens": "./src/theming-computer/design-tokens.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/metrologic": "0.3.0",
-    "@red-cup-engineering/computer-data-engineering-services-section": "0.1.0",
-    "@red-cup-engineering/css-services-section": "0.1.0",
-    "@red-cup-engineering/html-engineering-services-section": "0.1.0",
-    "@red-cup-engineering/html-structural-projection-service": "0.3.0",
-    "@red-cup-engineering/xml-document-rendering-service": "0.1.6",
-    "@red-cup-engineering/signcell": "0.1.0"
+    "@red-cup-engineering/metrologic": "workspace:*",
+    "@red-cup-engineering/computer-data-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/css-services-section": "workspace:*",
+    "@red-cup-engineering/html-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/html-structural-projection-service": "workspace:*",
+    "@red-cup-engineering/xml-document-rendering-service": "workspace:*",
+    "@red-cup-engineering/signcell": "workspace:*"
   },
   "sideEffects": false
 }
