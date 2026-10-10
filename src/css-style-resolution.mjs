@@ -1,5 +1,5 @@
 /**
- * css-style-resolution-service — resolves the CSS cascade over a node tree
+ * css-style-resolution — resolves the CSS cascade over a node tree
  * into one settled per-node style valuation, certifies that closure is
  * idempotent and that class tokens are a finite factor map/proper coloring,
  * and serializes a settled valuation back to CSS text.
