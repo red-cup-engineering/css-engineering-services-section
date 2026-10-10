@@ -1,14 +1,13 @@
 {
   "tasks": {
-    "start": "deno run --allow-net main.ts",
-    "test": "deno test test/*.test.ts"
+    "start": "deno run --allow-net main.mjs",
+    "test": "deno test test/*.test.mjs"
   },
   "deploy": {
     "org": "emsenn",
     "app": "union-free-compute-assay"
   }
 }
-
 
 
 
