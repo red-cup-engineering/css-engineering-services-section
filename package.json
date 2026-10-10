@@ -1,0 +1,23 @@
+{
+  "name": "@red-cup-engineering/css-services-section",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Web-tier home for CSS packages: cascade computation and certification, plus a certified theming system built on top of it. Sibling to the web html-services-section; together they carry the rendering stack that used to live inside the file-format HTML codec.",
+  "dependencies": {
+    "@red-cup-engineering/metrologic": "0.3.0",
+    "@red-cup-engineering/computer-content-engineering-services-section": "0.1.0",
+    "@red-cup-engineering/computer-data-engineering-services-section": "0.1.0",
+    "@red-cup-engineering/web-theming-service": "0.0.4",
+    "@red-cup-engineering/xml-document-rendering-service": "0.1.6",
+    "@red-cup-engineering/signcell": "0.1.0"
+  },
+  "exports": {
+    "./css-style-resolution": "./src/css-style-resolution.mjs",
+    "./css-cascade": "./src/css-cascade.mjs",
+    "./theme-tokens": "./src/theme-tokens.mjs",
+    "./typography": "./src/typography.mjs"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}

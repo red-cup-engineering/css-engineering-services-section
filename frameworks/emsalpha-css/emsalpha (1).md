@@ -1,0 +1,275 @@
+"emsAlpha" is a CSS Theme created by emsenn.
+
+-   [Introduction](#org3118346)
+-   [emsAlpha](#orgb18a5ef)
+    -   [Implementation](#orgf87f947)
+-   [Supplements](#org95afa49)
+    -   [Example Texts](#org407cf3e)
+        -   [Example HTML Document](#org766dc86)
+    -   [Index](#org64a2bb7)
+
+
+<a id="org3118346"></a>
+
+# Introduction
+
+This CSS Theme is a *draft*: it is unfinished and that should be considered when reading it. Special attention should be paid to text marked DRAFT, EDIT, or TK.
+
+In this document I explain the design philosophy and implementation of
+my **emsAlpha** CSS theme.
+
+
+<a id="orgb18a5ef"></a>
+
+# emsAlpha
+
+
+<a id="orgf87f947"></a>
+
+## Implementation
+
+    /* http://emsenn.net/style.css
+    */
+    html {
+      color: rgba(44,44,44,1); background-color: rgba(242,242,242,1);
+      hyphens: auto;
+      font-family: sans-serif;
+      letter-spacing: 0.025em; word-spacing: 0.045em;
+      transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+      animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+    body {
+      max-width: 40rem;
+      margin: auto;
+      padding-top: 1em;
+    }
+    main {
+      animation: animation-drop-in 0.5s;
+    }
+    h1 { font-weight: normal; font-size: 2em; margin: 0.5em 0 0 0; }
+    h2 { text-align: center; font-weight: normal; }
+    footer {
+      font-size: .8em; letter-spacing: 0em; word-spacing: 0em;
+      color: rgba(117,117,117,1);
+      text-align: right;
+
+    }
+    sup.ordinal { font-style: italic; }
+    a {
+      color: rgba(117,117,117,1);
+      display: inline-block;
+      position: relative;
+      text-decoration: none;
+      transition: color 0.3s;
+      background: linear-gradient(to left, rgba(242,242,242,1) 50%, rgba(117,117,117,0.2) 50%);
+      background-size: 200% 100%;
+      background-position:right bottom;
+      transition: background 0.3s;
+    }
+    a:before {
+      background: rgba(117,117,117,1);
+      content: "";
+      display: block;
+      position: absolute;
+      bottom: -0.1em;
+      height: 0.1em;
+      width: 100%;
+      transition: all 0.3s;
+    }
+    a:visited {
+      color: rgba(88,88,88,1);
+    }
+    a:hover {
+      outline-style: none;
+      animation-delay: 0.3s;
+      animation: animation-pulse 0.8s infinite;
+      background-position:left bottom;
+    }
+    a:hover:before, a:focus:before {
+      width: 0em;
+    }
+    a:focus {
+      outline-style: none;
+      animation-delay: 0.3s;
+      background: none;
+      animation: animation-pulse-heavy 1.2s infinite;
+    }
+    ::selection {
+      color: rgba(44,44,44,01); background-color: rgba(117,117,117,0.5);
+
+    }
+    .blockquote {
+      margin: 1em 2em;
+      padding: 1em;
+      font-size: 0.8em;
+      border-left: 0.2em solid rgba(117,117,117,1);
+    }
+    .blockquote li { margin-left: 2em;}
+    .verbose { font-size: 0.8em; margin-left: 2em; margin-right: 2em;}
+    .letter{
+      text-align: justify;
+      margin: 0 2em 0 2em;
+      font-size: 1.3em;
+    }
+    .letter__complimentary {
+      font-size: 1.5em;
+    }
+    .letter__signature {
+      font-size: 2.2em;
+      margin: 0.5em;
+      margin-left: 2em;
+    }
+
+
+    .timeline {
+      border-left: 0.1em solid rgba(44,44,44,1);
+      margin-left: 2em;
+      padding-left: 1.75em;
+    }
+    .timeline__entry {
+      position: relative;
+      margin-bottom: 1.2em;
+    }
+    .timeline__mark {
+      width: 1em; height: 1em;
+      position: absolute;
+      border: 0.2em solid rgba(117,117,117,1);
+      left: -2.5em;
+      background-color: rgba(242,242,242,1);
+      border-radius: 50%;
+    }
+    .timeline__title{
+      font-size: 1em;
+      letter-spacing: 0;
+      font-weight: bold;
+      margin-left: -0.5em;
+    }
+    .timeline__period {
+      font-style: italic;
+      font-size: 0.5em;
+    }
+    .timeline__details {
+      font-size: 0.8em;
+    }
+    .table {
+      width: 100%;
+    }
+    .table__header {
+      background: rgba(44,44,44,1);
+      color: rgba(242,242,242,1);
+      text-align: center;
+      font-size: 1em;
+    }
+    .table__row {
+      display: table-row;
+    }
+
+    .table__cell {
+      display: table-cell;
+      vertical-align: middle;
+      padding: 1em 0;
+    }
+    .table__cell[data-title="brief"] {
+      float: right;
+    }
+    .footer__meta {
+      float: left;
+    }
+    @keyframes animation-drop-in {
+      0% {
+        transform: translateY(50vw) scale(0.7);
+        opacity: 0;
+      }
+      40% { transform: translatey(0) scale(0.7); opacity: 0.05; }
+      80% { transform: scale(0.7); opacity: 1; }
+      100% {
+        transform: scale(1);
+      }
+    }
+    @keyframes animation-pulse {
+      from, 50%,
+      to { background-color: rgba(117,117,117,0.2)); }
+      50% { background-color: rgba(117,117,117,0.1); }
+    }
+
+    @keyframes animation-pulse-heavy {
+      from, 50%,
+      to { background-color: rgba(117,117,117,0.3)); }
+      50% { background-color: rgba(117,117,117,0.2); }
+    }
+
+    @media (max-width: 512px) {
+      body { padding: 1.2em; }
+      section { padding: 0.3em; }
+      .history__timeline__details {
+        margin-left: -2em;
+      }
+      .letter { margin: 0 0.5em 0 0.5em; text-align: left; }
+    }
+    @media (min-width: 512px) { html { font-size: large; } }
+    @media (min-width: 1200px) { .content { max-width: 1024px; } }
+
+
+<a id="org95afa49"></a>
+
+# Supplements
+
+
+<a id="org407cf3e"></a>
+
+## Example Texts
+
+
+<a id="org766dc86"></a>
+
+### Example HTML Document
+
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>emsenn</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="emsenn is a writer & developer. This is their website.">
+        <meta name="keywords" content="emsenn, morgan sennhauser">
+        <meta name="author" content="emsenn">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <!-- <base href="https://emsenn.net/" target="_blank"> -->
+      </head>
+      <body>
+        <div class="page-wrapper">
+          <main class="content">
+    	<h1>
+    	  My name is emsenn.
+    	</h1>
+    	<div class="letter">
+    	  <p>
+    	    I have an interest in the things that shape our interaction with technology, like software documentation and project governance.
+    	  </p>
+    	  <p>
+    	    I want to contribute to projects aligned with this interest. This includes helping businesses develop, implement, and document their technical and operational processes.
+    	  </p>
+    	  <p>
+    	    <a class="cta" href="offer/">Click here to learn if we should work together.</a>
+    	  </p>
+    	</div>
+          <footer>
+    	<div class="footer__stamp">
+    	  This document was last updated June 25<sup>th</sup>, 2018.
+    	</div>
+          </footer>
+        </main>
+        </div>
+      </body>
+    </html>
+
+
+<a id="org64a2bb7"></a>
+
+## Index
+
+-   **emsAlpha:**
+
+-   **CSS:**
+
+-   **HTML:**

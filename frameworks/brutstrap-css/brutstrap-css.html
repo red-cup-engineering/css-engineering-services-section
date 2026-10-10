@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-06-14 Fri 15:15 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Brutstrap</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="emsenn" />
+<link rel="stylesheet" type="text/css" href="./brutstrap.css">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Brutstrap</h1>
+<p>
+"Brutstrap" is a CSS theme created by emsenn.
+</p>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#brutstrap">Brutstrap</a>
+<ul>
+<li><a href="#org4bf7d22">Principles</a></li>
+<li><a href="#orge591e75">Usage</a></li>
+<li><a href="#org3b7b48c">Implementation</a>
+<ul>
+<li><a href="#org6180237">Document Framing</a></li>
+<li><a href="#org436545c">Block Design</a></li>
+<li><a href="#org076c1f8">Typography</a></li>
+<li><a href="#org8be8bbd">State Rules</a></li>
+<li><a href="#orgdd33ed7">Class Rules</a></li>
+</ul>
+</li>
+<li><a href="#supplements-acknowledgements">Acknowledgements</a></li>
+</ul>
+</li>
+<li><a href="#supplements">Supplements</a>
+<ul>
+<li><a href="#orge68b6a5">Document History</a></li>
+<li><a href="#orge987666">Example Texts</a>
+<ul>
+<li><a href="#complete-stylesheet">Complete Stylesheet</a></li>
+<li><a href="#demonstration-html">Demonstration HTML</a></li>
+</ul>
+</li>
+<li><a href="#org069f7ac">Index</a></li>
+<li><a href="#media-package">Media Package</a></li>
+<li><a href="#org764cd32">README</a>
+<ul>
+<li><a href="#org38e93ee">Brutstrap</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="outline-container-org57149b0" class="outline-2">
+<h2 id="introduction">Introduction</h2>
+<div class="outline-text-2" id="text-introduction">
+<p>
+This CSS theme is a <i>draft</i>: it is unfinished and that should be considered when reading it. Special attention should be paid to text marked DRAFT, EDIT, or TK.
+</p>
+
+<p>
+In this document I explain the design philosophy and implementation of
+my <b>Brutstrap</b> CSS theme: one where the webpage, as shown in the
+browser, is an accurate representation of the HTML document it is
+displaying.
+</p>
+
+<p>
+This CSS theme was created by me, emsenn, in the United States. To the extent possible under law, I have waived all copyright and related or neighboring rights to this document. This document was created for the benefit of the public. If you're viewing it on a remote server, you're encouraged to download your own copy. To learn how you can support me, see <a href="https://emsenn.net/donate">https://emsenn.net/donate</a>.
+</p>
+</div>
+</div>
+<div id="outline-container-org18f343c" class="outline-2">
+<h2 id="brutstrap">Brutstrap</h2>
+<div class="outline-text-2" id="text-brutstrap">
+<p>
+<b><i>Brutstrap</i></b> is a CSS theme based on David Bryant Copeland's
+<a href="https://brutalist-web.design/">"Guidelines for Brutalist Web Design,"</a> which advocates "<i>raw content
+true to its construction</i>."
+</p>
+</div>
+<div id="outline-container-org4bf7d22" class="outline-3">
+<h3 id="org4bf7d22">Principles</h3>
+<div class="outline-text-3" id="text-org4bf7d22">
+<ul class="org-ul">
+<li><b><i>The website people see is the website in the HTML file.</i></b> As David
+Byant Copeland says in his definition, brutalist websites should be
+"raw content, true to [their] construction." Here, that means the
+content is represented as a single column, flowing left to right and
+top to bottom.</li>
+<li><b><i>Only links, inputs and buttons should respond to interaction.</i></b> A
+website should allow two points of interaction: a hyperlink that
+brings you to a destination, and form which submits information to a
+server. Those elements, and only those elements, should respond to
+being clicked, focused, or hovered-over.</li>
+<li><b><i>Components should be named what they are.</i></b> Classes should be
+named what they are, not what they're for.</li>
+<li><b><i>Design should be helpful.</i></b> Styling should be to help reinforce
+the context that your content has.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge591e75" class="outline-3">
+<h3 id="orge591e75">Usage</h3>
+<div class="outline-text-3" id="text-orge591e75">
+<p>
+<b>Brutstrap</b> is written primarily for my personal use, which means it's
+written to style the HTML exported by <i>Org-mode</i>. Any well-enough
+written <i>HTML5</i> should work; and I apologize for the superfluous class
+names.
+</p>
+
+<p>
+To see the entire stylesheet, see the <a href="#complete-stylesheet">"Complete Stylesheet"</a> subsection
+of the <a href="#supplements">"Supplements"</a> section.
+</p>
+
+<p>
+This <i>Org-mode</i> source file contains code which can be extracted. See <a href="https://orgmode.org/manual/Working-with-source-code.html">https://orgmode.org/manual/Working-with-source-code.html</a>.
+<b>Brutstrap</b>'s stylesheet is available at
+<a href="./build/brutstrap/brutstrap.css"><code>./build/brutstrap/brutstrap.css</code></a>, but please don't hotlink to it. You
+can also view the stylesheet under the <a href="#complete-stylesheet">"Complete Stylesheet"</a> section.
+</p>
+</div>
+</div>
+<div id="outline-container-org3b7b48c" class="outline-3">
+<h3 id="org3b7b48c">Implementation</h3>
+<div class="outline-text-3" id="text-org3b7b48c">
+<p>
+<b><i>NOTE:</i></b> Because I use Org-mode, this CSS is written with rules
+compatible with its naming scheme.
+</p>
+</div>
+<div id="outline-container-org6180237" class="outline-4">
+<h4 id="org6180237">Document Framing</h4>
+<div class="outline-text-4" id="text-org6180237">
+</div>
+<div id="outline-container-orgc013769" class="outline-5">
+<h5 id="orgc013769">Body</h5>
+<div class="outline-text-5" id="text-orgc013769">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #686868;">body </span>{
+  <span style="color: #747474;">position</span>: relative;
+  <span style="color: #747474;">background-color</span>: <span style="color: #000000; background-color: #eee;">#eee</span>;
+  <span style="color: #747474;">color</span>: <span style="color: #ffffff; background-color: #444;">#444</span>;
+  <span style="color: #747474;">font-family</span>: serif;
+  <span style="color: #747474;">margin</span>: 0 auto;
+  <span style="color: #747474;">padding-bottom</span>: 6rem;
+  <span style="color: #747474;">min-height</span>: 100%;
+  <span style="color: #747474;">font-size</span>: 1.2em;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org0074cf6" class="outline-5">
+<h5 id="org0074cf6">Header &amp; Title</h5>
+<div class="outline-text-5" id="text-org0074cf6">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #686868;">header, h1 </span>{
+  <span style="color: #747474;">font-family</span>: sans-serif;
+  <span style="color: #747474;">text-align</span>: center;
+  <span style="color: #747474;">width</span>: 100%;
+  <span style="color: #747474;">overflow</span>: hidden;
+  <span style="color: #747474;">font-family</span>: sans-serif;
+}
+<span style="color: #686868;">.title </span>{ <span style="color: #747474;">font-size</span>: 3.2rem; }
+<span style="color: #686868;">.subtitle </span>{ <span style="color: #747474;">font-size</span>: 2.2rem; }
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org58ecda0" class="outline-5">
+<h5 id="org58ecda0">Content Container</h5>
+<div class="outline-text-5" id="text-org58ecda0">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #686868;">main, #content </span>{
+  <span style="color: #747474;">width</span>: 75vw;
+  <span style="color: #747474;">max-width</span>: 40em;
+  <span style="color: #747474;">margin</span>: 0 0 0 2em;
+  <span style="color: #747474;">line-height</span>: 1.6;
+  <span style="color: #747474;">margin-bottom</span>: 8rem;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org9f2e85a" class="outline-5">
+<h5 id="org9f2e85a">Footer</h5>
+<div class="outline-text-5" id="text-org9f2e85a">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #686868;">footer, #postamble </span>{
+  <span style="color: #747474;">padding</span>: 1em 0;
+  <span style="color: #747474;">position</span>: absolute;
+  <span style="color: #747474;">right</span>: 0;
+  <span style="color: #747474;">bottom</span>: 0;
+  <span style="color: #747474;">left</span>: 0;
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org436545c" class="outline-4">
+<h4 id="org436545c">Block Design</h4>
+<div class="outline-text-4" id="text-org436545c">
+</div>
+<div id="outline-container-org80212bb" class="outline-5">
+<h5 id="org80212bb">Section</h5>
+<div class="outline-text-5" id="text-org80212bb">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #686868;">section </span>{
+  <span style="color: #747474;">border-bottom</span>: 0.1em solid <span style="color: #ffffff; background-color: #444;">#444</span>;
+  <span style="color: #747474;">margin-bottom</span>: 1em;
+}
+<span style="color: #686868;">.outline-3 </span>{
+  <span style="color: #747474;">border-bottom</span>: 0.1rem dotted <span style="color: #ffffff; background-color: #444;">#444</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge0569d1" class="outline-5">
+<h5 id="orge0569d1">Blockquote</h5>
+<div class="outline-text-5" id="text-orge0569d1">
+<div class="org-src-container">
+<pre class="src src-css">
+<span style="color: #686868;">blockquote </span>{
+  <span style="color: #747474;">padding</span>: 0.5rem;
+  <span style="color: #747474;">border-left</span>: 0.1em solid <span style="color: #ffffff; background-color: #444;">#444</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4d53192" class="outline-5">
+<h5 id="org4d53192">Table</h5>
+<div class="outline-text-5" id="text-org4d53192">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #686868;">table </span>{
+    <span style="color: #747474;">border-collapse</span>: collapse;
+    <span style="color: #747474;">border-spacing</span>: 0;
+    <span style="color: #747474;">empty-cells</span>: show;
+    <span style="color: #747474;">border</span>: 0.1em solid <span style="color: #ffffff; background-color: #444;">#444</span>;
+}
+<span style="color: #686868;">thead </span>{ <span style="color: #747474;">font-family</span>: sans-serif; }
+<span style="color: #686868;">td </span>{
+  <span style="color: #747474;">padding</span>: 0 0.3em;
+  <span style="color: #747474;">border</span>: 0.01em solid <span style="color: #ffffff; background-color: #444;">#444</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc13b10c" class="outline-5">
+<h5 id="orgc13b10c">Images</h5>
+<div class="outline-text-5" id="text-orgc13b10c">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #686868;">img </span>{
+  <span style="color: #747474;">max-width</span>: 80vw;
+  <span style="color: #747474;">vertical-align</span>: middle;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org10073e7" class="outline-5">
+<h5 id="org10073e7">Code</h5>
+<div class="outline-text-5" id="text-org10073e7">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #686868;">pre, .src </span>{
+  <span style="color: #747474;">padding</span>: 0.5em;
+  <span style="color: #747474;">border</span>: 0.1em solid <span style="color: #ffffff; background-color: #444;">#444</span>;
+  <span style="color: #747474;">white-space</span>: pre-wrap;
+  <span style="color: #747474;">overflow-x</span>: scroll;
+  <span style="color: #747474;">text-overflow</span>: clip;
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org076c1f8" class="outline-4">
+<h4 id="org076c1f8">Typography</h4>
+<div class="outline-text-4" id="text-org076c1f8">
+</div>
+<div id="outline-container-orgbb748cc" class="outline-5">
+<h5 id="orgbb748cc">Headlines</h5>
+<div class="outline-text-5" id="text-orgbb748cc">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #686868;">h2, h3, h4, h5, h6, h7, h8, h9, h10 </span>{
+  <span style="color: #747474;">font-family</span>: sans-serif;
+  <span style="color: #747474;">margin</span>: 0.5em;
+}
+<span style="color: #686868;">h2, h4, h6 </span>{
+  <span style="color: #747474;">text-align</span>: center;
+}
+<span style="color: #686868;">h2 </span>{ <span style="color: #747474;">font-size</span>: 2em;
+<span style="color: #686868;">h3 </span>{
+  <span style="color: #747474;">font-size</span>: 1.7em;
+}
+<span style="color: #686868;">h4,h6 </span>{
+  <span style="color: #747474;">border-bottom</span>: 0.1rem solid <span style="color: #ffffff; background-color: #444;">#444</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org30750e2" class="outline-5">
+<h5 id="org30750e2">Links</h5>
+<div class="outline-text-5" id="text-org30750e2">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #686868;">a </span>{
+  <span style="color: #747474;">text-decoration</span>: none;
+  <span style="color: #747474;">color</span>: <span style="color: #ffffff; background-color: #3ac;">#3ac</span>;
+  <span style="color: #747474;">display</span>: inline;
+  <span style="color: #747474;">position</span>: relative;
+  <span style="color: #747474;">border-bottom</span>: 0.1rem dotted;
+  <span style="color: #747474;">line-height</span>: 1.2;
+  <span style="color: #747474;">transition</span>: border 0.3s;
+}
+<span style="color: #686868;">a:hover </span>{
+  <span style="color: #747474;">color</span>: <span style="color: #000000; background-color: #5ce;">#5ce</span>;
+  <span style="color: #747474;">outline-style</span>: none;
+  <span style="color: #747474;">border-bottom</span>: 0.1rem solid;
+}
+<span style="color: #686868;">a:visited </span>{ <span style="color: #747474;">color</span>: <span style="color: #ffffff; background-color: #b8c;">#b8c</span>; }
+<span style="color: #686868;">a:visited:hover </span>{ <span style="color: #747474;">color</span>: <span style="color: #000000; background-color: #dae;">#dae</span>; }
+<span style="color: #686868;">a:focus </span>{
+  <span style="color: #747474;">outline-style</span>: none;
+  <span style="color: #747474;">border-bottom</span>: 0.1rem solid;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgaed40fb" class="outline-5">
+<h5 id="orgaed40fb">Dictionary Terms</h5>
+<div class="outline-text-5" id="text-orgaed40fb">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #686868;">dt </span>{ <span style="color: #747474;">font-weight</span>: bold; }
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org8be8bbd" class="outline-4">
+<h4 id="org8be8bbd">State Rules</h4>
+<div class="outline-text-4" id="text-org8be8bbd">
+</div>
+<div id="outline-container-org2201290" class="outline-5">
+<h5 id="org2201290">Selection Rules</h5>
+<div class="outline-text-5" id="text-org2201290">
+<div class="org-src-container">
+<pre class="src src-css">::selection { <span style="color: #747474;">background-color</span>: <span style="color: #ffffff; background-color: #777;">#777</span>; <span style="color: #747474;">color</span>: <span style="color: #000000; background-color: #eee;">#eee</span>; }
+<span style="color: #747474;">a</span>::selection { <span style="color: #747474;">background-color</span>: <span style="color: #000000; background-color: #ccc;">#ccc</span>; }
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgdd33ed7" class="outline-4">
+<h4 id="orgdd33ed7">Class Rules</h4>
+<div class="outline-text-4" id="text-orgdd33ed7">
+</div>
+<div id="outline-container-orgcfee3c2" class="outline-5">
+<h5 id="orgcfee3c2">TODO</h5>
+<div class="outline-text-5" id="text-orgcfee3c2">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #686868;">.todo </span>{
+  <span style="color: #747474;">background-color</span>: <span style="color: #000000; background-color: #ddd;">#ddd</span>;
+  <span style="color: #747474;">color</span>: <span style="color: #ffffff; background-color: #333;">#333</span>;
+  <span style="color: #747474;">font-family</span>: serif;
+  <span style="color: #747474;">font-size</span>: 0.6rem;
+  <span style="color: #747474;">float</span>: right;
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbcf579a" class="outline-3">
+<h3 id="supplements-acknowledgements">Acknowledgements</h3>
+<div class="outline-text-3" id="text-supplements-acknowledgements">
+<ul class="org-ul">
+<li><a href="https://naildrivin4.com">David Bryant Copeland</a> defined "brutalist web design," inspiring this
+project.</li>
+<li>Whoever made the <a href="https://motherfuckingwebsite.com">motherfucking website</a>.</li>
+<li><a href="https://www.matthewgraybosch.com">Matthew Graybosch</a>, whose <a href="https://codepen.io/demifiend/pen/EENKNN">variation</a> on the motherfucking website made
+learning HTML and CSS seem feasible and worthwhile.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org9805ece" class="outline-2">
+<h2 id="supplements">Supplements</h2>
+<div class="outline-text-2" id="text-supplements">
+</div>
+<div id="outline-container-orge68b6a5" class="outline-3">
+<h3 id="orge68b6a5">Document History</h3>
+<div class="outline-text-3" id="text-orge68b6a5">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">Date</th>
+<th scope="col" class="org-left">Event</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">2018-07-09</td>
+<td class="org-left">Created first draft</td>
+</tr>
+
+<tr>
+<td class="org-right">2018-07-11</td>
+<td class="org-left">Added introduction for readers from <a href="https://news.ycombinator.com"><i>Hacker News</i></a></td>
+</tr>
+
+<tr>
+<td class="org-right">2018-07-31</td>
+<td class="org-left">Removed introduction for <i>Hacker News</i></td>
+</tr>
+
+<tr>
+<td class="org-right">2019-04-29</td>
+<td class="org-left">Re-implemented as a literately-programmed Org-mode file</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orge987666" class="outline-3">
+<h3 id="orge987666">Example Texts</h3>
+<div class="outline-text-3" id="text-orge987666">
+</div>
+<div id="outline-container-org57b3b03" class="outline-4">
+<h4 id="complete-stylesheet">Complete Stylesheet</h4>
+<div class="outline-text-4" id="text-complete-stylesheet">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #686868;">body </span>{
+  <span style="color: #747474;">position</span>: relative;
+  <span style="color: #747474;">background-color</span>: <span style="color: #000000; background-color: #eee;">#eee</span>;
+  <span style="color: #747474;">color</span>: <span style="color: #ffffff; background-color: #444;">#444</span>;
+  <span style="color: #747474;">font-family</span>: serif;
+  <span style="color: #747474;">margin</span>: 0 auto;
+  <span style="color: #747474;">padding-bottom</span>: 6rem;
+  <span style="color: #747474;">min-height</span>: 100%;
+  <span style="color: #747474;">font-size</span>: 1.2em;
+}
+<span style="color: #686868;">header, h1 </span>{
+  <span style="color: #747474;">font-family</span>: sans-serif;
+  <span style="color: #747474;">text-align</span>: center;
+  <span style="color: #747474;">width</span>: 100%;
+  <span style="color: #747474;">overflow</span>: hidden;
+  <span style="color: #747474;">font-family</span>: sans-serif;
+}
+<span style="color: #686868;">.title </span>{ <span style="color: #747474;">font-size</span>: 3.2rem; }
+<span style="color: #686868;">.subtitle </span>{ <span style="color: #747474;">font-size</span>: 2.2rem; }
+<span style="color: #686868;">main, #content </span>{
+  <span style="color: #747474;">width</span>: 75vw;
+  <span style="color: #747474;">max-width</span>: 40em;
+  <span style="color: #747474;">margin</span>: 0 0 0 2em;
+  <span style="color: #747474;">line-height</span>: 1.6;
+  <span style="color: #747474;">margin-bottom</span>: 8rem;
+}
+<span style="color: #686868;">footer, #postamble </span>{
+  <span style="color: #747474;">padding</span>: 1em 0;
+  <span style="color: #747474;">position</span>: absolute;
+  <span style="color: #747474;">right</span>: 0;
+  <span style="color: #747474;">bottom</span>: 0;
+  <span style="color: #747474;">left</span>: 0;
+}
+<span style="color: #686868;">section </span>{
+  <span style="color: #747474;">border-bottom</span>: 0.1em solid <span style="color: #ffffff; background-color: #444;">#444</span>;
+  <span style="color: #747474;">margin-bottom</span>: 1em;
+}
+<span style="color: #686868;">.outline-3 </span>{
+  <span style="color: #747474;">border-bottom</span>: 0.1rem dotted <span style="color: #ffffff; background-color: #444;">#444</span>;
+}
+<span style="color: #686868;">blockquote </span>{
+  <span style="color: #747474;">padding</span>: 0.5rem;
+  <span style="color: #747474;">border-left</span>: 0.1em solid <span style="color: #ffffff; background-color: #444;">#444</span>;
+}
+<span style="color: #686868;">table </span>{
+    <span style="color: #747474;">border-collapse</span>: collapse;
+    <span style="color: #747474;">border-spacing</span>: 0;
+    <span style="color: #747474;">empty-cells</span>: show;
+    <span style="color: #747474;">border</span>: 0.1em solid <span style="color: #ffffff; background-color: #444;">#444</span>;
+}
+<span style="color: #686868;">thead </span>{ <span style="color: #747474;">font-family</span>: sans-serif; }
+<span style="color: #686868;">td </span>{
+  <span style="color: #747474;">padding</span>: 0 0.3em;
+  <span style="color: #747474;">border</span>: 0.01em solid <span style="color: #ffffff; background-color: #444;">#444</span>;
+}
+<span style="color: #686868;">img </span>{
+  <span style="color: #747474;">max-width</span>: 80vw;
+  <span style="color: #747474;">vertical-align</span>: middle;
+}
+<span style="color: #686868;">pre, .src </span>{
+  <span style="color: #747474;">padding</span>: 0.5em;
+  <span style="color: #747474;">border</span>: 0.1em solid <span style="color: #ffffff; background-color: #444;">#444</span>;
+  <span style="color: #747474;">white-space</span>: pre-wrap;
+  <span style="color: #747474;">overflow-x</span>: scroll;
+  <span style="color: #747474;">text-overflow</span>: clip;
+}
+<span style="color: #686868;">h2, h3, h4, h5, h6, h7, h8, h9, h10 </span>{
+  <span style="color: #747474;">font-family</span>: sans-serif;
+  <span style="color: #747474;">margin</span>: 0.5em;
+}
+<span style="color: #686868;">h2, h4, h6 </span>{
+  <span style="color: #747474;">text-align</span>: center;
+}
+<span style="color: #686868;">h3 </span>{
+  <span style="color: #747474;">font-size</span>: 2.2em;
+}
+<span style="color: #686868;">h4,h6 </span>{
+  <span style="color: #747474;">border-bottom</span>: 0.1rem solid <span style="color: #ffffff; background-color: #444;">#444</span>;
+}
+<span style="color: #686868;">a </span>{
+  <span style="color: #747474;">text-decoration</span>: none;
+  <span style="color: #747474;">color</span>: <span style="color: #ffffff; background-color: #3ac;">#3ac</span>;
+  <span style="color: #747474;">display</span>: inline;
+  <span style="color: #747474;">position</span>: relative;
+  <span style="color: #747474;">border-bottom</span>: 0.1rem dotted;
+  <span style="color: #747474;">line-height</span>: 1.2;
+  <span style="color: #747474;">transition</span>: border 0.3s;
+}
+<span style="color: #686868;">a:hover </span>{
+  <span style="color: #747474;">color</span>: <span style="color: #000000; background-color: #5ce;">#5ce</span>;
+  <span style="color: #747474;">outline-style</span>: none;
+  <span style="color: #747474;">border-bottom</span>: 0.1rem solid;
+}
+<span style="color: #686868;">a:visited </span>{ <span style="color: #747474;">color</span>: <span style="color: #ffffff; background-color: #b8c;">#b8c</span>; }
+<span style="color: #686868;">a:visited:hover </span>{ <span style="color: #747474;">color</span>: <span style="color: #000000; background-color: #dae;">#dae</span>; }
+<span style="color: #686868;">a:focus </span>{
+  <span style="color: #747474;">outline-style</span>: none;
+  <span style="color: #747474;">border-bottom</span>: 0.1rem solid;
+}
+<span style="color: #686868;">dt </span>{ <span style="color: #747474;">font-weight</span>: bold; }
+::selection { <span style="color: #747474;">background-color</span>: <span style="color: #ffffff; background-color: #777;">#777</span>; <span style="color: #747474;">color</span>: <span style="color: #000000; background-color: #eee;">#eee</span>; }
+<span style="color: #747474;">a</span>::selection { <span style="color: #747474;">background-color</span>: <span style="color: #000000; background-color: #ccc;">#ccc</span>; }
+<span style="color: #686868;">.todo </span>{
+  <span style="color: #747474;">background-color</span>: <span style="color: #000000; background-color: #ddd;">#ddd</span>;
+  <span style="color: #747474;">color</span>: <span style="color: #ffffff; background-color: #333;">#333</span>;
+  <span style="color: #747474;">font-family</span>: serif;
+  <span style="color: #747474;">font-size</span>: 0.6rem;
+  <span style="color: #747474;">float</span>: right;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf615baa" class="outline-4">
+<h4 id="demonstration-html">Demonstration HTML</h4>
+<div class="outline-text-4" id="text-demonstration-html">
+<div class="org-src-container">
+<pre class="src src-html"><span style="color: #8e8e8e;">&lt;!doctype html&gt;</span>
+&lt;<span style="color: #686868;">html</span> <span style="color: #7c7c7c;">lang</span>=<span style="color: #8e8e8e;">"en"</span>&gt;
+&lt;<span style="color: #686868;">head</span>&gt;
+  &lt;<span style="color: #686868;">link</span> <span style="color: #7c7c7c;">rel</span>=<span style="color: #8e8e8e;">"stylesheet"</span> <span style="color: #7c7c7c;">type</span>=<span style="color: #8e8e8e;">"text/css"</span> <span style="color: #7c7c7c;">href</span>=<span style="color: #8e8e8e;">"./brutstrap.css"</span>&gt;
+&lt;/<span style="color: #686868;">head</span>&gt;
+&lt;<span style="color: #686868;">body</span>&gt;
+  &lt;<span style="color: #686868;">header</span>&gt;
+    &lt;<span style="color: #686868;">h1</span> <span style="color: #7c7c7c;">role</span>=<span style="color: #8e8e8e;">"banner"</span>&gt;<span style="font-weight: bold; text-decoration: underline;">Brutstrap</span>&lt;/<span style="color: #686868;">h1</span>&gt;
+    &lt;<span style="color: #686868;">h2</span>&gt;<span style="font-weight: bold; font-style: italic; text-decoration: underline;">CSS for bootstrapping a brutalist website.</span>&lt;/<span style="color: #686868;">h2</span>&gt;
+    &lt;<span style="color: #686868;">nav</span> <span style="color: #7c7c7c;">role</span>=<span style="color: #8e8e8e;">"navigation"</span>&gt;
+      &lt;<span style="color: #686868;">ul</span>&gt;
+        &lt;<span style="color: #686868;">li</span>&gt;&lt;<span style="color: #686868;">a</span> <span style="color: #7c7c7c;">href</span>=<span style="color: #8e8e8e;">"#principles"</span>&gt;Principles&lt;/<span style="color: #686868;">a</span>&gt;&lt;/<span style="color: #686868;">li</span>&gt;
+        &lt;<span style="color: #686868;">li</span>&gt;&lt;<span style="color: #686868;">a</span> <span style="color: #7c7c7c;">href</span>=<span style="color: #8e8e8e;">"#usage"</span>&gt;Usage&lt;/<span style="color: #686868;">a</span>&gt;&lt;/<span style="color: #686868;">li</span>&gt;
+        &lt;<span style="color: #686868;">li</span>&gt;&lt;<span style="color: #686868;">a</span> <span style="color: #7c7c7c;">href</span>=<span style="color: #8e8e8e;">"#features"</span>&gt;Features&lt;/<span style="color: #686868;">a</span>&gt;&lt;/<span style="color: #686868;">li</span>&gt;
+      &lt;/<span style="color: #686868;">ul</span>&gt;
+    &lt;/<span style="color: #686868;">nav</span>&gt;
+  &lt;/<span style="color: #686868;">header</span>&gt;
+  &lt;<span style="color: #686868;">main</span> <span style="color: #7c7c7c;">role</span>=<span style="color: #8e8e8e;">"main"</span>&gt;
+      &lt;<span style="color: #686868;">h3</span>&gt;<span style="font-style: italic; text-decoration: underline;">Summary</span>&lt;/<span style="color: #686868;">h3</span>&gt;
+      &lt;<span style="color: #686868;">p</span>&gt;
+        &lt;<span style="color: #686868;">strong</span>&gt;<span style="font-weight: bold;">Brutstrap</span>&lt;/<span style="color: #686868;">strong</span>&gt; is a CSS theme for building a
+        brutalist website: one where the website, as shown in your
+        browser, is an accurate representation of the HTML document it
+        is displaying.
+      &lt;/<span style="color: #686868;">p</span>&gt;
+    &lt;/<span style="color: #686868;">section</span>&gt;
+  &lt;/<span style="color: #686868;">main</span>&gt;
+  &lt;<span style="color: #686868;">footer</span>&gt;
+    &lt;<span style="color: #686868;">section</span>&gt;
+      &lt;<span style="color: #686868;">p</span>&gt;
+        This is a demonstration of an HTML document and not meant for public use.
+      &lt;/<span style="color: #686868;">p</span>&gt;
+    &lt;/<span style="color: #686868;">section</span>&gt;
+  &lt;/<span style="color: #686868;">footer</span>&gt;
+&lt;/<span style="color: #686868;">body</span>&gt;
+&lt;/<span style="color: #686868;">html</span>&gt;
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org069f7ac" class="outline-3">
+<h3 id="org069f7ac">Index</h3>
+<div class="outline-text-3" id="text-org069f7ac">
+<dl class="org-dl">
+<dt>Brutalism</dt><dd>A style exaggerating the pragmatic functionality present in modernist design. See <a href="https://en.wikipedia.org/wiki/Brutalist_architecture">https://en.wikipedia.org/wiki/Brutalist_architecture</a></dd>
+<dt>Brutstrap CSS</dt><dd></dd>
+
+<dt>CSS</dt><dd></dd>
+
+<dt>HTML</dt><dd>A way of adding layout, formatting, and media to text documents. See <a href="https://en.wikipedia.org/wiki/HTML">https://en.wikipedia.org/wiki/HTML</a>.</dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-org7ddb3be" class="outline-3">
+<h3 id="media-package">Media Package</h3>
+<div class="outline-text-3" id="text-media-package">
+<div class="org-src-container">
+<pre class="src src-json">{<span style="color: #747474;">"brutstrap-css"</span>: {
+    <span style="color: #747474;">"name"</span>: <span style="color: #8e8e8e;">"Brutstrap CSS"</span>,
+    <span style="color: #747474;">"creator"</span>: <span style="color: #8e8e8e;">"emsenn"</span>,
+    <span style="color: #747474;">"license"</span>: <span style="color: #8e8e8e;">"CC0"</span>,
+    <span style="color: #747474;">"description"</span>: <span style="color: #8e8e8e;">"a cascading stylesheet for representing HTML content as it is constructed."</span>,
+    <span style="color: #747474;">"versions"</span>: {
+        <span style="color: #747474;">"current"</span>: {
+            <span style="color: #747474;">"sourcehut"</span>: {
+                <span style="color: #747474;">"location"</span>: <span style="color: #8e8e8e;">"https://git.sr.ht/~emsenn/brutstrap-css/blob/master/"</span>,
+                <span style="color: #747474;">"formats"</span>: [<span style="color: #8e8e8e;">"html"</span>,<span style="color: #8e8e8e;">"md"</span>,<span style="color: #8e8e8e;">"pdf"</span>,<span style="color: #8e8e8e;">"tex"</span>,<span style="color: #8e8e8e;">"txt"</span>]
+            }
+        }
+   }
+}}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org764cd32" class="outline-3">
+<h3 id="org764cd32">README</h3>
+<div class="outline-text-3" id="text-org764cd32">
+</div>
+<div id="outline-container-org38e93ee" class="outline-4">
+<h4 id="org38e93ee">Brutstrap</h4>
+<div class="outline-text-4" id="text-org38e93ee">
+<p>
+This CSS theme is a <i>draft</i>: it is unfinished and that should be considered when reading it. Special attention should be paid to text marked DRAFT, EDIT, or TK.
+</p>
+
+<p>
+In this document I explain the design philosophy and implementation of
+my <b>Brutstrap</b> CSS theme: one where the webpage, as shown in the
+browser, is an accurate representation of the HTML document it is
+displaying.
+</p>
+
+<p>
+This CSS theme was created by me, emsenn, in the United States. To the extent possible under law, I have waived all copyright and related or neighboring rights to this document. This document was created for the benefit of the public. If you're viewing it on a remote server, you're encouraged to download your own copy. To learn how you can support me, see <a href="https://emsenn.net/donate">https://emsenn.net/donate</a>.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: emsenn</p>
+<p class="date">Created: 2019-06-14 Fri 15:15</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

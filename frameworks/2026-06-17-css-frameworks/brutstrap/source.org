@@ -1,0 +1,335 @@
+#+TITLE: Brutstrap CSS
+#+DATE: 2018-09-17
+#+AUTHOR: emsenn
+#+EXPORT_FILE_NAME: ./brutstrap-css
+#+HUGO_BASE_DIR: ~/dev/personal-website/
+#+HUGO_SECTION: software
+#+HUGO_TAGS: CSS brutalism
+#+HUGO_CUSTOM_FRONT_MATTER: :css brutstrap :predecolonial true
+#+MACRO: document-type CSS theme
+#+TOC: headlines local 3
+* Introduction
+  :PROPERTIES:
+  :CUSTOM_ID: introduction
+  :END:
+In this document I explain the design philosophy and implementation of
+my *Brutstrap* CSS theme: one where the webpage, as shown in the
+browser, is an accurate representation of the HTML document it is
+displaying.
+
+* Brutstrap CSS
+#+INDEX: CSS!"Brutstrap CSS Overview"
+*/Brutstrap/* is my CSS theme based on David Bryant Copeland's [[https://brutalist-web.design/]["Guidelines for Brutalist Web Design,"]] which advocates "/raw content true to its construction/."
+** Principles
+- */The website people see is the website in the HTML file./* As David Byant Copeland says in his definition, brutalist websites should be "raw content, true to [their] construction." Here, that means the content is represented as a single column, flowing left to right and top to bottom.
+- */Only links, inputs and buttons should respond to interaction./* A website should allow two points of interaction: a hyperlink that brings you to a destination, and form which submits information to a server. Those elements, and only those elements, should respond to being clicked, focused, or hovered-over.
+- */Components should be named what they are./* Classes should be named what they are, not what they're for.
+- */Design should be helpful./* Styling should be to help reinforce the context that your content has.
+** Implementation
+   :PROPERTIES:
+   :header-args: :tangle ./css/brutstrap.css :padline no
+   :END:
+*/NOTE:/* Because I use Org-mode, this CSS is written with rules
+compatible with its naming scheme.
+*** Document Framing
+**** Body
+#+name: brutstrap-body
+#+BEGIN_SRC css
+  body {
+    position: relative;
+    background-color: #eee;
+    color: #444;
+    font-family: serif;
+    margin: 0 auto;
+    padding-bottom: 6rem;
+    min-height: 100%;
+    font-size: 1.2em;
+  }
+#+END_SRC
+**** Header & Title
+#+name: brutstrap-header
+#+BEGIN_SRC css
+header, h1 {
+  font-family: sans-serif;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+.title { font-size: 3.2rem; }
+.subtitle { font-size: 2.2rem; }
+#+END_SRC
+**** Content Container
+#+name: brutstrap-content
+#+BEGIN_SRC css
+main, #content {
+  width: 75vw;
+  max-width: 40em;
+  margin: 0 0 0 2em;
+  line-height: 1.6;
+  margin-bottom: 8rem;
+}
+#+END_SRC
+**** Footer
+#+name: brutstrap-footer
+#+BEGIN_SRC css
+footer, #postamble {
+  padding: 1em 0;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+#+END_SRC
+*** Block Design
+**** Section
+#+name: brutstrap-section
+#+BEGIN_SRC css
+section {
+  border-bottom: 0.1em solid #444;
+  margin-bottom: 1em;
+}
+.outline-3 {
+  border-bottom: 0.1rem dotted #444;
+}
+#+END_SRC
+**** Blockquote
+#+name: brutstrap-blockquote
+#+BEGIN_SRC css
+blockquote {
+  padding: 0.5rem;
+  border-left: 0.1em solid #444;
+}
+#+END_SRC
+**** Table
+#+name: brutstrap-table
+#+BEGIN_SRC css
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    border: 0.1em solid #444;
+}
+thead { font-family: sans-serif; }
+td {
+  padding: 0 0.3em;
+  border: 0.01em solid #444;
+}
+#+END_SRC
+**** Images
+#+name: brutstrap-images
+#+BEGIN_SRC css
+img {
+  max-width: 80vw;
+  vertical-align: middle;
+}
+#+END_SRC
+**** Code
+#+name: brutstrap-code
+#+BEGIN_SRC css
+pre, .src {
+  padding: 0.5em;
+  border: 0.1em solid #444;
+  white-space: pre-wrap;
+  overflow-x: scroll;
+  text-overflow: clip;
+}
+#+END_SRC
+**** Dictionary List
+#+name: brutstrap-dictionary-list
+#+begin_src css
+dt {
+  font-weight: normal;
+  display: inline-block;
+  border-bottom: 0.1rem dotted #444;
+}
+#text-index dt { border-bottom: none; }
+#+end_src
+*** Typography
+**** Headlines
+#+name: brutstrap-headlines
+#+BEGIN_SRC css
+h2, h3, h4, h5, h6, h7, h8, h9, h10 {
+  display: block;
+  font-family: sans-serif;
+  margin: 0.5em;
+}
+h2 {
+  text-align: center;
+}
+h2 { font-size: 2em; }
+h3 {
+  font-size: 1.8em;
+}
+h4 {
+  font-size: 1.6em;
+}
+h5 {
+  font-size: 1.4em;
+  margin: 0.5em 0 0.2em 10%;
+}
+h6 {
+  font-size: 1.2em;
+  margin: 0.5em 0 0.2em 30%;
+}
+#+END_SRC
+**** Links
+#+name: brutstrap-links
+#+BEGIN_SRC css
+a {
+  text-decoration: none;
+  color: #3ac;
+  display: inline;
+  position: relative;
+  border-bottom: 0.1rem dotted;
+  line-height: 1.2;
+  transition: border 0.3s;
+}
+a:hover {
+  color: #5ce;
+  outline-style: none;
+  border-bottom: 0.1rem solid;
+}
+a:visited { color: #b8c; }
+a:visited:hover { color: #dae; }
+a:focus {
+  outline-style: none;
+  border-bottom: 0.1rem solid;
+}
+#+END_SRC
+*** State Rules
+**** Selection Rules
+#+name: brutstrap-selection
+#+BEGIN_SRC css
+::selection { background-color: #777; color: #eee; }
+a::selection { background-color: #ccc; }
+#+END_SRC
+*** Class Rules
+**** TODO
+#+name: brutstrap-todo
+#+begin_src css
+.todo {
+  background-color: #ddd;
+  color: #333;
+  font-size: .8rem;
+  float: right;
+}
+#+end_src
+**** Example under Source
+#+name: brutstrap-example-under-source
+#+begin_src css
+.org-src-container + .example {
+  margin-left: 8em;
+}
+#+end_src
+**** Listing Captions
+#+name: brutstrap-listing-captions
+#+begin_src css
+label.org-src-name {
+  margin: 0 0 0 3em;
+  font-family: sans-serif;
+  font-size: 1rem;
+  line-height: 0;
+}
+#+end_src
+** Acknowledgements
+   :PROPERTIES:
+   :CUSTOM_ID: supplements-acknowledgements
+   :END:
+- [[https://naildrivin4.com][David Bryant Copeland]] defined "brutalist web design," inspiring this
+  project.
+- Whoever made the [[https://motherfuckingwebsite.com][motherfucking website]].
+- [[https://www.matthewgraybosch.com][Matthew Graybosch]], whose [[https://codepen.io/demifiend/pen/EENKNN][variation]] on the motherfucking website made
+  learning HTML and CSS seem feasible and worthwhile.
+
+* Supplements
+  :PROPERTIES:
+  :CUSTOM_ID: supplements
+  :END:
+** Document History
+|       Date | Event                                                   |
+|------------+---------------------------------------------------------|
+| 2018-07-09 | Created first draft                                     |
+| 2018-07-11 | Added introduction for readers from [[https://news.ycombinator.com][/Hacker News/]]       |
+| 2018-07-31 | Removed introduction for /Hacker News/                  |
+| 2019-04-29 | Re-implemented as a literately-programmed Org-mode file |
+** Example Texts
+*** Complete Stylesheet
+   :PROPERTIES:
+   :CUSTOM_ID: complete-stylesheet
+   :END:
+#+INCLUDE: "./css/brutstrap.css" src css
+*** Demonstration HTML
+   :PROPERTIES:
+   :CUSTOM_ID: demonstration-html
+   :END:
+#+BEGIN_SRC html
+  <!doctype html>
+  <html lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="./brutstrap.css">
+  </head>
+  <body>
+    <header>
+      <h1 role="banner">Brutstrap</h1>
+      <h2>CSS for bootstrapping a brutalist website.</h2>
+      <nav role="navigation">
+	<ul>
+	  <li><a href="#principles">Principles</a></li>
+	  <li><a href="#usage">Usage</a></li>
+	  <li><a href="#features">Features</a></li>
+	</ul>
+      </nav>
+    </header>
+    <main role="main">
+	<h3>Summary</h3>
+	<p>
+	  <strong>Brutstrap</strong> is a CSS theme for building a
+	  brutalist website: one where the website, as shown in your
+	  browser, is an accurate representation of the HTML document it
+	  is displaying.
+	</p>
+      </section>
+    </main>
+    <footer>
+      <section>
+        <p>
+	  This is a demonstration of an HTML document and not meant for public use.
+        </p>
+      </section>
+    </footer>
+  </body>
+  </html>
+#+END_SRC
+** Index
+- Brutalism ::
+- Brutstrap CSS ::
+- CSS ::
+- HTML ::
+** Org-mode Block for Tangling as Org-Mode HTML Header
+#+begin_src org :tangle ./org/brutstrap-css.inc :noweb yes
+#+HTML_HEAD: <style>
+#+HTML_HEAD: <<brutstrap-body>>
+#+HTML_HEAD: <<brutstrap-header>>
+#+HTML_HEAD: <<brutstrap-content>>
+#+HTML_HEAD: <<brutstrap-footer>>
+#+HTML_HEAD: <<brutstrap-section>>
+#+HTML_HEAD: <<brutstrap-blockquote>>
+#+HTML_HEAD: <<brutstrap-table>>
+#+HTML_HEAD: <<brutstrap-images>>
+#+HTML_HEAD: <<brutstrap-code>>
+#+HTML_HEAD: <<brutstrap-dictionary-list>>
+#+HTML_HEAD: <<brutstrap-headlines>>
+#+HTML_HEAD: <<brutstrap-links>>
+#+HTML_HEAD: <<brutstrap-selection>>
+#+HTML_HEAD: <<brutstrap-todo>>
+#+HTML_HEAD: <<brutstrap-example-under-source>>
+#+HTML_HEAD: <<brutstrap-listing-captions>>
+#+HTML_HEAD: </style>
+#+end_src
+** README
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: ../README
+   :END:
+*** {{{title}}}
+#+INCLUDE: "./source.org::#introduction" :only-contents t

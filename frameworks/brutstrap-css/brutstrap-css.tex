@@ -1,0 +1,434 @@
+% Created 2019-06-11 Tue 16:35
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{emsenn}
+\date{\today}
+\title{Brutstrap}
+\hypersetup{
+ pdfauthor={emsenn},
+ pdftitle={Brutstrap},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.2 (Org mode 9.2.3)},
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+"Brutstrap" is a CSS theme created by emsenn.
+\setcounter{tocdepth}{4}
+\tableofcontents
+\section*{Introduction}
+\label{sec:org217eb41}
+This CSS theme is a \emph{draft}: it is unfinished and that should be considered when reading it. Special attention should be paid to text marked DRAFT, EDIT, or TK.
+
+In this document I explain the design philosophy and implementation of
+my \textbf{Brutstrap} CSS theme: one where the webpage, as shown in the
+browser, is an accurate representation of the HTML document it is
+displaying.
+
+This CSS theme was created by me, emsenn, in the United States. To the extent possible under law, I have waived all copyright and related or neighboring rights to this document. This document was created for the benefit of the public. If you're viewing it on a remote server, you're encouraged to download your own copy. To learn how you can support me, see \href{https://emsenn.net/donate}{https://emsenn.net/donate}.
+\section*{Brutstrap}
+\label{sec:org6d6db56}
+\textbf{\emph{Brutstrap}} is a CSS theme based on David Bryant Copeland's
+\href{https://brutalist-web.design/}{"Guidelines for Brutalist Web Design,"} which advocates "\emph{raw content
+true to its construction}."
+\subsection*{Principles}
+\label{sec:orgdcd5133}
+\begin{itemize}
+\item \textbf{\emph{The website people see is the website in the HTML file.}} As David
+Byant Copeland says in his definition, brutalist websites should be
+"raw content, true to [their] construction." Here, that means the
+content is represented as a single column, flowing left to right and
+top to bottom.
+\item \textbf{\emph{Only links, inputs and buttons should respond to interaction.}} A
+website should allow two points of interaction: a hyperlink that
+brings you to a destination, and form which submits information to a
+server. Those elements, and only those elements, should respond to
+being clicked, focused, or hovered-over.
+\item \textbf{\emph{Components should be named what they are.}} Classes should be
+named what they are, not what they're for.
+\item \textbf{\emph{Design should be helpful.}} Styling should be to help reinforce
+the context that your content has.
+\end{itemize}
+\subsection*{Usage}
+\label{sec:orge5dfdf6}
+\textbf{Brutstrap}'s stylesheet is available at
+\href{./build/brutstrap/brutstrap.css}{\texttt{./build/brutstrap/brutstrap.css}}, but please don't hotlink to it. You
+can also view the stylesheet under the \hyperref[sec:org384bbdf]{"Complete Stylesheet"} section.
+\subsection*{Implementation}
+\label{sec:org9fba82d}
+\textbf{\emph{NOTE:}} Because I use Org-mode, this CSS is written with rules
+compatible with its naming scheme.
+\subsubsection*{Document Framing}
+\label{sec:org943112a}
+\paragraph*{Body}
+\label{sec:orga94979c}
+\begin{verbatim}
+body {
+  position: relative;
+  background-color: #eee;
+  color: #444;
+  font-family: serif;
+  margin: 0 auto;
+  padding-bottom: 6rem;
+  min-height: 100%;
+  font-size: 1.2em;
+}
+\end{verbatim}
+\paragraph*{Header \& Title}
+\label{sec:orgcd6e392}
+\begin{verbatim}
+header, h1 {
+  font-family: sans-serif;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+.title { font-size: 3.2rem; }
+.subtitle { font-size: 2.2rem; }
+\end{verbatim}
+\paragraph*{Content Container}
+\label{sec:org6ec5d6a}
+\begin{verbatim}
+main, #content {
+  width: 75vw;
+  max-width: 40em;
+  margin: 0 0 0 2em;
+  line-height: 1.6;
+  margin-bottom: 8rem;
+}
+\end{verbatim}
+\paragraph*{Footer}
+\label{sec:org05c091c}
+\begin{verbatim}
+footer, #postamble {
+  padding: 1em 0;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+\end{verbatim}
+\subsubsection*{Block Design}
+\label{sec:org4f267c0}
+\paragraph*{Section}
+\label{sec:org6c33864}
+\begin{verbatim}
+section {
+  border-bottom: 0.1em solid #444;
+  margin-bottom: 1em;
+}
+\end{verbatim}
+\paragraph*{Blockquote}
+\label{sec:orgc913077}
+\begin{verbatim}
+
+blockquote {
+  padding: 0.5rem;
+  border-left: 0.1em solid #444;
+}
+\end{verbatim}
+
+\paragraph*{Table}
+\label{sec:org9d89009}
+\begin{verbatim}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    border: 0.1em solid #444;
+}
+thead { font-family: sans-serif; }
+td {
+  padding: 0 0.3em;
+  border: 0.01em solid #444;
+}
+\end{verbatim}
+\paragraph*{Images}
+\label{sec:orge091b7c}
+\begin{verbatim}
+img {
+  max-width: 80vw;
+  vertical-align: middle;
+}
+\end{verbatim}
+\subsubsection*{Typography}
+\label{sec:orgfca00e5}
+\paragraph*{Headlines}
+\label{sec:orgf764e61}
+\begin{verbatim}
+h2, h3, h4, h5, h6, h7, h8, h9, h10 {
+  font-family: sans-serif;
+  margin: 0.5em;
+}
+h2, h3 {
+  text-align: center;
+}
+\end{verbatim}
+\paragraph*{Links}
+\label{sec:orgd756234}
+\begin{verbatim}
+a {
+  text-decoration: none;
+  color: #3ac;
+  display: inline;
+  position: relative;
+  border-bottom: 0.1rem dotted;
+  line-height: 1.2;
+  transition: border 0.3s;
+}
+a:hover {
+  color: #5ce;
+  outline-style: none;
+  border-bottom: 0.1rem solid;
+}
+a:visited { color: #b8c; }
+a:visited:hover { color: #dae; }
+a:focus {
+  outline-style: none;
+  border-bottom: 0.1rem solid;
+}
+\end{verbatim}
+\paragraph*{Dictionary Terms}
+\label{sec:orgbcd4840}
+\begin{verbatim}
+dt { font-weight: bold; }
+\end{verbatim}
+\subsubsection*{State Rules}
+\label{sec:orgcf4cd60}
+\paragraph*{Selection Rules}
+\label{sec:org754b541}
+\begin{verbatim}
+::selection { background-color: #777; color: #eee; }
+a::selection { background-color: #ccc; }
+\end{verbatim}
+\subsubsection*{Class Rules}
+\label{sec:org703e46a}
+\paragraph*{Code Block Rules}
+\label{sec:orgac4dbab}
+\begin{verbatim}
+pre, .src {
+  padding: 0.5em;
+  border: 0.1em solid #444;
+  white-space: pre-wrap;
+  overflow-x: scroll;
+  text-overflow: clip;
+}
+\end{verbatim}
+\subsection*{Acknowledgements}
+\label{sec:orgf4c8017}
+\begin{itemize}
+\item \href{https://naildrivin4.com}{David Bryant Copeland} defined "brutalist web design," inspiring this
+project.
+\item Whoever made the \href{https://motherfuckingwebsite.com}{motherfucking website}.
+\item \href{https://www.matthewgraybosch.com}{Matthew Graybosch}, whose \href{https://codepen.io/demifiend/pen/EENKNN}{variation} on the motherfucking website made
+learning HTML and CSS seem feasible and worthwhile.
+\end{itemize}
+\section*{Supplements}
+\label{sec:org5b53460}
+\subsection*{Document History}
+\label{sec:orgacab429}
+\begin{center}
+\begin{tabular}{rl}
+Date & Event\\
+\hline
+2018-07-09 & Created first draft\\
+2018-07-11 & Added introduction for readers from \href{https://news.ycombinator.com}{\emph{Hacker News}}\\
+2018-07-31 & Removed introduction for \emph{Hacker News}\\
+2019-04-29 & Re-implemented as a literately-programmed Org-mode file\\
+\end{tabular}
+\end{center}
+\subsection*{Example Texts}
+\label{sec:org0d32697}
+\subsubsection*{Complete Stylesheet}
+\label{sec:org384bbdf}
+\begin{verbatim}
+body {
+  position: relative;
+  background-color: #eee;
+  color: #444;
+  font-family: serif;
+  margin: 0 auto;
+  padding-bottom: 6rem;
+  min-height: 100%;
+  font-size: 1.2em;
+}
+header, h1 {
+  font-family: sans-serif;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+.title { font-size: 3.2rem; }
+.subtitle { font-size: 2.2rem; }
+main, #content {
+  width: 75vw;
+  max-width: 40em;
+  margin: 0 0 0 2em;
+  line-height: 1.6;
+  margin-bottom: 8rem;
+}
+footer, #postamble {
+  padding: 1em 0;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+section {
+  border-bottom: 0.1em solid #444;
+  margin-bottom: 1em;
+}
+blockquote {
+  padding: 0.5rem;
+  border-left: 0.1em solid #444;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    border: 0.1em solid #444;
+}
+thead { font-family: sans-serif; }
+td {
+  padding: 0 0.3em;
+  border: 0.01em solid #444;
+}
+img {
+  max-width: 80vw;
+  vertical-align: middle;
+}
+h2, h3, h4, h5, h6, h7, h8, h9, h10 {
+  font-family: sans-serif;
+  margin: 0.5em;
+}
+h2, h3 {
+  text-align: center;
+}
+a {
+  text-decoration: none;
+  color: #3ac;
+  display: inline;
+  position: relative;
+  border-bottom: 0.1rem dotted;
+  line-height: 1.2;
+  transition: border 0.3s;
+}
+a:hover {
+  color: #5ce;
+  outline-style: none;
+  border-bottom: 0.1rem solid;
+}
+a:visited { color: #b8c; }
+a:visited:hover { color: #dae; }
+a:focus {
+  outline-style: none;
+  border-bottom: 0.1rem solid;
+}
+dt { font-weight: bold; }
+::selection { background-color: #777; color: #eee; }
+a::selection { background-color: #ccc; }
+pre, .src {
+  padding: 0.5em;
+  border: 0.1em solid #444;
+  white-space: pre-wrap;
+  overflow-x: scroll;
+  text-overflow: clip;
+}
+\end{verbatim}
+\subsubsection*{Demonstration HTML}
+\label{sec:org96bdd34}
+\begin{verbatim}
+<!doctype html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" type="text/css" href="./brutstrap.css">
+</head>
+<body>
+  <header>
+    <h1 role="banner">Brutstrap</h1>
+    <h2>CSS for bootstrapping a brutalist website.</h2>
+    <nav role="navigation">
+      <ul>
+	<li><a href="#principles">Principles</a></li>
+	<li><a href="#usage">Usage</a></li>
+	<li><a href="#features">Features</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main role="main">
+      <h3>Summary</h3>
+      <p>
+	<strong>Brutstrap</strong> is a CSS theme for building a
+	brutalist website: one where the website, as shown in your
+	browser, is an accurate representation of the HTML document it
+	is displaying.
+      </p>
+    </section>
+  </main>
+  <footer>
+    <section>
+      <p>
+	This is a demonstration of an HTML document and not meant for public use.
+      </p>
+    </section>
+  </footer>
+</body>
+</html>
+\end{verbatim}
+\subsection*{Index}
+\label{sec:org3c7d91b}
+\begin{description}
+\item[{Brutalism}] A style exaggerating the pragmatic functionality present in modernist design. See \href{https://en.wikipedia.org/wiki/Brutalist\_architecture}{https://en.wikipedia.org/wiki/Brutalist\_architecture}
+\item[{Brutstrap CSS}]
+
+\item[{CSS}]
+
+\item[{HTML}] A way of adding layout, formatting, and media to text documents. See \href{https://en.wikipedia.org/wiki/HTML}{https://en.wikipedia.org/wiki/HTML}.
+\end{description}
+\subsection*{Media Package}
+\label{sec:orgca86108}
+\begin{verbatim}
+{"brutstrap-css": {
+    "name": "Brutstrap CSS",
+    "creator": "emsenn",
+    "license": "CC0",
+    "description": "a cascading stylesheet for representing HTML content as it is constructed.",
+    "versions": {
+	"current": {
+	    "sourcehut": {
+		"location": "https://git.sr.ht/~emsenn/brutstrap-css/blob/master/",
+		"formats": ["html","md","pdf","tex","txt"]
+	    }
+	}
+   }
+}}
+\end{verbatim}
+\subsection*{README}
+\label{sec:orge122f29}
+\subsubsection*{Brutstrap}
+\label{sec:org79aa432}
+This CSS theme is a \emph{draft}: it is unfinished and that should be considered when reading it. Special attention should be paid to text marked DRAFT, EDIT, or TK.
+
+In this document I explain the design philosophy and implementation of
+my \textbf{Brutstrap} CSS theme: one where the webpage, as shown in the
+browser, is an accurate representation of the HTML document it is
+displaying.
+
+This CSS theme was created by me, emsenn, in the United States. To the extent possible under law, I have waived all copyright and related or neighboring rights to this document. This document was created for the benefit of the public. If you're viewing it on a remote server, you're encouraged to download your own copy. To learn how you can support me, see \href{https://emsenn.net/donate}{https://emsenn.net/donate}.
+\end{document}

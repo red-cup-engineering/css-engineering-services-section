@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-06-07 Fri 22:23 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>emsAlpha</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="emsenn" />
+<link rel="stylesheet" type="text/css" href="./src/build/emsalpha.css">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">emsAlpha</h1>
+<p>
+"emsAlpha" is a CSS Theme created by emsenn.
+</p>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org0181914">Introduction</a></li>
+<li><a href="#orgdc5e102">emsAlpha</a>
+<ul>
+<li><a href="#org78475da">Implementation</a></li>
+</ul>
+</li>
+<li><a href="#org14a9f6d">Supplements</a>
+<ul>
+<li><a href="#org3ed62dc">Example Texts</a>
+<ul>
+<li><a href="#org3a1af9c">Example HTML Document</a></li>
+</ul>
+</li>
+<li><a href="#org0ce1468">Index</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="outline-container-org0181914" class="outline-2">
+<h2 id="org0181914">Introduction</h2>
+<div class="outline-text-2" id="text-org0181914">
+<p>
+This CSS Theme is a <i>draft</i>: it is unfinished and that should be considered when reading it. Special attention should be paid to text marked DRAFT, EDIT, or TK.
+</p>
+
+<p>
+In this document I explain the design philosophy and implementation of
+my <b>emsAlpha</b> CSS theme.
+</p>
+</div>
+</div>
+<div id="outline-container-orgdc5e102" class="outline-2">
+<h2 id="orgdc5e102">emsAlpha</h2>
+<div class="outline-text-2" id="text-orgdc5e102">
+</div>
+<div id="outline-container-org78475da" class="outline-3">
+<h3 id="org78475da">Implementation</h3>
+<div class="outline-text-3" id="text-org78475da">
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #b9b9b9;">/* </span><span style="color: #ababab;">http://emsenn.net/style.css</span>
+<span style="color: #b9b9b9;">*/</span>
+<span style="color: #686868;">html </span>{
+  <span style="color: #747474;">color</span>: <span style="color: #ffffff; background-color: #2c2c2c;">rgba(44,44,44,1)</span>; <span style="color: #747474;">background-color</span>: <span style="color: #000000; background-color: #f2f2f2;">rgba(242,242,242,1)</span>;
+  <span style="color: #747474;">hyphens</span>: auto;
+  <span style="color: #747474;">font-family</span>: sans-serif;
+  <span style="color: #747474;">letter-spacing</span>: 0.025em; <span style="color: #747474;">word-spacing</span>: 0.045em;
+  <span style="color: #747474;">transition-timing-function</span>: cubic-bezier(0.4, 0.0, 0.2, 1);
+  <span style="color: #747474;">animation-timing-function</span>: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+<span style="color: #686868;">body </span>{
+  <span style="color: #747474;">max-width</span>: 40rem;
+  <span style="color: #747474;">margin</span>: auto;
+  <span style="color: #747474;">padding-top</span>: 1em;
+}
+<span style="color: #686868;">main </span>{
+  <span style="color: #747474;">animation</span>: animation-drop-in 0.5s;
+}
+<span style="color: #686868;">h1 </span>{ <span style="color: #747474;">font-weight</span>: normal; <span style="color: #747474;">font-size</span>: 2em; <span style="color: #747474;">margin</span>: 0.5em 0 0 0; }
+<span style="color: #686868;">h2 </span>{ <span style="color: #747474;">text-align</span>: center; <span style="color: #747474;">font-weight</span>: normal; }
+<span style="color: #686868;">footer </span>{
+  <span style="color: #747474;">font-size</span>: .8em; <span style="color: #747474;">letter-spacing</span>: 0em; <span style="color: #747474;">word-spacing</span>: 0em;
+  <span style="color: #747474;">color</span>: <span style="color: #ffffff; background-color: #757575;">rgba(117,117,117,1)</span>;
+  <span style="color: #747474;">text-align</span>: right;
+
+}
+<span style="color: #686868;">sup.ordinal </span>{ <span style="color: #747474;">font-style</span>: italic; }
+<span style="color: #686868;">a </span>{
+  <span style="color: #747474;">color</span>: <span style="color: #ffffff; background-color: #757575;">rgba(117,117,117,1)</span>;
+  <span style="color: #747474;">display</span>: inline-block;
+  <span style="color: #747474;">position</span>: relative;
+  <span style="color: #747474;">text-decoration</span>: none;
+  <span style="color: #747474;">transition</span>: color 0.3s;
+  <span style="color: #747474;">background</span>: linear-gradient(to left, <span style="color: #000000; background-color: #f2f2f2;">rgba(242,242,242,1)</span> 50%, <span style="color: #ffffff; background-color: #757575;">rgba(117,117,117,0.2)</span> 50%);
+  <span style="color: #747474;">background-size</span>: 200% 100%;
+  <span style="color: #747474;">background-position</span>:right bottom;
+  <span style="color: #747474;">transition</span>: background 0.3s;
+}
+<span style="color: #686868;">a:before </span>{
+  <span style="color: #747474;">background</span>: <span style="color: #ffffff; background-color: #757575;">rgba(117,117,117,1)</span>;
+  <span style="color: #747474;">content</span>: <span style="color: #8e8e8e;">""</span>;
+  <span style="color: #747474;">display</span>: block;
+  <span style="color: #747474;">position</span>: absolute;
+  <span style="color: #747474;">bottom</span>: -0.1em;
+  <span style="color: #747474;">height</span>: 0.1em;
+  <span style="color: #747474;">width</span>: 100%;
+  <span style="color: #747474;">transition</span>: all 0.3s;
+}
+<span style="color: #686868;">a:visited </span>{
+  <span style="color: #747474;">color</span>: <span style="color: #ffffff; background-color: #585858;">rgba(88,88,88,1)</span>;
+}
+<span style="color: #686868;">a:hover </span>{
+  <span style="color: #747474;">outline-style</span>: none;
+  <span style="color: #747474;">animation-delay</span>: 0.3s;
+  <span style="color: #747474;">animation</span>: animation-pulse 0.8s infinite;
+  <span style="color: #747474;">background-position</span>:left bottom;
+}
+<span style="color: #686868;">a:hover:before, a:focus:before </span>{
+  <span style="color: #747474;">width</span>: 0em;
+}
+<span style="color: #686868;">a:focus </span>{
+  <span style="color: #747474;">outline-style</span>: none;
+  <span style="color: #747474;">animation-delay</span>: 0.3s;
+  <span style="color: #747474;">background</span>: none;
+  <span style="color: #747474;">animation</span>: animation-pulse-heavy 1.2s infinite;
+}
+::selection {
+  <span style="color: #747474;">color</span>: <span style="color: #ffffff; background-color: #2c2c2c;">rgba(44,44,44,01)</span>; <span style="color: #747474;">background-color</span>: <span style="color: #ffffff; background-color: #757575;">rgba(117,117,117,0.5)</span>;
+
+}
+<span style="color: #686868;">.blockquote </span>{
+  <span style="color: #747474;">margin</span>: 1em 2em;
+  <span style="color: #747474;">padding</span>: 1em;
+  <span style="color: #747474;">font-size</span>: 0.8em;
+  <span style="color: #747474;">border-left</span>: 0.2em solid <span style="color: #ffffff; background-color: #757575;">rgba(117,117,117,1)</span>;
+}
+<span style="color: #686868;">.blockquote li </span>{ <span style="color: #747474;">margin-left</span>: 2em;}
+<span style="color: #686868;">.verbose </span>{ <span style="color: #747474;">font-size</span>: 0.8em; <span style="color: #747474;">margin-left</span>: 2em; <span style="color: #747474;">margin-right</span>: 2em;}
+<span style="color: #686868;">.letter</span>{
+  <span style="color: #747474;">text-align</span>: justify;
+  <span style="color: #747474;">margin</span>: 0 2em 0 2em;
+  <span style="color: #747474;">font-size</span>: 1.3em;
+}
+<span style="color: #686868;">.letter__complimentary </span>{
+  <span style="color: #747474;">font-size</span>: 1.5em;
+}
+<span style="color: #686868;">.letter__signature </span>{
+  <span style="color: #747474;">font-size</span>: 2.2em;
+  <span style="color: #747474;">margin</span>: 0.5em;
+  <span style="color: #747474;">margin-left</span>: 2em;
+}
+
+
+<span style="color: #686868;">.timeline </span>{
+  <span style="color: #747474;">border-left</span>: 0.1em solid <span style="color: #ffffff; background-color: #2c2c2c;">rgba(44,44,44,1)</span>;
+  <span style="color: #747474;">margin-left</span>: 2em;
+  <span style="color: #747474;">padding-left</span>: 1.75em;
+}
+<span style="color: #686868;">.timeline__entry </span>{
+  <span style="color: #747474;">position</span>: relative;
+  <span style="color: #747474;">margin-bottom</span>: 1.2em;
+}
+<span style="color: #686868;">.timeline__mark </span>{
+  <span style="color: #747474;">width</span>: 1em; <span style="color: #747474;">height</span>: 1em;
+  <span style="color: #747474;">position</span>: absolute;
+  <span style="color: #747474;">border</span>: 0.2em solid <span style="color: #ffffff; background-color: #757575;">rgba(117,117,117,1)</span>;
+  <span style="color: #747474;">left</span>: -2.5em;
+  <span style="color: #747474;">background-color</span>: <span style="color: #000000; background-color: #f2f2f2;">rgba(242,242,242,1)</span>;
+  <span style="color: #747474;">border-radius</span>: 50%;
+}
+<span style="color: #686868;">.timeline__title</span>{
+  <span style="color: #747474;">font-size</span>: 1em;
+  <span style="color: #747474;">letter-spacing</span>: 0;
+  <span style="color: #747474;">font-weight</span>: bold;
+  <span style="color: #747474;">margin-left</span>: -0.5em;
+}
+<span style="color: #686868;">.timeline__period </span>{
+  <span style="color: #747474;">font-style</span>: italic;
+  <span style="color: #747474;">font-size</span>: 0.5em;
+}
+<span style="color: #686868;">.timeline__details </span>{
+  <span style="color: #747474;">font-size</span>: 0.8em;
+}
+<span style="color: #686868;">.table </span>{
+  <span style="color: #747474;">width</span>: 100%;
+}
+<span style="color: #686868;">.table__header </span>{
+  <span style="color: #747474;">background</span>: <span style="color: #ffffff; background-color: #2c2c2c;">rgba(44,44,44,1)</span>;
+  <span style="color: #747474;">color</span>: <span style="color: #000000; background-color: #f2f2f2;">rgba(242,242,242,1)</span>;
+  <span style="color: #747474;">text-align</span>: center;
+  <span style="color: #747474;">font-size</span>: 1em;
+}
+<span style="color: #686868;">.table__row </span>{
+  <span style="color: #747474;">display</span>: table-row;
+}
+
+<span style="color: #686868;">.table__cell </span>{
+  <span style="color: #747474;">display</span>: table-cell;
+  <span style="color: #747474;">vertical-align</span>: middle;
+  <span style="color: #747474;">padding</span>: 1em 0;
+}
+<span style="color: #686868;">.table__cell[data-title=</span><span style="color: #8e8e8e;">"brief"</span><span style="color: #686868;">] </span>{
+  <span style="color: #747474;">float</span>: right;
+}
+<span style="color: #686868;">.footer__meta </span>{
+  <span style="color: #747474;">float</span>: left;
+}
+<span style="color: #868686;">@keyframes</span> animation-drop-in {
+  <span style="color: #686868;">0% </span>{
+    <span style="color: #747474;">transform</span>: translateY(50vw) scale(0.7);
+    <span style="color: #747474;">opacity</span>: 0;
+  }
+  <span style="color: #686868;">40% </span>{ <span style="color: #747474;">transform</span>: translatey(0) scale(0.7); <span style="color: #747474;">opacity</span>: 0.05; }
+  <span style="color: #686868;">80% </span>{ <span style="color: #747474;">transform</span>: scale(0.7); <span style="color: #747474;">opacity</span>: 1; }
+  <span style="color: #686868;">100% </span>{
+    <span style="color: #747474;">transform</span>: scale(1);
+  }
+}
+<span style="color: #868686;">@keyframes</span> animation-pulse {
+  <span style="color: #686868;">from, 50%,</span>
+<span style="color: #686868;">  to </span>{ <span style="color: #747474;">background-color</span>: <span style="color: #ffffff; background-color: #757575;">rgba(117,117,117,0.2)</span>); }
+  <span style="color: #686868;">50% </span>{ <span style="color: #747474;">background-color</span>: <span style="color: #ffffff; background-color: #757575;">rgba(117,117,117,0.1)</span>; }
+}
+
+<span style="color: #868686;">@keyframes</span> animation-pulse-heavy {
+  <span style="color: #686868;">from, 50%,</span>
+<span style="color: #686868;">  to </span>{ <span style="color: #747474;">background-color</span>: <span style="color: #ffffff; background-color: #757575;">rgba(117,117,117,0.3)</span>); }
+  <span style="color: #686868;">50% </span>{ <span style="color: #747474;">background-color</span>: <span style="color: #ffffff; background-color: #757575;">rgba(117,117,117,0.2)</span>; }
+}
+
+<span style="color: #868686;">@media</span> (max-width: 512px) {
+  <span style="color: #686868;">body </span>{ <span style="color: #747474;">padding</span>: 1.2em; }
+  <span style="color: #686868;">section </span>{ <span style="color: #747474;">padding</span>: 0.3em; }
+  <span style="color: #686868;">.history__timeline__details </span>{
+    <span style="color: #747474;">margin-left</span>: -2em;
+  }
+  <span style="color: #686868;">.letter </span>{ <span style="color: #747474;">margin</span>: 0 0.5em 0 0.5em; <span style="color: #747474;">text-align</span>: left; }
+}
+<span style="color: #868686;">@media</span> (min-width: 512px) { html { <span style="color: #747474;">font-size</span>: large; } }
+<span style="color: #868686;">@media</span> (min-width: 1200px) { .content { <span style="color: #747474;">max-width</span>: 1024px; } }
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org14a9f6d" class="outline-2">
+<h2 id="org14a9f6d">Supplements</h2>
+<div class="outline-text-2" id="text-org14a9f6d">
+</div>
+<div id="outline-container-org3ed62dc" class="outline-3">
+<h3 id="org3ed62dc">Example Texts</h3>
+<div class="outline-text-3" id="text-org3ed62dc">
+</div>
+<div id="outline-container-org3a1af9c" class="outline-4">
+<h4 id="org3a1af9c">Example HTML Document</h4>
+<div class="outline-text-4" id="text-org3a1af9c">
+<div class="org-src-container">
+<pre class="src src-html"><span style="color: #8e8e8e;">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color: #686868;">html</span>&gt;
+  &lt;<span style="color: #686868;">head</span>&gt;
+    &lt;<span style="color: #686868;">title</span>&gt;<span style="font-weight: bold; text-decoration: underline;">emsenn</span>&lt;/<span style="color: #686868;">title</span>&gt;
+    &lt;<span style="color: #686868;">meta</span> <span style="color: #7c7c7c;">charset</span>=<span style="color: #8e8e8e;">"UTF-8"</span>&gt;
+    &lt;<span style="color: #686868;">meta</span> <span style="color: #7c7c7c;">name</span>=<span style="color: #8e8e8e;">"description"</span> <span style="color: #7c7c7c;">content</span>=<span style="color: #8e8e8e;">"emsenn is a writer &amp; developer. This is their website."</span>&gt;
+    &lt;<span style="color: #686868;">meta</span> <span style="color: #7c7c7c;">name</span>=<span style="color: #8e8e8e;">"keywords"</span> <span style="color: #7c7c7c;">content</span>=<span style="color: #8e8e8e;">"emsenn, morgan sennhauser"</span>&gt;
+    &lt;<span style="color: #686868;">meta</span> <span style="color: #7c7c7c;">name</span>=<span style="color: #8e8e8e;">"author"</span> <span style="color: #7c7c7c;">content</span>=<span style="color: #8e8e8e;">"emsenn"</span>&gt;
+    &lt;<span style="color: #686868;">meta</span> <span style="color: #7c7c7c;">name</span>=<span style="color: #8e8e8e;">"viewport"</span> <span style="color: #7c7c7c;">content</span>=<span style="color: #8e8e8e;">"width=device-width, initial-scale=1.0"</span>&gt;
+    &lt;<span style="color: #686868;">link</span> <span style="color: #7c7c7c;">rel</span>=<span style="color: #8e8e8e;">"stylesheet"</span> <span style="color: #7c7c7c;">type</span>=<span style="color: #8e8e8e;">"text/css"</span> <span style="color: #7c7c7c;">href</span>=<span style="color: #8e8e8e;">"style.css"</span>&gt;
+    <span style="color: #b9b9b9;">&lt;!-- </span><span style="color: #ababab;">&lt;base href="https://emsenn.net/" target="_blank"&gt; </span><span style="color: #b9b9b9;">--&gt;</span>
+  &lt;/<span style="color: #686868;">head</span>&gt;
+  &lt;<span style="color: #686868;">body</span>&gt;
+    &lt;<span style="color: #686868;">div</span> <span style="color: #7c7c7c;">class</span>=<span style="color: #8e8e8e;">"page-wrapper"</span>&gt;
+      &lt;<span style="color: #686868;">main</span> <span style="color: #7c7c7c;">class</span>=<span style="color: #8e8e8e;">"content"</span>&gt;
+        &lt;<span style="color: #686868;">h1</span>&gt;
+<span style="font-weight: bold; text-decoration: underline;">          My name is emsenn.</span>
+<span style="font-weight: bold; text-decoration: underline;">        </span>&lt;/<span style="color: #686868;">h1</span>&gt;
+        &lt;<span style="color: #686868;">div</span> <span style="color: #7c7c7c;">class</span>=<span style="color: #8e8e8e;">"letter"</span>&gt;
+          &lt;<span style="color: #686868;">p</span>&gt;
+            I have an interest in the things that shape our interaction with technology, like software documentation and project governance.
+          &lt;/<span style="color: #686868;">p</span>&gt;
+          &lt;<span style="color: #686868;">p</span>&gt;
+            I want to contribute to projects aligned with this interest. This includes helping businesses develop, implement, and document their technical and operational processes.
+          &lt;/<span style="color: #686868;">p</span>&gt;
+          &lt;<span style="color: #686868;">p</span>&gt;
+            &lt;<span style="color: #686868;">a</span> <span style="color: #7c7c7c;">class</span>=<span style="color: #8e8e8e;">"cta"</span> <span style="color: #7c7c7c;">href</span>=<span style="color: #8e8e8e;">"offer/"</span>&gt;Click here to learn if we should work together.&lt;/<span style="color: #686868;">a</span>&gt;
+          &lt;/<span style="color: #686868;">p</span>&gt;
+        &lt;/<span style="color: #686868;">div</span>&gt;
+      &lt;<span style="color: #686868;">footer</span>&gt;
+        &lt;<span style="color: #686868;">div</span> <span style="color: #7c7c7c;">class</span>=<span style="color: #8e8e8e;">"footer__stamp"</span>&gt;
+          This document was last updated June 25&lt;<span style="color: #686868;">sup</span>&gt;th&lt;/<span style="color: #686868;">sup</span>&gt;, 2018.
+        &lt;/<span style="color: #686868;">div</span>&gt;
+      &lt;/<span style="color: #686868;">footer</span>&gt;
+    &lt;/<span style="color: #686868;">main</span>&gt;
+    &lt;/<span style="color: #686868;">div</span>&gt;
+  &lt;/<span style="color: #686868;">body</span>&gt;
+&lt;/<span style="color: #686868;">html</span>&gt;
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org0ce1468" class="outline-3">
+<h3 id="org0ce1468">Index</h3>
+<div class="outline-text-3" id="text-org0ce1468">
+<dl class="org-dl">
+<dt>emsAlpha</dt><dd></dd>
+
+<dt>CSS</dt><dd></dd>
+
+<dt>HTML</dt><dd></dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: emsenn</p>
+<p class="date">Created: 2019-06-07 Fri 22:23</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,226 @@
+#+SETUPFILE: ./default-setup.inc
+#+TITLE: Styling Teraum Documents
+#+ALT_TITLE: "Styling Teraum Documents"
+#+EXPORT_FILE_NAME: ~/org/pub/teraum/essays/styling-teraum-documents
+* Introduction
+*/Bellybrush Theme/* is a CSS theme for styling [[file:./teraum/index.org][/Teraum/]] reference
+books and other materials.
+#+INCLUDE: "./plates.inc::draft"
+#+INCLUDE: "./plates.inc::default-eli"
+#+INCLUDE: "./plates.inc::literate-programming"
+* Bellybrush Theme
+** Design Philosophy
+The /Bellybrush Theme/ theme is based on my own [[file:./oats.org][*Oats*]], which is based
+on another of my themes, [[https://emsenn.net/projects/brutstrap/][*Brutstrap*]] which claims to style content as
+it's constructed.
+
+However, /Brutstrap/ is catered toward a rather stark aesthetic, to
+make it more readily match the [[https://brutalist-web.design][brutalism]] advocated by [[https://naildrivin5.com/][David Bryant
+Copeland]].
+
+Bellybrush is more light-hearted. It's designed to be used for a set
+of reference books I'm written for a funny fantasy setting, and so
+hopefully reflects that.
+** CSS Rules
+   :PROPERTIES:
+   :header-args: :tangle ../build/bellybrush-theme/bellybrush.css :padline no
+   :END:
+This CSS is all availble at [[file:./build/bellybrush-theme/bellybrush.css][=./build/bellybrush-theme/bellybrush.css=]]
+or under the [[#complete-css]["Complete CSS"]] subsection of [[#supplements]["Supplements"]].
+*** Base Rules
+The theme's */base rules/* are those that go with HTML tags directly.
+**** HTML Tag Rules
+Document-wide settings, including those relevant to font-styling, are
+declared in the ~html~ rule.
+#+BEGIN_SRC css
+  html {
+      color: #444;
+      background-color: #eee;
+      hyphens: auto;
+      font-family: sans-serif;
+      letter-spacing: .03em;
+      word-spacing: .05em;
+      line-height: 1.4;
+      font-size: 1.3rem;
+  }
+#+END_SRC
+These colors are the lowest-contrast, three-digit hex codes that still
+pass [[https://www.w3.org/TR/WCAG20/][WCAG2 AAA]]. Adding some spacing between letters and words helps
+make the document feel a little more "friendly," and makes it a little
+safer to use more distinctive fonts in your body text.
+**** Body Tag Rules
+#+BEGIN_SRC css
+  body {
+      width:85vw;
+      max-width:40rem;
+      margin:0 2rem;
+      padding:3rem 2rem 6rem;}
+    }
+#+END_SRC
+**** Header Tag Rules
+#+BEGIN_SRC css
+  header {
+      overflow: hidden;
+      padding: 1rem 0 3rem 0;
+      background: linear-gradient(to bottom, #eeef 92%, #eee0);
+  }
+#+END_SRC
+**** Main Tag Rules
+#+BEGIN_SRC css
+  main{
+      width: 80vw;
+      max-width: 40rem;
+      margin: -4rem 1em -6rem;
+      padding: 3rem 2rem 6rem;
+      background: linear-gradient(to right, #eee0, #eeef 02%, #eeef 98%, #eee0);
+  }
+#+END_SRC
+**** Footer Tag Rules
+#+begin_src css
+  footer {
+      padding: 4rem 1rem 1rem;
+      background: linear-gradient(to top, #eeef 97%, #eee0);
+  }
+#+end_src
+**** Headline Tag Rules
+***** H1 Tag Rules
+#+BEGIN_SRC css
+  h1 {
+      font-weight: normal;
+      font-size: 2.8em;
+      margin: 0 auto;
+      text-align: left;
+      padding: 0 .5em;
+  }
+#+END_SRC
+***** H2 through H6 Tag Rules
+#+BEGIN_SRC css
+    h2 {
+      font-size: 2.3em;
+    }
+    h3 {
+      font-size: 2.1em;
+    }
+    h4 {
+      font-size: 1.9em;
+    }
+    h5 {
+      font-size: 1.7em;
+    }
+    h6 {
+      font-size: 1.5em;
+    }
+#+END_SRC
+**** Link Tag Rules
+#+BEGIN_SRC css
+  a {
+    color: #31B;
+    text-decoration: underline dotted #4447;
+    text-shadow: 0 0 .1em rgba(68,68,68,.2);
+  }
+  a:visited {
+    color: #718;
+  }
+  a:hover {
+    color: #42C;
+    outline-style: none;
+    text-decoration: underline solid #42c3;
+    text-shadow: 0 0 .1em #31b7;
+  }
+  a:focus {
+    color: #42C;
+    outline-style: none;
+    text-decoration: underline solid #42c3;
+    text-shadow: 0 0 .1em #31b7;
+  }
+  a:visited:hover, a:visited:focus {
+      color: #918;
+      text-decoration: underline solid #9183;
+      text-shadow: 0 0 .1em #7187;
+  }
+#+END_SRC
+**** Image Tag Rules
+#+begin_src css
+  img {
+      max-width: 100%;
+      max-height: 20em;
+  }
+#+end_src
+*** Partials Rules
+**** Skip-to-Content Rules
+#+BEGIN_SRC css
+  .skipToContentLink {
+    opacity: 0;
+    position: absolute;
+  }
+  .skipToContentLink:focus{
+      opacity:1
+  }
+#+END_SRC
+**** Table Rules
+#+BEGIN_SRC css
+#+END_SRC
+*** State Rules
+**** Selection Rules
+#+BEGIN_SRC css
+  ::selection {
+      color: #222;
+      background-color: #777;
+  }
+#+END_SRC
+* Supplements
+  :PROPERTIES:
+  :CUSTOM_ID: supplements
+  :END:
+** Contribute
+   :PROPERTIES:
+   :CUSTOM_ID: supplements-contribute
+   :END:
+#+INCLUDE: "./plates.inc::personal-contribute"
+** License
+   :PROPERTIES:
+   :CUSTOM_ID: supplements-license
+   :END:
+#+INCLUDE: "./plates.inc::mit-license"
+** Complete CSS
+  :PROPERTIES:
+  :CUSTOM_ID: complete-css
+  :END:
+#+INCLUDE: "./build/bellybrush-theme/bellybrush.css" src css
+** Demonstration HTML
+   :PROPERTIES:
+   :CUSTOM_ID: demonstration-html
+   :END:
+#+BEGIN_SRC html :tangle ./build/bellybrush-theme/index.html
+  <!DOCTYPE html>
+  <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+      <link href="https://gmpg.org/xfn/11" rel="profile">
+      <meta charset="UTF-8">
+      <meta name="description" content="Bellybrush Theme is a simple and neutral CSS theme.">
+      <meta name="keywords" content="oats, css, theme">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" type="text/css" href="./bellybrush.css">
+      <title>Bellybrush Theme</title>
+    </head>
+    <body>
+      <a class="skipToContentLink" href="#content">Skip to Content</a>
+      <header>
+	<h1>Bellybrush Theme</h1>
+      </header>
+      <main id="content">
+	<p>
+	  Bellybrush Theme is a simple and neutral CSS theme.
+	</p>
+	<section id="features">
+	  <h2>Features</h2>
+	  <ul>
+	    <li>
+	      <strong>Very little,</strong> honestly.
+	    </li>
+	  </ul>
+	</section>
+      </main>
+    </body>
+  </html>
+#+END_SRC
