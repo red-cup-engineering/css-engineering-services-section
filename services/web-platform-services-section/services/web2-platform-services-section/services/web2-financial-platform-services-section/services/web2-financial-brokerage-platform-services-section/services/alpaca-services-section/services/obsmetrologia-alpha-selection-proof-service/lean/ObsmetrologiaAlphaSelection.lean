@@ -1,6 +1,6 @@
-import Obsmetrologia.Computing.CausalityPacket
-import Obsmetrologia.GameTheory.VerificationTournament
-import Obsmetrologia.ReactionNetworks.Entropy
+import ObsmetrologiaComputing.CausalityPacket
+import ObsmetrologiaComputing.GameTheory.VerificationTournament
+import ObsmetrologiaPhysicalScience.ReactionNetworks.Entropy
 
 namespace BrokerageControl.AlphaSelection
 
@@ -21,8 +21,8 @@ the supplied witnesses is simultaneously:
 -/
 structure PaperPromotionCertificate
     {Species E Q Boundary : Type}
-    (cl : Charge.Closure)
-    (seed : Charge)
+    (cl : Reading.Closure)
+    (seed : Reading)
     (cert : Certificate)
     (univ : List Species)
     (before after : State Species)
@@ -35,8 +35,8 @@ structure PaperPromotionCertificate
 
 theorem paper_promotion_certificate_of_witnesses
     {Species E Q Boundary : Type}
-    (cl : Charge.Closure)
-    (seed : Charge)
+    (cl : Reading.Closure)
+    (seed : Reading)
     (cert : Certificate)
     (univ : List Species)
     (before after : State Species)
@@ -44,7 +44,7 @@ theorem paper_promotion_certificate_of_witnesses
     (packet : Computing.CausalityPacket R)
     {k : Nat}
     (hk : 1 ≤ k)
-    (hcycle : Charge.iter cl.op k seed = seed)
+    (hcycle : Reading.iter cl.op k seed = seed)
     (hNoDeviation : cert.noProfitableDeviation)
     (hWitness : cert.dialecticaWitnessSurvives)
     (hCorresponds : cert.equilibriumMatchesSurvivor)

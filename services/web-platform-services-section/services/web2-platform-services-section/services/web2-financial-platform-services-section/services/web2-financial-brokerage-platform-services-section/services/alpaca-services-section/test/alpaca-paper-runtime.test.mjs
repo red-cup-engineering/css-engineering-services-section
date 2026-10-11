@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import test from "node:test";
-import { createAuthorityCustodyActuator, createEphemeralAuthorityCustodySubstrate } from "../../../../red-cup-engineering/services/software-services-section/services/resource-brokerage-service-section/services/authority-custody-actuator/src/authority-custody-actuator.mjs";
-import { createBrokerageAuthorityCustody } from "../services/brokerage-authority-custody-service/src/authority-custody.mjs";
-import { createAlpacaAdapter } from "../services/pluggable-venue-adapter-service/src/alpaca-adapter.mjs";
-import { createPaperExecutionAndReconciliationProvider } from "../services/brokerage-execution-transport-service/src/execute-intent.mjs";
+import { createAuthorityCustodyActuator, createEphemeralAuthorityCustodySubstrate } from "./support/ephemeral-authority-custody.mjs";
+import { createBrokerageAuthorityCustody } from "@red-cup-engineering/brokerage-authority-custody-service";
+import { createAlpacaAdapter } from "@red-cup-engineering/pluggable-venue-adapter-service/alpaca";
+import { createPaperExecutionAndReconciliationProvider } from "@red-cup-engineering/brokerage-execution-transport-service";
 import { formPrincipalBrokerageContract, grantBrokerageAuthority } from "../services/principal-brokerage-interface/src/principal-contract.mjs";
 
 const NOW = "2026-07-23T02:00:00.000Z", EXPIRY = "2030-01-01T00:00:00.000Z";
@@ -26,7 +26,7 @@ function fakeAdapter({ initialStatus = 404, placedStatus = 201, venueStatus = "a
   return { get places() { return places; }, get lookups() { return lookups; },
     async getOrderByClientOrderId({ clientOrderId }) { lookups += 1; return stored ? { id: `lookup:${lookups}`, status: 200, payload: { client_order_id: mismatch ? "wrong-id" : clientOrderId, status: venueStatus } } : { id: `lookup:${lookups}`, status: initialStatus, payload: {} }; },
     async placeOrder({ order }) { places += 1; stored = true; await Promise.resolve(); return { id: `placement:${places}`, status: placedStatus, payload: { client_order_id: order.client_order_id } }; },
-    async readAccount() { return observation("account"); }, async listPositions() { return observation("positions"); }, async listActivities() { return observation("activities"); },
+    async readAccount() { return observation("account"); }, async listPositions() { return observation("positions"); }, async listOpenOrders() { return { id: "open-orders", status: 200, payload: [] }; }, async listActivities() { return observation("activities"); },
   };
 }
 

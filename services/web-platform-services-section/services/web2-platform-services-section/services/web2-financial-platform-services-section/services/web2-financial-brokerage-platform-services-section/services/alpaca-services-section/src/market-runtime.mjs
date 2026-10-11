@@ -1,11 +1,27 @@
-import { createBrokerageX402Server } from "@rsc-quiescent/coinbase-x402-bazaar-border/server";
-import { formIssuerEvidencePacket, validateIssuerEvidenceRequest } from "@rsc-quiescent/issuer-research-media-service";
-import { normalizeAlpacaSnapshot, reconcileSnapshots, validateReconciliationRequest } from "@rsc-quiescent/account-evidence-reconciliation-service";
-import { formAggressivePortfolioIntent, validateAggressivePortfolioIntentRequest } from "@rsc-quiescent/alpha-portfolio-order-intent-service";
-import { createExecutionTransportProvider } from "@rsc-quiescent/brokerage-execution-transport-service";
-import { evaluateBlkAccumulationStrategy } from "@rsc-quiescent/obsmetrologia-blk-accumulation-strategy-service";
-import { createAlpacaHistoricalBarsService } from "@rsc-quiescent/alpaca-market-data-read-service";
-import { createBrokerageMarketEventRecorder } from "@rsc-quiescent/brokerage-independent-witness-and-books";
+import { formIssuerEvidencePacket, validateIssuerEvidenceRequest } from "@red-cup-engineering/alpaca-services-section/evidence-packet";
+import { normalizeAlpacaSnapshot, reconcileSnapshots, validateReconciliationRequest } from "@red-cup-engineering/account-evidence-reconciliation-service";
+import { formAggressivePortfolioIntent, validateAggressivePortfolioIntentRequest } from "@red-cup-engineering/alpha-portfolio-order-intent-service";
+import { evaluateBlkAccumulationStrategy } from "@red-cup-engineering/alpaca-services-section/strategy";
+
+/**
+ * market-runtime.mjs composes this seller's product operations -- pure
+ * research/intent/reconciliation compute, plus the principal-authenticated
+ * alpacaRead venue read and the BLK
+ * accumulation strategy provider -- and nothing else. It carries no x402
+ * selling concern of its own (2026-09-11 founder ruling: one x402 market,
+ * market.561.group; no per-compute seller keeps a transport, facilitator
+ * selection, or settlement witness of its own): `createBrokerageX402Server`
+ * and its `createBrokerageMarketRuntime` composition were deleted from here.
+ * The four products every offer here can serve anonymously and statelessly
+ * (issuer, alpha, paperIntent, reconcile) are sold from market.561.group's
+ * own catalog, bound directly to their owning packages. alpacaRead and
+ * blkStrategy are principal-authenticated (they act on one
+ * specific, already-authorized customer account) and are not catalog
+ * candidates; account reads remain sold only through the Union and Virtuals
+ * non-x402 distribution channels (see union-runtime.mjs, virtuals-runtime.mjs),
+ * which call these operations directly. Brokerage writes are intentionally not
+ * exposed here: they use the mode-specific reconciled execution provider.
+ */
 
 function offeredProvider({ actor, preflight, execute, externalEvidence }) {
   const callable = async (request) => execute(request);
@@ -18,7 +34,7 @@ const packets = (request) => (request.evidencePackets ?? []).map((packet) => pac
 const normalizeReconciliation = ({ expected, observed, tolerances } = {}) => ({ expected: normalizeAlpacaSnapshot(expected), observed: normalizeAlpacaSnapshot(observed), tolerances });
 const packetEvidence = (request) => packets(request).flatMap((packet) => packet.sources.map(({ uri, digest }) => ({ uri, digest })));
 
-export function createBrokerageProductProviders({ alpacaRead, alpacaReadPreflight, paperReadService, marketDataService, resolveExecutionRecords, executionAdapter, executionClock } = {}) {
+export function createBrokerageProductProviders({ alpacaRead, alpacaReadPreflight, paperReadService, marketDataService } = {}) {
   const issuer = offeredProvider({ actor: "urn:ame:issuer-research-media-service", preflight: validateIssuerEvidenceRequest,
     execute: formIssuerEvidencePacket, externalEvidence: (request) => request.sources.map(({ uri, digest }) => ({ uri, digest })) });
   const aggressive = offeredProvider({ actor: "urn:ame:alpha-portfolio-order-intent-service",
@@ -57,7 +73,6 @@ export function createBrokerageProductProviders({ alpacaRead, alpacaReadPrefligh
   if (typeof seatedRead === "function" && typeof seatedPreflight === "function") providers.alpacaRead = offeredProvider({ actor: paperReadService?.originatingActor ?? "urn:ame:pluggable-venue-adapter-service",
     preflight: seatedPreflight, execute: seatedRead,
     externalEvidence: (_request, output) => [{ uri: `urn:alpaca:venue-operation:${output.venueRequestId ?? output.id}`, digest: output.id }] });
-  if (typeof resolveExecutionRecords === "function" && typeof executionAdapter?.placeOrder === "function") providers.execution = createExecutionTransportProvider({ resolveExecutionRecords, adapter: executionAdapter, clock: executionClock });
   return Object.freeze(providers);
 }
 
@@ -69,27 +84,6 @@ export function indexBrokerageProvidersByService(providers) {
     "paper-portfolio-and-order-intents": providers.paperIntent,
     "account-normalization-and-reconciliation": providers.reconcile,
     ...(providers.alpacaRead ? { "venue-adapter-read": providers.alpacaRead } : {}),
-    ...(providers.execution ? { "execution-transport": providers.execution } : {}),
   };
   return Object.freeze(indexed);
-}
-
-export function createBrokerageMarketRuntime(env = process.env, dependencies = {}) {
-  let marketDataService = dependencies.marketDataService;
-  if (!marketDataService && env.ALPACA_ACCOUNT_ESTHER_PAPER_TRADING_KEY && env.ALPACA_ACCOUNT_ESTHER_PAPER_TRADING_SECRET &&
-      env.WITNESS_JOURNAL_RDF_AGENT && env.BROKERAGE_BOOKS_DATA_ROOT && env.BROKERAGE_BOOKS_ACCOUNT) {
-    const recordObservation = dependencies.recordMarketDataObservation ?? createBrokerageMarketEventRecorder({
-      originatingActor: "urn:ame:alpaca-market-data-read-service",
-      nodeId: "alpaca-market-data-read-service",
-    }, env, dependencies.marketDataRecordDependencies);
-    marketDataService = createAlpacaHistoricalBarsService(env, { recordObservation });
-  }
-  const providers = dependencies.providers ?? createBrokerageProductProviders({ alpacaRead: dependencies.alpacaRead, alpacaReadPreflight: dependencies.alpacaReadPreflight, paperReadService: dependencies.paperReadService, marketDataService,
-    resolveExecutionRecords: dependencies.resolveExecutionRecords, executionAdapter: dependencies.executionAdapter, executionClock: dependencies.executionClock });
-  return createBrokerageX402Server(env, { ...dependencies, providers });
-}
-
-if (import.meta.url === `file://${process.argv[1]}`) {
-  const runtime = createBrokerageMarketRuntime();
-  runtime.app.listen(runtime.port, "0.0.0.0", () => console.log(`brokerage-control market runtime listening on 0.0.0.0:${runtime.port}`));
 }

@@ -1,5 +1,5 @@
-import { createBrokerageMarketEventRecorder } from "@rsc-quiescent/brokerage-independent-witness-and-books";
-import { createPrincipalOnboardingCircuit } from "@rsc-quiescent/principal-brokerage-interface/onboarding-circuit";
+import { createBrokerageMarketEventRecorder } from "@red-cup-engineering/brokerage-independent-witness-and-books";
+import { createPrincipalOnboardingCircuit } from "@red-cup-engineering/principal-brokerage-interface/onboarding-circuit";
 
 export const ESTHER_PRINCIPAL = "urn:principal:esther-davis";
 export const ESTHER_INITIAL_POLICY = Object.freeze({ maximumLossFraction: 1, maximumOrderFraction: 1, maximumAggregateMultiple: 1,

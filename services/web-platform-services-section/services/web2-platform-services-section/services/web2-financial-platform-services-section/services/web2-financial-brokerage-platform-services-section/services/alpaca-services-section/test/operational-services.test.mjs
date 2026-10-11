@@ -1,19 +1,21 @@
 import assert from "node:assert/strict";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
-import { createAuthorityCustodyActuator, createEphemeralAuthorityCustodySubstrate } from "../../../../red-cup-engineering/services/software-services-section/services/resource-brokerage-service-section/services/authority-custody-actuator/src/authority-custody-actuator.mjs";
+import { createAuthorityCustodyActuator, createEphemeralAuthorityCustodySubstrate } from "./support/ephemeral-authority-custody.mjs";
 
 import { acceptPrincipalOnboardingOffer, formPrincipalBrokerageContract, formPrincipalOnboardingOffer, grantBrokerageAuthority, NORMAL_MARKET_PRICES } from "../services/principal-brokerage-interface/src/principal-contract.mjs";
-import { createBrokerageAuthorityCustody } from "../services/brokerage-authority-custody-service/src/authority-custody.mjs";
-import { createAlpacaConnectOAuthBroker } from "../services/brokerage-authority-custody-service/src/alpaca-connect-oauth.mjs";
-import { quoteMeteredCompute, settleMeteredCompute } from "../services/metered-compute-payment-service/src/metered-payment.mjs";
-import { createAlpacaAdapter } from "../services/pluggable-venue-adapter-service/src/alpaca-adapter.mjs";
-import { createAlpacaBrokerAdministrator } from "../services/pluggable-venue-adapter-service/src/alpaca-broker-admin.mjs";
-import { normalizeAlpacaSnapshot, reconcileSnapshots } from "../services/account-evidence-reconciliation-service/src/reconcile.mjs";
-import { formIssuerEvidencePacket } from "../services/issuer-research-media-service/src/evidence-packet.mjs";
-import { formAggressivePortfolioIntent } from "../services/alpha-portfolio-order-intent-service/src/aggressive-intent.mjs";
-import { executeAdmittedIntent } from "../services/brokerage-execution-transport-service/src/execute-intent.mjs";
-import { createBrokerageMarketEventRecorder, createBrokerageOutcomeWitnessRecorder, witnessBrokerageOutcome } from "../services/brokerage-independent-witness-and-books/src/witness.mjs";
-import { createX402BrokerageBorder } from "../services/coinbase-x402-bazaar-border/src/http-border.mjs";
+import { createBrokerageAuthorityCustody } from "@red-cup-engineering/brokerage-authority-custody-service";
+import { createAlpacaConnectOAuthBroker } from "@red-cup-engineering/brokerage-authority-custody-service/alpaca-connect-oauth";
+import { quoteMeteredCompute, settleMeteredCompute } from "../scripts/metered-payment.mjs";
+import { createAlpacaAdapter } from "@red-cup-engineering/pluggable-venue-adapter-service/alpaca";
+import { createAlpacaBrokerAdministrator } from "@red-cup-engineering/pluggable-venue-adapter-service/alpaca-broker-admin";
+import { normalizeAlpacaSnapshot, reconcileSnapshots } from "@red-cup-engineering/account-evidence-reconciliation-service";
+import { formIssuerEvidencePacket } from "../scripts/evidence-packet.mjs";
+import { formAggressivePortfolioIntent } from "@red-cup-engineering/alpha-portfolio-order-intent-service";
+import { executeAdmittedIntent } from "@red-cup-engineering/brokerage-execution-transport-service";
+import { createBrokerageMarketEventRecorder, createBrokerageOutcomeWitnessRecorder, witnessBrokerageOutcome } from "@red-cup-engineering/brokerage-independent-witness-and-books";
 
 const expiry = "2030-01-01T00:00:00.000Z";
 const createCustody = (options) => {
@@ -118,29 +120,43 @@ test("witness refuses assertion", () => {
   assert.equal(witness.correctnessClaim, "not-unbound");
 });
 
-test("independent books append the provider outcome as an WitnessJournal named graph", async () => {
-  let recorded; const recorder = createBrokerageOutcomeWitnessRecorder({ WITNESS_JOURNAL_RDF_AGENT: "http://127.0.0.1:19764", BROKERAGE_BOOKS_DATA_ROOT: "/tmp/brokerage-books-test", BROKERAGE_BOOKS_ACCOUNT: "eip155:8453:0x0000000000000000000000000000000000000002" }, {
-    now: () => "2026-07-22T22:20:00.000Z", record: async (request) => { recorded = request; return { graphPath: "/tmp/graph.cbor" }; },
-  });
+// brokerage-independent-witness-and-books moved from a WitnessJournal RDF-agent batch
+// (ascribe/settlement/document) to a local semantic-record-journal-backed recorder at an
+// explicit BROKERAGE_BOOKS_DATA_ROOT; these two cases were updated to that current contract
+// (see the package's own test/witness.test.mjs) rather than the superseded RDF-batch shape.
+test("independent books append the provider outcome as a semantic record journal entry", async (t) => {
+  const root = mkdtempSync(join(tmpdir(), "brokerage-books-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const recorder = createBrokerageOutcomeWitnessRecorder({ BROKERAGE_BOOKS_DATA_ROOT: root }, { now: () => "2026-07-22T22:20:00.000Z" });
   const result = await recorder({ originatingActor: "urn:ame:issuer-research-media-service", inputs: [{ ticker: "NVDA" }], output: { id: "sha256:output", type: "IssuerEvidencePacket" }, externalEvidence: [{ uri: "https://example.invalid/filing", digest: "sha256:filing" }] });
   assert.equal(result.witness.correctnessClaim, "not-unbound"); assert.match(result.graph, /^ni:\/\/\/sha-256;/u);
-  assert.equal(recorded.nodeId, "brokerage-independent-witness-and-books"); assert.equal(recorded.batch.settlement, "eip155:8453:0x0000000000000000000000000000000000000002");
-  assert.equal(recorded.batch.graph, result.graph); assert.equal(recorded.batch.document[0], "ascribe"); assert.equal(recorded.batch.document.length, 3);
+  assert.equal(result.graph, result.witness.id);
+  assert.equal(result.recordReceipt.charge.support, true); assert.equal(result.recordReceipt.charge.refutation, false);
+  const second = await recorder({ originatingActor: "urn:ame:issuer-research-media-service", inputs: [{ ticker: "NVDA" }], output: { id: "sha256:output", type: "IssuerEvidencePacket" }, externalEvidence: [{ uri: "https://example.invalid/filing", digest: "sha256:filing" }] });
+  assert.equal(second.witness.id, result.witness.id); assert.equal(second.recordReceipt, null);
 });
 
-test("independent books append Virtuals boundary events without assertion", async () => {
-  let batch; const recorder = createBrokerageMarketEventRecorder({ originatingActor: "urn:ame:virtuals-brokerage-products-border", nodeId: "virtuals-brokerage-products-border" },
-    { WITNESS_JOURNAL_RDF_AGENT: "http://127.0.0.1:19764", BROKERAGE_BOOKS_DATA_ROOT: "/tmp/brokerage-books-test", BROKERAGE_BOOKS_ACCOUNT: "eip155:8453:0x0000000000000000000000000000000000000002" },
-    { now: () => "2026-07-22T22:20:00.000Z", record: async (request) => { batch = request.batch; return { graphPath: "/tmp/event.nq" }; } });
+test("independent books append Virtuals boundary events without assertion", async (t) => {
+  const root = mkdtempSync(join(tmpdir(), "brokerage-books-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const recorder = createBrokerageMarketEventRecorder({ originatingActor: "urn:ame:virtuals-brokerage-products-border", nodeId: "virtuals-brokerage-products-border" },
+    { BROKERAGE_BOOKS_DATA_ROOT: root }, { now: () => "2026-07-22T22:20:00.000Z" });
   const receipt = await recorder({ type: "virtuals-brokerage-delivered", jobId: "42", output: "sha256:output" });
-  assert.match(receipt.graph, /^ni:\/\/\/sha-256;/u); assert.equal(batch.document[0], "ascribe"); assert.equal(batch.settlement, "eip155:8453:0x0000000000000000000000000000000000000002");
+  assert.match(receipt.graph, /^ni:\/\/\/sha-256;/u); assert.equal(receipt.id, receipt.graph);
+  assert.equal(receipt.recordReceipt.charge.support, true); assert.equal(receipt.recordReceipt.charge.refutation, false);
   assert.throws(() => createBrokerageMarketEventRecorder({ originatingActor: "urn:ame:brokerage-independent-witness-and-books", nodeId: "self" }, {}), /origin-required/u);
 });
 
-test("x402 border challenges unpaid calls, refuses credentials, and delivers after injected settlement", async () => {
-  const border = createX402BrokerageBorder({ payTo: "0xprovider", facilitator: "https://x402.org/facilitator", verifyAndSettle: async () => ({ success: true, transaction: "0xpaid", settledAt: "2026-07-22T22:20:00.000Z" }), providers: { "issuer-evidence-packet": async ({ ticker }) => ({ id: `packet:${ticker}`, ticker }) } });
-  const unpaid = await border({ path: "/v1/issuer-evidence", body: { ticker: "NVDA" } }); assert.equal(unpaid.status, 402); assert.ok(unpaid.headers["payment-required"]);
-  const secret = await border({ path: "/v1/issuer-evidence", headers: { "payment-signature": "paid" }, body: { apiKey: "nope" } }); assert.equal(secret.status, 422);
-  const paid = await border({ path: "/v1/issuer-evidence", headers: { "payment-signature": "paid" }, body: { ticker: "NVDA" } });
-  assert.equal(paid.status, 200); assert.equal(paid.body.receipt.bazaarCatalogEligible, true); assert.equal(paid.body.receipt.bazaarIndexedClaim, false); assert.equal(paid.body.output.ticker, "NVDA");
-});
+// The x402 border test that lived here (createX402BrokerageBorder from
+// coinbase-x402-bazaar-border/src/http-border.mjs) was removed on the
+// 2026-09-11 founder ruling: one x402 market, market.561.group; no
+// per-compute seller keeps a transport, facilitator selection, or
+// settlement witness of its own. http-border.mjs and its own transport
+// (server.mjs, settlement-witness.mjs) were deleted along with it; the same
+// issuer-evidence product it exercised is now market.561.group's own
+// catalog entry ("brokerage-control"/"issuer-evidence"), bound directly to
+// formIssuerEvidencePacket -- exercised above (see "aggressive intent...")
+// and end to end in market-561-group's own test suite
+// (apps/market-561-group/test/market-561-group.test.mjs), with the
+// remaining provider-composition coverage in
+// alpaca-services-section/test/market-runtime.test.mjs.

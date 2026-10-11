@@ -1,7 +1,6 @@
 {
-  "name": "@rsc-quiescent/investment-research-work-lot-service",
-  "version": "0.2.2",
-  "private": true,
+  "name": "@red-cup-engineering/investment-research-work-lot-service",
+  "version": "0.2.3",
   "type": "module",
   "description": "Contracts provider-distinct bounded institutional research roles and returns untrusted typed forecast sections or explicit seat residues.",
   "exports": {
@@ -14,17 +13,17 @@
     "src/"
   ],
   "dependencies": {
-    "@red-cup-engineering/json-schema-services-section": "0.1.2"
+    "@red-cup-engineering/computer-inference-engine": "workspace:*",
+    "@red-cup-engineering/json-schema-services-section": "workspace:*"
   },
-  "peerDependencies": {
-    "@red-cup-engineering/inference-work-lot-service": "4.0.1"
-  },
+  "peerDependencies": {},
   "peerDependenciesMeta": {
-    "@red-cup-engineering/inference-work-lot-service": { "optional": true }
+    "@red-cup-engineering/inference-work-lot-service": {
+      "optional": true
+    }
   },
   "scripts": {
     "check": "node --check src/*.mjs && node --check test/*.test.mjs",
-    "test": "node --test test/*.test.mjs",
-    "verify": "npm run check && npm test && npm pack --dry-run"
+    "test": "node --test test/*.test.mjs"
   }
 }

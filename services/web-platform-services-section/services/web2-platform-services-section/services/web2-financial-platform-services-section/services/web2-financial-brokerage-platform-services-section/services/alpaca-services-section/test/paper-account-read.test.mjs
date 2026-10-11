@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createAuthorityCustodyActuator, createEphemeralAuthorityCustodySubstrate } from "../../../../red-cup-engineering/services/software-services-section/services/resource-brokerage-service-section/services/authority-custody-actuator/src/authority-custody-actuator.mjs";
+import { createAuthorityCustodyActuator, createEphemeralAuthorityCustodySubstrate } from "./support/ephemeral-authority-custody.mjs";
 import { formPrincipalPaperAccountObservationAuthorization } from "../services/principal-brokerage-interface/src/principal-contract.mjs";
-import { createAlpacaPaperAccountReadService } from "../services/alpaca-paper-account-read-service/src/paper-account-read.mjs";
+import { createAlpacaPaperAccountReadService } from "../scripts/paper-account-read.mjs";
 
 const NOW = "2026-07-22T12:00:00.000Z", UNTIL = "2026-07-22T12:15:00.000Z";
 const offer = { type: "PrincipalBrokerageOnboardingOffer", id: "sha256:offer", principal: "urn:principal:esther-davis", venue: "alpaca-trading-paper", sponsored: true, scopes: ["account:read", "positions:read", "orders:paper"], validUntil: "2026-07-23T00:00:00.000Z" };

@@ -7,7 +7,10 @@ import test from "node:test";
 import {
   DAILY_LOSS_TRIP_THRESHOLD,
   DRAWDOWN_TRIP_THRESHOLD,
+  PAPER_ACCOUNT_RESET_BASELINE,
+  PAPER_ACCOUNT_RESET_TOLERANCE,
   evaluateKillSwitch,
+  isAccountResetDiscontinuity,
   loadHighWaterMark,
   saveHighWaterMark,
   writeTrippedRecord,
@@ -73,6 +76,48 @@ test("high-water mark state round-trips through disk and is missing (null) befor
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("the 2026-07-23 incident (200000 -> 100014.23) is detected as a paper-account reset, not a trip", () => {
+  const reading = evaluateKillSwitch({ equity: 100014.23, lastEquity: null, priorHighWaterMark: 200000 });
+  assert.equal(reading.resetDetected, true);
+  assert.equal(reading.tripped, false);
+  assert.equal(reading.drawdownPct, 0);
+  assert.equal(reading.highWaterMark, 100014.23);
+  assert.equal(reading.reasons.length, 0);
+  assert.match(reading.notes[0], /account-reset discontinuity/u);
+});
+
+test("isAccountResetDiscontinuity is true only when equity is near the baseline and the prior mark sits above it", () => {
+  assert.equal(
+    isAccountResetDiscontinuity({ equity: 100014.23, priorHighWaterMark: 200000 }),
+    true,
+  );
+  assert.equal(
+    isAccountResetDiscontinuity({ equity: PAPER_ACCOUNT_RESET_BASELINE, priorHighWaterMark: PAPER_ACCOUNT_RESET_BASELINE }),
+    false,
+    "no prior mark above baseline -- nothing to reset away from",
+  );
+  assert.equal(
+    isAccountResetDiscontinuity({ equity: 80000, priorHighWaterMark: 200000 }),
+    false,
+    "equity far from the baseline is a real drawdown, not a reset",
+  );
+});
+
+test("a reset discontinuity also suppresses the daily-loss leg against a stale pre-reset lastEquity", () => {
+  const reading = evaluateKillSwitch({ equity: 100014.23, lastEquity: 200000, priorHighWaterMark: 200000 });
+  assert.equal(reading.resetDetected, true);
+  assert.equal(reading.dailyLossPct, 0);
+  assert.equal(reading.lastEquity, null);
+  assert.equal(reading.tripped, false);
+});
+
+test("a real drawdown that happens to land just outside reset tolerance still trips", () => {
+  const justOutsideTolerance = PAPER_ACCOUNT_RESET_BASELINE * (1 + PAPER_ACCOUNT_RESET_TOLERANCE + 0.10);
+  const reading = evaluateKillSwitch({ equity: justOutsideTolerance, lastEquity: justOutsideTolerance, priorHighWaterMark: 200000 });
+  assert.equal(reading.resetDetected, false);
+  assert.equal(reading.tripped, true);
 });
 
 test("tripped records are written both timestamped and as latest.json", () => {

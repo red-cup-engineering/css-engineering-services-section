@@ -1,81 +1,58 @@
 #!/usr/bin/env node
-// Esther Davis Alpaca paper account -- daily diversified-basket redistributor.
-//
-// SIBLING to alpaca-esther-paper-trading-loop. Same account, same three
-// PAPER-ONLY guards, reused unmodified from
-// ../../alpaca-paper-trading-guards-service/src/guards.mjs (not
-// reimplemented here):
-//   1. hardcoded paper trading host + outbound-URL re-check
-//   2. refusal if any Alpaca *_LIVE_* credential is present in the environment
-//   3. GET /v2/account verification that account_number carries the "PA"
-//      paper prefix
-//
-// DOCTRINE: see ./target-basket.mjs for provenance. No existing
-// target-allocation/portfolio/benchmark doctrine was found in the
-// federation or its obsmetrologia services, so this loop uses the plain
-// diversified basket given directly by the leader: 40% SPY / 20% QQQ /
-// 20% TLT / 10% GLD / 10% BIL.
-//
-// SCHEDULE: intended to run once daily at 09:05 America/Chicago (35 minutes
-// after the 08:30 CT open, so the opening auction has settled). If the
-// market is closed at run time (holiday, or the timer firing outside its
-// window for any reason), this exits cleanly after journaling a
-// market-closed no-op -- exactly like the sibling loop.
-//
-// BOOTSTRAP: on a fresh all-cash account, the full basket is not bought in
-// one shot. Progress is derived from this loop's OWN journal (no separate
-// state file): the number of distinct trading days on which a prior run
-// reached a successful "evaluation" while in the "bootstrap" phase is
-// counted; that count (0..4) determines this run's tranche number
-// (count+1, capped at 4) and the *effective* target basket used for this
-// run is the full basket scaled by tranche/4. Once 4 bootstrap trading
-// days have completed, the loop permanently uses the full basket
-// ("steady-state" phase) -- this also means a partially-filled bootstrap
-// day still counts as long as evaluation was reached, so an account that
-// never quite hits deposit money doesn't stall forever, but a hard
-// evaluation failure (market data error, etc.) does NOT count and the same
-// tranche is retried the next successful run.
-//
-// REBALANCE RULE (steady-state, and structurally also what drives each
-// bootstrap tranche): compute current weights from live positions and
-// equity; any basket symbol whose |current - effective target| exceeds the
-// 2% absolute DRIFT_THRESHOLD is rebalanced. Total notional traded in one
-// run is capped at TURNOVER_CAP_FRACTION (25%) of equity -- if the sum of
-// desired trade notionals would exceed that, every desired trade is scaled
-// down proportionally (direction preserved) so the cap holds exactly.
-//
-// ORDERS: marketable orders sized by notional, type "market" -- matching
-// the sibling loop's own order type (day time_in_force, notional sizing).
-//
-// JOURNAL: every decision (guard refusal, market-closed no-op, or a full
-// evaluation with its drift/orders/venue responses) is appended as one
-// JSON line to data/journal/redistributor-decisions.ndjson. Append-only.
+// Esther Davis Alpaca account -- daily diversified-basket redistributor, live
+// or paper as its credentials are. Sibling to alpaca-esther-paper-trading-loop;
+// shares its credentials and trading-host access. Target basket (see
+// ./target-basket.mjs for provenance): 40% SPY / 20% QQQ / 20% TLT / 10%
+// GLD / 10% BIL, rebalanced when a symbol drifts past DRIFT_THRESHOLD,
+// capped at TURNOVER_CAP_FRACTION equity turnover per run, bootstrapped
+// over BOOTSTRAP_TRANCHES days -- see countCompletedBootstrapDays and
+// buildTrades below for the exact bootstrap and rebalance mechanics.
 
-import { appendFileSync, mkdirSync, readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { createSemanticRecordJournal } from "@red-cup-engineering/semiotic-eavt-services-section/record-semantic-record";
+import { semanticIdOf } from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
+import { formAggressivePortfolioIntent } from "@red-cup-engineering/alpha-portfolio-order-intent-service";
+import { grantBrokerageAuthority, formPrincipalBrokerageContract } from "@red-cup-engineering/principal-brokerage-interface";
+import { executeAuthorizedAlpacaIntent } from "@red-cup-engineering/alpaca-esther-paper-trading-loop/execute-authorized-intent";
 import {
-  refuseUnlessNoLiveCredentialPresent,
-  requirePaperCredentials,
+  alpacaCredentials,
   tradingFetch,
-  verifyPaperAccount,
-} from "@rsc-quiescent/alpaca-paper-trading-guards-service";
+  verifyAccount,
+} from "@red-cup-engineering/alpaca-services-section/guards";
 import { TARGET_WEIGHTS, TARGET_SYMBOLS, scaleTargets } from "./target-basket.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const JOURNAL_DIR = join(HERE, "..", "data", "journal");
-const JOURNAL_FILE = join(JOURNAL_DIR, "redistributor-decisions.ndjson");
+const JOURNAL_ROOT = join(HERE, "..");
+const BOOKS_DATA_ROOT = join(HERE, "..", "data", "state", "brokerage-books");
+export const JOURNAL_OBJECT_KIND = "alpaca-esther-paper-redistributor-loop.decision";
+export const JOURNAL_CATEGORY = "esther-redistributor.decision";
+const PRINCIPAL = "urn:principal:esther-davis";
+const accountReference = (mode) => `account:esther-${mode}-redistributor`;
+const contractScopes = (mode) => Object.freeze(["account:read", "activities:read", "orders:intent", `orders:${mode}`, "orders:read", "positions:read"]);
+const grantScopes = (mode) => Object.freeze(["account:read", "activities:read", `orders:${mode}`, "orders:read", "positions:read"]);
+const intentId = semanticIdOf("brokerage.alpaca-esther-paper-redistributor.intent-evidence");
 
 const DRIFT_THRESHOLD = 0.02; // 2% absolute, per symbol
 const TURNOVER_CAP_FRACTION = 0.25; // 25% of equity, total per run
 const BOOTSTRAP_TRANCHES = 4;
 const MINIMUM_ORDER_NOTIONAL = 1.0; // refuse to place dust orders
 
-function journal(entry) {
-  mkdirSync(JOURNAL_DIR, { recursive: true });
-  const line = JSON.stringify({ timestamp: new Date().toISOString(), ...entry });
-  appendFileSync(JOURNAL_FILE, `${line}\n`, { flag: "a" });
+/**
+ * Append a decision record through the house semantic record journal.
+ * @param {object} entry - Decision fields (type, phase, disposition, orders, responses, ...).
+ * @param {object} [options]
+ * @param {string} [options.root] - Journal root override, for tests.
+ */
+export function journal(entry, { root = JOURNAL_ROOT } = {}) {
+  const recordedAt = new Date().toISOString();
+  createSemanticRecordJournal({ root, objectKind: JOURNAL_OBJECT_KIND }).record({
+    category: JOURNAL_CATEGORY,
+    recordedAt,
+    record: { timestamp: recordedAt, ...entry },
+    told: { for: true, against: false },
+  });
 }
 
 function chicagoDate(isoTimestamp) {
@@ -84,23 +61,9 @@ function chicagoDate(isoTimestamp) {
 }
 
 function readPriorJournalEntries() {
-  let text;
-  try {
-    text = readFileSync(JOURNAL_FILE, "utf8");
-  } catch {
-    return [];
-  }
-  return text
-    .split("\n")
-    .filter((line) => line.trim().length > 0)
-    .map((line) => {
-      try {
-        return JSON.parse(line);
-      } catch {
-        return null;
-      }
-    })
-    .filter(Boolean);
+  return createSemanticRecordJournal({ root: JOURNAL_ROOT, objectKind: JOURNAL_OBJECT_KIND })
+    .query({ category: JOURNAL_CATEGORY })
+    .map((row) => row.record);
 }
 
 /**
@@ -168,18 +131,9 @@ function buildTrades({ currentWeights, effectiveTargets, equity, positions }) {
 async function main() {
   const env = process.env;
 
+  let credentials;
   try {
-    refuseUnlessNoLiveCredentialPresent(env);
-  } catch (error) {
-    journal({ type: "guard-refused", reason: error.message });
-    console.error(`REFUSED: ${error.message}`);
-    process.exit(1);
-  }
-
-  let key;
-  let secret;
-  try {
-    ({ key, secret } = requirePaperCredentials(env));
+    credentials = alpacaCredentials(env);
   } catch (error) {
     journal({ type: "guard-refused", reason: error.message });
     console.error(`REFUSED: ${error.message}`);
@@ -188,7 +142,7 @@ async function main() {
 
   let account;
   try {
-    account = await verifyPaperAccount(key, secret);
+    account = await verifyAccount(credentials);
   } catch (error) {
     journal({ type: "guard-refused", reason: error.message });
     console.error(`REFUSED: ${error.message}`);
@@ -197,7 +151,7 @@ async function main() {
 
   let clockCheck;
   try {
-    clockCheck = await tradingFetch(key, secret, "GET", "/v2/clock");
+    clockCheck = await tradingFetch(credentials, "GET", "/v2/clock");
   } catch (error) {
     journal({ type: "clock-read-error", reason: error.message });
     console.error(`clock read failed: ${error.message}`);
@@ -214,7 +168,12 @@ async function main() {
     process.exit(0);
   }
 
-  const positionsResp = await tradingFetch(key, secret, "GET", "/v2/positions");
+  const { mode, key, secret } = credentials;
+  const venue = `alpaca-trading-${mode}`;
+  const ACCOUNT_REFERENCE = accountReference(mode);
+  const CONTRACT_SCOPES = contractScopes(mode);
+  const GRANT_SCOPES = grantScopes(mode);
+  const positionsResp = await tradingFetch(credentials, "GET", "/v2/positions");
   if (!positionsResp.ok) {
     journal({ type: "positions-read-refused", reason: `status:${positionsResp.status}`, response: positionsResp });
     console.error(`positions read refused: ${positionsResp.status}`);
@@ -272,22 +231,64 @@ async function main() {
   const orders = [];
   const responses = [];
   for (const [symbol, notional] of Object.entries(trades)) {
-    const order = {
+    const orderNotional = Number(Math.abs(notional).toFixed(2));
+    const side = notional > 0 ? "buy" : "sell";
+    const now = new Date().toISOString();
+    const validUntil = new Date(Date.parse(now) + 15 * 60_000).toISOString();
+    const aggregateLimit = Number((Object.values(effectiveTargets).reduce((sum, weight) => sum + weight, 0) * equity).toFixed(2));
+    const contract = formPrincipalBrokerageContract({
+      principal: PRINCIPAL,
+      venue,
+      accountReference: ACCOUNT_REFERENCE,
+      capital: { amount: equity, currency: "USD" },
+      risk: {
+        maximumLossAmount: orderNotional,
+        maximumOrderNotional: orderNotional,
+        maximumAggregateNotional: aggregateLimit,
+        concentrationLimit: effectiveTargets[symbol],
+        leverageLimit: 1,
+        shorting: false,
+      },
+      scopes: CONTRACT_SCOPES,
+      validUntil,
+    });
+    const authorityGrant = grantBrokerageAuthority({
+      contract,
+      adapter: venue,
+      credentialReference: `credential:${ACCOUNT_REFERENCE}:${venue}`,
+      scopes: GRANT_SCOPES,
+      validUntil,
+    });
+    const evidencePacket = Object.freeze({
+      type: "IssuerEvidencePacket",
+      id: intentId({ phase, symbol, side, orderNotional, equity, effectiveTargets, currentWeights, turnoverCap, now }),
+    });
+    const intent = formAggressivePortfolioIntent({
+      contract,
+      evidencePackets: [evidencePacket],
       symbol,
-      side: notional > 0 ? "buy" : "sell",
-      type: "market",
-      time_in_force: "day",
-      notional: Math.abs(notional).toFixed(2),
-      client_order_id: `esther-redistributor-${symbol}-${Date.now()}`,
-    };
-    orders.push(order);
+      side,
+      notional: orderNotional,
+      maximumLoss: orderNotional,
+      thesis: `Restore ${symbol} toward its ${Number(effectiveTargets[symbol] * 100).toFixed(2)}% ${phase} basket weight.`,
+      falsifier: `The venue's current ${symbol} position or account capacity no longer admits this rebalance.`,
+      liquidityPremise: "Alpaca accepts the bounded market order and reports a current tradable account.",
+      executionPremise: `The total run turnover remains within the ${Number(TURNOVER_CAP_FRACTION * 100)}% equity cap and the order is admitted from just-in-time broker observations.`,
+      scenarios: [
+        { name: "bounded-order-loss", pnl: -orderNotional },
+        { name: "no-fill-or-neutral-rebalance", pnl: 0 },
+      ],
+    });
+    orders.push({ symbol, side, notional: orderNotional, contract: contract.id, authorityGrant: authorityGrant.id, intent: intent.id });
     try {
-      const placement = await tradingFetch(key, secret, "POST", "/v2/orders", order);
-      responses.push({ symbol, status: placement.status, ok: placement.ok, body: placement.body });
-      if (placement.ok) {
-        console.log(`Placed paper order ${JSON.stringify(order)} -> venue status ${placement.status}`);
+      const execution = await executeAuthorizedAlpacaIntent({ contract, authorityGrant, intent, key, secret, booksDataRoot: BOOKS_DATA_ROOT });
+      const placementStatus = execution.receipt.placementStatus;
+      const placed = Number.isInteger(placementStatus) && placementStatus >= 200 && placementStatus < 300;
+      responses.push({ symbol, status: placementStatus ?? null, ok: placed, execution });
+      if (placed) {
+        console.log(`Placed contract-bound ${mode} order ${symbol} ${side} ${orderNotional} -> venue status ${placementStatus}`);
       } else {
-        console.error(`order placement refused by venue for ${symbol}: status=${placement.status}`);
+        console.error(`contract-bound order did not reach the venue for ${symbol}: ${execution.receipt.pendingReason ?? "placement-not-observed"}`);
       }
     } catch (error) {
       responses.push({ symbol, status: null, ok: false, error: error.message });
@@ -304,8 +305,10 @@ async function main() {
   process.exit(anyFailed && !anySucceeded ? 1 : 0);
 }
 
-main().catch((error) => {
-  journal({ type: "error", reason: error?.message ?? String(error) });
-  console.error(error);
-  process.exit(1);
-});
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch((error) => {
+    journal({ type: "error", reason: error?.message ?? String(error) });
+    console.error(error);
+    process.exit(1);
+  });
+}

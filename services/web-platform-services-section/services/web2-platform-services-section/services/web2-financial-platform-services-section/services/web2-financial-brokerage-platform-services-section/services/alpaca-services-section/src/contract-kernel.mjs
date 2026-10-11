@@ -1,6 +1,6 @@
-import { relationalId } from "./relational-id.mjs";
+import { semanticIdOf } from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
 
-const digest = (objectKind, value) => relationalId(value, { objectKind });
+const digest = (objectKind, value) => semanticIdOf(objectKind)(value);
 const positive = (value, label) => { const number = Number(value); if (!Number.isFinite(number) || number <= 0) throw new TypeError(`${label}-must-be-positive`); return number; };
 const nonnegative = (value, label) => { const number = Number(value); if (!Number.isFinite(number) || number < 0) throw new TypeError(`${label}-must-be-nonnegative`); return number; };
 const text = (value, label) => { if (typeof value !== "string" || value.trim() === "") throw new TypeError(`${label}-required`); return value; };

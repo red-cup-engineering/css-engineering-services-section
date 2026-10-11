@@ -1,16 +1,16 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createAgentSectionDescentAssay } from "../services/agent-section-descent-assay-service/src/assay.mjs";
-import { assayCausalPanel } from "../services/causal-market-panel-assay-service/src/assay.mjs";
-import { measureCausalPatchNovelty } from "../services/causal-tiling-novelty-measurement-service/src/measure.mjs";
-import { measureCorrelationGraph } from "../services/correlation-graph-measurement-service/src/measure.mjs";
-import { fitDeterministicRidge, predictDeterministicRidge } from "../services/deterministic-ridge-fit-service/src/ridge.mjs";
+import { createAgentSectionDescentAssay } from "../scripts/agent-section-descent-assay.mjs";
+import { assayCausalPanel } from "../scripts/causal-market-panel-assay.mjs";
+import { measureCausalPatchNovelty } from "../scripts/causal-tiling-novelty-measure.mjs";
+import { measureCorrelationGraph } from "../scripts/correlation-graph-measure.mjs";
+import { fitDeterministicRidge, predictDeterministicRidge } from "../scripts/ridge.mjs";
 import { createInvestmentResearchCommittee, INVESTMENT_RESEARCH_ROLES } from "../services/investment-research-work-lot-service/src/committee.mjs";
-import { allocateMandatePortfolio } from "../services/mandate-portfolio-allocation-service/src/allocate.mjs";
-import { selectModelCandidate } from "../services/model-tournament-service/src/tournament.mjs";
-import { formPurgedWalkForwardFolds } from "../services/purged-walk-forward-fold-service/src/folds.mjs";
-import { measureSheafLaplacian } from "../services/sheaf-laplacian-measurement-service/src/measure.mjs";
-import { replayTransactionCosts } from "../services/transaction-cost-replay-service/src/replay.mjs";
+import { allocateMandatePortfolio } from "@red-cup-engineering/mandate-portfolio-allocation-service";
+import { selectModelCandidate } from "@red-cup-engineering/model-tournament-service";
+import { formPurgedWalkForwardFolds } from "@red-cup-engineering/purged-walk-forward-fold-service";
+import { measureSheafLaplacian } from "../scripts/sheaf-laplacian-measure.mjs";
+import { replayTransactionCosts } from "@red-cup-engineering/transaction-cost-replay-service";
 
 test("causal panel refuses future observations", () => {
   const seriesByEntity = {

@@ -3,7 +3,7 @@ import test from "node:test";
 
 import {
   createAlpacaHistoricalBarsService,
-} from "../services/alpaca-market-data-read-service/src/historical-bars.mjs";
+} from "../scripts/historical-bars.mjs";
 
 test("historical BLK/SPY provider is exact-origin GET-only, scrubbed, and independently recorded", async () => {
   let request;
@@ -21,8 +21,8 @@ test("historical BLK/SPY provider is exact-origin GET-only, scrubbed, and indepe
         headers: { get: (name) => name === "x-request-id" ? "market-request-1" : null },
         json: async () => ({
           bars: {
-            BLK: [{ t: "2026-07-21T04:00:00Z", c: 1110, v: 1, n: 1, vw: 1110 }],
-            SPY: [{ t: "2026-07-21T04:00:00Z", c: 640, v: 1, n: 1, vw: 640 }],
+            BLK: [{ t: "2026-07-21T04:00:00Z", o: 1100, h: 1120, l: 1090, c: 1110, v: 1, n: 1, vw: 1110 }],
+            SPY: [{ t: "2026-07-21T04:00:00Z", o: 638, h: 642, l: 636, c: 640, v: 1, n: 1, vw: 640 }],
           },
         }),
       };

@@ -1,7 +1,9 @@
-import { createBrokerageMarketEventRecorder, createBrokerageOutcomeWitnessRecorder } from "@rsc-quiescent/brokerage-independent-witness-and-books";
-import { createUnionMarketState, serveUnionBrokerageActivityPub } from "@rsc-quiescent/union-brokerage-products-market-border/activitypub-runtime";
-import { formUnionBrokerageOffer } from "@rsc-quiescent/union-brokerage-products-market-border";
-import { createUnionConsiderationSettlementProvider } from "@rsc-quiescent/union-consideration-settlement-service";
+import { resolve } from "node:path";
+import { createBrokerageMarketEventRecorder, createBrokerageOutcomeWitnessRecorder } from "@red-cup-engineering/brokerage-independent-witness-and-books";
+import { createUnionMarketState, serveUnionBrokerageActivityPub } from "@red-cup-engineering/union-brokerage-products-market-border/activitypub-runtime";
+import { formUnionBrokerageOffer } from "@red-cup-engineering/union-brokerage-products-market-border";
+import { createUnionConsiderationSettlementProvider } from "@red-cup-engineering/alpaca-services-section/settlement-provider";
+import { createSemanticRecordJournal } from "@red-cup-engineering/semiotic-eavt-services-section/record-semantic-record";
 import { createBrokerageProductProviders, indexBrokerageProvidersByService } from "./market-runtime.mjs";
 
 const required = (env, name) => { const value = env[name]; if (typeof value !== "string" || value.trim() === "") throw new Error(`${name} is required`); return value; };
@@ -30,5 +32,14 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   // fabricates settlement. Wire a real settlement adapter via dependencies before
   // this can serve a live Union market face.
   const runtime = await createFederationUnionRuntime();
-  console.log(`brokerage-control union market runtime serving as ${runtime.actor?.id ?? runtime.identifier ?? "union actor"}`);
+  const actorId = runtime.actor?.id ?? runtime.identifier ?? "union actor";
+  const stateRoot = required(process.env, "BROKERAGE_UNION_MARKET_STATE_ROOT");
+  const journal = createSemanticRecordJournal({ root: resolve(stateRoot), objectKind: "brokerage-control.union-runtime.server-event" });
+  journal.record({
+    category: "brokerage-control.union-runtime.serving",
+    recordedAt: new Date().toISOString(),
+    record: { actorId, origin: process.env.BROKERAGE_UNION_ACTIVITYPUB_ORIGIN },
+    told: { for: true, against: false },
+  });
+  console.log(`brokerage-control union market runtime serving as ${actorId}`);
 }

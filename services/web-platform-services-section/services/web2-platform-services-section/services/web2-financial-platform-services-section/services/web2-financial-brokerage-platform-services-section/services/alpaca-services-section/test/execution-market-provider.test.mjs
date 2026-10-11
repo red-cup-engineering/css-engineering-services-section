@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { formAggressivePortfolioIntent } from "../services/alpha-portfolio-order-intent-service/src/aggressive-intent.mjs";
-import { createExecutionTransportProvider } from "../services/brokerage-execution-transport-service/src/execute-intent.mjs";
+import { formAggressivePortfolioIntent } from "@red-cup-engineering/alpha-portfolio-order-intent-service";
+import { createExecutionTransportProvider } from "@red-cup-engineering/brokerage-execution-transport-service";
 import { formPrincipalBrokerageContract, grantBrokerageAuthority } from "../services/principal-brokerage-interface/src/principal-contract.mjs";
 import { createBrokerageProductProviders, indexBrokerageProvidersByService } from "../src/market-runtime.mjs";
 

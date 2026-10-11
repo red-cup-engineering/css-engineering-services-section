@@ -1,4 +1,4 @@
-import { requestInferenceWorkLot } from "@red-cup-engineering/inference-work-lot-service/client";
+import { requestInferenceWorkLot } from "@red-cup-engineering/computer-inference-engine/dispatch/client";
 import { createInvestmentResearchCommittee } from "./committee.mjs";
 
 export function createInferenceMarketInvestmentResearchCommittee({ agentUrl }) {

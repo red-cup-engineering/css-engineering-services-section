@@ -1,29 +1,35 @@
 {
-  "name": "@rsc-quiescent/strategy-program-synthesis-work-lot-service",
-  "version": "0.1.2",
-  "private": true,
+  "name": "@red-cup-engineering/strategy-program-synthesis-work-lot-service",
+  "version": "0.1.4",
   "type": "module",
   "description": "Contracts provider-distinct inference workers to generate bounded executable strategy programs and falsification tests from an exact evidence context.",
   "exports": {
     ".": "./src/synthesis.mjs",
     "./inference-market-runtime": "./src/inference-market-runtime.mjs",
+    "./strategy-program-candidate-assay": "./src/strategy-program-candidate-assay.mjs",
     "./src/inference-market-runtime.mjs": "./src/inference-market-runtime.mjs",
     "./src/synthesis.mjs": "./src/synthesis.mjs",
     "./schemas": "./src/schemas.mjs"
   },
-  "files": ["schemas/", "src/"],
+  "files": [
+    "schemas/",
+    "src/"
+  ],
   "dependencies": {
-    "@red-cup-engineering/json-schema-services-section": "0.1.2"
+    "@red-cup-engineering/computer-inference-engine": "workspace:*",
+    "@red-cup-engineering/json-schema-services-section": "workspace:*",
+    "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/javascript-node-services-section": "workspace:*",
+    "@red-cup-engineering/uri-services-section": "workspace:*"
   },
-  "peerDependencies": {
-    "@red-cup-engineering/inference-work-lot-service": "4.0.1"
-  },
+  "peerDependencies": {},
   "peerDependenciesMeta": {
-    "@red-cup-engineering/inference-work-lot-service": { "optional": true }
+    "@red-cup-engineering/inference-work-lot-service": {
+      "optional": true
+    }
   },
   "scripts": {
-    "check": "node --check src/synthesis.mjs && node --check src/inference-market-runtime.mjs",
-    "test": "node --test test/*.test.mjs",
-    "verify": "npm run check && npm test && npm pack --dry-run"
+    "check": "node --check src/synthesis.mjs && node --check src/inference-market-runtime.mjs && node --check src/strategy-program-candidate-assay.mjs",
+    "test": "node --test test/*.test.mjs"
   }
 }

@@ -1,16 +1,18 @@
 {
-  "name": "@rsc-quiescent/alpaca-account-kill-switch-service",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@red-cup-engineering/alpaca-account-kill-switch-service",
+  "version": "0.1.1",
   "type": "module",
-  "description": "PAPER-ONLY account kill switch: computes drawdown against a persisted high-water mark and daily loss against Alpaca's own last-close equity, and on trip disables --now every existing Alpaca loop timer and records the trip. Wired as ExecStartPre= of each loop's service and run standalone on its own 30-minute market-hours timer.",
+  "description": "Retired compatibility package. Current brokerage risk admission is contract-bound and based on immediate account and position observations in brokerage-execution-transport-service; this package no longer reads accounts, writes state, or changes systemd timers.",
   "exports": {
-    ".": "./src/kill-switch.mjs",
-    "./systemd-timers": "./src/systemd-timers.mjs"
+    ".": "./src/retired.mjs"
   },
   "bin": {
     "alpaca-check-kill-switch": "./scripts/check-kill-switch.mjs"
   },
+  "files": [
+    "src",
+    "scripts"
+  ],
   "scripts": {
     "check": "node scripts/check-kill-switch.mjs",
     "test": "node --test test/*.test.mjs"

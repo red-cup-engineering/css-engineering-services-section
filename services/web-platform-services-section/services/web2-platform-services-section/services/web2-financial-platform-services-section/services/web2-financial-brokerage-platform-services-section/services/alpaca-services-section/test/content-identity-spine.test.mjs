@@ -2,13 +2,15 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  EMPTY_WITNESS_ROOT,
   IDENTITY_SETTLEMENT_PROFILE,
-  RMN_NORMALIZATION_PROFILE,
+  SEN_NORMALIZATION_PROFILE,
   admitJsonSemanticContent,
-} from "@red-cup-engineering/semantic-content-identify-service";
+  identifyJsonSemanticContent,
+  semanticIdOf,
+} from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
 
 import { formPrincipalMandate } from "../src/contract-kernel.mjs";
-import { identifyRelationalContent, relationalId } from "../src/relational-id.mjs";
 
 const mandateInput = Object.freeze({
   principal: "urn:leader:emsenn",
@@ -31,14 +33,16 @@ const mandateInput = Object.freeze({
 test("contract output crosses the typed v2 identity boundary and is admitted by its receiver", () => {
   const mandate = formPrincipalMandate(mandateInput);
   const { id, ...body } = mandate;
-  const identity = identifyRelationalContent(body, {
+  const identity = identifyJsonSemanticContent({
     objectKind: "brokerage-control.principal-mandate",
+    value: body,
+    witnessRoot: EMPTY_WITNESS_ROOT,
   });
 
   assert.equal(id, identity.token);
   assert.match(id, /^ni:\/\/\/sha-256;/u);
   assert.equal(identity.envelope.objectKind, "brokerage-control.principal-mandate");
-  assert.equal(identity.envelope.normalizationProfile, RMN_NORMALIZATION_PROFILE);
+  assert.equal(identity.envelope.normalizationProfile, SEN_NORMALIZATION_PROFILE);
   assert.equal(identity.envelope.settlementProfile, IDENTITY_SETTLEMENT_PROFILE);
 
   const admitted = admitJsonSemanticContent({
@@ -49,17 +53,10 @@ test("contract output crosses the typed v2 identity boundary and is admitted by 
   assert.deepEqual(admitted.value, body);
 });
 
-test("object kind and profiles are identity inputs, never inferred settlement from carrier shape", () => {
+test("object kind is an identity input, never inferred from carrier shape", () => {
   const value = { type: "PrincipalBrokerageMandate", claim: "same carrier" };
-  const mandateId = relationalId(value, { objectKind: "brokerage-control.principal-mandate" });
-  const offerId = relationalId(value, { objectKind: "brokerage-control.paid-api-offer" });
+  const mandateId = semanticIdOf("brokerage-control.principal-mandate")(value);
+  const offerId = semanticIdOf("brokerage-control.paid-api-offer")(value);
   assert.notEqual(mandateId, offerId);
-  assert.throws(() => relationalId(value), /semantic-object-kind-required/u);
-  assert.throws(
-    () => relationalId(value, {
-      objectKind: "brokerage-control.principal-mandate",
-      settlementProfile: "urn:foreign:settlement",
-    }),
-    /settlement-profile-unsupported/u,
-  );
+  assert.throws(() => semanticIdOf(undefined), /semantic-object-kind-required/u);
 });

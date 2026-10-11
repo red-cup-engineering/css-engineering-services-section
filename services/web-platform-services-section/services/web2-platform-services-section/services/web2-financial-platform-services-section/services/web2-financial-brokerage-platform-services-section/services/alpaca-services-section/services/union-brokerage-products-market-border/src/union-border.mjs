@@ -1,7 +1,8 @@
-import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
+import { semanticIdOf } from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
+import { canonicalJson as canonical } from "@red-cup-engineering/json-services-section/canonical-json";
 
-const semanticId = (value) => identifyJsonSemanticContent({ objectKind: "brokerage.union-products-market-border.record", value, witnessRoot: EMPTY_WITNESS_ROOT }).id;
-const canonical = (v) => v === null || typeof v !== "object" ? JSON.stringify(v) : Array.isArray(v) ? `[${v.map(canonical).join(",")}]` : `{${Object.keys(v).sort().map((k) => `${JSON.stringify(k)}:${canonical(v[k])}`).join(",")}}`;
+const semanticId = semanticIdOf("brokerage.union-products-market-border.record");
+
 const identify = (body) => ({ id: semanticId(body), ...body });
 const credential = /^(authorization|api[-_]?key|api[-_]?secret|secret|token|private[-_]?key|password)$/iu;
 function rejectCredentials(value, seen = new Set()) { if (!value || typeof value !== "object" || seen.has(value)) return; seen.add(value); for (const [key, member] of Object.entries(value)) { if (credential.test(key)) throw new TypeError("credential-bearing-union-market-request-refused"); rejectCredentials(member, seen); } }

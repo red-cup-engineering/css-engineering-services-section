@@ -1,5 +1,5 @@
-import { createBrokerageMarketEventRecorder, createBrokerageOutcomeWitnessRecorder } from "@rsc-quiescent/brokerage-independent-witness-and-books";
-import { startVirtualsBrokerageRuntime } from "@rsc-quiescent/virtuals-brokerage-products-border/lite-runtime";
+import { createBrokerageMarketEventRecorder, createBrokerageOutcomeWitnessRecorder } from "@red-cup-engineering/brokerage-independent-witness-and-books";
+import { startVirtualsBrokerageRuntime } from "@red-cup-engineering/virtuals-brokerage-products-border/lite-runtime";
 import { createBrokerageProductProviders, indexBrokerageProvidersByService } from "./market-runtime.mjs";
 
 const required = (env, name) => { const value = env[name]; if (typeof value !== "string" || value.trim() === "") throw new Error(`${name} is required`); return value; };

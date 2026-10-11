@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import test from "node:test";
-import { createAuthorityCustodyActuator, createEphemeralAuthorityCustodySubstrate } from "../../../../red-cup-engineering/services/software-services-section/services/resource-brokerage-service-section/services/authority-custody-actuator/src/authority-custody-actuator.mjs";
-import { createBrokerageAuthorityCustody } from "../services/brokerage-authority-custody-service/src/authority-custody.mjs";
-import { createAlpacaAdapter } from "../services/pluggable-venue-adapter-service/src/alpaca-adapter.mjs";
+import { createAuthorityCustodyActuator, createEphemeralAuthorityCustodySubstrate } from "./support/ephemeral-authority-custody.mjs";
+import { createBrokerageAuthorityCustody } from "@red-cup-engineering/brokerage-authority-custody-service";
+import { createAlpacaAdapter } from "@red-cup-engineering/pluggable-venue-adapter-service/alpaca";
 import { formPrincipalBrokerageContract, grantBrokerageAuthority } from "../services/principal-brokerage-interface/src/principal-contract.mjs";
 
 const NOW = "2026-07-23T02:00:00.000Z", EXPIRY = "2030-01-01T00:00:00.000Z";

@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
-import { ACTIVITYSTREAMS_PUBLIC, createUnionBrokerageActivityPubCallbacks, createUnionMarketState, decodeUnionMarketRmn, encodeUnionMarketRmn, extractUnionMarketActivity, projectUnionMarketActivity } from "../services/union-brokerage-products-market-border/src/activitypub-runtime.mjs";
+import { ACTIVITYSTREAMS_PUBLIC, createUnionBrokerageActivityPubCallbacks, createUnionMarketState, decodeUnionMarketSen, encodeUnionMarketSen, extractUnionMarketActivity, projectUnionMarketActivity } from "../services/union-brokerage-products-market-border/src/activitypub-runtime.mjs";
 import { formUnionBrokerageOffer } from "../services/union-brokerage-products-market-border/src/union-border.mjs";
 
 const MARKET_ORIGIN = "https://market.example/", MARKET_ID = "brokerage", MARKET_ACTOR = `${MARKET_ORIGIN}actors/${MARKET_ID}`;
@@ -15,7 +15,7 @@ let executions = 0, witnesses = 0;
 const provider = Object.assign(async () => { executions += 1; return { id: "sha256:issuer-output", type: "IssuerEvidencePacket" }; }, { originatingActor: actor, preflight: async (request) => { if (!request.ticker) throw new TypeError("ticker-required"); }, externalEvidence: () => [{ uri: "urn:filing", digest: "sha256:filing" }] });
 const purchase = (request = { ticker: "NVDA" }) => ({ type: "UnionBrokeragePurchaseRequest", version: 1, offer: offer.id, customerActor: CUSTOMER_ACTOR, customerInbox: CUSTOMER_INBOX, request,
   considerationGrant: { id: "grant:one", asset: offer.price.asset, unit: offer.price.unit, amount: offer.price.amount }, acceptedAt: "2026-07-22T22:30:00.000Z" });
-const incoming = (value = purchase()) => projectUnionMarketActivity({ type: "Offer", origin: CUSTOMER_ORIGIN, identifier: "customer", recipient: MARKET_ACTOR, objectBytes: encodeUnionMarketRmn(value), agentCard: CUSTOMER_CARD });
+const incoming = (value = purchase()) => projectUnionMarketActivity({ type: "Offer", origin: CUSTOMER_ORIGIN, identifier: "customer", recipient: MARKET_ACTOR, objectBytes: encodeUnionMarketSen(value), agentCard: CUSTOMER_CARD });
 
 function runtime(root, { deliverResponse } = {}) {
   const delivered = [], events = []; let settlements = 0;
@@ -26,11 +26,11 @@ function runtime(root, { deliverResponse } = {}) {
   return { callbacks, delivered, events, settlements: () => settlements };
 }
 
-test("Union market publishes exact standard ActivityStreams Offer projections from typed RMN", async () => {
+test("Union market publishes exact standard ActivityStreams Offer projections from typed SEN", async () => {
   const root = mkdtempSync(join(tmpdir(), "union-brokerage-")); try {
     const { callbacks } = runtime(root), page = await callbacks.listOutbox({}); assert.equal(page.items.length, 1);
     const json = await page.items[0].toJsonLd({ format: "compact" }), extracted = extractUnionMarketActivity(json, { expectedActor: MARKET_ACTOR, expectedRecipient: ACTIVITYSTREAMS_PUBLIC, expectedAgentCard: MARKET_CARD });
-    const decoded = decodeUnionMarketRmn(extracted.objectBytes); assert.equal(decoded.id, offer.id); assert.deepEqual(decoded.price, offer.price); assert.equal(decoded.conversionRate, null);
+    const decoded = decodeUnionMarketSen(extracted.objectBytes); assert.equal(decoded.id, offer.id); assert.deepEqual(decoded.price, offer.price); assert.equal(decoded.conversionRate, null);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -60,7 +60,7 @@ test("a failed Accept transport never turns a settled purchase into a Reject", a
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test("Union RMN codec rejects noncanonical trailing bytes", () => {
-  const encoded = encodeUnionMarketRmn(purchase()); assert.equal(decodeUnionMarketRmn(encoded).type, "UnionBrokeragePurchaseRequest");
-  assert.throws(() => decodeUnionMarketRmn(Buffer.concat([encoded, Buffer.from([0])])), /canonical|trailing|CBOR/u);
+test("Union SEN codec rejects noncanonical trailing bytes", () => {
+  const encoded = encodeUnionMarketSen(purchase()); assert.equal(decodeUnionMarketSen(encoded).type, "UnionBrokeragePurchaseRequest");
+  assert.throws(() => decodeUnionMarketSen(Buffer.concat([encoded, Buffer.from([0])])), /canonical|trailing|CBOR/u);
 });

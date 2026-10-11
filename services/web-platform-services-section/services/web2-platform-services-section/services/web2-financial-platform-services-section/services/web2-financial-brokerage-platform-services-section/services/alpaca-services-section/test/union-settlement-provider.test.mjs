@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createUnionConsiderationSettlementProvider, INDEPENDENT_BOOKS_ACTOR, UNION_SETTLEMENT_ACTOR } from "../services/union-consideration-settlement-service/src/settlement-provider.mjs";
+import { createUnionConsiderationSettlementProvider, INDEPENDENT_BOOKS_ACTOR, UNION_SETTLEMENT_ACTOR } from "../scripts/settlement-provider.mjs";
 
 const contract = { id: "sha256:contract", type: "UnionBrokerageProductContract", provider: "urn:ame:issuer-research-media-service", customer: "https://customer.example/actors/one",
   considerationGrant: { id: "grant:customer-wallet:one", asset: "urn:iso:currency:USDC", unit: "USDC", amount: "0.25" }, price: { asset: "urn:iso:currency:USDC", unit: "USDC", amount: "0.25" } };

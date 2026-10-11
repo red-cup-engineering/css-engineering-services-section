@@ -1,23 +1,26 @@
-import { createHash, randomBytes } from "node:crypto";
+import { randomBytes } from "node:crypto";
 import { closeSync, constants, existsSync, fsyncSync, linkSync, mkdirSync, openSync, readFileSync, statSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
-import { materializeRmnActivity, extractRmnActivity, projectRmnActivity, ACTIVITYSTREAMS_PUBLIC } from "@red-cup-engineering/activitypub-services-section/rmn-activity";
-import { serveActivityPubProvider } from "@red-cup-engineering/activitypub-services-section/server";
+import { materializeSenActivity, extractSenActivity, projectSenActivity } from "@red-cup-engineering/activitypub-services-section/sen-activity";
+import { serveActivityPubProvider } from "@red-cup-engineering/activitypub-server";
 import { deliverActivity } from "@red-cup-engineering/activitypub-services-section";
-import { admitJsonSemanticContent, EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
+import { admitJsonSemanticContent, EMPTY_WITNESS_ROOT, identifyJsonSemanticContent, semanticIdOf } from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
+import { canonicalJson as canonical } from "@red-cup-engineering/json-services-section/canonical-json";
 const A2A_CARRIER_KIND = "rsc-quiescent.a2a-json";
 const semanticBytes = (value) => identifyJsonSemanticContent({ objectKind: A2A_CARRIER_KIND, value, witnessRoot: EMPTY_WITNESS_ROOT }).bytes;
 const decodeSemantic = (bytes) => admitJsonSemanticContent({ bytes, objectKind: A2A_CARRIER_KIND }).value;
 
-const semanticId = (value) => identifyJsonSemanticContent({ objectKind: "brokerage.union-products-market-border.record", value, witnessRoot: EMPTY_WITNESS_ROOT }).id;
+const semanticId = semanticIdOf("brokerage.union-products-market-border.record");
 import { contractUnionBrokerageOffer, deliverUnionBrokerageContract } from "./union-border.mjs";
+import { ACTIVITYSTREAMS_PUBLIC } from "@red-cup-engineering/activitypub-services-section/activitystreams";
+import { sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 export { ACTIVITYSTREAMS_PUBLIC };
 
 const exactUrl = (value, label) => { let url; try { url = new URL(value); } catch { throw new TypeError(`${label}-must-be-absolute-url`); } if (url.protocol !== "https:" && !["127.0.0.1", "localhost"].includes(url.hostname)) throw new TypeError(`${label}-must-use-https`); return url.href; };
-export const encodeUnionMarketRmn = (value) => semanticBytes(value);
-export function decodeUnionMarketRmn(bytes) { const value = decodeSemantic(bytes); if (!semanticBytes(value).equals(Buffer.from(bytes)) || value === null || typeof value !== "object" || Array.isArray(value)) throw new TypeError("union-market-rmn-must-be-canonical-json-object"); return value; }
-export const projectUnionMarketActivity = (input) => projectRmnActivity(input);
-export const extractUnionMarketActivity = (activity, expected) => extractRmnActivity(activity, expected);
+export const encodeUnionMarketSen = (value) => semanticBytes(value);
+export function decodeUnionMarketSen(bytes) { const value = decodeSemantic(bytes); if (!semanticBytes(value).equals(Buffer.from(bytes)) || value === null || typeof value !== "object" || Array.isArray(value)) throw new TypeError("union-market-sen-must-be-canonical-json-object"); return value; }
+export const projectUnionMarketActivity = (input) => projectSenActivity(input);
+export const extractUnionMarketActivity = (activity, expected) => extractSenActivity(activity, expected);
 
 function privateDirectory(path) { if (!existsSync(path)) mkdirSync(path, { recursive: true, mode: 0o700 }); const stat = statSync(path); if (!stat.isDirectory() || (stat.mode & 0o077) !== 0) throw new TypeError("union-market-state-root-must-be-private"); return path; }
 function syncDirectory(path) { const descriptor = openSync(path, constants.O_RDONLY | (constants.O_DIRECTORY ?? 0)); try { fsyncSync(descriptor); } finally { closeSync(descriptor); } }
@@ -27,7 +30,7 @@ function createOnly(path, value) { privateDirectory(dirname(path)); const tempor
 const read = (path) => JSON.parse(readFileSync(path, "utf8"));
 
 export function createUnionMarketState({ stateRoot, now = () => new Date().toISOString() }) {
-  const root = privateDirectory(resolve(stateRoot)), contractRoot = (id) => privateDirectory(join(root, "contracts", createHash("sha256").update(id).digest("hex")));
+  const root = privateDirectory(resolve(stateRoot)), contractRoot = (id) => privateDirectory(join(root, "contracts", sha256Hex(id)));
   return Object.freeze({ root,
     claim(contract, sourceActivity, response) { const path = join(contractRoot(contract.id), "claim.json"), body = { type: "UnionMarketContractClaim", version: 1, contract, sourceActivity, response, claimedAt: now() };
       if (createOnly(path, body)) return body; const existing = read(path); if (existing.contract.id !== contract.id || canonical(existing.contract) !== canonical(contract) || existing.sourceActivity !== sourceActivity || canonical(existing.response) !== canonical(response)) throw new TypeError("union-market-contract-claim-conflict"); return existing; },
@@ -49,18 +52,18 @@ function actorAt(origin, identifier) { return new URL(`/actors/${identifier}`, e
 export function createUnionBrokerageActivityPubCallbacks({ origin, identifier, agentCard, offers, providers, state, settle, recordDelivery, recordEvent, deliverResponse, pageSize = 50 }) {
   if (!Array.isArray(offers) || offers.length === 0 || !state || typeof settle !== "function" || typeof recordDelivery !== "function" || typeof recordEvent !== "function" || typeof deliverResponse !== "function" || !Number.isSafeInteger(pageSize) || pageSize < 1 || pageSize > 100) throw new TypeError("union-activitypub-runtime-configuration-invalid");
   const localActor = actorAt(origin, identifier), offerMap = new Map(offers.map((offer) => [offer.id, offer]));
-  const responseActivity = (type, recipient, value) => projectRmnActivity({ type, origin, identifier, recipient, objectBytes: encodeUnionMarketRmn(value), agentCard });
+  const responseActivity = (type, recipient, value) => projectSenActivity({ type, origin, identifier, recipient, objectBytes: encodeUnionMarketSen(value), agentCard });
   async function deliverTyped(type, response, value) { const activity = responseActivity(type, response.actor, value); return state.effect(value.contract ?? value.sourceActivity, `activitypub-${type.toLowerCase()}`, { activity: activity.id, recipient: response.actor, inbox: response.inbox }, () => deliverResponse({ activity, recipient: response.actor, inbox: response.inbox })); }
   return Object.freeze({
     async listOutbox({ cursor }) { const offset = cursor === undefined ? 0 : Number(cursor); if (!Number.isSafeInteger(offset) || offset < 0) throw new TypeError("union-market-outbox-cursor-invalid"); const page = offers.slice(offset, offset + pageSize);
-      const items = await Promise.all(page.map((offer) => materializeRmnActivity({ type: "Offer", origin, identifier, recipient: ACTIVITYSTREAMS_PUBLIC, objectBytes: encodeUnionMarketRmn(offer), agentCard })));
+      const items = await Promise.all(page.map((offer) => materializeSenActivity({ type: "Offer", origin, identifier, recipient: ACTIVITYSTREAMS_PUBLIC, objectBytes: encodeUnionMarketSen(offer), agentCard })));
       return Object.freeze({ items, ...(offset + page.length >= offers.length ? {} : { nextCursor: String(offset + page.length) }) }); },
     async onActivity(arrival) {
       const activity = arrival?.jsonLd, sourceActivity = exactUrl(activity?.id, "union-market-source-activity"), remoteActor = exactUrl(activity?.actor, "union-market-customer-actor");
       let response = null, committed = null;
       try {
         if (activity?.type !== "Offer") throw new TypeError("union-market-ingress-requires-offer");
-        const projection = extractRmnActivity(activity, { expectedActor: remoteActor, expectedRecipient: localActor }), purchase = decodeUnionMarketRmn(projection.objectBytes);
+        const projection = extractSenActivity(activity, { expectedActor: remoteActor, expectedRecipient: localActor }), purchase = decodeUnionMarketSen(projection.objectBytes);
         if (purchase?.type !== "UnionBrokeragePurchaseRequest" || purchase.version !== 1 || purchase.customerActor !== remoteActor) throw new TypeError("union-market-purchase-request-invalid");
         response = { actor: remoteActor, inbox: exactUrl(purchase.customerInbox, "union-market-customer-inbox") }; const offer = offerMap.get(purchase.offer);
         if (!offer) throw new TypeError("union-market-offer-not-found"); const provider = providers?.[offer.service];

@@ -1,10 +1,9 @@
-import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
+import { semanticIdOf } from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
+import { canonicalJson as canonical } from "@red-cup-engineering/json-services-section/canonical-json";
 
-const semanticId = (value) => identifyJsonSemanticContent({ objectKind: "brokerage.principal-brokerage-interface.record", value, witnessRoot: EMPTY_WITNESS_ROOT }).id;
+const semanticId = semanticIdOf("brokerage.principal-brokerage-interface.record");
 
-const canonical = (value) => value === null || typeof value !== "object" ? JSON.stringify(value)
-  : Array.isArray(value) ? `[${value.map(canonical).join(",")}]`
-    : `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonical(value[key])}`).join(",")}}`;
+
 const identify = (body) => ({ id: semanticId(body), ...body });
 const text = (value, label) => { if (typeof value !== "string" || value.trim() === "") throw new TypeError(`${label}-required`); return value; };
 const amount = (value, label) => { const n = Number(value); if (!Number.isFinite(n) || n < 0) throw new TypeError(`${label}-invalid`); return n; };

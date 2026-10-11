@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { generateKeyPairSync } from "node:crypto";
 import test from "node:test";
-import { contentId, evaluateStrategyCandidate, identify, signRecord } from "../services/strategy-evaluation-service/src/strategy-evaluation.mjs";
-import { createMarketFundedStrategyImprovementService } from "../services/market-funded-strategy-improvement-service/src/market-funded-improvement.mjs";
+import { contentId, evaluateStrategyCandidate, identify, signRecord } from "@red-cup-engineering/strategy-evaluation-service";
+import { createMarketFundedStrategyImprovementService } from "../scripts/market-funded-improvement.mjs";
 const NOW = "2026-07-23T00:00:00.000Z", digest = (x) => contentId({ x });
 const actors = ["customer", "context", "context-assay", "data", "data-assay", "compute", "replay", "witness", "promotion", "compute-ledger", "lineage-ledger", "attacker"];
 const pairs = Object.fromEntries(actors.map((a) => [a, generateKeyPairSync("ed25519")])); const publics = Object.fromEntries(actors.map((a) => [`actor:${a}`, pairs[a].publicKey]));

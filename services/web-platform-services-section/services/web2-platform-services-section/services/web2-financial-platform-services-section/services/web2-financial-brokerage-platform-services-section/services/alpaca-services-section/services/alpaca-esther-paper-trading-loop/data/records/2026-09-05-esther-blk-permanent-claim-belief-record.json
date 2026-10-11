@@ -1,0 +1,21 @@
+{
+  "type": "TradingBeliefRecordFile",
+  "version": 1,
+  "recordedAt": "2026-09-05T00:00:00.000Z",
+  "falsifierFired": false,
+  "note": "The principal's BLK-in-fiat stance as data, per task:alpaca-paper-loop-through-pipeline and the beliefs-are-data ruling. Belief fields are the 'stack BLK' worked example from trading-belief-service's own test/esther-blk-worked-example.test.mjs (PERSONAL-QUANT-PLATFORM-THEORY.md's third belief-record example, Esther as a worked instance), reused verbatim rather than re-derived. This file, not trading-belief-service, owns persistence: the loop reads it at start through createBeliefRecord/validateBeliefRecord and refuses with a datum if it is absent or falsifierFired is true.",
+  "belief": {
+    "id": "belief:esther:blk-permanent-claim",
+    "proposition": "I want a permanent claim on the growth of asset management, expressed through BLK.",
+    "affectedEntities": [{ "kind": "company", "identifier": "BLK" }],
+    "direction": "increase",
+    "magnitude": 0.6,
+    "horizon": { "amount": 10, "unit": "years" },
+    "confidence": 0.75,
+    "falsifier": "if BlackRock's AUM growth structurally decouples from asset-management industry growth for two consecutive years",
+    "supportingObservations": ["BLK AUM grew faster than the broader asset-management industry over the trailing five years"],
+    "contraryObservations": [],
+    "heldDate": "2026-08-31",
+    "revisions": []
+  }
+}
