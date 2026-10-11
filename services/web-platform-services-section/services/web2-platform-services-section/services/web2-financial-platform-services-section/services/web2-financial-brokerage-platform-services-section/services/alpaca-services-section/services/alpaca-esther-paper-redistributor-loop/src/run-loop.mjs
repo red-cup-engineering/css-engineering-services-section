@@ -25,7 +25,7 @@ import { TARGET_WEIGHTS, TARGET_SYMBOLS, scaleTargets } from "./target-basket.mj
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const JOURNAL_ROOT = join(HERE, "..");
-const BOOKS_DATA_ROOT = join(HERE, "..", "data", "state", "brokerage-books");
+const BOOKS_DATA_ROOT = join(HERE, "..", "data", "state", "brokerage-book-state");
 export const JOURNAL_OBJECT_KIND = "alpaca-esther-paper-redistributor-loop.decision";
 export const JOURNAL_CATEGORY = "esther-redistributor.decision";
 const PRINCIPAL = "urn:principal:esther-davis";
