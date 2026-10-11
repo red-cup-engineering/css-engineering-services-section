@@ -1,10 +1,11 @@
 // The gate. What an anonymous request may reach, what an admitted one carries,
 // and what only the author may do.
 import assert from 'node:assert/strict';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import test from 'node:test';
-import { applyMigrations } from '@red-cup-engineering/cloudflare-d1-service/migrations';
-import { createSqliteD1 } from '@red-cup-engineering/cloudflare-d1-service/sqlite';
-import { ADMISSION_MIGRATIONS } from "../src/admission/schema.mjs";
+import { createDiscordAdmissionStore } from "../src/admission/discord-store.mjs";
 import {
   CLAIM_AUTHOR,
   CLAIM_EMAIL,
@@ -153,9 +154,10 @@ function gatewayCommand(settings, payload, timestamp = String(Math.floor(Date.no
   return new Request(`${ORIGIN}/api/v1/discord/gateway-command`, { method: 'POST', headers: { 'x-web-gateway-timestamp': timestamp, 'x-web-gateway-signature': signature }, body });
 }
 
-test('a Discord command session admits a reader as a Discord principal, and Discord being unavailable is a retryable denial, not a login', async () => {
-  const db = createSqliteD1(':memory:');
-  await applyMigrations(db, ADMISSION_MIGRATIONS);
+test('a Discord command session admits a reader as a Discord principal, and Discord being unavailable is a retryable denial, not a login', async (t) => {
+  const root = mkdtempSync(join(tmpdir(), 'admission-application-store-'));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const db = createDiscordAdmissionStore({ root });
   const GUILD = '123456789012345678'; const ROLE = '234567890123456789'; const USER = '345678901234567890';
   const discordCommand = { botToken: 'bot-token', guildId: GUILD, roleId: ROLE, sessionSecret: SECRET, commandName: 'vault-login' };
   const bot = { status: 200 };

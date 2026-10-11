@@ -1,7 +1,7 @@
 // Discord user OAuth with live guild-role admission.
 //
 // The browser receives only a random opaque session bearer. Discord access and
-// refresh tokens stay in the database encrypted with the session secret, and
+// refresh tokens stay in the admission store (discord-store.mjs) encrypted with the session secret, and
 // every protected request re-observes the reader's current membership record.
 // A role snapshot is never durable authorization: leaving the guild, losing the
 // role, remaining pending, revoking the grant, or an unavailable Discord fails
@@ -54,29 +54,24 @@ function storedAuthorization(value) {
     return typeof accessToken === 'string' && typeof refreshToken === 'string' ? Object.freeze({ accessToken, refreshToken }) : null;
 }
 async function findSession(db, sessionHash) {
-    const row = await db.prepare(`
-    SELECT session_hash, subject_hash, discord_user_id, display_name,
-           authorization_ciphertext, authorization_version, token_expires_at,
-           session_expires_at, retry_after
-      FROM discord_oauth_sessions
-     WHERE session_hash = ?
-  `).bind(sessionHash).first();
-    return row ?? null;
+    return db.oauthSessions.read(sessionHash);
 }
 async function updateAuthorization(db, sessionHash, ciphertext, tokenExpiresAt, updatedAt, expectedVersion) {
-    const result = await db.prepare(`
-    UPDATE discord_oauth_sessions
-       SET authorization_ciphertext = ?, token_expires_at = ?, updated_at = ?,
-           authorization_version = authorization_version + 1, retry_after = 0
-     WHERE session_hash = ? AND authorization_version = ?
-  `).bind(ciphertext, tokenExpiresAt, updatedAt, sessionHash, expectedVersion).run();
-    return Number(result?.meta?.changes ?? 0) > 0;
+    // Only the refresh that read `expectedVersion` commits; a concurrent winner is left as it is.
+    let committed = false;
+    db.atomically(() => db.oauthSessions.update(sessionHash, (row) => {
+        if (row === null || row.authorization_version !== expectedVersion)
+            return undefined;
+        committed = true;
+        return { ...row, authorization_ciphertext: ciphertext, token_expires_at: tokenExpiresAt, updated_at: updatedAt, authorization_version: expectedVersion + 1, retry_after: 0 };
+    }));
+    return committed;
 }
 async function updateRetryAfter(db, sessionHash, retryAfter) {
-    await db.prepare('UPDATE discord_oauth_sessions SET retry_after = ? WHERE session_hash = ?').bind(retryAfter, sessionHash).run();
+    db.atomically(() => db.oauthSessions.update(sessionHash, (row) => (row === null ? undefined : { ...row, retry_after: retryAfter })));
 }
 async function deleteSession(db, sessionHash) {
-    await db.prepare('DELETE FROM discord_oauth_sessions WHERE session_hash = ?').bind(sessionHash).run();
+    db.atomically(() => db.oauthSessions.update(sessionHash, (row) => (row === null ? undefined : null)));
 }
 async function revokeQuietly(authorization, settings, calls) {
     if (authorization === null)
@@ -90,15 +85,13 @@ async function revokeQuietly(authorization, settings, calls) {
 export async function purgeExpiredDiscordSessions(settings, db, now = Date.now, calls = defaultDiscordCalls, limit = 25) {
     if (!resolveDiscordSettings(settings).configured || db === null)
         return { purged: 0 };
-    const result = await db.prepare(`
-    SELECT session_hash, authorization_ciphertext
-      FROM discord_oauth_sessions
-     WHERE session_expires_at < ?
-     ORDER BY session_expires_at
-     LIMIT ?
-  `).bind(nowSeconds(now), Math.max(1, Math.min(500, limit))).all();
+    const current = nowSeconds(now);
+    const expired = db.oauthSessions.rows()
+        .filter((row) => row.session_expires_at < current)
+        .sort((a, b) => a.session_expires_at - b.session_expires_at)
+        .slice(0, Math.max(1, Math.min(500, limit)));
     let purged = 0;
-    for (const row of result.results ?? []) {
+    for (const row of expired) {
         await revokeQuietly(storedAuthorization(unsealConfidential(row.authorization_ciphertext, settings.sessionSecret)), settings, calls);
         await deleteSession(db, row.session_hash);
         purged += 1;
@@ -170,13 +163,12 @@ export async function completeDiscordLogin(settings, db, request, url, now = Dat
     const sessionHash = sha256Hex(sessionToken);
     const sessionExpiresAt = issuedAt + SESSION_TTL_SECONDS;
     try {
-        await db.prepare(`
-      INSERT INTO discord_oauth_sessions (
-        session_hash, subject_hash, discord_user_id, display_name,
-        authorization_ciphertext, token_expires_at, session_expires_at,
-        created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).bind(sessionHash, discordSubjectHash(user.id), user.id, user.globalName ?? user.username, sealConfidential({ accessToken: authorization.accessToken, refreshToken: authorization.refreshToken }, settings.sessionSecret), issuedAt + Math.floor(authorization.expiresIn), sessionExpiresAt, issuedAt, issuedAt).run();
+        db.oauthSessions.write(sessionHash, {
+            session_hash: sessionHash, subject_hash: discordSubjectHash(user.id), discord_user_id: user.id, display_name: user.globalName ?? user.username,
+            authorization_ciphertext: sealConfidential({ accessToken: authorization.accessToken, refreshToken: authorization.refreshToken }, settings.sessionSecret),
+            authorization_version: 0, token_expires_at: issuedAt + Math.floor(authorization.expiresIn), session_expires_at: sessionExpiresAt,
+            retry_after: 0, created_at: issuedAt, updated_at: issuedAt,
+        });
     }
     catch (error) {
         console.error('Discord session could not be stored', error instanceof Error ? error.message : 'unknown error');

@@ -53,14 +53,8 @@ function sourceBucket(request) {
 async function allowChallenge(request, settings, db, now) {
     const current = nowSeconds(now);
     const key = sha256Hex(`discord-command-rate\0${settings.sessionSecret}\0${sourceBucket(request)}`);
-    await db.prepare(`
-    INSERT INTO discord_command_login_rate_limits (rate_key, attempts, reset_at) VALUES (?, 1, ?)
-    ON CONFLICT(rate_key) DO UPDATE SET
-      attempts = CASE WHEN reset_at <= ? THEN 1 ELSE attempts + 1 END,
-      reset_at = CASE WHEN reset_at <= ? THEN ? ELSE reset_at END
-  `).bind(key, current + RATE_WINDOW_SECONDS, current, current, current + RATE_WINDOW_SECONDS).run();
-    const row = await db.prepare('SELECT attempts, reset_at FROM discord_command_login_rate_limits WHERE rate_key = ?').bind(key).first();
-    return Number(row?.attempts) <= RATE_LIMIT;
+    const window = db.atomically(() => db.rateLimits.hit(key, current, RATE_WINDOW_SECONDS));
+    return window.attempts <= RATE_LIMIT;
 }
 export async function createDiscordCommandChallenge(settings, db, request, now = Date.now) {
     const resolved = resolveDiscordCommandSettings(settings);
@@ -73,8 +67,11 @@ export async function createDiscordCommandChallenge(settings, db, request, now =
     const code = randomToken(18);
     const verifier = randomToken(32);
     const current = nowSeconds(now);
-    await db.prepare('INSERT INTO discord_command_login_challenges (challenge_hash, verifier_hash, expires_at, created_at) VALUES (?, ?, ?, ?)')
-        .bind(sha256Hex(code), sha256Hex(verifier), current + CHALLENGE_TTL_SECONDS, current).run();
+    const challengeHash = sha256Hex(code);
+    db.commandChallenges.write(challengeHash, {
+        challenge_hash: challengeHash, verifier_hash: sha256Hex(verifier), expires_at: current + CHALLENGE_TTL_SECONDS,
+        approved_at: null, consumed_at: null, subject_hash: null, discord_user_ciphertext: null, created_at: current,
+    });
     return {
         status: 201,
         challenge: code,
@@ -91,8 +88,7 @@ export async function pollDiscordCommandChallenge(settings, db, request, offered
     const current = nowSeconds(now);
     const challengeHash = sha256Hex(offered);
     const verifier = cookieValue(request, resolved.verifierCookie);
-    const row = await db.prepare('SELECT verifier_hash, expires_at, approved_at, consumed_at, subject_hash, discord_user_ciphertext FROM discord_command_login_challenges WHERE challenge_hash = ?')
-        .bind(challengeHash).first();
+    const row = db.commandChallenges.read(challengeHash);
     if (row === null || row === undefined || row.expires_at < current || row.consumed_at !== null)
         return notFound;
     if (typeof verifier !== 'string' || row.verifier_hash !== sha256Hex(verifier))
@@ -100,13 +96,22 @@ export async function pollDiscordCommandChallenge(settings, db, request, offered
     if (row.approved_at === null || typeof row.subject_hash !== 'string' || typeof row.discord_user_ciphertext !== 'string') {
         return { status: 202, authenticated: false, expiresAt: row.expires_at };
     }
-    const consumed = await db.prepare('UPDATE discord_command_login_challenges SET consumed_at = ? WHERE challenge_hash = ? AND consumed_at IS NULL AND approved_at IS NOT NULL AND expires_at >= ?')
-        .bind(current, challengeHash, current).run();
-    if (Number(consumed?.meta?.changes ?? 0) !== 1)
+    // A challenge is consumed once: only the poll that finds it approved, unconsumed and unexpired wins.
+    let consumed = false;
+    db.atomically(() => db.commandChallenges.update(challengeHash, (held) => {
+        if (held === null || held.consumed_at !== null || held.approved_at === null || held.expires_at < current)
+            return undefined;
+        consumed = true;
+        return { ...held, consumed_at: current };
+    }));
+    if (!consumed)
         return notFound;
     const session = randomToken();
-    await db.prepare('INSERT INTO discord_interaction_sessions (session_hash, subject_hash, discord_user_ciphertext, session_expires_at, created_at) VALUES (?, ?, ?, ?, ?)')
-        .bind(sha256Hex(session), row.subject_hash, row.discord_user_ciphertext, current + SESSION_TTL_SECONDS, current).run();
+    const sessionHash = sha256Hex(session);
+    db.interactionSessions.write(sessionHash, {
+        session_hash: sessionHash, subject_hash: row.subject_hash, discord_user_ciphertext: row.discord_user_ciphertext,
+        session_expires_at: current + SESSION_TTL_SECONDS, created_at: current,
+    });
     return { status: 200, authenticated: true, cookies: [opaqueCookie(resolved.sessionCookie, session, SESSION_TTL_SECONDS), clearedCookie(resolved.verifierCookie)] };
 }
 function validDiscordSignature(settings, request, raw, now) {
@@ -138,9 +143,15 @@ function validGatewaySignature(settings, resolved, request, rawBytes, now) {
 }
 async function approveChallenge(settings, db, challenge, userId, now) {
     const current = nowSeconds(now);
-    const changed = await db.prepare('UPDATE discord_command_login_challenges SET approved_at = ?, subject_hash = ?, discord_user_ciphertext = ? WHERE challenge_hash = ? AND approved_at IS NULL AND consumed_at IS NULL AND expires_at >= ?')
-        .bind(current, discordSubjectHash(userId), sealConfidential({ id: userId }, settings.sessionSecret), sha256Hex(challenge), current).run();
-    return Number(changed?.meta?.changes ?? 0) === 1;
+    // A challenge is approved once, while it is unapproved, unconsumed and unexpired.
+    let approved = false;
+    db.atomically(() => db.commandChallenges.update(sha256Hex(challenge), (held) => {
+        if (held === null || held.approved_at !== null || held.consumed_at !== null || held.expires_at < current)
+            return undefined;
+        approved = true;
+        return { ...held, approved_at: current, subject_hash: discordSubjectHash(userId), discord_user_ciphertext: sealConfidential({ id: userId }, settings.sessionSecret) };
+    }));
+    return approved;
 }
 function memberAdmitted(settings, guildId, member, userId) {
     return guildId === settings.guildId && member?.pending !== true && typeof userId === 'string' && SNOWFLAKE.test(userId)
@@ -238,9 +249,8 @@ export async function identifyDiscordCommandSession(settings, db, request, now =
     if (!resolved.gatewayConfigured || db === null || typeof cookie !== 'string')
         return null;
     const sessionHash = sha256Hex(cookie);
-    const forget = () => db.prepare('DELETE FROM discord_interaction_sessions WHERE session_hash = ?').bind(sessionHash).run();
-    const row = await db.prepare('SELECT subject_hash, discord_user_ciphertext, session_expires_at FROM discord_interaction_sessions WHERE session_hash = ?')
-        .bind(sessionHash).first();
+    const forget = () => db.atomically(() => db.interactionSessions.update(sessionHash, (held) => (held === null ? undefined : null)));
+    const row = db.interactionSessions.read(sessionHash);
     if (row === null || row === undefined)
         return null;
     if (row.session_expires_at < nowSeconds(now)) {

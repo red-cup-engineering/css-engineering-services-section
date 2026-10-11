@@ -17,6 +17,7 @@
     "scripts"
   ],
   "dependencies": {
+    "@red-cup-engineering/credential-custody-service": "workspace:*",
     "@red-cup-engineering/assisted-browser-services-section": "workspace:*"
   },
   "scripts": {

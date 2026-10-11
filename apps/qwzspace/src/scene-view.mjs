@@ -1,11 +1,15 @@
 // scene-view — the one drawing of a projected scene a browser game shows, in the richest tier the
-// browser can drive: three dimensions on qwzspace's own engine (render-3d over WebGL2), else the
-// two-dimensional plan (render-2d), else none, and the game plays in text alone. Every game over
-// qwzspace (the metroplex, Farstone) draws through this, so the tier a browser gets, the `?tier=`
+// browser can drive: three dimensions on qwzspace's own engine (render-3d over WebGPU, else over
+// WebGL2), else the two-dimensional plan (render-2d), else none, and the game plays in text alone. Every game over
+// qwzspace (the world, Farstone) draws through this, so the tier a browser gets, the `?tier=`
 // cap a person can ask for, and how a camera is aimed are one rule and not one per game.
 //
-// The tier names are the scene protocol's (`RENDER_TIERS`: webgl, canvas2d, text), richest first.
-// A request caps the tier, never raises it.
+// The tier names are the scene protocol's (`RENDER_TIERS`: webgl, canvas2d, text), richest first;
+// "webgl" is the protocol's name for the 3D tier, whichever device draws it. Inside the client the
+// ladder has four rungs, one ordered capability ladder: webgpu > webgl2 > canvas2d > text. A rung
+// is a renderer with the one interface below, drawing the one projected scene; `selectRung` picks
+// the rung from declared capabilities (pure), and `createSceneView` falls to the next rung when a
+// rung's device cannot be had. A request (`?tier=`, a rung or tier name) caps the rung, never raises it.
 //
 // A view has two cameras and one picture. `follow(id, stand)` chases an entity (render-3d's chase
 // camera, `stand` = {orbit, distance, lift} about it; the plan centred on it at a fixed scale).
@@ -19,10 +23,18 @@
 // No game here: no atlas, no room, no frame. Those are the caller's.
 
 import { createBackend as createPlanBackend } from "./render-2d.mjs";
+import { createWebGPUDevice } from "./gpu-webgpu.mjs";
+import { createWebGL2Device } from "./gpu-webgl2.mjs";
 import { createBackend as createDepthBackend } from "./render-3d.mjs";
 import { RENDER_TIERS } from "./scene/protocol.mjs";
 
 const RANK = Object.freeze({ webgl: 3, canvas2d: 2, text: 1 });
+
+/** The ladder's rungs, richest first; each is drawn by one renderer over the same scene. */
+export const RUNGS = Object.freeze(["webgpu", "webgl2", "canvas2d", "text"]);
+const RUNG_RANK = Object.freeze({ webgpu: 4, webgl2: 3, canvas2d: 2, text: 1 });
+/** The protocol tier a rung belongs to. */
+export const RUNG_TIER = Object.freeze({ webgpu: "webgl", webgl2: "webgl", canvas2d: "canvas2d", text: "text" });
 
 /** The tiers, richest first. */
 export const TIERS = Object.freeze([...RENDER_TIERS].sort((a, b) => RANK[b] - RANK[a]));
@@ -30,15 +42,26 @@ export const TIERS = Object.freeze([...RENDER_TIERS].sort((a, b) => RANK[b] - RA
 /** Pixels per metre of a plan that follows an entity, before the device's pixel ratio. */
 export const FOLLOW_SCALE = 2.5;
 
-/** The tier to draw in, from what the browser can draw and the tier a person asked for (a cap). Pure. */
-export function tierOf({ webgl2 = false, canvas2d = false, requested = null } = {}) {
-  const able = [webgl2 ? "webgl" : null, canvas2d ? "canvas2d" : null, "text"].filter(Boolean);
-  const cap = RANK[requested] ?? RANK.webgl;
-  return able.find((tier) => RANK[tier] <= cap);
+/**
+ * The rung to draw on, from declared capabilities: `webgpu` (an adapter was had), `webgl2`,
+ * `canvas2d`; `requested` caps the rung (a rung name, or the tier name "webgl" for the top of the 3D
+ * tier); `failed` are rungs already tried and refused. The first rung able, not failed and no richer
+ * than the cap; text always is. Pure.
+ */
+export function selectRung({ webgpu = false, webgl2 = false, canvas2d = false, requested = null, failed = [] } = {}) {
+  const able = { webgpu, webgl2, canvas2d, text: true };
+  const cap = requested === "webgl" ? RUNG_RANK.webgpu : (RUNG_RANK[requested] ?? RUNG_RANK.webgpu);
+  return RUNGS.find((rung) => able[rung] === true && !failed.includes(rung) && RUNG_RANK[rung] <= cap);
 }
 
-/** What this browser can draw with, each probed on a canvas of its own. */
-export function probeDrawing({ document = globalThis.document } = {}) {
+/** The protocol tier to draw in, from what the browser can draw and the tier a person asked for (a cap). Pure. */
+export function tierOf(capabilities = {}) {
+  return RUNG_TIER[selectRung(capabilities)];
+}
+
+/** What this browser can draw with, each probed on a canvas of its own. WebGPU counts only with an
+ *  adapter, which asking takes a moment: this resolves. */
+export async function probeDrawing({ document = globalThis.document, gpu = globalThis.navigator?.gpu } = {}) {
   const context = (kind) => {
     try {
       return document.createElement("canvas").getContext(kind) !== null;
@@ -46,8 +69,22 @@ export function probeDrawing({ document = globalThis.document } = {}) {
       return false;
     }
   };
-  return { webgl2: context("webgl2"), canvas2d: context("2d") };
+  let webgpu = false;
+  try {
+    webgpu = Boolean(gpu) && (await gpu.requestAdapter()) !== null;
+  } catch {
+    webgpu = false;
+  }
+  return { webgpu, webgl2: context("webgl2"), canvas2d: context("2d") };
 }
+
+/** A device for a 3D rung over `canvas`: null where that rung cannot be had; rejects where its
+ *  device or shaders are unusable. */
+export async function createDevice(canvas, rung, { antialias = true, makers = DEVICE_MAKERS } = {}) {
+  return makers[rung]?.(canvas, { antialias }) ?? null;
+}
+
+const DEVICE_MAKERS = Object.freeze({ webgpu: createWebGPUDevice, webgl2: createWebGL2Device });
 
 /** The axis-aligned bounds `[x0, y0, x1, y1]` of a footprint. */
 export const boundsOf = (footprint) => footprint.reduce(([a, b, c, d], [x, y]) => [Math.min(a, x), Math.min(b, y), Math.max(c, x), Math.max(d, y)], [Infinity, Infinity, -Infinity, -Infinity]);
@@ -70,10 +107,11 @@ export function poseOver(footprint, { top = 0, orbit = 0, scale = 1 } = {}) {
   return { target: [(x0 + x1) / 2, (y0 + y1) / 2, top], size, base, distance: base * scale, orbit };
 }
 
-async function depthView(canvas, { assets }) {
-  const backend = createDepthBackend({ canvas, assets });
+async function depthView(canvas, { assets, rung, makers }) {
+  const device = await createDevice(canvas, rung, { makers });
+  if (!device) throw new Error(`scene-view: the ${rung} rung found no device`);
+  const backend = createDepthBackend({ canvas, assets, device });
   const graphics = await backend.ready;
-  if (!graphics) throw new Error("scene-view: the 3D renderer found no device");
   return {
     tier: "webgl",
     canvas,
@@ -159,23 +197,30 @@ const TEXT_VIEW = Object.freeze({ tier: "text", canvas: null, graphics: null, te
  * A drawing for `tier` on `canvas` (or a fresh one with `className`):
  * `{ tier, graphics, canvas, terrain, follow(id, stand), look(pose), draw(scene), project(point), pick(px, py) }`.
  * `labels: false` keeps the plan from naming entities, for a game whose heads-up display names them.
- * A 3D renderer that cannot get a device falls to the plan, and a plan with no 2D context to text,
+ * A 3D rung that cannot get a device falls to the next rung down (WebGPU to WebGL2) and then to the plan, and a plan with no 2D context to text,
  * where `canvas` is null and nothing is drawn.
  */
-export async function createSceneView({ tier, canvas = null, className = "", assets, probe = probeDrawing(), document = globalThis.document, radius, labels } = {}) {
+export async function createSceneView({ tier, requested = null, canvas = null, className = "", assets, probe = null, makers = DEVICE_MAKERS, document = globalThis.document, radius, labels } = {}) {
   const surface = () => canvas ?? Object.assign(document.createElement("canvas"), { className });
+  probe ??= await probeDrawing({ document });
   if (tier === "webgl") {
-    const drawn = surface();
-    try {
-      return await depthView(drawn, { assets });
-    } catch (error) {
-      console.warn("scene-view: no 3D tier", error);
-      // A canvas that held a WebGL context gives no 2D one: the plan draws on a fresh canvas in its place.
-      const fresh = Object.assign(document.createElement("canvas"), { className: drawn.className, tabIndex: drawn.tabIndex });
-      if (drawn.getAttribute("aria-label")) fresh.setAttribute("aria-label", drawn.getAttribute("aria-label"));
-      drawn.replaceWith?.(fresh);
-      return createSceneView({ tier: probe.canvas2d ? "canvas2d" : "text", canvas: fresh, className, assets, probe, document, radius, labels });
+    const failed = [];
+    let drawn = surface();
+    for (let rung = selectRung({ ...probe, requested, failed }); RUNG_TIER[rung] === "webgl"; rung = selectRung({ ...probe, requested, failed })) {
+      try {
+        return await depthView(drawn, { assets, rung, makers });
+      } catch (error) {
+        console.warn(`scene-view: no ${rung} rung`, error);
+        failed.push(rung);
+        // A canvas that held a context of one kind gives none of another: the next rung draws on a
+        // fresh canvas in its place.
+        const fresh = Object.assign(document.createElement("canvas"), { className: drawn.className, tabIndex: drawn.tabIndex });
+        if (drawn.getAttribute("aria-label")) fresh.setAttribute("aria-label", drawn.getAttribute("aria-label"));
+        drawn.replaceWith?.(fresh);
+        drawn = fresh;
+      }
     }
+    return createSceneView({ tier: RUNG_TIER[selectRung({ ...probe, requested, failed })], canvas: drawn, className, assets, probe, makers, document, radius, labels });
   }
   if (tier === "canvas2d") {
     const drawn = surface();

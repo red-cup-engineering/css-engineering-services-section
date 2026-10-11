@@ -79,7 +79,7 @@ export function islandFrame({ time = 9, weather = null } = {}) {
   engine = { ...engine, world: initializeClock(engine.world, { seed: "island", time: Math.trunc(time) }) };
   const report = clockReport(engine.world);
   return buildPerceptionFrame({
-    engine,frameType: FRAME_TYPE,
+    frameType: FRAME_TYPE,
     kind: KIND,
     world: engine.world,
     actor: "alice",

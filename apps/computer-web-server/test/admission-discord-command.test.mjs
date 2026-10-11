@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import { createHmac } from 'node:crypto';
-import test from 'node:test';
-import { applyMigrations } from '@red-cup-engineering/cloudflare-d1-service/migrations';
-import { createSqliteD1 } from '@red-cup-engineering/cloudflare-d1-service/sqlite';
-import { ADMISSION_MIGRATIONS } from "../src/admission/schema.mjs";
+import { mkdtempSync, readdirSync, readFileSync, rmSync, statSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import test, { after } from 'node:test';
+import { createDiscordAdmissionStore } from "../src/admission/discord-store.mjs";
 import {
   acceptDiscordGatewayCommand,
   acceptDiscordInteraction,
@@ -19,9 +20,18 @@ const USER_ID = '345678901234567890';
 const SECRET = 'test-session-secret';
 const ORIGIN = 'https://vault.example';
 
+const roots = [];
+after(() => { for (const root of roots) rmSync(root, { recursive: true, force: true }); });
+/** Every byte the store has written under its root, as text. */
+function storedText(root) {
+  return readdirSync(root, { recursive: true }).map((name) => join(root, String(name)))
+    .filter((file) => statSync(file).isFile()).map((file) => readFileSync(file, 'latin1')).join('\n');
+}
+
 async function fixture() {
-  const db = createSqliteD1(':memory:');
-  await applyMigrations(db, ADMISSION_MIGRATIONS);
+  const root = mkdtempSync(join(tmpdir(), 'discord-command-store-'));
+  roots.push(root);
+  const db = createDiscordAdmissionStore({ root });
   const pair = await crypto.subtle.generateKey({ name: 'Ed25519' }, true, ['sign', 'verify']);
   const raw = new Uint8Array(await crypto.subtle.exportKey('raw', pair.publicKey));
   const settings = {
@@ -86,8 +96,9 @@ test('a signed exact-guild member command consumes one short browser challenge w
   const interaction = await acceptDiscordInteraction(settings, db, await signedInteraction(privateKey, command(created.challenge)));
   assert.equal(interaction.status, 200);
   assert.match((await interaction.json()).data.content, /Login confirmed/u);
-  const challenge = await db.prepare('SELECT subject_hash, discord_user_ciphertext FROM discord_command_login_challenges').first();
-  assert.equal(JSON.stringify(challenge).includes(USER_ID), false, 'the user id is encrypted at rest');
+  const [challenge] = db.commandChallenges.rows();
+  assert.equal(typeof challenge.discord_user_ciphertext, 'string');
+  assert.equal(storedText(db.root).includes(USER_ID), false, 'the user id is encrypted at rest');
 
   const issued = await pollDiscordCommandChallenge(settings, db, at('/', { headers: { cookie: verifierCookie(created) } }), created.challenge);
   assert.equal(issued.status, 200);
@@ -149,7 +160,7 @@ test('command sessions re-observe current membership and fail closed', async () 
   const sessionRequest = at('/', { headers: { cookie: issued.cookies[0] } });
   assert.ok(await identifyDiscordCommandSession(settings, db, sessionRequest, Date.now, currentMember));
   assert.equal(await identifyDiscordCommandSession(settings, db, sessionRequest, Date.now, { async member() { return { status: 404 }; } }), null);
-  assert.equal((await db.prepare('SELECT session_hash FROM discord_interaction_sessions').all()).results.length, 0);
+  assert.equal(db.interactionSessions.rows().length, 0);
 });
 
 test('bot rate limiting is reported as retryable denial', async () => {

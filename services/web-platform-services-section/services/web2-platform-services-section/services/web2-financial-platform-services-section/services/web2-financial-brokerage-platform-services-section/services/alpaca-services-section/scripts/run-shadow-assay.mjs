@@ -10,7 +10,7 @@ import { assayCausalPanel } from "./causal-market-panel-assay.mjs";
 import { createCausalPortfolioLearningCircuit } from "./circuit.mjs";
 import { measureCausalPatchNovelty } from "./causal-tiling-novelty-measure.mjs";
 import { measureCorrelationGraph } from "./correlation-graph-measure.mjs";
-import { createContentAddressedDatasetStore } from "@red-cup-engineering/content-addressed-dataset-store-service";
+import { createContentAddressedDatasetStore } from "@red-cup-engineering/computer-content-engineering-services-section/dataset-store";
 import { fitDeterministicRidge, predictDeterministicRidge } from "./ridge.mjs";
 import { allocateMandatePortfolio } from "@red-cup-engineering/mandate-portfolio-allocation-service";
 import { selectModelCandidate } from "@red-cup-engineering/model-tournament-service";
@@ -66,7 +66,7 @@ async function readAccountState() {
   });
 }
 
-const witnessJournal = await startLocalWitnessJournalProviderProcess({ port: Number(process.env.WITNESS_JOURNAL_LOCAL_PORT ?? 19764) });
+const witnessJournal = await startLocalWitnessJournalProviderProcess({ root: process.env.WITNESS_JOURNAL_ROOT, port: Number(process.env.WITNESS_JOURNAL_LOCAL_PORT ?? 19764) });
 try {
   const env = { ...runtimeEnv, WITNESS_JOURNAL_RDF_AGENT: witnessJournal.agentCardUrl };
   const recordMarketManifest = createBrokerageMarketEventRecorder({ originatingActor: "urn:ame:alpaca-market-data-read-service", nodeId: "alpaca-market-data-read-service" }, env);

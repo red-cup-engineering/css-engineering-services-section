@@ -4,8 +4,8 @@
 // model selection to bounded execution, reconciliation, and measured active
 // return.  The broker boundary remains separately owned.
 import { createInvestmentResearchCommittee } from "../services/investment-research-work-lot-service/src/committee.mjs";
-import { createStrategyProgramSynthesisMarket } from "../services/strategy-program-synthesis-work-lot-service/src/synthesis.mjs";
-import { assayStrategyProgram } from "../services/strategy-program-synthesis-work-lot-service/src/strategy-program-candidate-assay.mjs";
+import { createStrategyProgramSynthesisMarket } from "@red-cup-engineering/strategy-program-synthesis-work-lot-service";
+import { assayStrategyProgram } from "@red-cup-engineering/strategy-program-synthesis-work-lot-service/strategy-program-candidate-assay";
 import { createGeneratedStrategyFoldReplay } from "../scripts/replay-folds.mjs";
 import { createCausalPortfolioLearningCircuit } from "../scripts/circuit.mjs";
 import { runMandatedPortfolioCycle } from "./autonomous-portfolio.mjs";

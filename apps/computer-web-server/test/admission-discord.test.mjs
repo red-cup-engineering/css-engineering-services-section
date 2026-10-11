@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
-import test from 'node:test';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import test, { after } from 'node:test';
 import { DiscordUserAuthorizationError } from '@red-cup-engineering/discord-rest-transport-service/user-oauth';
 import {
   beginDiscordLogin,
@@ -11,6 +14,7 @@ import {
   resolveDiscordSettings,
 } from "../src/admission/discord.mjs";
 import { sealConfidential } from "../src/admission/session.mjs";
+import { createDiscordAdmissionStore } from "../src/admission/discord-store.mjs";
 
 const SECRET = 'test-session-secret-value-long-enough';
 const GUILD_ID = '1184863861065658419';
@@ -19,46 +23,14 @@ const ROLE_ID = '1346540684810915973';
 const url = (path) => new URL(`https://vault.example${path}`);
 const cookieValue = (setCookie) => setCookie.split(';')[0];
 
-/** A D1-shaped memory store for the one table Discord OAuth admission keeps. */
-class MemorySessionDatabase {
-  rows = new Map();
-
-  prepare(sql) {
-    const db = this;
-    return {
-      values: [],
-      bind(...values) { this.values = values; return this; },
-      async first() {
-        if (!/SELECT[\s\S]*discord_oauth_sessions/u.test(sql)) throw new Error(`unexpected first SQL: ${sql}`);
-        return db.rows.get(this.values[0]) ?? null;
-      },
-      async all() {
-        if (!/WHERE session_expires_at < \?/u.test(sql)) throw new Error(`unexpected all SQL: ${sql}`);
-        const [before, limit] = this.values;
-        return { results: [...db.rows.values()].filter((row) => row.session_expires_at < before).slice(0, limit) };
-      },
-      async run() {
-        if (/INSERT INTO discord_oauth_sessions/u.test(sql)) {
-          const [session_hash, subject_hash, discord_user_id, display_name, authorization_ciphertext, token_expires_at, session_expires_at] = this.values;
-          db.rows.set(session_hash, { session_hash, subject_hash, discord_user_id, display_name, authorization_ciphertext, authorization_version: 0, token_expires_at, session_expires_at, retry_after: 0 });
-        } else if (/authorization_version = authorization_version \+ 1/u.test(sql)) {
-          const [authorization_ciphertext, token_expires_at, _updated_at, session_hash, expectedVersion] = this.values;
-          const row = db.rows.get(session_hash);
-          if (row === undefined || row.authorization_version !== expectedVersion) return { success: true, meta: { changes: 0 } };
-          Object.assign(row, { authorization_ciphertext, token_expires_at, authorization_version: expectedVersion + 1, retry_after: 0 });
-          return { success: true, meta: { changes: 1 } };
-        } else if (/SET retry_after = \?/u.test(sql)) {
-          const [retry_after, session_hash] = this.values;
-          Object.assign(db.rows.get(session_hash), { retry_after });
-        } else if (/DELETE FROM discord_oauth_sessions/u.test(sql)) {
-          db.rows.delete(this.values[0]);
-        } else {
-          throw new Error(`unexpected run SQL: ${sql}`);
-        }
-        return { success: true, meta: { changes: 1 } };
-      },
-    };
-  }
+const roots = [];
+after(() => { for (const root of roots) rmSync(root, { recursive: true, force: true }); });
+/** Discord admission's journal store under a fresh root, its OAuth sessions readable as `rows`. */
+function sessionStore() {
+  const root = mkdtempSync(join(tmpdir(), 'discord-oauth-store-'));
+  roots.push(root);
+  const store = createDiscordAdmissionStore({ root });
+  return Object.freeze({ ...store, get rows() { return new Map(store.oauthSessions.rows().map((row) => [row.session_hash, row])); } });
 }
 
 function settings(overrides = {}) {
@@ -127,7 +99,7 @@ test('Discord consent asks only for identity and current membership, with state 
 });
 
 test('only a current member holding the role receives an opaque session backed by encrypted tokens', async () => {
-  const db = new MemorySessionDatabase();
+  const db = sessionStore();
   const calls = discordCalls();
   const { completed } = await beginAndComplete(db, calls);
   assert.equal(completed.status, 302);
@@ -147,14 +119,14 @@ test('only a current member holding the role receives an opaque session backed b
 
 test('missing, pending, and removed roles fail closed', async () => {
   for (const options of [{ roles: [] }, { roles: [ROLE_ID], pending: true }]) {
-    const db = new MemorySessionDatabase();
+    const db = sessionStore();
     const calls = discordCalls(options);
     const { completed } = await beginAndComplete(db, calls);
     assert.equal(completed.status, 403);
     assert.equal(db.rows.size, 0);
     assert.equal(calls.state.revocations, 1);
   }
-  const db = new MemorySessionDatabase();
+  const db = sessionStore();
   const calls = discordCalls();
   const { completed } = await beginAndComplete(db, calls);
   const sessionCookie = sessionCookieOf(completed);
@@ -166,7 +138,7 @@ test('missing, pending, and removed roles fail closed', async () => {
 test('expired access is refreshed server-side and logout deletes and revokes it', async () => {
   let current = Date.now();
   const now = () => current;
-  const db = new MemorySessionDatabase();
+  const db = sessionStore();
   const calls = discordCalls({ expiresIn: 1 });
   const { completed } = await beginAndComplete(db, calls, now);
   const sessionCookie = sessionCookieOf(completed);
@@ -183,16 +155,15 @@ test('expired access is refreshed server-side and logout deletes and revokes it'
 test('a concurrent refresh winner is reloaded instead of losing the session', async () => {
   let current = Date.now();
   const now = () => current;
-  const db = new MemorySessionDatabase();
+  const db = sessionStore();
   const calls = discordCalls({ expiresIn: 1 });
   const { completed } = await beginAndComplete(db, calls, now);
   const sessionCookie = sessionCookieOf(completed);
   current += 120_000;
   const [row] = db.rows.values();
   calls.refresh = async () => {
-    row.authorization_ciphertext = sealConfidential({ accessToken: 'winner-access', refreshToken: 'winner-refresh' }, SECRET);
-    row.authorization_version += 1;
-    row.token_expires_at = Math.floor(current / 1000) + 3600;
+    db.oauthSessions.write(row.session_hash, { ...row, authorization_ciphertext: sealConfidential({ accessToken: 'winner-access', refreshToken: 'winner-refresh' }, SECRET),
+      authorization_version: row.authorization_version + 1, token_expires_at: Math.floor(current / 1000) + 3600 });
     throw new Error('rotated refresh token lost the race');
   };
   calls.currentMember = async (accessToken) => { assert.equal(accessToken, 'winner-access'); return { roles: [ROLE_ID], pending: false }; };
@@ -202,7 +173,7 @@ test('a concurrent refresh winner is reloaded instead of losing the session', as
 });
 
 test('Discord rate limits persist bounded backoff and are retryable without deleting authority', async () => {
-  const db = new MemorySessionDatabase();
+  const db = sessionStore();
   const calls = discordCalls();
   const { completed } = await beginAndComplete(db, calls);
   const request = new Request(url('/api/v1/me'), { headers: { cookie: sessionCookieOf(completed) } });
@@ -216,18 +187,18 @@ test('Discord rate limits persist bounded backoff and are retryable without dele
 });
 
 test('the scheduled retention sweep revokes and deletes expired encrypted sessions', async () => {
-  const db = new MemorySessionDatabase();
+  const db = sessionStore();
   const calls = discordCalls();
   await beginAndComplete(db, calls);
   const [row] = db.rows.values();
-  row.session_expires_at = 1;
+  db.oauthSessions.write(row.session_hash, { ...row, session_expires_at: 1 });
   assert.deepEqual(await purgeExpiredDiscordSessions(settings(), db, () => Date.now(), calls), { purged: 1 });
   assert.equal(calls.state.revocations, 1);
   assert.equal(db.rows.size, 0);
 });
 
 test('a callback without its sealed transaction or with mismatched state is refused', async () => {
-  const db = new MemorySessionDatabase();
+  const db = sessionStore();
   const calls = discordCalls();
   const absent = await completeDiscordLogin(settings(), db, new Request(url('/')), url('/oauth/discord/callback?code=authorization-code&state=s'), Date.now, calls);
   assert.equal(absent.error, 'discord-login-expired');

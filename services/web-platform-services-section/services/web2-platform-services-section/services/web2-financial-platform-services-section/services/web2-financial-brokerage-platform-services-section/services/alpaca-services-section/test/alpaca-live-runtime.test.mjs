@@ -4,7 +4,7 @@ import test from "node:test";
 import { createAuthorityCustodyActuator, createEphemeralAuthorityCustodySubstrate } from "./support/ephemeral-authority-custody.mjs";
 import { createBrokerageAuthorityCustody } from "@red-cup-engineering/brokerage-authority-custody-service";
 import { createAlpacaAdapter } from "@red-cup-engineering/pluggable-venue-adapter-service/alpaca";
-import { formPrincipalBrokerageContract, grantBrokerageAuthority } from "../services/principal-brokerage-interface/src/principal-contract.mjs";
+import { formPrincipalBrokerageContract, grantBrokerageAuthority } from "@red-cup-engineering/principal-brokerage-interface";
 
 const NOW = "2026-07-23T02:00:00.000Z", EXPIRY = "2030-01-01T00:00:00.000Z";
 const scopes = ["account:read", "positions:read", "orders:read", "orders:live", "activities:read"];
