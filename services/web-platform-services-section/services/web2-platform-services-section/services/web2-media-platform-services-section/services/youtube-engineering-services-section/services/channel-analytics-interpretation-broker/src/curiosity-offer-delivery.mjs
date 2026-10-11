@@ -1,6 +1,6 @@
 import { join } from "node:path";
-import { querySettlementRecords } from "@red-cup-engineering/witness-journal-rdf-projection-service/client";
-import { ACTOR, NODE_ROOT, contentId } from "./broker.mjs";
+import { querySettlementRecords } from "@red-cup-engineering/witness-journal-document-service";
+import { ACTOR, NODE_ROOT, contentId, witnessJournalBinding } from "./broker.mjs";
 export const MARKET = "urn:ame:curiosity-research-market-enterprise";
 export const CHANNEL = "urn:ame:youtube-channel-enterprise";
 export const OFFER_CATEGORY = "channel-analytics.curiosity-candidate-offer";
@@ -14,10 +14,10 @@ export async function pickupCuriosityOffer(request, options = {}) {
     throw new TypeError("curiosity offer pickup is not exact for this broker and an admitted customer");
   }
   const dataRoot = options.dataRoot ?? join(NODE_ROOT, "data");
-  const row = (options.records ?? (await querySettlementRecords(OFFER_CATEGORY))).find((entry) => entry.object?.id === request.candidate);
+  const row = (options.records ?? (await querySettlementRecords(OFFER_CATEGORY, await witnessJournalBinding(options)))).find((entry) => entry.object?.id === request.candidate);
   if (!row || !exact(row) || row.type !== "Offer" || row.actor !== ACTOR || !exact(row.object) || row.object.id !== request.candidate || row.object.type !== "CuriosityCandidate" || row.object.evidenceStatus !== "demand-signal-not-research-evidence" || row.object.bidStatus !== "not-a-bid" || row.object.spendingAuthority !== "none") throw new TypeError("requested curiosity offer is unavailable or changed");
   if (request.requester === CHANNEL) {
-    const interpretations = options.interpretations ?? (await querySettlementRecords("channel-analytics.interpretation-admission"));
+    const interpretations = options.interpretations ?? (await querySettlementRecords("channel-analytics.interpretation-admission", await witnessJournalBinding(options)));
     const interpretation = interpretations.find((entry) => entry.id === row.object.motivatingInterpretation);
     if (!interpretation || interpretation.customer !== CHANNEL || interpretation.provider !== ACTOR) throw new TypeError("channel may retrieve only a curiosity induced by its own commissioned observation");
   }

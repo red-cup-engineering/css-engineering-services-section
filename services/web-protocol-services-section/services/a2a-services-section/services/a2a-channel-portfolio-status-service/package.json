@@ -16,6 +16,6 @@
     "@red-cup-engineering/relation-model-notation": "workspace:*",
     "@red-cup-engineering/relation-model-notation-json-codec": "workspace:*",
     "@red-cup-engineering/relation-model-notation-typing": "workspace:*",
-    "@red-cup-engineering/semantic-content-identify-service": "0.2.2"
+    "@red-cup-engineering/semantic-content-identify-service": "workspace:*"
   }
 }

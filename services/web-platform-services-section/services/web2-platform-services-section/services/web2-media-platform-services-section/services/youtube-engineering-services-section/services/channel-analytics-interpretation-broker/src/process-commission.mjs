@@ -2,8 +2,8 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createSettlementStore, querySettlementRecords } from "@red-cup-engineering/witness-journal-rdf-projection-service/client";
-import { ACTOR, NODE_ROOT, admitInterpretation, contentId, formCuriosityCandidateOffer } from "./broker.mjs";
+import { querySettlementRecords, recordSettlementRecord } from "@red-cup-engineering/witness-journal-document-service";
+import { ACTOR, NODE_ROOT, admitInterpretation, contentId, formCuriosityCandidateOffer, witnessJournalBinding } from "./broker.mjs";
 import { channelBinding, createAnalyticsChannelClient } from "./channel-client.mjs";
 
 const POLICY_BASIS = "urn:policy:emsenn0:analytics-custody-and-trade";
@@ -21,7 +21,8 @@ export async function processCommission({ channel, commission } = {}, options = 
   const delivery = await client.pickup(commission);
   const verifiers = verifiersFor(delivery, at);
   const interpretation = await admitInterpretation({ delivery, analysis: analysisFor(delivery.object.observation) }, { dataRoot, runtimeRoot: options.runtimeRoot, witnessJournalAgentUrl: options.witnessJournalAgentUrl ?? process.env.WITNESS_JOURNAL_RDF_AGENT, at, verifyDelivery: async (value) => client.verifyDelivery(value), ...verifiers });
-  const history = (await querySettlementRecords("channel-analytics.curiosity-candidate-offer")).filter((entry) => entry.object?.motivatingInterpretation === interpretation.id);
+  const binding = await witnessJournalBinding(options);
+  const history = (await querySettlementRecords("channel-analytics.curiosity-candidate-offer", binding)).filter((entry) => entry.object?.motivatingInterpretation === interpretation.id);
   const prior = history.filter((recorded) => exact(recorded) && recorded.type === "Offer" && recorded.actor === ACTOR && exact(recorded.object));
   if (prior.length > 1) throw new TypeError("analytics interpretation has conflicting canonical curiosity-offer history");
   let offer;
@@ -29,8 +30,7 @@ export async function processCommission({ channel, commission } = {}, options = 
     offer = prior[0];
   } else {
     offer = formCuriosityCandidateOffer(interpretation, 0, at);
-    const store = options.store ?? createSettlementStore({ settlementRoot: NODE_ROOT, agentUrl: options.witnessJournalAgentUrl ?? process.env.WITNESS_JOURNAL_RDF_AGENT });
-    await store.record({ category: "channel-analytics.curiosity-candidate-offer", recordedAt: at, record: { ...offer } });
+    await recordSettlementRecord({ ...binding, settlement: options.settlement ?? null, actor: ACTOR, category: "channel-analytics.curiosity-candidate-offer", recordedAt: at, record: { ...offer } });
   }
   return { interpretation, offer, delivery };
 }

@@ -1,5 +1,5 @@
 import { resolve } from "node:path";
-import { recordWitnessJournalBatch, relationalWitnessJournalDocument } from "@red-cup-engineering/witness-journal-rdf-projection-service/client";
+import { recordWitnessJournalBatch, relationalWitnessJournalDocument } from "@red-cup-engineering/witness-journal-document-service";
 import { settlementWitnessGraphId } from "@red-cup-engineering/x402-settlement-witness-identity";
 
 const NODE_ID = "coinbase-x402-bazaar-border";

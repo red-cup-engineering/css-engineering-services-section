@@ -22,7 +22,7 @@
     "./compose": "./src/compose/compose-http-application.mjs",
     "./events": "./src/events/publish-projected-events.mjs",
     "./edge/acme": "./src/edge/acme.mjs",
-    "./edge/auth": "./src/edge/auth.mjs",
+    "./edge/auth": {"types": "./src/edge/auth.d.mts", "import": "./src/edge/auth.mjs"},
     "./edge/cache": "./src/edge/cache.mjs",
     "./edge/circuit": "./src/edge/circuit.mjs",
     "./edge/cluster": "./src/edge/cluster.mjs",

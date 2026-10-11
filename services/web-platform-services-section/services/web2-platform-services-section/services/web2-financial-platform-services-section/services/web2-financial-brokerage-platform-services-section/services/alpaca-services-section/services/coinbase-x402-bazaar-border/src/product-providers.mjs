@@ -3,9 +3,8 @@ import { admitNormalizedSemanticContent, EMPTY_WITNESS_ROOT, identifyJsonSemanti
 import { inferTy } from "@red-cup-engineering/relation-model-notation-typing";
 
 const semanticId = (value) => identifyJsonSemanticContent({ objectKind: "brokerage.coinbase-x402-bazaar-border.record", value, witnessRoot: EMPTY_WITNESS_ROOT }).id;
-import { SOVEREIGN_CIRCUIT_INTERFACE_EXTENSION } from "@red-cup-engineering/inference-work-lot-service/sovereign-provider-interface";
 import { extractRmnPart, userRmnMessage } from "@red-cup-engineering/a2a-rmn-part-service";
-import { a2aResultMetadata, a2aResultParts, sendRmnTask } from "@red-cup-engineering/a2a-rmn-task-client-service";
+import { a2aResultMetadata, a2aResultParts, sendRmnTask, SOVEREIGN_CIRCUIT_INTERFACE_EXTENSION } from "@red-cup-engineering/a2a-rmn-task-client-service";
 import { normalizeDeltaPacket, renderDeterministicReportGraphic } from "@red-cup-engineering/deterministic-report-graphic-service/renderer";
 import { formIssuerEvidencePacket, validateIssuerEvidenceRequest } from "@red-cup-engineering/issuer-research-media-service";
 import { formAggressivePortfolioIntent, validateAggressivePortfolioIntentRequest } from "@red-cup-engineering/alpha-portfolio-order-intent-service";

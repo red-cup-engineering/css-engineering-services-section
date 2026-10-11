@@ -21,9 +21,8 @@
     "verify": "npm run check && npm test && npm pack --dry-run"
   },
   "dependencies": {
-    "@red-cup-engineering/inference-work-lot-service": "4.1.0",
     "@red-cup-engineering/relation-model-notation-json-codec": "workspace:*",
-    "@red-cup-engineering/semantic-content-identify-service": "0.2.2",
+    "@red-cup-engineering/semantic-content-identify-service": "workspace:*",
     "@red-cup-engineering/relation-model-notation-typing": "workspace:*",
     "@red-cup-engineering/x402-services-section": "workspace:*",
     "express": "5.2.1",
@@ -32,7 +31,7 @@
   },
   "peerDependencies": {
     "@red-cup-engineering/deterministic-report-graphic-service": "0.1.1",
-    "@red-cup-engineering/witness-journal-rdf-projection-service": "1.1.0",
+    "@red-cup-engineering/witness-journal-document-service": "workspace:*",
     "@red-cup-engineering/a2a-rmn-part-service": "1.0.1",
     "@red-cup-engineering/a2a-rmn-task-client-service": "1.1.1",
     "@red-cup-engineering/issuer-research-media-service": "0.1.2",
@@ -47,7 +46,7 @@
     "@red-cup-engineering/deterministic-report-graphic-service": {
       "optional": true
     },
-    "@red-cup-engineering/witness-journal-rdf-projection-service": {
+    "@red-cup-engineering/witness-journal-document-service": {
       "optional": true
     },
     "@red-cup-engineering/a2a-rmn-part-service": {

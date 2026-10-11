@@ -1,5 +1,5 @@
 import { resolve } from "node:path";
-import { recordWitnessJournalBatch, relationalWitnessJournalDocument } from "@red-cup-engineering/witness-journal-rdf-projection-service/client";
+import { recordWitnessJournalBatch, relationalWitnessJournalDocument } from "@red-cup-engineering/witness-journal-document-service";
 import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
 
 const semanticId = (value) => identifyJsonSemanticContent({ objectKind: "brokerage.independent-witness-and-books.record", value, witnessRoot: EMPTY_WITNESS_ROOT }).id;

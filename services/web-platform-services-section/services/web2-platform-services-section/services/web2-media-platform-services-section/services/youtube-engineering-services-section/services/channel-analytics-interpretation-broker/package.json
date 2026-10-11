@@ -21,8 +21,8 @@
     "@red-cup-engineering/a2a-contracted-agent-service": "workspace:*",
     "@red-cup-engineering/a2a-rmn-part-service": "workspace:*",
     "@red-cup-engineering/a2a-rmn-task-client-service": "workspace:*",
-    "@red-cup-engineering/semantic-content-identify-service": "0.2.2",
-    "@red-cup-engineering/witness-journal-rdf-projection-service": "1.1.0"
+    "@red-cup-engineering/semantic-content-identify-service": "workspace:*",
+    "@red-cup-engineering/witness-journal-document-service": "workspace:*"
   },
   "keywords": [
     "sovereign-state-enterprise",
