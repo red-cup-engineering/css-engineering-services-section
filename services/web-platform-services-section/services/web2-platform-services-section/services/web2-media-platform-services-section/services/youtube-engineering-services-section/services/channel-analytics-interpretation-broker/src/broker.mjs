@@ -3,10 +3,18 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, rmSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createSettlementStore, querySettlementRecords, recordSettlementRecord } from "@red-cup-engineering/witness-journal-rdf-projection-service/client";
+import { querySettlementRecords, recordSettlementRecord } from "@red-cup-engineering/witness-journal-document-service";
+import { createFilesystemWitnessJournalBinding } from "@red-cup-engineering/witness-journal-document-service/filesystem-provider";
 
 export const NODE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const ACTOR = "urn:ame:channel-analytics-interpretation-broker";
+// The witness-journal the broker records into and reads from: the provider agent when one is named, else the node's own filesystem journal.
+export async function witnessJournalBinding(options = {}) {
+  const agentUrl = options.witnessJournalAgentUrl ?? process.env.WITNESS_JOURNAL_RDF_AGENT;
+  if (agentUrl) return { agentUrl };
+  const { custody, categoryIndex } = await createFilesystemWitnessJournalBinding(join(NODE_ROOT, "data", "witness-journal"));
+  return { custody, categoryIndex };
+}
 const SOURCES = new Set(["YouTubeAnalyticsAPI", "YouTubeReportingAPI", "YouTubeDataAPI"]);
 export function canonical(value) { if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`; if (value && typeof value === "object") return `{${Object.keys(value).sort().filter((key) => value[key] !== undefined).map((key) => `${JSON.stringify(key)}:${canonical(value[key])}`).join(",")}}`; return JSON.stringify(value); }
 export function digest(value) { return `sha256:${createHash("sha256").update(canonical(value)).digest("hex")}`; }
@@ -33,8 +41,7 @@ function validContract(contract, observation, channel) {
 
 async function record(value, options) {
   const category = "channel-analytics.interpretation-admission", at = options.at ?? new Date().toISOString();
-  if (options.settlement) { await recordSettlementRecord({ agentUrl: options.witnessJournalAgentUrl ?? process.env.WITNESS_JOURNAL_RDF_AGENT, settlement: options.settlement, actor: ACTOR, category, recordedAt: at, record: { ...value } }); return; }
-  const store = createSettlementStore({ settlementRoot: NODE_ROOT, agentUrl: options.witnessJournalAgentUrl ?? process.env.WITNESS_JOURNAL_RDF_AGENT }); await store.record({ category, recordedAt: at, record: { ...value } });
+  await recordSettlementRecord({ ...(await witnessJournalBinding(options)), settlement: options.settlement ?? null, actor: ACTOR, category, recordedAt: at, record: { ...value } });
 }
 
 export async function admitInterpretation({ delivery, analysis } = {}, options = {}) {
@@ -52,7 +59,7 @@ export async function admitInterpretation({ delivery, analysis } = {}, options =
   const dataRoot = resolve(options.dataRoot ?? join(NODE_ROOT, "data")), runtimeRoot = resolve(options.runtimeRoot ?? join(NODE_ROOT, "content/runtime/interpretation-locks"));
   mkdirSync(runtimeRoot, { recursive: true }); const lock = join(runtimeRoot, digest(contract.id).slice(7)); try { mkdirSync(lock); } catch (error) { if (error?.code === "EEXIST") throw new TypeError("analytics contract is concurrently processing"); throw error; }
   try {
-    const prior = (await querySettlementRecords("channel-analytics.interpretation-admission")).filter((entry) => entry.processingContract === contract.id);
+    const prior = (await querySettlementRecords("channel-analytics.interpretation-admission", await witnessJournalBinding(options))).filter((entry) => entry.processingContract === contract.id);
     if (prior.length > 1) throw new TypeError("analytics processing contract has conflicting interpretation history");
     const admittedAt = prior[0]?.admittedAt ?? options.at ?? new Date().toISOString();
     const body = { type: "AnalyticsInterpretation", provider: ACTOR, customer: channel, legalPrincipal: current.currentLegalPrincipal, inputObservation: observation.id, inputDigest: observation.sourceDataDigest, processingContract: contract.id, purpose: contract.purpose, permittedOutputs: [...contract.permittedOutputs], method: analysis.method, attribution: analysis.attribution, findings: [...analysis.findings], limitations: [...analysis.limitations], hypotheses: [...analysis.hypotheses], curiosityCandidates: analysis.curiosityCandidates.map((entry) => ({ question: entry.question, whyItMayMatter: entry.whyItMayMatter, restrictedMeasurementDisclosure: "none" })), platformTruthStatus: "attributed-interpretation-not-platform-truth", researchAuthority: "withheld", retentionUntil: contract.retentionUntil, admittedAt };

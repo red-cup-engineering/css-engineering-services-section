@@ -9,8 +9,8 @@ import { admitJsonSemanticContent, EMPTY_WITNESS_ROOT, identifyJsonSemanticConte
 const A2A_JSON_OBJECT_KIND = "rsc-quiescent.a2a-json";
 const semanticBytes = (value) => identifyJsonSemanticContent({ objectKind: A2A_JSON_OBJECT_KIND, value, witnessRoot: EMPTY_WITNESS_ROOT }).bytes;
 const decodeSemantic = (bytes) => admitJsonSemanticContent({ bytes, objectKind: A2A_JSON_OBJECT_KIND }).value;
-import { querySettlementRecords } from "@red-cup-engineering/witness-journal-rdf-projection-service/client";
-import { startWitnessJournalProviderProcess } from "@red-cup-engineering/witness-journal-rdf-projection-service/test-provider";
+import { querySettlementRecords, recordSettlementRecord } from "@red-cup-engineering/witness-journal-document-service";
+import { startWitnessJournalProviderProcess } from "@red-cup-engineering/witness-journal-document-service/test-provider";
 import { executeCommissionProcessingMessage } from "../src/a2a-commission-processing-executor.mjs";
 import { ACTOR, NODE_ROOT, contentId } from "../src/broker.mjs";
 import { processCommission } from "../src/process-commission.mjs";
@@ -35,8 +35,8 @@ test("processing is content-identically replayable and creates only one interpre
   const { options } = await fixture(t), first = await processCommission({ channel: CHANNEL, commission: `urn:sha256:${"c".repeat(64)}` }, options), replay = await processCommission({ channel: CHANNEL, commission: `urn:sha256:${"c".repeat(64)}` }, { ...options, at: "2096-07-22T12:00:00.000Z" });
   assert.equal(replay.interpretation.id, first.interpretation.id);
   assert.equal(replay.offer.id, first.offer.id);
-  assert.equal((await querySettlementRecords("channel-analytics.interpretation-admission")).length, 1);
-  assert.equal((await querySettlementRecords("channel-analytics.curiosity-candidate-offer")).length, 1);
+  assert.equal((await querySettlementRecords("channel-analytics.interpretation-admission", { agentUrl: options.witnessJournalAgentUrl })).length, 1);
+  assert.equal((await querySettlementRecords("channel-analytics.curiosity-candidate-offer", { agentUrl: options.witnessJournalAgentUrl })).length, 1);
 });
 
 test("a noncanonical historical carrier is preserved but does not mask the one canonical replay", async (t) => {
@@ -44,11 +44,10 @@ test("a noncanonical historical carrier is preserved but does not mask the one c
   delete malformedObject.id;
   const malformed = exact({ type: "Offer", actor: ACTOR, object: malformedObject, published: "2096-07-20T12:00:00.000Z" });
   await options.client.pickup();
-  const { createSettlementStore } = await import("@red-cup-engineering/witness-journal-rdf-projection-service/client");
-  await createSettlementStore({ settlementRoot: NODE_ROOT, agentUrl: options.witnessJournalAgentUrl }).record({ category: "channel-analytics.curiosity-candidate-offer", recordedAt: AT, record: { ...malformed } });
+  await recordSettlementRecord({ agentUrl: options.witnessJournalAgentUrl, settlement: null, actor: ACTOR, category: "channel-analytics.curiosity-candidate-offer", recordedAt: AT, record: { ...malformed } });
   const replay = await processCommission({ channel: CHANNEL, commission: `urn:sha256:${"c".repeat(64)}` }, { ...options, at: "2096-07-22T12:00:00.000Z" });
   assert.equal(replay.offer.id, first.offer.id);
-  assert.equal((await querySettlementRecords("channel-analytics.curiosity-candidate-offer")).length, 2);
+  assert.equal((await querySettlementRecords("channel-analytics.curiosity-candidate-offer", { agentUrl: options.witnessJournalAgentUrl })).length, 2);
 });
 
 test("the signed operation returns only bounded product identities", async (t) => {

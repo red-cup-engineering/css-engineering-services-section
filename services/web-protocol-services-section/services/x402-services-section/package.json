@@ -23,7 +23,7 @@
     "verify-public-reference": "node src/verify-public-x402-boundary-reference.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/semantic-content-identify-service": "0.2.2",
+    "@red-cup-engineering/semantic-content-identify-service": "workspace:*",
     "@x402/core": "2.19.0",
     "@x402/evm": "2.19.0",
     "@x402/express": "2.19.0",

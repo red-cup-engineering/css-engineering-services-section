@@ -11,6 +11,6 @@
   },
   "description": "metered-compute-payment-service sovereign enterprise",
   "dependencies": {
-    "@red-cup-engineering/semantic-content-identify-service": "0.2.2"
+    "@red-cup-engineering/semantic-content-identify-service": "workspace:*"
   }
 }

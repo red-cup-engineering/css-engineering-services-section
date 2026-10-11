@@ -11,8 +11,5 @@
   "scripts": {
     "check": "node --check src/authority-custody.mjs && node --check src/alpaca-connect-oauth.mjs"
   },
-  "dependencies": {
-    "@red-cup-engineering/authority-custody-actuator": "1.0.0"
-  },
   "description": "brokerage-authority-custody-service sovereign enterprise"
 }

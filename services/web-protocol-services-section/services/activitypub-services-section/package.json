@@ -57,7 +57,7 @@
     "@red-cup-engineering/json-schema-services-section": "workspace:*",
     "@red-cup-engineering/relation-model-notation-cbor-codec": "workspace:*",
     "@red-cup-engineering/relation-model-notation-json-codec": "workspace:*",
-    "@red-cup-engineering/semantic-content-identify-service": "0.2.2",
+    "@red-cup-engineering/semantic-content-identify-service": "workspace:*",
     "ethers": "6.17.0",
     "@red-cup-engineering/uri-services-section": "workspace:*"
   },

@@ -1,6 +1,4 @@
-import { EMPTY_WITNESS_ROOT, identifyNormalizedSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
-import { inferTy } from "@red-cup-engineering/relation-model-notation-typing";
-import { encodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
+import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
 
 export const ACTOR = "urn:ame:youtube-public-channel-feed-observation-cell";
 const CHANNEL = /^UC[A-Za-z0-9_-]{20,}$/u;
@@ -55,8 +53,7 @@ export async function observeYouTubePublicChannelFeed(request, providers, option
   if (typeof request.requestId !== "string" || request.requestId.trim() === "") throw new TypeError("requestId must be nonempty text");
   if (!CHANNEL.test(request.channelId)) throw new TypeError("channelId must be one immutable YouTube UC identity");
   if (!providers || typeof providers.observe !== "function" || typeof providers.record !== "function") throw new TypeError("public-web observation and WitnessJournal providers are required");
-  const encoded = encodeRelationalValue(request), term = ["ascribe", encoded.type, encoded.term];
-  const requestId = identifyNormalizedSemanticContent({ objectKind: "youtube.public-channel-feed-observation-request", semanticType: inferTy([], term), term, witnessRoot: EMPTY_WITNESS_ROOT }).token;
+  const requestId = identifyJsonSemanticContent({ objectKind: "youtube.public-channel-feed-observation-request", value: request, witnessRoot: EMPTY_WITNESS_ROOT }).token;
   const sourceUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(request.channelId)}`;
   const venue = await providers.observe({ sourceUrl, channelId: request.channelId });
   exact(venue, ["sourceUrl", "observedAt", "xml"], "venue observation");
