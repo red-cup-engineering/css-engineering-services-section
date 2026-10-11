@@ -27,7 +27,8 @@
     "@red-cup-engineering/x402-services-section": "workspace:*",
     "express": "5.2.1",
     "@red-cup-engineering/strategy-program-synthesis-work-lot-service": "workspace:*",
-    "@red-cup-engineering/strategy-program-candidate-assay-service": "workspace:*"
+    "@red-cup-engineering/strategy-program-candidate-assay-service": "workspace:*",
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*"
   },
   "peerDependencies": {
     "@red-cup-engineering/deterministic-report-graphic-service": "0.1.1",

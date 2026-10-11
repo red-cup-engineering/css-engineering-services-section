@@ -18,9 +18,9 @@
     "@red-cup-engineering/alpha-portfolio-order-intent-service": "workspace:*",
     "@red-cup-engineering/alpaca-services-section": "workspace:*",
     "@red-cup-engineering/semiotic-eavt-services-section": "workspace:*",
-    "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*",
     "@red-cup-engineering/eavt-services-section": "workspace:*",
     "@red-cup-engineering/principal-brokerage-interface": "workspace:*",
-    "@red-cup-engineering/witness-journal-document-service": "workspace:*"
+    "@red-cup-engineering/witness-journal-document-service": "workspace:*",
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*"
   }
 }

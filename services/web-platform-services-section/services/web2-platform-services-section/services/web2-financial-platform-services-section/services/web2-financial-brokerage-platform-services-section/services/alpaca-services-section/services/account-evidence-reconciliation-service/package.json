@@ -12,6 +12,6 @@
   },
   "description": "account-evidence-reconciliation-service sovereign enterprise",
   "dependencies": {
-    "@red-cup-engineering/semantic-content-identify-service": "workspace:*"
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*"
   }
 }

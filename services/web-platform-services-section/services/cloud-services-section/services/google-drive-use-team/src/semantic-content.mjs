@@ -1,4 +1,4 @@
-import { admitJsonSemanticContent, EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
+import { admitJsonSemanticContent, EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 
 export function identifyGoogleDriveTerm(value, objectKind) {
   if (typeof objectKind !== "string" || objectKind.length === 0) throw new TypeError("Google Drive semantic content requires an explicit local object kind");

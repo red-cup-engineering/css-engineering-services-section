@@ -1,4 +1,4 @@
-import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
+import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 
 export const ACTOR = "urn:ame:youtube-public-channel-feed-observation-cell";
 const CHANNEL = /^UC[A-Za-z0-9_-]{20,}$/u;

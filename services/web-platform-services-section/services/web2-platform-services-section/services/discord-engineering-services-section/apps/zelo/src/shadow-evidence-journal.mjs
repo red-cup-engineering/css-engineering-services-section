@@ -1,7 +1,7 @@
 import { chmod, mkdir, open, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { validateCommunityConfigurationReconciliation } from "./reconciliation.mjs";
-import { semanticHex } from "@red-cup-engineering/computer-content-engineering-services-section/semiotic-content-address";
+import { semanticHex } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
 
 const instant = (value, label) => { if (!Number.isFinite(Date.parse(value))) throw new TypeError(`${label} must be an ISO timestamp`); return new Date(value).toISOString(); };
 async function assertPrivateFile(file) {

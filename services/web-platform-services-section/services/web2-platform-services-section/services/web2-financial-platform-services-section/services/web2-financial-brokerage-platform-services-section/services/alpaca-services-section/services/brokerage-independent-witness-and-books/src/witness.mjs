@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
 import { recordWitnessJournalBatch, relationalWitnessJournalDocument } from "@red-cup-engineering/witness-journal-document-service";
-import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
+import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 
 const semanticId = (value) => identifyJsonSemanticContent({ objectKind: "brokerage.independent-witness-and-books.record", value, witnessRoot: EMPTY_WITNESS_ROOT }).id;
 export function witnessBrokerageOutcome({ originatingActor, witnessActor = "urn:ame:brokerage-independent-witness-and-books", inputs, output, externalEvidence, observedAt }) {

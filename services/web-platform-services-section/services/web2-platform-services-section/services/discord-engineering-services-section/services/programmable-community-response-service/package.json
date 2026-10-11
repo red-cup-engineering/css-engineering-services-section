@@ -19,7 +19,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*",
     "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "workspace:*"
   }
 }

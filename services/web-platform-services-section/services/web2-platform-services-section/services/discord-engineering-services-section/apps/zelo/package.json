@@ -11,7 +11,6 @@
   },
   "exports": {},
   "dependencies": {
-    "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*",
     "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "workspace:*",
     "@red-cup-engineering/discord-community-automation-service": "workspace:*",
     "@red-cup-engineering/discord-community-moderation-planning-service": "workspace:*",
@@ -21,6 +20,7 @@
     "@red-cup-engineering/computer-file-engineering-services-section": "workspace:*",
     "@red-cup-engineering/http-services-section": "workspace:*",
     "@red-cup-engineering/json-services-section": "workspace:*",
-    "@red-cup-engineering/programmable-community-response-service": "workspace:*"
+    "@red-cup-engineering/programmable-community-response-service": "workspace:*",
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*"
   }
 }

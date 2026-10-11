@@ -12,6 +12,6 @@
   },
   "description": "Exact opaque-grant consumption boundary for Union brokerage product consideration.",
   "dependencies": {
-    "@red-cup-engineering/semantic-content-identify-service": "workspace:*"
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*"
   }
 }

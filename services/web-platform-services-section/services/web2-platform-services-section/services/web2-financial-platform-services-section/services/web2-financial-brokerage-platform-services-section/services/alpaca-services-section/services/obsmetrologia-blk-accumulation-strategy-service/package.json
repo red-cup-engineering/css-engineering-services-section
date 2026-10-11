@@ -9,6 +9,6 @@
     "./src/strategy.mjs": "./src/strategy.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/semantic-content-identify-service": "workspace:*"
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*"
   }
 }
