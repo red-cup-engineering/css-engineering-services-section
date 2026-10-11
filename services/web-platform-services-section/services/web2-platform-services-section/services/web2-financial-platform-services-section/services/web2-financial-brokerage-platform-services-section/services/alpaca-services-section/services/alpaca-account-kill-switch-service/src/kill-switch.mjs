@@ -19,27 +19,86 @@ import { dirname } from "node:path";
 export const DRAWDOWN_TRIP_THRESHOLD = 0.10; // 10%
 export const DAILY_LOSS_TRIP_THRESHOLD = 0.03; // 3%
 
+// Alpaca resets a paper account's equity to a round starting figure (its
+// dashboard default is $100,000) whenever the operator resets the paper
+// account. That reset is a bookkeeping discontinuity, not a trading loss --
+// a persisted high-water mark from before the reset makes the very next
+// reading look like a catastrophic drawdown (see the 2026-07-23 incident:
+// priorHighWaterMark 200000, equity 100014.23, read as a 49.993% drawdown).
+// PAPER_ACCOUNT_RESET_BASELINE is that known reset figure; RESET_TOLERANCE
+// is how close current equity must land to it (as a fraction of the
+// baseline) to be treated as a reset rather than a real loss -- tight
+// enough (2%) that a coincidental real drawdown landing near $100k from a
+// higher high-water mark still trips, since 2% is a fifth of the 10%
+// drawdown threshold itself.
+export const PAPER_ACCOUNT_RESET_BASELINE = 100_000;
+export const PAPER_ACCOUNT_RESET_TOLERANCE = 0.02; // 2% of the baseline
+
+/**
+ * True when current equity lands within tolerance of the configured paper
+ * reset baseline while the prior high-water mark sits meaningfully above
+ * it -- the signature of an account reset (e.g. equity landing near $100k
+ * after a high-water mark left over from a higher pre-reset balance, such
+ * as the $200k -> ~$100k halving on 2026-07-23) rather than of the account
+ * having actually traded down to that level.
+ */
+export function isAccountResetDiscontinuity({
+  equity,
+  priorHighWaterMark,
+  baseline = PAPER_ACCOUNT_RESET_BASELINE,
+  tolerance = PAPER_ACCOUNT_RESET_TOLERANCE,
+}) {
+  if (!Number.isFinite(equity) || !Number.isFinite(priorHighWaterMark) || priorHighWaterMark <= 0) {
+    return false;
+  }
+  const withinBaselineTolerance = Math.abs(equity - baseline) <= baseline * tolerance;
+  const priorMarkAboveBaseline = priorHighWaterMark > baseline * (1 + tolerance);
+  return withinBaselineTolerance && priorMarkAboveBaseline;
+}
+
 /**
  * Pure evaluation: given current equity, the account's own last-close
  * equity, and the prior persisted high-water mark, compute drawdown and
  * daily-loss fractions and whether either trips the kill switch.
  *
- * Returns the *effective* (possibly ratcheted-up) high-water mark alongside
- * the reading so callers can persist it without recomputing.
+ * Returns the *effective* (possibly ratcheted-up, or reset-rebaselined)
+ * high-water mark alongside the reading so callers can persist it without
+ * recomputing. When an account-reset discontinuity is detected (see
+ * isAccountResetDiscontinuity), the high-water mark is rebaselined to
+ * current equity instead of measuring drawdown against the stale
+ * pre-reset mark, and the daily-loss leg (which would suffer the identical
+ * false positive against a pre-reset lastEquity) is skipped for this
+ * reading too.
  */
-export function evaluateKillSwitch({ equity, lastEquity, priorHighWaterMark }) {
+export function evaluateKillSwitch({
+  equity,
+  lastEquity,
+  priorHighWaterMark,
+  paperResetBaseline = PAPER_ACCOUNT_RESET_BASELINE,
+  paperResetTolerance = PAPER_ACCOUNT_RESET_TOLERANCE,
+}) {
   if (!Number.isFinite(equity) || equity <= 0) {
     throw new Error(`kill-switch-invalid-equity:${equity}`);
   }
   const baselineHighWaterMark = Number.isFinite(priorHighWaterMark) && priorHighWaterMark > 0
     ? priorHighWaterMark
     : equity;
-  const effectiveHighWaterMark = Math.max(baselineHighWaterMark, equity);
-  const drawdownPct = effectiveHighWaterMark > 0
+
+  const resetDetected = isAccountResetDiscontinuity({
+    equity,
+    priorHighWaterMark: baselineHighWaterMark,
+    baseline: paperResetBaseline,
+    tolerance: paperResetTolerance,
+  });
+
+  const effectiveHighWaterMark = resetDetected
+    ? equity
+    : Math.max(baselineHighWaterMark, equity);
+  const drawdownPct = !resetDetected && effectiveHighWaterMark > 0
     ? (effectiveHighWaterMark - equity) / effectiveHighWaterMark
     : 0;
 
-  const hasLastEquity = Number.isFinite(lastEquity) && lastEquity > 0;
+  const hasLastEquity = !resetDetected && Number.isFinite(lastEquity) && lastEquity > 0;
   const dailyPnlPct = hasLastEquity ? (equity - lastEquity) / lastEquity : 0;
   const dailyLossPct = dailyPnlPct < 0 ? -dailyPnlPct : 0;
 
@@ -54,6 +113,15 @@ export function evaluateKillSwitch({ equity, lastEquity, priorHighWaterMark }) {
     reasons.push(`daily loss ${(dailyLossPct * 100).toFixed(3)}% exceeds ${(DAILY_LOSS_TRIP_THRESHOLD * 100).toFixed(0)}% day-start-equity limit`);
   }
 
+  const notes = [];
+  if (resetDetected) {
+    notes.push(
+      `account-reset discontinuity: equity ${equity.toFixed(2)} landed within ${(paperResetTolerance * 100).toFixed(0)}% of the ` +
+      `configured paper reset baseline ${paperResetBaseline.toFixed(2)} while the prior high-water mark was ${baselineHighWaterMark.toFixed(2)}; ` +
+      "rebaselined instead of tripping",
+    );
+  }
+
   return {
     equity,
     lastEquity: hasLastEquity ? lastEquity : null,
@@ -62,8 +130,10 @@ export function evaluateKillSwitch({ equity, lastEquity, priorHighWaterMark }) {
     drawdownPct,
     dailyPnlPct,
     dailyLossPct,
+    resetDetected,
     tripped: drawdownTripped || dailyLossTripped,
     reasons,
+    notes,
   };
 }
 
