@@ -7,12 +7,12 @@ import { SOVEREIGN_CIRCUIT_INTERFACE_EXTENSION } from "@red-cup-engineering/infe
 import { extractRmnPart, userRmnMessage } from "@red-cup-engineering/a2a-rmn-part-service";
 import { a2aResultMetadata, a2aResultParts, sendRmnTask } from "@red-cup-engineering/a2a-rmn-task-client-service";
 import { normalizeDeltaPacket, renderDeterministicReportGraphic } from "@red-cup-engineering/deterministic-report-graphic-service/renderer";
-import { formIssuerEvidencePacket, validateIssuerEvidenceRequest } from "@rsc-quiescent/issuer-research-media-service";
-import { formAggressivePortfolioIntent, validateAggressivePortfolioIntentRequest } from "@rsc-quiescent/alpha-portfolio-order-intent-service";
-import { normalizeAlpacaSnapshot, reconcileSnapshots } from "@rsc-quiescent/account-evidence-reconciliation-service";
+import { formIssuerEvidencePacket, validateIssuerEvidenceRequest } from "@red-cup-engineering/issuer-research-media-service";
+import { formAggressivePortfolioIntent, validateAggressivePortfolioIntentRequest } from "@red-cup-engineering/alpha-portfolio-order-intent-service";
+import { normalizeAlpacaSnapshot, reconcileSnapshots } from "@red-cup-engineering/account-evidence-reconciliation-service";
 import { createStrategySynthesisProvider } from "./strategy-synthesis-provider.mjs";
-import { createAlpacaPrincipalAccountReadService } from "@rsc-quiescent/alpaca-principal-account-read-service";
-import { createBrokerageMarketEventRecorder } from "@rsc-quiescent/brokerage-independent-witness-and-books";
+import { createAlpacaPrincipalAccountReadService } from "@red-cup-engineering/alpaca-principal-account-read-service";
+import { createBrokerageMarketEventRecorder } from "@red-cup-engineering/brokerage-independent-witness-and-books";
 import { computeDailyReadingTerm } from "@lenticule-science/divination-computer-system-service/rmn-daily-reading";
 import {
   ACCOUNT as DIVINATION_ACCOUNT,

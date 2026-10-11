@@ -1,10 +1,10 @@
 {
-  "name": "@rsc-quiescent/market-funded-strategy-improvement-service",
+  "name": "@red-cup-engineering/market-funded-strategy-improvement-service",
   "private": true,
   "type": "module",
   "exports": "./src/market-funded-improvement.mjs",
   "version": "0.1.1",
   "dependencies": {
-    "@rsc-quiescent/strategy-evaluation-service": "0.1.1"
+    "@red-cup-engineering/strategy-evaluation-service": "0.1.1"
   }
 }

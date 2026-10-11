@@ -1,5 +1,5 @@
 {
-  "name": "@rsc-quiescent/correlation-graph-measurement-service",
+  "name": "@red-cup-engineering/correlation-graph-measurement-service",
   "version": "0.1.0",
   "private": true,
   "type": "module",

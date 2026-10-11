@@ -1,0 +1,36 @@
+{
+  "name": "@red-cup-engineering/assisted-browser-services-section",
+  "version": "0.2.0",
+  "type": "module",
+  "description": "The browser a person at the node helps an agent in: a visible window (Windows Edge over CDP under WSL), overlay guides for the steps only a person may do, and the house's signed-in sessions at outside web portals, kept private and reused headless.",
+  "exports": {
+    "./session-custody": "./src/session-custody.mjs",
+    "./accounts": "./src/accounts.mjs",
+    "./assist": "./src/assist.mjs",
+    "./discovery": "./src/discovery.mjs",
+    "./window": "./src/window.mjs",
+    "./person": "./src/person.mjs",
+    "./recaptcha": "./src/recaptcha.mjs"
+  },
+  "bin": {
+    "assisted-sign-in": "scripts/assisted-sign-in.mjs",
+    "portal-discover": "scripts/portal-discover.mjs"
+  },
+  "files": [
+    "src",
+    "scripts"
+  ],
+  "dependencies": {
+    "@red-cup-engineering/credential-custody-service": "workspace:*",
+    "playwright": "1.62.1"
+  },
+  "scripts": {
+    "sign-in": "node scripts/assisted-sign-in.mjs",
+    "discover": "node scripts/portal-discover.mjs",
+    "check": "for f in src/*.mjs scripts/*.mjs; do node --check \"$f\" || exit 1; done"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "license": "UNLICENSED"
+}

@@ -2,7 +2,7 @@ import express from "express";
 import { CDP_FACILITATOR_URL, createCdpFacilitatorContract, createExactEvmPaymentBoundary, declareDiscoveryExtension } from "@red-cup-engineering/x402-services-section/server";
 import { assertNoCommercialCredentials } from "./http-border.mjs";
 import { createBrokerageX402SettlementWitness } from "./settlement-witness.mjs";
-import { createBrokerageOutcomeWitnessRecorder } from "@rsc-quiescent/brokerage-independent-witness-and-books";
+import { createBrokerageOutcomeWitnessRecorder } from "@red-cup-engineering/brokerage-independent-witness-and-books";
 
 export const ROUTES = Object.freeze({
   issuer: "/v1/issuer-evidence", alpha: "/v1/aggressive-alpha", paperIntent: "/v1/paper-intent", reconcile: "/v1/reconcile", alpacaRead: "/v1/alpaca/read", execution: "/v1/alpaca/execute",

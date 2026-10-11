@@ -1,5 +1,5 @@
 {
-  "name": "@rsc-quiescent/brokerage-execution-transport-service",
+  "name": "@red-cup-engineering/brokerage-execution-transport-service",
   "version": "0.1.2",
   "private": true,
   "type": "module",
@@ -13,6 +13,6 @@
   "description": "brokerage-execution-transport-service sovereign enterprise",
   "dependencies": {
     "@red-cup-engineering/semantic-content-identify-service": "0.2.2",
-    "@rsc-quiescent/strategy-evaluation-service": "0.1.2"
+    "@red-cup-engineering/strategy-evaluation-service": "0.1.2"
   }
 }

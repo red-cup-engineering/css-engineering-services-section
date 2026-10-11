@@ -1,4 +1,4 @@
-import { canonical, contentId, deepFreeze, evaluateStrategyCandidate, freezeTrustedActorKeys, identify, validateReplayDataset, validateReplayDatasetAssay, validateStrategyCandidate, verifyRecord, verifySignedRecord } from "@rsc-quiescent/strategy-evaluation-service";
+import { canonical, contentId, deepFreeze, evaluateStrategyCandidate, freezeTrustedActorKeys, identify, validateReplayDataset, validateReplayDatasetAssay, validateStrategyCandidate, verifyRecord, verifySignedRecord } from "@red-cup-engineering/strategy-evaluation-service";
 const digest = (v, label) => { if (typeof v !== "string" || !/^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u.test(v)) throw new TypeError(`${label}-digest-invalid`); return v; };
 const when = (v, label) => { const n = Date.parse(v); if (!Number.isFinite(n)) throw new TypeError(`${label}-time-invalid`); return n; };
 const amt = (v, label, zero = false) => { if (typeof v !== "string" || !/^(?:0|[1-9]\d*)(?:\.\d*[1-9])?$/u.test(v) || (!zero && v === "0")) throw new TypeError(`${label}-amount-invalid`); return v; };

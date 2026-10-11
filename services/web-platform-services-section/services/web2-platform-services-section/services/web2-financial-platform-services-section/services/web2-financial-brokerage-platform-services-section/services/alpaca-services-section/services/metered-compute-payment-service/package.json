@@ -1,5 +1,5 @@
 {
-  "name": "@rsc-quiescent/metered-compute-payment-service",
+  "name": "@red-cup-engineering/metered-compute-payment-service",
   "version": "0.1.3",
   "private": true,
   "type": "module",

@@ -1,0 +1,25 @@
+{
+  "name": "@red-cup-engineering/programmable-community-response-service",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Transport-free declarative community command, tag, and trigger response planning.",
+  "exports": {
+    ".": {
+      "import": "./src/index.mjs"
+    }
+  },
+  "scripts": {
+    "check": "node --check src/community-response.mjs && node --check src/index.mjs",
+    "build": "npm run check",
+    "test": "node --test test/*.test.mjs",
+    "test:clean": "node scripts/clean-copy-check.mjs"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "workspace:*"
+  }
+}

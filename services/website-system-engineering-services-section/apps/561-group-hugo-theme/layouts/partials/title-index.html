@@ -1,0 +1,36 @@
+{{- /* Build a map of lowercased titles/aliases/defines → RelPermalink.
+       Called via partialCached so this runs exactly once per build. */ -}}
+{{- $index := dict -}}
+{{- range .RegularPages -}}
+  {{- $url := .RelPermalink -}}
+  {{- with .Title -}}
+    {{- $lower := lower . -}}
+    {{- if not (index $index $lower) -}}
+      {{- $index = merge $index (dict $lower $url) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with .Params.aliases -}}
+    {{- range . -}}
+      {{- $lower := lower . -}}
+      {{- if not (index $index $lower) -}}
+        {{- $index = merge $index (dict $lower $url) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with .Params.defines -}}
+    {{- if reflect.IsSlice . -}}
+      {{- range . -}}
+        {{- $lower := lower . -}}
+        {{- if not (index $index $lower) -}}
+          {{- $index = merge $index (dict $lower $url) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- else -}}
+      {{- $lower := lower . -}}
+      {{- if not (index $index $lower) -}}
+        {{- $index = merge $index (dict $lower $url) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $index -}}

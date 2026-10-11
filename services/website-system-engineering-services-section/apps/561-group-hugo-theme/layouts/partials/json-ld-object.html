@@ -1,0 +1,227 @@
+{{- /*  Build the JSON-LD object for a page (returns a dict).
+        Used by:
+          - json-ld.html (inline <script> on single pages)
+          - single.jsonld.json (standalone .jsonld file output)
+          - json-ld-list.html and list.jsonld.json (collection pages)
+
+        Schema:
+          - schema.org as primary context, augmented with skos: prefix
+            so DefinedTerm pages can co-type as skos:Concept and emit
+            skos:broader / skos:narrower / skos:related / skos:definition
+            / skos:prefLabel / skos:altLabel.
+          - .Params.references → citation: [...] array, with each entry's
+            url pointing to the internal page when frontmatter has link-to.
+          - inDefinedTermSet @id resolves to the parent's permalink.
+          - .Params.authors entities include url + sameAs when resolvable.
+          - Site.Params.sameAs flows into the home Person.            */ -}}
+
+{{- $titleIndex := partialCached "title-index.html" .Site -}}
+
+{{- $type := .Params.type | default "" -}}
+{{- $schemaType := "Article" -}}
+{{- $isTerm := false -}}
+{{- if or (eq $type "term") (eq $type "definition") (eq $type "concept") }}{{ $schemaType = "DefinedTerm" }}{{ $isTerm = true }}
+{{- else if eq $type "babble" }}{{ $schemaType = "BlogPosting" }}
+{{- else if eq $type "letter" }}{{ $schemaType = "Article" }}
+{{- else if eq $type "text" }}{{ $schemaType = "Article" }}
+{{- else if eq $type "lesson" }}{{ $schemaType = "LearningResource" }}
+{{- else if eq $type "skill" }}{{ $schemaType = "HowTo" }}
+{{- else if eq $type "question" }}{{ $schemaType = "Question" }}
+{{- else if or (eq $type "theorem") (eq $type "proof") (eq $type "lemma") (eq $type "corollary") (eq $type "axiom") (eq $type "conjecture") (eq $type "proposition") }}{{ $schemaType = "ScholarlyArticle" }}
+{{- else if or (eq $type "claim") (eq $type "argument") (eq $type "objection") (eq $type "position") (eq $type "response") }}{{ $schemaType = "ScholarlyArticle" }}
+{{- else if or (eq $type "index") (eq $type "topic") }}{{ $schemaType = "CollectionPage" }}
+{{- end -}}
+
+{{- /* Multi-context: schema.org + skos prefix */ -}}
+{{- $context := slice "https://schema.org" (dict "skos" "http://www.w3.org/2004/02/skos/core#" "emsenn" "https://emsenn.net/vocab#") -}}
+
+{{- /* Co-type DefinedTerm pages with skos:Concept */ -}}
+{{- $typeValue := $schemaType -}}
+{{- if $isTerm -}}
+  {{- $typeValue = slice "DefinedTerm" "skos:Concept" -}}
+{{- end -}}
+
+{{- $ld := dict "@context" $context "@type" $typeValue -}}
+{{- $ld = merge $ld (dict "@id" .Permalink) -}}
+{{- $ld = merge $ld (dict "name" .Title) -}}
+{{- $ld = merge $ld (dict "url" .Permalink) -}}
+
+{{- if $isTerm }}
+  {{- $ld = merge $ld (dict "skos:prefLabel" .Title) -}}
+  {{- with .Params.aliases -}}
+    {{- $ld = merge $ld (dict "skos:altLabel" .) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with .Date -}}
+  {{- $ld = merge $ld (dict "datePublished" (.Format "2006-01-02")) -}}
+{{- end -}}
+
+{{- with .Params.dateUpdated -}}
+  {{- $ld = merge $ld (dict "dateModified" (time.AsTime . | time.Format "2006-01-02")) -}}
+{{- else -}}
+  {{- with $.Date -}}
+    {{- $ld = merge $ld (dict "dateModified" (.Format "2006-01-02")) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with .Description -}}
+  {{- $ld = merge $ld (dict "description" .) -}}
+  {{- if $isTerm -}}
+    {{- $ld = merge $ld (dict "skos:definition" .) -}}
+  {{- end -}}
+{{- else -}}
+  {{- with .Plain -}}
+    {{- $ld = merge $ld (dict "description" (truncate 240 (plainify .))) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Authors with sameAs resolution */ -}}
+{{- with .Params.authors -}}
+  {{- $authors := slice -}}
+  {{- range . -}}
+    {{- $name := printf "%v" . -}}
+    {{- $author := dict "@type" "Person" "name" $name -}}
+    {{- /* Resolve author name to a person page if title-index has one */ -}}
+    {{- $url := index $titleIndex (lower $name) -}}
+    {{- if $url -}}
+      {{- $author = merge $author (dict "url" (printf "%s%s" (strings.TrimSuffix "/" $.Site.BaseURL) $url)) -}}
+    {{- end -}}
+    {{- $authors = $authors | append $author -}}
+  {{- end -}}
+  {{- if eq (len $authors) 1 -}}
+    {{- $ld = merge $ld (dict "author" (index $authors 0)) -}}
+  {{- else -}}
+    {{- $ld = merge $ld (dict "author" $authors) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with .Params.tags -}}
+  {{- $ld = merge $ld (dict "keywords" (delimit . ", ")) -}}
+{{- end -}}
+
+{{- /* DefinedTerm-specific */ -}}
+{{- if $isTerm -}}
+  {{- with .Params.defines -}}
+    {{- if reflect.IsSlice . -}}
+      {{- $ld = merge $ld (dict "termCode" (delimit . ", ")) -}}
+    {{- else -}}
+      {{- $ld = merge $ld (dict "termCode" .) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with .Parent -}}
+    {{- $ld = merge $ld (dict "inDefinedTermSet" (dict "@type" "DefinedTermSet" "@id" .Permalink "name" .Title "url" .Permalink)) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* SKOS hierarchy for term pages, mapped from typed relations */ -}}
+{{- if $isTerm -}}
+  {{- $base := strings.TrimSuffix "/" $.Site.BaseURL -}}
+  {{- $broader := slice -}}
+  {{- with .Params.componentOf -}}{{ $broader = $broader | append . }}{{ end -}}
+  {{- with index .Params "component-of" -}}{{ $broader = $broader | append . }}{{ end -}}
+  {{- with .Params.partOf -}}{{ $broader = $broader | append . }}{{ end -}}
+  {{- with index .Params "part-of" -}}{{ $broader = $broader | append . }}{{ end -}}
+  {{- $broaderUris := slice -}}
+  {{- range $broader -}}
+    {{- $url := index $titleIndex (lower (printf "%v" .)) -}}
+    {{- if $url -}}{{ $broaderUris = $broaderUris | append (printf "%s%s" $base $url) }}{{ end -}}
+  {{- end -}}
+  {{- with $broaderUris -}}
+    {{- if eq (len .) 1 -}}{{ $ld = merge $ld (dict "skos:broader" (index . 0)) }}
+    {{- else -}}{{ $ld = merge $ld (dict "skos:broader" .) }}{{ end -}}
+  {{- end -}}
+
+  {{- $narrower := slice -}}
+  {{- with .Params.contains -}}
+    {{- if reflect.IsSlice . -}}{{ range . -}}{{ $narrower = $narrower | append . }}{{ end }}
+    {{- else -}}{{ $narrower = $narrower | append . }}{{ end -}}
+  {{- end -}}
+  {{- $narrowerUris := slice -}}
+  {{- range $narrower -}}
+    {{- $url := index $titleIndex (lower (printf "%v" .)) -}}
+    {{- if $url -}}{{ $narrowerUris = $narrowerUris | append (printf "%s%s" $base $url) }}{{ end -}}
+  {{- end -}}
+  {{- with $narrowerUris -}}{{ $ld = merge $ld (dict "skos:narrower" .) }}{{ end -}}
+
+  {{- $relatedKeys := slice "related" "related-to" "see-also" -}}
+  {{- $relatedUris := slice -}}
+  {{- range $relatedKeys -}}
+    {{- $vals := index $.Params . -}}
+    {{- with $vals -}}
+      {{- if reflect.IsSlice . -}}
+        {{- range . -}}
+          {{- $url := index $titleIndex (lower (printf "%v" .)) -}}
+          {{- if $url -}}{{ $relatedUris = $relatedUris | append (printf "%s%s" $base $url) }}{{ end -}}
+        {{- end -}}
+      {{- else -}}
+        {{- $url := index $titleIndex (lower (printf "%v" .)) -}}
+        {{- if $url -}}{{ $relatedUris = $relatedUris | append (printf "%s%s" $base $url) }}{{ end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $relatedUris -}}{{ $ld = merge $ld (dict "skos:related" .) }}{{ end -}}
+{{- end -}}
+
+{{- /* LearningResource educational properties */ -}}
+{{- if eq $schemaType "LearningResource" -}}
+  {{- with .Params.teaches -}}
+    {{- $teaches := slice -}}
+    {{- range . -}}
+      {{- $teaches = $teaches | append (dict "@type" "DefinedTerm" "name" .) -}}
+    {{- end -}}
+    {{- $ld = merge $ld (dict "teaches" $teaches) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* part-of / component-of as schema:isPartOf */ -}}
+{{- with .Params.partOf -}}
+  {{- $ld = merge $ld (dict "isPartOf" (dict "@type" "CreativeWork" "name" .)) -}}
+{{- end -}}
+{{- with index .Params "component-of" -}}
+  {{- $url := index $titleIndex (lower (printf "%v" .)) -}}
+  {{- if $url -}}
+    {{- $ld = merge $ld (dict "isPartOf" (dict "@type" "CreativeWork" "@id" (printf "%s%s" (strings.TrimSuffix "/" $.Site.BaseURL) $url) "name" . "url" (printf "%s%s" (strings.TrimSuffix "/" $.Site.BaseURL) $url))) -}}
+  {{- else -}}
+    {{- $ld = merge $ld (dict "isPartOf" (dict "@type" "CreativeWork" "name" .)) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Citations from .Params.references map */ -}}
+{{- with .Params.references -}}
+  {{- if reflect.IsMap . -}}
+    {{- $citations := slice -}}
+    {{- range $key, $ref := . -}}
+      {{- if reflect.IsMap $ref -}}
+        {{- $cite := dict "@type" "CreativeWork" "identifier" $key -}}
+        {{- with $ref.title -}}{{ $cite = merge $cite (dict "name" .) }}{{ end -}}
+        {{- with $ref.authors -}}
+          {{- if reflect.IsSlice . -}}
+            {{- $authorObjs := slice -}}
+            {{- range . -}}{{ $authorObjs = $authorObjs | append (dict "@type" "Person" "name" .) }}{{ end -}}
+            {{- $cite = merge $cite (dict "author" $authorObjs) -}}
+          {{- else -}}
+            {{- $cite = merge $cite (dict "author" (dict "@type" "Person" "name" .)) -}}
+          {{- end -}}
+        {{- end -}}
+        {{- with $ref.year -}}{{ $cite = merge $cite (dict "datePublished" (printf "%v" .)) }}{{ end -}}
+        {{- with $ref.publication -}}{{ $cite = merge $cite (dict "publisher" (dict "@type" "Organization" "name" .)) }}{{ end -}}
+        {{- with $ref.url -}}{{ $cite = merge $cite (dict "url" .) }}{{ end -}}
+        {{- $linkTo := index $ref "link-to" -}}
+        {{- with $linkTo -}}
+          {{- $internal := site.GetPage . -}}
+          {{- if $internal -}}{{ $cite = merge $cite (dict "sameAs" $internal.Permalink) }}{{ end -}}
+        {{- end -}}
+        {{- $citations = $citations | append $cite -}}
+      {{- end -}}
+    {{- end -}}
+    {{- with $citations -}}{{ $ld = merge $ld (dict "citation" .) }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Publisher */ -}}
+{{- $publisher := dict "@type" "Person" "name" $.Site.Params.properName "url" $.Site.Params.canonicalURL -}}
+{{- with $.Site.Params.sameAs -}}{{ $publisher = merge $publisher (dict "sameAs" .) }}{{ end -}}
+{{- $ld = merge $ld (dict "publisher" $publisher) -}}
+
+{{- return $ld -}}

@@ -1,5 +1,5 @@
 {
-  "name": "@rsc-quiescent/causal-tiling-novelty-measurement-service",
+  "name": "@red-cup-engineering/causal-tiling-novelty-measurement-service",
   "version": "0.1.0",
   "private": true,
   "type": "module",

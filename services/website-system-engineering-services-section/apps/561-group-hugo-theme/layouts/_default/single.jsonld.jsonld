@@ -1,0 +1,2 @@
+{{- $ld := partial "json-ld-object.html" . -}}
+{{ $ld | jsonify (dict "indent" "  ") | safeJS }}

@@ -1,0 +1,19 @@
+{{- /*  Breadcrumbs from Hugo section hierarchy.
+        Strips "library" and "domains" segments from the trail.  */ -}}
+{{- $crumbs := slice -}}
+{{- range .Ancestors.Reverse -}}
+  {{- $title := or .Title (.File.ContentBaseName | default "" | humanize) -}}
+  {{- $lower := lower $title -}}
+  {{- if and (ne $lower "") (ne $lower "library") (ne $lower "domains") (not .IsHome) -}}
+    {{- $crumbs = $crumbs | append (dict "title" $title "url" .RelPermalink) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if gt (len $crumbs) 0 -}}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  {{- range $i, $c := $crumbs -}}
+    {{- if $i }} <span class="breadcrumb-sep" aria-hidden="true">&rsaquo;</span> {{ end -}}
+    <a href="{{ $c.url }}">{{ $c.title }}</a>
+  {{- end -}}
+</nav>
+{{- end -}}

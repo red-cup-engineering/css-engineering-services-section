@@ -1,0 +1,12 @@
+{
+  "name": "@red-cup-engineering/slack-engineering-services-section",
+  "version": "0.1.0",
+  "description": "Engineering of Slack as a Web2 bridge messaging plane for the Group's agents and humans: adapters, event normalization into Semioverse envelopes, and GitHub and Drive routing, never the canonical work substrate.",
+  "type": "module",
+  "keywords": [
+    "engineering",
+    "slack",
+    "web2-platform",
+    "messaging-bridge"
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "name": "@rsc-quiescent/causal-portfolio-learning-service",
+  "name": "@red-cup-engineering/causal-portfolio-learning-service",
   "version": "0.1.1",
   "private": true,
   "type": "module",

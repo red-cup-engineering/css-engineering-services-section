@@ -1,0 +1,92 @@
+{{- /*  Emit Turtle triples describing a page.
+
+        Subject: the page's permalink.
+        Type:    derived from .Params.type via schema.org mapping.
+        Triples: title/description/dates from page metadata, plus every
+                 typed-relation predicate from .Params (looked up via
+                 rdfa-property.html). Slug-valued objects are resolved
+                 to URIs via the title-index when possible; otherwise
+                 they are emitted as string literals.
+
+        Map values (e.g. references:) are skipped here; they are emitted
+        as bnodes by partials/turtle-references.html (called from
+        single.ttl.ttl after this partial).                           */ -}}
+
+{{- $titleIndex := partialCached "title-index.html" .Site -}}
+{{- $base := strings.TrimSuffix "/" .Site.BaseURL -}}
+
+{{- /* Schema.org type from .Params.type, mirroring json-ld.html */ -}}
+{{- $type := .Params.type | default "" -}}
+{{- $schemaType := "schema:WebPage" -}}
+{{- if .IsPage }}{{ $schemaType = "schema:Article" }}{{ end -}}
+{{- if or (eq $type "term") (eq $type "definition") (eq $type "concept") }}{{ $schemaType = "schema:DefinedTerm" }}
+{{- else if eq $type "babble" }}{{ $schemaType = "schema:BlogPosting" }}
+{{- else if eq $type "letter" }}{{ $schemaType = "schema:Article" }}
+{{- else if eq $type "text" }}{{ $schemaType = "schema:Article" }}
+{{- else if eq $type "lesson" }}{{ $schemaType = "schema:LearningResource" }}
+{{- else if eq $type "skill" }}{{ $schemaType = "schema:HowTo" }}
+{{- else if eq $type "question" }}{{ $schemaType = "schema:Question" }}
+{{- else if or (eq $type "theorem") (eq $type "proof") (eq $type "lemma") (eq $type "corollary") (eq $type "axiom") (eq $type "conjecture") (eq $type "proposition") }}{{ $schemaType = "schema:ScholarlyArticle" }}
+{{- else if or (eq $type "claim") (eq $type "argument") (eq $type "objection") (eq $type "position") (eq $type "response") }}{{ $schemaType = "schema:ScholarlyArticle" }}
+{{- else if or (eq $type "index") (eq $type "topic") }}{{ $schemaType = "schema:CollectionPage" }}
+{{- end }}
+
+{{- $skipKeys := dict
+  "type" true
+  "aliases" true "slug" true "draft" true "id" true "notoc" true
+  "dg-publish" true "dg-permalink" true
+  "minimum-length" true "recommended-length" true "max-length" true
+  "tone" true "triage-enriched-by" true "date-triage-enriched" true
+  "triage-status" true "publish_to" true "todo" true
+  "license" true
+  "iscjkLanguage" true "weight" true
+  "publishdate" true "expirydate" true
+  "title" true "description" true "summary" true
+  "date-created" true "date-updated" true "date-modified" true "date" true "lastmod" true
+  "references" true
+-}}
+
+<{{ .Permalink }}>
+  rdf:type {{ $schemaType }} ;
+  schema:url <{{ .Permalink }}> ;
+{{- with .Title }}
+  schema:name {{ . | jsonify }} ;
+{{- end }}
+{{- with .Description }}
+  schema:description {{ . | jsonify }} ;
+{{- end }}
+{{- with .Date }}
+  schema:datePublished {{ .Format "2006-01-02" | jsonify }} ;
+{{- end }}
+{{- with .Lastmod }}
+  schema:dateModified {{ .Format "2006-01-02" | jsonify }} ;
+{{- end }}
+{{- range $key, $value := .Params -}}
+  {{- if not (index $skipKeys $key) -}}
+    {{- if and $value (ne (printf "%v" $value) "") (ne (printf "%v" $value) "[]") (ne (printf "%v" $value) "map[]") -}}
+      {{- if not (reflect.IsMap $value) -}}
+        {{- $prop := partial "rdfa-property.html" $key -}}
+        {{ "" }}
+  {{ $prop }}
+        {{- if reflect.IsSlice $value -}}
+          {{- $first := true -}}
+          {{- range $v := $value -}}
+            {{- if not (reflect.IsMap $v) -}}
+              {{- $str := printf "%v" $v -}}
+              {{- if $first }} {{ else }} , {{ end -}}
+              {{- $url := index $titleIndex (lower $str) -}}
+              {{- if $url }}<{{ $base }}{{ $url }}>{{ else }}{{ $str | jsonify }}{{ end -}}
+              {{- $first = false -}}
+            {{- end -}}
+          {{- end -}}
+          {{- " " -}};
+        {{- else -}}
+          {{- $str := printf "%v" $value -}}
+          {{- $url := index $titleIndex (lower $str) -}}
+          {{- if $url }} <{{ $base }}{{ $url }}> ;{{ else }} {{ $str | jsonify }} ;{{ end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end }}
+  schema:identifier <{{ .Permalink }}> .

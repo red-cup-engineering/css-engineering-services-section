@@ -1,5 +1,5 @@
 {
-  "name": "@rsc-quiescent/sheaf-laplacian-measurement-service",
+  "name": "@red-cup-engineering/sheaf-laplacian-measurement-service",
   "version": "0.1.0",
   "private": true,
   "type": "module",

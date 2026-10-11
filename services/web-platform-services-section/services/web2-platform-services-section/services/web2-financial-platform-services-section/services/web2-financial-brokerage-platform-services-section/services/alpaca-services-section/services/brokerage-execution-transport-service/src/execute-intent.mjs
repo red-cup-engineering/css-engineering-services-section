@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { verifySignedRecord } from "@rsc-quiescent/strategy-evaluation-service";
+import { verifySignedRecord } from "@red-cup-engineering/strategy-evaluation-service";
 import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
 const canonical = (v) => v === null || typeof v !== "object" ? JSON.stringify(v) : Array.isArray(v) ? `[${v.map(canonical).join(",")}]` : `{${Object.keys(v).sort().map((k) => `${JSON.stringify(k)}:${canonical(v[k])}`).join(",")}}`;
 const identify = (body) => ({ id: identifyJsonSemanticContent({

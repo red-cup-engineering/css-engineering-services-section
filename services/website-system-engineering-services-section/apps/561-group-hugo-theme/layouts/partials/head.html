@@ -1,0 +1,37 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .Title }}{{ .Title }} - {{ end }}{{ .Site.Title }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{{- if ne $.Site.Params.skin "mill" }}
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+{{- end }}
+{{- if eq $.Site.Params.skin "mill" }}
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style-mill.css">
+{{- else }}
+<link rel="stylesheet" href="/style.css">
+{{- with $.Site.Params.skin }}<link rel="stylesheet" href="/style-{{ . }}.css">{{ end }}
+{{- end }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj3dQfLz0UPTAfXZDdRVtiEgqowVbFMRmHd1cQaMNLqbm0E+VYNyjU6MX" crossorigin="anonymous">
+<link href="https://gmpg.org/xfn/11" rel="profile">
+{{- with $.Site.Params.canonicalURL }}
+<link href="{{ . }}" rel="me">
+{{- end }}
+{{- with $.Site.Params.email }}
+<link href="mailto:{{ . }}" rel="me authn">
+{{- end }}
+{{- if $.Site.Params.webmentions }}
+<link rel="webmention" href="https://webmention.io/emsenn.net/webmention">
+<link rel="pingback" href="https://webmention.io/webmention?forward=https://emsenn.net/webmention">
+{{- end }}
+{{- range .AlternativeOutputFormats }}
+<link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}">
+{{- end }}
+{{- if .IsPage }}
+{{ partial "json-ld.html" . }}
+{{- else if .IsHome }}
+{{ partial "json-ld-home.html" . }}
+{{- else }}
+{{ partial "json-ld-list.html" . }}
+{{- end }}

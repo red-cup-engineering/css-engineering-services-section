@@ -1,7 +1,7 @@
 import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
-import { assayStrategyProgram } from "@rsc-quiescent/strategy-program-candidate-assay-service";
-import { validateStrategyProgramSynthesisRequest } from "@rsc-quiescent/strategy-program-synthesis-work-lot-service";
-import { validateStrategyProgramSynthesisResult } from "@rsc-quiescent/strategy-program-synthesis-work-lot-service/schemas";
+import { assayStrategyProgram } from "@red-cup-engineering/strategy-program-candidate-assay-service";
+import { validateStrategyProgramSynthesisRequest } from "@red-cup-engineering/strategy-program-synthesis-work-lot-service";
+import { validateStrategyProgramSynthesisResult } from "@red-cup-engineering/strategy-program-synthesis-work-lot-service/schemas";
 
 const semanticId = (value) => identifyJsonSemanticContent({ objectKind: "brokerage-control.strategy-synthesis-record", value, witnessRoot: EMPTY_WITNESS_ROOT }).token;
 
@@ -9,7 +9,7 @@ export function createStrategySynthesisProvider(env = process.env, dependencies 
   let market = dependencies.strategySynthesis;
   const resolveMarket = async () => {
     if (market) return market;
-    const { createInferenceMarketStrategyProgramSynthesis } = await import("@rsc-quiescent/strategy-program-synthesis-work-lot-service/inference-market-runtime");
+    const { createInferenceMarketStrategyProgramSynthesis } = await import("@red-cup-engineering/strategy-program-synthesis-work-lot-service/inference-market-runtime");
     market = createInferenceMarketStrategyProgramSynthesis({ agentUrl: env.INFERENCE_WORK_LOT_AGENT_CARD_URL || "http://127.0.0.1:8796/.well-known/agent-card.json" });
     return market;
   };

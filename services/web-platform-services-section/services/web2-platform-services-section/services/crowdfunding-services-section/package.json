@@ -1,0 +1,45 @@
+{
+  "name": "@red-cup-engineering/crowdfunding-services-section",
+  "version": "0.2.0",
+  "type": "module",
+  "description": "Crowdfunding campaign engineering: campaign-spec and reward-tier-ladder validation, task-and-bill-of-materials goal math (labor and physical-goods), readiness scoring, and pledge/readiness journaling -- with every campaign and reward ladder loaded as caller data (JSON), never a module constant.",
+  "main": "src/crowdfunding.mjs",
+  "exports": {
+    ".": "./src/crowdfunding.mjs",
+    "./journal": "./src/journal.mjs",
+    "./load-campaign-data": "./scripts/load-campaign-data.mjs",
+    "./validate-campaign": "./scripts/validate-campaign.mjs",
+    "./compute-goal": "./scripts/compute-goal.mjs",
+    "./render-campaign-page": "./scripts/render-campaign-page.mjs",
+    "./campaign-readiness": "./scripts/campaign-readiness.mjs",
+    "./record-pledge": "./scripts/record-pledge.mjs"
+  },
+  "bin": {
+    "crowdfunding": "apps/crowdfunding-cli.mjs"
+  },
+  "files": [
+    "src",
+    "scripts",
+    "apps"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "node --check src/crowdfunding.mjs && node --check src/journal.mjs && node --check scripts/load-campaign-data.mjs && node --check scripts/validate-campaign.mjs && node --check scripts/compute-goal.mjs && node --check scripts/render-campaign-page.mjs && node --check scripts/campaign-readiness.mjs && node --check scripts/record-pledge.mjs && node --check apps/crowdfunding-cli.mjs",
+    "verify": "npm run check && npm test"
+  },
+  "dependencies": {
+    "@red-cup-engineering/semiotic-eavt-services-section": "workspace:*",
+    "@red-cup-engineering/javascript-node-services-section": "workspace:*",
+    "@red-cup-engineering/witness-journal-document-service": "workspace:*"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "crowdfunding",
+    "reward-tiers",
+    "campaign",
+    "web2-platform"
+  ],
+  "license": "UNLICENSED"
+}

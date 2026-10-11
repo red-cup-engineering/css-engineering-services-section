@@ -1,5 +1,5 @@
 {
-  "name": "@rsc-quiescent/obsmetrologia-blk-accumulation-strategy-service",
+  "name": "@red-cup-engineering/obsmetrologia-blk-accumulation-strategy-service",
   "version": "0.1.2",
   "private": true,
   "type": "module",

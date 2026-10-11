@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Island</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #0b1020; color: #eee; font: 15px/1.4 system-ui, sans-serif; }
+    canvas { display: block; width: 100vw; height: 100vh; }
+    #text { position: fixed; left: 16px; bottom: 16px; max-width: min(28rem, calc(100vw - 32px)); padding: 10px 12px;
+      background: rgb(0 0 0 / 0.55); border-radius: 6px; }
+    #text p { margin: 0 0 4px; }
+    #text p:first-child { font-weight: 600; }
+  </style>
+</head>
+<body>
+  <canvas id="view" aria-hidden="true"></canvas>
+  <section id="text" aria-live="polite" aria-label="What alice perceives"></section>
+  <script type="module" src="/island.js"></script>
+</body>
+</html>

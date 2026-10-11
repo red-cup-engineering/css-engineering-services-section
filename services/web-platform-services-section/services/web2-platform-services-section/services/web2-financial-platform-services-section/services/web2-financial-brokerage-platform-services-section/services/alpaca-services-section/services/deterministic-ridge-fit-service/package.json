@@ -1,5 +1,5 @@
 {
-  "name": "@rsc-quiescent/deterministic-ridge-fit-service",
+  "name": "@red-cup-engineering/deterministic-ridge-fit-service",
   "version": "0.1.0",
   "private": true,
   "type": "module",

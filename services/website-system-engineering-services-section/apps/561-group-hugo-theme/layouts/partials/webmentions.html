@@ -1,0 +1,29 @@
+{{- $target := .Permalink -}}
+{{- $url := printf "https://webmention.io/api/mentions.jf2?target=%s" $target -}}
+{{- $result := try (resources.GetRemote $url) -}}
+{{- with $result.Value -}}
+    {{- $mentions := .Content | transform.Unmarshal -}}
+    {{- with $mentions.children -}}
+    <section class="webmentions">
+      <h2>Webmentions</h2>
+      <ul>
+        {{- range . -}}
+        <li class="h-cite">
+          {{- with .author }}
+          <a class="p-author h-card" href="{{ .url }}">{{ .name }}</a>
+          {{- end }}
+          {{- with .published }}
+          <time class="dt-published" datetime="{{ . }}">{{ . }}</time>
+          {{- end }}
+          {{- with .content }}
+          <div class="p-content">{{ .text }}</div>
+          {{- end }}
+          {{- with .url }}
+          <a class="u-url" href="{{ . }}">link</a>
+          {{- end }}
+        </li>
+        {{- end }}
+      </ul>
+    </section>
+    {{- end -}}
+{{- end -}}

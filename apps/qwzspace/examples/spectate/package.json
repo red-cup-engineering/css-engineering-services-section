@@ -1,0 +1,20 @@
+{
+  "name": "qwzspace-example-spectate",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "QwzSpace spectate example — a real room, seeded roaming entities, live+replay spectator views through render-2d AND a real @red-cup-engineering/abrash 3D backend. Installs qwzspace and abrash FRESH from the registry (not a relative src/ import) so this doubles as the fresh-install proof for the qwzspace version this example was built against.",
+  "scripts": {
+    "server": "node server.mjs",
+    "test": "node --test --test-concurrency=1 --test-timeout=60000 test/prove-*.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/abrash": "workspace:*",
+    "@red-cup-engineering/computer-content-graph-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/computer-data-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/computer-serialized-content-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/computer-web-server": "workspace:*",
+    "@red-cup-engineering/feltos": "workspace:*",
+    "@red-cup-engineering/html-structural-projection-service": "workspace:*",
+    "@red-cup-engineering/qwzspace": "workspace:*"
+  }
+}

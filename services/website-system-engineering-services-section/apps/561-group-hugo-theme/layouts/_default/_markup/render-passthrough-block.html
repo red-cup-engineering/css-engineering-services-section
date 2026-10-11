@@ -1,0 +1,6 @@
+{{- $result := try (transform.ToMath .Inner (dict "displayMode" true)) -}}
+{{- with $result.Err -}}
+  <div class="math-error">{{ $.Inner }}</div>
+{{- else -}}
+  {{ $result.Value }}
+{{- end -}}

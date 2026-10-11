@@ -1,0 +1,112 @@
+{{- $titleIndex := partialCached "title-index.html" .Site -}}
+
+{{- /* Keys to skip: Hugo internals, build control, authoring hints */ -}}
+{{- $skipKeys := dict
+  "title" true "description" true "type" true
+  "aliases" true "slug" true "draft" true "id" true "notoc" true
+  "dg-publish" true "dg-permalink" true
+  "minimum-length" true "recommended-length" true "max-length" true
+  "tone" true "triage-enriched-by" true "date-triage-enriched" true
+  "triage-status" true "publish_to" true "todo" true
+  "license" true
+  "references" true
+  "date" true "lastmod" true "publishdate" true "expirydate" true
+  "iscjkLanguage" true "weight" true
+-}}
+
+{{- /* Keys whose values are never page references */ -}}
+{{- $noLinkValueKeys := dict
+  "date-created" true "date-updated" true "date-modified" true
+  "date" true "date-last-modified" true
+  "description" true "summary" true "status" true "title" true
+-}}
+
+{{- /* Taxonomy keys: link to taxonomy pages instead of title-index */ -}}
+{{- $taxonomyKeys := dict "tags" "/tags/" "type" "/types/" "authors" "/authors/" -}}
+
+{{- /* Collect renderable pairs */ -}}
+{{- $hasPairs := false -}}
+{{- range $key, $value := .Params -}}
+  {{- if not (index $skipKeys $key) -}}
+    {{- if and $value (ne (printf "%v" $value) "") (ne (printf "%v" $value) "[]") (ne (printf "%v" $value) "map[]") -}}
+      {{- $hasPairs = true -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Backlinks: pages that reference this one */ -}}
+{{- $backlinkIndex := partialCached "backlink-index.html" .Site -}}
+{{- $rawBacklinks := index $backlinkIndex .RelPermalink | default slice -}}
+{{- $seen := dict -}}
+{{- $backlinks := slice -}}
+{{- range $rawBacklinks -}}
+  {{- if not (index $seen .RelPermalink) -}}
+    {{- $seen = merge $seen (dict .RelPermalink true) -}}
+    {{- $backlinks = $backlinks | append . -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if or $hasPairs $backlinks -}}
+<section class="page-relations" resource="{{ .Permalink }}" typeof="schema:CreativeWork"
+         vocab="https://emsenn.net/vocab#">
+  <h2>Relations</h2>
+  <dl>
+  {{- range $key, $value := .Params -}}
+    {{- if not (index $skipKeys $key) -}}
+    {{- if and $value (ne (printf "%v" $value) "") (ne (printf "%v" $value) "[]") (ne (printf "%v" $value) "map[]") -}}
+      {{- $rdfaProp := partial "rdfa-property.html" $key -}}
+      <div class="relation">
+        <dt>
+          {{- $keyURL := index $titleIndex (lower $key) -}}
+          {{- if $keyURL -}}
+            <a href="{{ $keyURL }}">{{ $key | humanize }}</a>
+          {{- else -}}
+            {{ $key | humanize }}
+          {{- end -}}
+        </dt>
+        <dd property="{{ $rdfaProp }}">
+          {{- if reflect.IsSlice $value -}}
+            <ul>
+            {{- range $value -}}
+              {{- if not (reflect.IsMap .) -}}
+              <li>{{ partial "render-fm-value.html" (dict
+                "val" .
+                "key" $key
+                "titleIndex" $titleIndex
+                "noLink" (index $noLinkValueKeys $key)
+                "taxonomyKeys" $taxonomyKeys
+              ) }}</li>
+              {{- end -}}
+            {{- end -}}
+            </ul>
+          {{- else if reflect.IsMap $value -}}
+            {{- /* Skip nested maps for now */ -}}
+          {{- else -}}
+            {{ partial "render-fm-value.html" (dict
+              "val" $value
+              "key" $key
+              "titleIndex" $titleIndex
+              "noLink" (index $noLinkValueKeys $key)
+              "taxonomyKeys" $taxonomyKeys
+            ) }}
+          {{- end -}}
+        </dd>
+      </div>
+    {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $backlinks }}
+  <div class="relation">
+    <dt>Referenced by</dt>
+    <dd>
+      <ul>
+        {{- range . -}}
+        <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+        {{- end -}}
+      </ul>
+    </dd>
+  </div>
+  {{- end }}
+  </dl>
+</section>
+{{- end -}}

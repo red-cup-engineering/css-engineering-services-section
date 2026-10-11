@@ -1,5 +1,5 @@
 {
-  "name": "@rsc-quiescent/account-evidence-reconciliation-service",
+  "name": "@red-cup-engineering/account-evidence-reconciliation-service",
   "version": "0.1.2",
   "private": true,
   "type": "module",
