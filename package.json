@@ -4,12 +4,13 @@
   "type": "module",
   "description": "Web-tier home for CSS packages: cascade computation and certification, plus a certified theming system built on top of it. Sibling to the web html-services-section; together they carry the rendering stack that used to live inside the file-format HTML codec.",
   "dependencies": {
-    "@red-cup-engineering/metrologic": "workspace:*",
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*",
     "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*",
     "@red-cup-engineering/computer-data-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/metrologic": "workspace:*",
+    "@red-cup-engineering/signcell": "workspace:*",
     "@red-cup-engineering/web-theming-service": "workspace:*",
-    "@red-cup-engineering/xml-document-rendering-service": "workspace:*",
-    "@red-cup-engineering/signcell": "workspace:*"
+    "@red-cup-engineering/xml-document-rendering-service": "workspace:*"
   },
   "exports": {
     "./css-style-resolution": "./src/css-style-resolution.mjs",
