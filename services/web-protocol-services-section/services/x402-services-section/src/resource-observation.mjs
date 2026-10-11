@@ -1,7 +1,7 @@
 import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
 import {
   canonicalizeHttpsUrl,
-} from "@red-cup-engineering/canonicalize-https-url-service";
+} from "@red-cup-engineering/http-services-section/canonicalize-https-url";
 
 import { decodePaymentRequiredHeader } from "@x402/core/http";
 import { validatePaymentRequired } from "@x402/core/schemas";

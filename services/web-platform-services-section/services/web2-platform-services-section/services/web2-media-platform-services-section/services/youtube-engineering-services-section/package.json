@@ -9,7 +9,8 @@
     "./studio": "./src/youtube-studio.mjs",
     "./authorize": "./src/authorize.mjs",
     "./credentials": "./src/credentials.mjs",
-    "./api": "./src/youtube-api.mjs"
+    "./api": "./src/youtube-api.mjs",
+    "./protocol": "./src/youtube-protocol.mjs"
   },
   "scripts": {
     "test": "node --test test/*.test.mjs"

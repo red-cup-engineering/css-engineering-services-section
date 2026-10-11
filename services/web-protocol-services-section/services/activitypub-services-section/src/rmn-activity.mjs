@@ -1,6 +1,6 @@
 import { Activity } from "@fedify/vocab";
 import { validateInstance } from "@red-cup-engineering/json-schema-services-section";
-import { makeNiUri as sha256Ni } from "@red-cup-engineering/ni-uri-services-section";
+import { makeNiUri as sha256Ni } from "@red-cup-engineering/uri-services-section/ni-uri";
 import {
   agentRmnMessage,
   extractRmnPart,

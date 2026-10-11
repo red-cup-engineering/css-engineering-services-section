@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { addVideoToPlaylist, buildAudienceAttentionQuery, buildVideoInsertBody, createPlaylist, fetchAudienceAttentionReport, observeAuthorizedChannel, observeVideo, schedulePrivateVideo, uploadVideo } from "../src/index.mjs";
+import { addVideoToPlaylist, buildAudienceAttentionQuery, buildVideoInsertBody, createPlaylist, fetchAudienceAttentionReport, observeAuthorizedChannel, observeVideo, schedulePrivateVideo, uploadVideo } from "../src/youtube-protocol.mjs";
 
 test("analytics protocol forms only one bounded closed-window report", async () => {
   const query = buildAudienceAttentionQuery({ startDate: "2026-06-24", endDate: "2026-07-21" });

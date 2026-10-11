@@ -89,14 +89,6 @@
       "types": "./dist/sync-guard/index.d.mts",
       "import": "./dist/sync-guard/index.mjs"
     },
-    "./qwzspace": {
-      "types": "./dist/qwzspace/index.d.mts",
-      "import": "./dist/qwzspace/index.mjs"
-    },
-    "./qwzspace/*": {
-      "types": "./dist/qwzspace/*.d.mts",
-      "import": "./dist/qwzspace/*.mjs"
-    },
     "./package.json": "./package.json"
   },
   "dependencies": {
