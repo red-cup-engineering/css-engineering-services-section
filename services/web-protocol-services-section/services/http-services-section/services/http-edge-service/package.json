@@ -120,9 +120,9 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@red-cup-engineering/computing-with-http": "0.0.0",
-    "@red-cup-engineering/http-server-core-service": "0.0.1",
-    "@red-cup-engineering/relating": "0.0.1"
+    "@red-cup-engineering/computing-with-http": "workspace:*",
+    "@red-cup-engineering/http-server-core-service": "workspace:*",
+    "@red-cup-engineering/relating": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

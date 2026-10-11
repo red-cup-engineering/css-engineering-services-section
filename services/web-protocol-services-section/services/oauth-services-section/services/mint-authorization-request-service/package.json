@@ -16,7 +16,7 @@
     "verify": "npm run check && npm test"
   },
   "dependencies": {
-    "@red-cup-engineering/oauth-services-section": "0.1.0"
+    "@red-cup-engineering/oauth-services-section": "workspace:*"
   },
   "engines": {
     "node": ">=22"

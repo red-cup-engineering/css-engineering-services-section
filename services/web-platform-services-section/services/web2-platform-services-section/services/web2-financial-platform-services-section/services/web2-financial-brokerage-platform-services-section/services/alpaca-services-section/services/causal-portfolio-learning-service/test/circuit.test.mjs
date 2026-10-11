@@ -7,11 +7,11 @@ import { measureCausalPatchNovelty } from "../../causal-tiling-novelty-measureme
 import { measureCorrelationGraph } from "../../correlation-graph-measurement-service/src/measure.mjs";
 import { fitDeterministicRidge, predictDeterministicRidge } from "../../deterministic-ridge-fit-service/src/ridge.mjs";
 import { allocateMandatePortfolio } from "../../mandate-portfolio-allocation-service/src/allocate.mjs";
-import { selectModelCandidate } from "../../model-tournament-service/src/tournament.mjs";
-import { formPurgedWalkForwardFolds } from "../../purged-walk-forward-fold-service/src/folds.mjs";
+import { selectModelCandidate } from "@red-cup-engineering/model-tournament-service";
+import { formPurgedWalkForwardFolds } from "@red-cup-engineering/purged-walk-forward-fold-service";
 import { measureReturnRiskFeatures } from "../../return-risk-feature-measurement-service/src/measure.mjs";
 import { measureSheafLaplacian } from "../../sheaf-laplacian-measurement-service/src/measure.mjs";
-import { replayTransactionCosts } from "../../transaction-cost-replay-service/src/replay.mjs";
+import { replayTransactionCosts } from "@red-cup-engineering/transaction-cost-replay-service";
 
 function panel(length = 260) {
   const symbols = ["BLK", "QQQ", "SPY", "TLT"], bars = Object.fromEntries(symbols.map((symbol) => [symbol, []])), prices = Object.fromEntries(symbols.map((symbol) => [symbol, 100]));

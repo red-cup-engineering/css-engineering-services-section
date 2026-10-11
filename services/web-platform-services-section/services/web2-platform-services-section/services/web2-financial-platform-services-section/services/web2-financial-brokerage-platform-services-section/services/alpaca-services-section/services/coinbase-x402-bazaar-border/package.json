@@ -11,7 +11,9 @@
     "./strategy-synthesis-provider": "./src/strategy-synthesis-provider.mjs",
     "./src/server.mjs": "./src/server.mjs"
   },
-  "files": ["src/"],
+  "files": [
+    "src/"
+  ],
   "scripts": {
     "start": "node src/server.mjs",
     "check": "node --check src/*.mjs && node --check test/*.test.mjs",
@@ -20,13 +22,13 @@
   },
   "dependencies": {
     "@red-cup-engineering/inference-work-lot-service": "4.1.0",
-    "@red-cup-engineering/relation-model-notation-json-codec": "0.0.2",
+    "@red-cup-engineering/relation-model-notation-json-codec": "workspace:*",
     "@red-cup-engineering/semantic-content-identify-service": "0.2.2",
-    "@red-cup-engineering/relation-model-notation-typing": "0.0.1",
-    "@red-cup-engineering/x402-services-section": "1.2.2",
+    "@red-cup-engineering/relation-model-notation-typing": "workspace:*",
+    "@red-cup-engineering/x402-services-section": "workspace:*",
     "express": "5.2.1",
-    "@red-cup-engineering/strategy-program-synthesis-work-lot-service": "0.1.2",
-    "@red-cup-engineering/strategy-program-candidate-assay-service": "0.1.1"
+    "@red-cup-engineering/strategy-program-synthesis-work-lot-service": "workspace:*",
+    "@red-cup-engineering/strategy-program-candidate-assay-service": "workspace:*"
   },
   "peerDependencies": {
     "@red-cup-engineering/deterministic-report-graphic-service": "0.1.1",
@@ -42,17 +44,39 @@
     "@red-cup-engineering/x402-settlement-witness-identity": "0.2.0"
   },
   "peerDependenciesMeta": {
-    "@red-cup-engineering/deterministic-report-graphic-service": { "optional": true },
-    "@red-cup-engineering/witness-journal-rdf-projection-service": { "optional": true },
-    "@red-cup-engineering/a2a-rmn-part-service": { "optional": true },
-    "@red-cup-engineering/a2a-rmn-task-client-service": { "optional": true },
-    "@red-cup-engineering/issuer-research-media-service": { "optional": true },
-    "@red-cup-engineering/alpha-portfolio-order-intent-service": { "optional": true },
-    "@red-cup-engineering/account-evidence-reconciliation-service": { "optional": true },
-    "@red-cup-engineering/alpaca-principal-account-read-service": { "optional": true },
-    "@red-cup-engineering/brokerage-independent-witness-and-books": { "optional": true },
-    "@lenticule-science/divination-computer-system-service": { "optional": true },
-    "@red-cup-engineering/x402-settlement-witness-identity": { "optional": true }
+    "@red-cup-engineering/deterministic-report-graphic-service": {
+      "optional": true
+    },
+    "@red-cup-engineering/witness-journal-rdf-projection-service": {
+      "optional": true
+    },
+    "@red-cup-engineering/a2a-rmn-part-service": {
+      "optional": true
+    },
+    "@red-cup-engineering/a2a-rmn-task-client-service": {
+      "optional": true
+    },
+    "@red-cup-engineering/issuer-research-media-service": {
+      "optional": true
+    },
+    "@red-cup-engineering/alpha-portfolio-order-intent-service": {
+      "optional": true
+    },
+    "@red-cup-engineering/account-evidence-reconciliation-service": {
+      "optional": true
+    },
+    "@red-cup-engineering/alpaca-principal-account-read-service": {
+      "optional": true
+    },
+    "@red-cup-engineering/brokerage-independent-witness-and-books": {
+      "optional": true
+    },
+    "@lenticule-science/divination-computer-system-service": {
+      "optional": true
+    },
+    "@red-cup-engineering/x402-settlement-witness-identity": {
+      "optional": true
+    }
   },
   "description": "coinbase-x402-bazaar-border sovereign enterprise"
 }

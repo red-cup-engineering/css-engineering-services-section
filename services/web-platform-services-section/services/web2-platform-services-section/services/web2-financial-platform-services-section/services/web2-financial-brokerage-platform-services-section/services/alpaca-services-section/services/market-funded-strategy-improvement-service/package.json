@@ -5,6 +5,6 @@
   "exports": "./src/market-funded-improvement.mjs",
   "version": "0.1.1",
   "dependencies": {
-    "@red-cup-engineering/strategy-evaluation-service": "0.1.1"
+    "@red-cup-engineering/strategy-evaluation-service": "workspace:*"
   }
 }
