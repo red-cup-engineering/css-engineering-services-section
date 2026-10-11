@@ -25,6 +25,7 @@
     "@red-cup-engineering/a2a-contracted-agent-service": "workspace:*",
     "@red-cup-engineering/a2a-rmn-part-service": "workspace:*",
     "@red-cup-engineering/a2a-rmn-task-client-service": "workspace:*",
+    "@red-cup-engineering/eavt-services-section": "workspace:*",
     "@red-cup-engineering/immutable-content-custody-service": "workspace:*",
     "@red-cup-engineering/semantic-content-identify-service": "workspace:*",
     "@red-cup-engineering/witness-journal-entry-service": "workspace:*",
