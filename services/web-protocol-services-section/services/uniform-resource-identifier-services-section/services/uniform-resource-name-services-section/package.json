@@ -1,7 +1,0 @@
-{
-  "name": "@red-cup-engineering/uniform-resource-name-services-section",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "description": "Groups the firm's RFC 8141 Uniform Resource Name services: admission of a surface string into its NID/NSS/r-component/q-component/f-component parts, rendering admitted parts back into a canonical URN string, and RFC 8141 URN-equivalence of two URNs. Generic and RFC-faithful only; carries no firm-specific naming semantics."
-}

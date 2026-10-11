@@ -1,0 +1,29 @@
+{
+  "name": "@red-cup-engineering/investment-research-work-lot-service",
+  "version": "0.2.3",
+  "type": "module",
+  "description": "Contracts provider-distinct bounded institutional research roles and returns untrusted typed forecast sections or explicit seat residues.",
+  "exports": {
+    ".": "./src/committee.mjs",
+    "./inference-market-runtime": "./src/inference-market-runtime.mjs",
+    "./schemas": "./src/schemas.mjs"
+  },
+  "files": [
+    "schemas/",
+    "src/"
+  ],
+  "dependencies": {
+    "@red-cup-engineering/computer-inference-engine": "workspace:*",
+    "@red-cup-engineering/json-schema-services-section": "workspace:*"
+  },
+  "peerDependencies": {},
+  "peerDependenciesMeta": {
+    "@red-cup-engineering/inference-work-lot-service": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "check": "node --check src/*.mjs && node --check test/*.test.mjs",
+    "test": "node --test test/*.test.mjs"
+  }
+}

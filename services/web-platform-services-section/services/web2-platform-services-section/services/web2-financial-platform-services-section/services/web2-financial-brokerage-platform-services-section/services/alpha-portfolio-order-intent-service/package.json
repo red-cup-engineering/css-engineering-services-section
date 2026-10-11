@@ -1,0 +1,17 @@
+{
+  "name": "@red-cup-engineering/alpha-portfolio-order-intent-service",
+  "version": "0.1.2",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/aggressive-intent.mjs",
+    "./src/aggressive-intent.mjs": "./src/aggressive-intent.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/aggressive-intent.mjs"
+  },
+  "description": "alpha-portfolio-order-intent-service sovereign enterprise",
+  "dependencies": {
+    "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*"
+  }
+}

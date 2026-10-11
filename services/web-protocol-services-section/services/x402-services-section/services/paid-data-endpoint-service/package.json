@@ -29,6 +29,6 @@
     "ethers": "6.17.0",
     "express": "5.2.1",
     "viem": "2.55.8",
-    "@red-cup-engineering/x402-services-section": "1.2.1"
+    "@red-cup-engineering/x402-services-section": "workspace:*"
   }
 }

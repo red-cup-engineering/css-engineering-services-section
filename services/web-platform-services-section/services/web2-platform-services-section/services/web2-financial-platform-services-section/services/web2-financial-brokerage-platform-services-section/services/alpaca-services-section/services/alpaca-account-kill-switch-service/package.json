@@ -1,0 +1,20 @@
+{
+  "name": "@red-cup-engineering/alpaca-account-kill-switch-service",
+  "version": "0.1.1",
+  "type": "module",
+  "description": "Retired compatibility package. Current brokerage risk admission is contract-bound and based on immediate account and position observations in brokerage-execution-transport-service; this package no longer reads accounts, writes state, or changes systemd timers.",
+  "exports": {
+    ".": "./src/retired.mjs"
+  },
+  "bin": {
+    "alpaca-check-kill-switch": "./scripts/check-kill-switch.mjs"
+  },
+  "files": [
+    "src",
+    "scripts"
+  ],
+  "scripts": {
+    "check": "node scripts/check-kill-switch.mjs",
+    "test": "node --test test/*.test.mjs"
+  }
+}

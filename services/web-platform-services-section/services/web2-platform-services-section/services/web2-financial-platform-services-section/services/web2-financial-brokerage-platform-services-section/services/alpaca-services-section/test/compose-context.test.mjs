@@ -1,0 +1,50 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+
+import { composeDailyTradingContext } from "../scripts/compose-context.mjs";
+
+const input = {
+  principal: "urn:principal:esther-davis",
+  asOf: "2026-08-20T13:00:00Z",
+  accountObservation: {
+    id: "account-observation", type: "PrincipalPaperAccountObservationReceipt", venue: "alpaca-trading-paper", accountAlias: "alpaca-paper:esther",
+    account: { payload: { equity: "1000", cash: "250", buying_power: "500", status: "ACTIVE", daytrade_count: 1 } },
+    positions: { payload: [
+      { symbol: "SPY", side: "long", qty: "2", avg_entry_price: "400", market_value: "820", unrealized_pl: "20" },
+      { symbol: "BLK", side: "long", qty: "1", avg_entry_price: "900", market_value: "930", unrealized_pl: "30" },
+    ] },
+  },
+  newsObservation: {
+    id: "news-observation", type: "AlpacaNewsObservation", articles: [
+      { providerArticleId: "2", headline: "Macro", summary: "macro", source: "wire", createdAt: "2026-08-20T12:00:00.000Z", url: "https://example.test/2", symbols: ["SPY"] },
+      { providerArticleId: "1", headline: "Irrelevant", summary: "other", source: "wire", createdAt: "2026-08-20T11:00:00.000Z", url: "https://example.test/1", symbols: ["AAPL"] },
+    ],
+  },
+  mandate: { id: "mandate-1", type: "PortfolioMandate", maximumGrossExposureFraction: 2 },
+};
+
+test("composes one deterministic packet for both agents and human renderers", () => {
+  const first = composeDailyTradingContext(input);
+  const second = composeDailyTradingContext(input);
+  assert.equal(first.id, second.id);
+  assert.deepEqual(first.heldSymbols, ["BLK", "SPY"]);
+  assert.equal(first.capital.grossExposure, 1750);
+  assert.equal(first.capital.grossExposureFraction, 1.75);
+  assert.deepEqual(first.news.bySymbol, { BLK: [], SPY: ["2"] });
+  assert.equal(first.news.articles.length, 1);
+  assert.equal(first.orderEffect, false);
+  assert.deepEqual(first.consumers, ["strategy-agent", "risk-agent", "execution-planner", "human-report-renderer"]);
+});
+
+test("refuses malformed evidence instead of silently inventing capital state", () => {
+  assert.throws(() => composeDailyTradingContext({ ...input, accountObservation: { ...input.accountObservation, account: { payload: { equity: "unknown", cash: "250" } } } }), /account-equity/u);
+  assert.throws(() => composeDailyTradingContext({ ...input, newsObservation: { type: "SomethingElse" } }), /news-observation-required/u);
+});
+
+test("accepts the existing principal reader's live-or-paper account receipt", () => {
+  const result = composeDailyTradingContext({
+    ...input,
+    accountObservation: { ...input.accountObservation, type: "PrincipalAlpacaAccountObservationReceipt", accountAlias: undefined, accountReference: "alpaca:esther" },
+  });
+  assert.equal(result.accountReference, "alpaca:esther");
+});

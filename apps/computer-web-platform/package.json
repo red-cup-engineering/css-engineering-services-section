@@ -1,0 +1,59 @@
+{
+  "name": "@red-cup-engineering/computer-web-platform",
+  "version": "0.6.0",
+  "type": "module",
+  "description": "Compose a computer platform with the web server: provider lifetime, application intake, and web platform capabilities.",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "exports": {
+    "./application": "./src/application.mjs",
+    "./emulation/ab": "./src/emulation/ab.mjs",
+    "./emulation/cache-api": "./src/emulation/cache-api.mjs",
+    "./emulation/durable": "./src/emulation/durable.mjs",
+    "./emulation/fetch": "./src/emulation/fetch.mjs",
+    "./emulation/flags": "./src/emulation/flags.mjs",
+    "./emulation/fs-router": "./src/emulation/fs-router.mjs",
+    "./emulation/geo": "./src/emulation/geo.mjs",
+    "./emulation/kv": "./src/emulation/kv.mjs",
+    "./emulation/object-store": "./src/emulation/object-store.mjs",
+    "./emulation/pages": "./src/emulation/pages.mjs",
+    "./emulation/scheduler": "./src/emulation/scheduler.mjs",
+    "./emulation/ws-pubsub": "./src/emulation/ws-pubsub.mjs",
+    ".": "./src/index.mjs",
+    "./package.json": "./package.json",
+    "./surface": "./src/deployment/web-surface.mjs",
+    "./cloudflare-worker-binding": "./src/deployment/cloudflare-worker-binding.mjs",
+    "./cloudflare-static-assets-worker": "./src/deployment/cloudflare-static-assets-worker.mjs",
+    "./build-cloudflare-worker": "./src/deployment/build-cloudflare-worker.mjs"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test --test-concurrency=2 test/**/*.test.mjs test/*.test.mjs"
+  },
+  "dependencies": {
+    "esbuild": "0.28.1",
+    "@red-cup-engineering/metrologic": "workspace:*",
+    "@red-cup-engineering/computer-data-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/computer-serialized-content-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/computer-system-platform": "workspace:*",
+    "@red-cup-engineering/computer-web-server": "workspace:*",
+    "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/http-services-section": "workspace:*",
+    "@red-cup-engineering/web-release-candidate-service": "workspace:*",
+    "@red-cup-engineering/computer-system-engine": "workspace:*",
+    "@red-cup-engineering/computer-code-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/signchain": "workspace:*",
+    "@red-cup-engineering/cron-services-section": "workspace:*"
+  },
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/bare-cedar-fog.git",
+    "directory": "services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/apps/computer-web-platform"
+  }
+}

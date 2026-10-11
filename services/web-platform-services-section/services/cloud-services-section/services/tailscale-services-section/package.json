@@ -1,0 +1,16 @@
+{
+  "name": "@red-cup-engineering/tailscale-services-section",
+  "version": "0.1.0",
+  "description": "Tailscale platform services: userspace SOCKS relay and relay-boundary checking.",
+  "type": "module",
+  "keywords": [
+    "engineering"
+  ],
+  "exports": {
+    "./verify-colony-execution-boundary": "./scripts/verify-colony-execution-boundary.mjs",
+    "./userspace-socks-relay": "./scripts/userspace-socks-relay.mjs"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}

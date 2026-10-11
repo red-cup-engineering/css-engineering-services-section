@@ -1,0 +1,171 @@
+{
+  "config": {
+    "NUM_BOTS": 20,
+    "INTERVAL_MS": 100,
+    "SESSION_MS": 7000,
+    "SETTLE_MS": 2500
+  },
+  "finalTick": 99,
+  "finalMemberCount": 20,
+  "wire": {
+    "actualMessages": 1368,
+    "actualBytes": 1035249,
+    "naiveBroadcastMessages": 1863,
+    "naiveBroadcastBytes": 4657154,
+    "messageReductionPct": 26.57004830917874,
+    "byteReductionPct": 77.7707801803419
+  },
+  "tickStats": {
+    "configuredIntervalMs": 100,
+    "ticksObserved": 97,
+    "meanIntervalMs": 100.30208333333333,
+    "stddevIntervalMs": 2.6775291457589963,
+    "minIntervalMs": 94,
+    "maxIntervalMs": 109
+  },
+  "resumeResults": [
+    {
+      "botIndex": 3,
+      "actorId": "a4fd0d3425a88",
+      "sawDisconnect": true,
+      "sawResumed": true,
+      "identityPreserved": true,
+      "stillMember": true,
+      "states": [
+        "open",
+        "joining",
+        "playing",
+        "disconnected",
+        "open",
+        "resuming",
+        "resumed",
+        "disconnected"
+      ]
+    },
+    {
+      "botIndex": 1,
+      "actorId": "a97de27e08f16",
+      "sawDisconnect": true,
+      "sawResumed": true,
+      "identityPreserved": true,
+      "stillMember": true,
+      "states": [
+        "open",
+        "joining",
+        "playing",
+        "disconnected",
+        "open",
+        "resuming",
+        "resumed",
+        "disconnected"
+      ]
+    },
+    {
+      "botIndex": 6,
+      "actorId": "acde324515291",
+      "sawDisconnect": true,
+      "sawResumed": true,
+      "identityPreserved": true,
+      "stillMember": true,
+      "states": [
+        "open",
+        "joining",
+        "playing",
+        "disconnected",
+        "open",
+        "resuming",
+        "resumed",
+        "disconnected"
+      ]
+    },
+    {
+      "botIndex": 5,
+      "actorId": "a549ed3a364d6",
+      "sawDisconnect": true,
+      "sawResumed": true,
+      "identityPreserved": true,
+      "stillMember": true,
+      "states": [
+        "open",
+        "joining",
+        "playing",
+        "disconnected",
+        "open",
+        "resuming",
+        "resumed",
+        "disconnected"
+      ]
+    },
+    {
+      "botIndex": 18,
+      "actorId": "a5ed9a256ec57",
+      "sawDisconnect": true,
+      "sawResumed": true,
+      "identityPreserved": true,
+      "stillMember": true,
+      "states": [
+        "error",
+        "disconnected",
+        "open",
+        "joining",
+        "playing",
+        "disconnected",
+        "open",
+        "resuming",
+        "resumed",
+        "disconnected"
+      ]
+    },
+    {
+      "botIndex": 16,
+      "actorId": "a3e10c44b7560",
+      "sawDisconnect": true,
+      "sawResumed": true,
+      "identityPreserved": true,
+      "stillMember": true,
+      "states": [
+        "error",
+        "disconnected",
+        "open",
+        "joining",
+        "playing",
+        "disconnected",
+        "open",
+        "resuming",
+        "resumed",
+        "disconnected"
+      ]
+    }
+  ],
+  "verify": {
+    "ok": true,
+    "tick": 99,
+    "logHash": "847e5972e1363732132a00c3242b1fb1998701738f247a138566becb0e81bb4d"
+  },
+  "render": {
+    "framesCompared": 602,
+    "framesIdentical": 602,
+    "allFramesIdentical": true,
+    "firstMismatch": null,
+    "smoothnessProof": {
+      "entityId": "a0558543d1858",
+      "beforeTickPos": {
+        "x": 1.9673081032080133,
+        "y": -0.1719303569713453
+      },
+      "afterTickPos": {
+        "x": 1.2629313392902752,
+        "y": 0.10221022027980209
+      },
+      "midSample1": {
+        "x": 1.7348637002009397,
+        "y": -0.08146393887894011
+      },
+      "midSample2": {
+        "x": 1.5024192971938664,
+        "y": 0.009002479213465059
+      },
+      "showsFractionalInterpolation": true
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{{- $result := try (urls.Parse .Destination) -}}
+{{- with $result.Value -}}
+  {{- $url := . -}}
+  {{- $internal := or (not .Host) (eq .Host "emsenn.net") (eq .Host "www.emsenn.net") -}}
+  {{- $class := cond $internal "link-internal" "link-external" -}}
+<a href="{{ $url.String }}" class="{{ $class }}"{{ with $.Title }} title="{{ . }}"{{ end }}>{{ $.Text }}</a>
+{{- else -}}
+<a>{{ $.Text }}</a>
+{{- end -}}

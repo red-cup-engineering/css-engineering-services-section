@@ -1,0 +1,29 @@
+{
+  "name": "@red-cup-engineering/stripe-services-section",
+  "version": "0.1.9",
+  "type": "module",
+  "description": "A sovereign Group-owned Stripe Checkout and verified-event boundary with fixed offerings, idempotency, and provider-local receipts. Owns the Stripe business logic and credentials; the inbound HTTP listener that fronts it is stripe-webhook-receiver-activation in rsc-quiescent.",
+  "bin": {
+    "stripe-payment-acceptance": "./src/cli.mjs"
+  },
+  "exports": {
+    ".": "./src/service.mjs",
+    "./service": "./src/service.mjs",
+    "./provisioning": "./src/provisioning.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/service.mjs && node --check src/cli.mjs && node --check src/provisioning.mjs && node --check test/service.test.mjs",
+    "test": "node --test test/service.test.mjs"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "dependencies": {
+    "@red-cup-engineering/assisted-browser-services-section": "workspace:*",
+    "@red-cup-engineering/semiotic-eavt-services-section": "workspace:*",
+    "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/json-schema-services-section": "workspace:*",
+    "@red-cup-engineering/witness-journal-document-service": "workspace:*"
+  },
+  "license": "UNLICENSED"
+}

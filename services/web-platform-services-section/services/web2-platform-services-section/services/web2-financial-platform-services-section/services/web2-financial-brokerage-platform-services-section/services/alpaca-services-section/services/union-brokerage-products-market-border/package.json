@@ -1,0 +1,27 @@
+{
+  "name": "@red-cup-engineering/union-brokerage-products-market-border",
+  "version": "0.1.5",
+  "type": "module",
+  "exports": {
+    ".": "./src/union-border.mjs",
+    "./activitypub-runtime": "./src/activitypub-runtime.mjs",
+    "./src/activitypub-runtime.mjs": "./src/activitypub-runtime.mjs",
+    "./src/union-border.mjs": "./src/union-border.mjs"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/activitypub-server": "workspace:*",
+    "@red-cup-engineering/activitypub-services-section": "workspace:*",
+    "@red-cup-engineering/computer-code-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/computer-system-engine": "workspace:*",
+    "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/json-services-section": "workspace:*"
+  },
+  "description": "union-brokerage-products-market-border sovereign enterprise"
+}

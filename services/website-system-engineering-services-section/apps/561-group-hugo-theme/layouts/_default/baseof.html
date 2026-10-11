@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" prefix="schema: https://schema.org/ dc: http://purl.org/dc/elements/1.1/ emsenn: https://emsenn.net/vocab#">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body class="{{ with .Site.Params.skin }}skin-{{ . }}{{ end }}">
+  <a class="skip-to-content" href="#content">Skip to content</a>
+  {{ partial "site-header.html" . }}
+  <main id="content" data-pagefind-body>
+    {{ block "main" . }}{{ end }}
+  </main>
+  <footer>
+    <p class="footer-closing">All information can only be grounded in other information. Nothing here or anywhere should be understood as True, or False.</p>
+    <div class="footer-license"><a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">CC BY-SA 4.0</a> — attribution required for reuse, but reuse is encouraged.</div>
+    <div class="footer-meta">{{ with .Site.Params.email }}<a href="mailto:{{ . }}">{{ . }}</a>{{ end }} · <a href="https://ko-fi.com/emsenn">support this work</a></div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "@red-cup-engineering/indieweb-server",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "The IndieWeb server: IndieAuth, Micropub, Microsub and Webmention composed around a site.",
+  "exports": {
+    ".": "./src/server.mjs",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/indieauth-profile-service": "workspace:*",
+    "@red-cup-engineering/micropub-services-section": "workspace:*",
+    "@red-cup-engineering/microsub-services-section": "workspace:*",
+    "@red-cup-engineering/webmention-service": "workspace:*"
+  },
+  "sideEffects": false
+}

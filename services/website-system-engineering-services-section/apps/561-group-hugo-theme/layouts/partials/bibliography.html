@@ -1,0 +1,40 @@
+{{- /*  Render a bibliography section from .Params.references.
+        Each entry is keyed by citekey and contains: authors, title, year,
+        and optionally publication, volume, issue, pages, url.         */ -}}
+{{- with .Params.references -}}
+{{- if reflect.IsMap . -}}
+<section class="bibliography" id="bibliography"
+         vocab="https://schema.org/" typeof="ItemList">
+  <h2>References</h2>
+  {{- range $key, $ref := . -}}
+  {{- if reflect.IsMap $ref -}}
+  <p class="bib-entry" id="ref-{{ $key }}" typeof="CreativeWork" resource="#ref-{{ $key }}">
+    <span class="bib-key">[{{ $key }}]</span>
+    {{- with $ref.authors }}
+      <span property="author">
+        {{- range $i, $a := . -}}
+          {{- if $i -}}, {{ end }}{{ $a }}
+        {{- end -}}
+      </span>.
+    {{- end }}
+    {{- with $ref.year }}
+      (<span property="datePublished">{{ . }}</span>).
+    {{- end }}
+    {{- with $ref.title }}
+      <cite property="name">{{ . }}</cite>.
+    {{- end }}
+    {{- with $ref.publication }}
+      <em property="publisher">{{ . }}</em>
+    {{- end -}}
+    {{- with $ref.volume -}}, {{ . }}{{ end -}}
+    {{- with $ref.issue -}}({{ . }}){{ end -}}
+    {{- with $ref.pages -}}, {{ . }}{{ end -}}.
+    {{- with $ref.url }}
+      <a href="{{ . }}">{{ . }}</a>
+    {{- end }}
+  </p>
+  {{- end -}}
+  {{- end }}
+</section>
+{{- end -}}
+{{- end -}}

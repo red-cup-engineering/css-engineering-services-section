@@ -1,0 +1,740 @@
+{
+  "config": {
+    "ROOM_COUNTS": [
+      1,
+      10,
+      25,
+      50
+    ],
+    "BOTS_PER_ROOM": 4,
+    "INTERVAL_MS": 100,
+    "SESSION_MS": 3000,
+    "DEGRADE_THRESHOLD": 1.5
+  },
+  "results": [
+    {
+      "roomCount": 1,
+      "botsTotal": 4,
+      "perRoom": [
+        {
+          "id": "load-0",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.12903225806451,
+          "stddevIntervalMs": 2.239555478414166,
+          "maxIntervalMs": 105
+        }
+      ],
+      "meanOfMeans": 100.12903225806451,
+      "worstMeanIntervalMs": 100.12903225806451
+    },
+    {
+      "roomCount": 10,
+      "botsTotal": 40,
+      "perRoom": [
+        {
+          "id": "load-0",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 197.43333333333334,
+          "stddevIntervalMs": 523.7711130721976,
+          "maxIntervalMs": 3018
+        },
+        {
+          "id": "load-1",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 197.6,
+          "stddevIntervalMs": 523.9247146935012,
+          "maxIntervalMs": 3019
+        },
+        {
+          "id": "load-2",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 197.73333333333332,
+          "stddevIntervalMs": 523.8999862145022,
+          "maxIntervalMs": 3019
+        },
+        {
+          "id": "load-3",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 197.73333333333332,
+          "stddevIntervalMs": 523.8996680875282,
+          "maxIntervalMs": 3019
+        },
+        {
+          "id": "load-4",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 197.73333333333332,
+          "stddevIntervalMs": 523.900304341283,
+          "maxIntervalMs": 3019
+        },
+        {
+          "id": "load-5",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 197.73333333333332,
+          "stddevIntervalMs": 523.900304341283,
+          "maxIntervalMs": 3019
+        },
+        {
+          "id": "load-6",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 197.73333333333332,
+          "stddevIntervalMs": 523.9008133437305,
+          "maxIntervalMs": 3019
+        },
+        {
+          "id": "load-7",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 197.73333333333332,
+          "stddevIntervalMs": 523.9006224678707,
+          "maxIntervalMs": 3019
+        },
+        {
+          "id": "load-8",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 197.73333333333332,
+          "stddevIntervalMs": 522.7859940315498,
+          "maxIntervalMs": 3013
+        },
+        {
+          "id": "load-9",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 197.73333333333332,
+          "stddevIntervalMs": 522.7859940315498,
+          "maxIntervalMs": 3013
+        }
+      ],
+      "meanOfMeans": 197.69,
+      "worstMeanIntervalMs": 197.73333333333332
+    },
+    {
+      "roomCount": 25,
+      "botsTotal": 100,
+      "perRoom": [
+        {
+          "id": "load-0",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.12903225806451,
+          "stddevIntervalMs": 2.708909261318326,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-1",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.12903225806451,
+          "stddevIntervalMs": 2.059469638646757,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-2",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.12903225806451,
+          "stddevIntervalMs": 2.253913234782378,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-3",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.3225806451613,
+          "stddevIntervalMs": 2.49369652775325,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-4",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.3225806451613,
+          "stddevIntervalMs": 2.3470928727201605,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-5",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.35483870967742,
+          "stddevIntervalMs": 2.222297374148366,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-6",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.35483870967742,
+          "stddevIntervalMs": 2.118252278629936,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-7",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.54838709677419,
+          "stddevIntervalMs": 1.9811809719721398,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-8",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.54838709677419,
+          "stddevIntervalMs": 2.407497826715521,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-9",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.41935483870968,
+          "stddevIntervalMs": 2.2543748657620832,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-10",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.45161290322581,
+          "stddevIntervalMs": 1.91494478447172,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-11",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.7,
+          "stddevIntervalMs": 1.7916472867168918,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-12",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.7,
+          "stddevIntervalMs": 2.002498439450079,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-13",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.7,
+          "stddevIntervalMs": 2.0024984394500787,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-14",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.7,
+          "stddevIntervalMs": 2.3965252624024926,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-15",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.7,
+          "stddevIntervalMs": 2.325940669922602,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-16",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.7,
+          "stddevIntervalMs": 2.23830292855994,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-17",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.7,
+          "stddevIntervalMs": 2.4103941586387907,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-18",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.7,
+          "stddevIntervalMs": 2.4103941586387907,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-19",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.7,
+          "stddevIntervalMs": 2.4103941586387907,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-20",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.7,
+          "stddevIntervalMs": 2.4103941586387907,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-21",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.7,
+          "stddevIntervalMs": 2.4103941586387907,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-22",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.7,
+          "stddevIntervalMs": 2.253145948816159,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-23",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.86666666666666,
+          "stddevIntervalMs": 2.55255862921022,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-24",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.86666666666666,
+          "stddevIntervalMs": 2.1406125810669767,
+          "maxIntervalMs": 105
+        }
+      ],
+      "meanOfMeans": 100.55372043010753,
+      "worstMeanIntervalMs": 100.86666666666666
+    },
+    {
+      "roomCount": 50,
+      "botsTotal": 200,
+      "perRoom": [
+        {
+          "id": "load-0",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.29032258064517,
+          "stddevIntervalMs": 2.580241903976932,
+          "maxIntervalMs": 104
+        },
+        {
+          "id": "load-1",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.29032258064517,
+          "stddevIntervalMs": 2.931404467828731,
+          "maxIntervalMs": 107
+        },
+        {
+          "id": "load-2",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.29032258064517,
+          "stddevIntervalMs": 3.184575207273403,
+          "maxIntervalMs": 107
+        },
+        {
+          "id": "load-3",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.29032258064517,
+          "stddevIntervalMs": 3.184575207273403,
+          "maxIntervalMs": 107
+        },
+        {
+          "id": "load-4",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.29032258064517,
+          "stddevIntervalMs": 3.071130383332104,
+          "maxIntervalMs": 104
+        },
+        {
+          "id": "load-5",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.45161290322581,
+          "stddevIntervalMs": 2.686149776976264,
+          "maxIntervalMs": 104
+        },
+        {
+          "id": "load-6",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.46666666666667,
+          "stddevIntervalMs": 2.704728370013439,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-7",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.66666666666667,
+          "stddevIntervalMs": 2.4267032964268402,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-8",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.66666666666667,
+          "stddevIntervalMs": 2.6997942308422123,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-9",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.51612903225806,
+          "stddevIntervalMs": 2.686537137246067,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-10",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.51612903225806,
+          "stddevIntervalMs": 2.588697115837275,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-11",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.66666666666667,
+          "stddevIntervalMs": 2.820559440174158,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-12",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.66666666666667,
+          "stddevIntervalMs": 3.1763011332190922,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-13",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.66666666666667,
+          "stddevIntervalMs": 3.1763011332190922,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-14",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.66666666666667,
+          "stddevIntervalMs": 2.832352771499734,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-15",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.86666666666666,
+          "stddevIntervalMs": 2.6297443897754693,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-16",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.86666666666666,
+          "stddevIntervalMs": 2.432191512927293,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-17",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.86666666666666,
+          "stddevIntervalMs": 2.171532996653644,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-18",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.86666666666666,
+          "stddevIntervalMs": 2.171532996653644,
+          "maxIntervalMs": 105
+        },
+        {
+          "id": "load-19",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.86666666666666,
+          "stddevIntervalMs": 2.459448899426229,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-20",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.86666666666666,
+          "stddevIntervalMs": 2.202019275321833,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-21",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.86666666666666,
+          "stddevIntervalMs": 2.3485219938411386,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-22",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 100.86666666666666,
+          "stddevIntervalMs": 2.55255862921022,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-23",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.3935097428021646,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-24",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.3935097428021646,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-25",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.5940101944458283,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-26",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.5940101944458283,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-27",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.5940101944458283,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-28",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.3935097428021654,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-29",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.3935097428021654,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-30",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.3935097428021654,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-31",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.1592179654268864,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-32",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.1592179654268864,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-33",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.1592179654268864,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-34",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.24993827075816,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-35",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.0805982045769644,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-36",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.0805982045769644,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-37",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 1.965253729731157,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-38",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 1.8061622912192092,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-39",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 1.8061622912192092,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-40",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 1.8607047649270485,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-41",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 1.8607047649270485,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-42",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.031966753883756,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-43",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.031966753883756,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-44",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.031966753883756,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-45",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.128118626601649,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-46",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.128118626601649,
+          "maxIntervalMs": 106
+        },
+        {
+          "id": "load-47",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.5157283018817607,
+          "maxIntervalMs": 108
+        },
+        {
+          "id": "load-48",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.5551690528982394,
+          "maxIntervalMs": 108
+        },
+        {
+          "id": "load-49",
+          "finalTick": 33,
+          "finalMembers": 4,
+          "meanIntervalMs": 101.06666666666666,
+          "stddevIntervalMs": 2.393509742802165,
+          "maxIntervalMs": 106
+        }
+      ],
+      "meanOfMeans": 100.86270967741933,
+      "worstMeanIntervalMs": 101.06666666666666
+    }
+  ],
+  "honestCeiling": {
+    "roomCount": 10,
+    "note": "worst per-room mean tick interval exceeded 1.5x the configured 100ms at 10 rooms, on THIS host, under whatever else was running on it at the time"
+  }
+}

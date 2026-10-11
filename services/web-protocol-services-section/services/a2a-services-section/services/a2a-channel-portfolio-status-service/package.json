@@ -12,10 +12,10 @@
     "verify": "npm run check && npm test"
   },
   "dependencies": {
-    "@red-cup-engineering/a2a-rmn-part-service": "1.0.1",
-    "@red-cup-engineering/relation-model-notation": "0.0.1",
-    "@red-cup-engineering/relation-model-notation-json-codec": "0.0.2",
-    "@red-cup-engineering/relation-model-notation-typing": "0.0.1",
+    "@red-cup-engineering/a2a-rmn-part-service": "workspace:*",
+    "@red-cup-engineering/relation-model-notation": "workspace:*",
+    "@red-cup-engineering/relation-model-notation-json-codec": "workspace:*",
+    "@red-cup-engineering/relation-model-notation-typing": "workspace:*",
     "@red-cup-engineering/semantic-content-identify-service": "0.2.2"
   }
 }

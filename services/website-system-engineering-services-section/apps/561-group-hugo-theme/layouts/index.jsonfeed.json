@@ -1,0 +1,33 @@
+{{- $items := slice -}}
+{{- range first 30 (where .Site.RegularPages "Section" "writing").ByDate.Reverse -}}
+  {{- $item := dict
+    "id"             .Permalink
+    "url"            .Permalink
+    "title"          .Title
+    "date_published" (.Date.Format "2006-01-02T15:04:05Z07:00")
+  -}}
+  {{- with .Description -}}{{ $item = merge $item (dict "summary" .) }}{{ end -}}
+  {{- with .Lastmod -}}{{ $item = merge $item (dict "date_modified" (.Format "2006-01-02T15:04:05Z07:00")) }}{{ end -}}
+  {{- with .Plain -}}{{ $item = merge $item (dict "content_text" (truncate 1000 . )) }}{{ end -}}
+  {{- with .Params.authors -}}
+    {{- $authors := slice -}}
+    {{- range . -}}{{ $authors = $authors | append (dict "name" .) }}{{ end -}}
+    {{- $item = merge $item (dict "authors" $authors) -}}
+  {{- end -}}
+  {{- $items = $items | append $item -}}
+{{- end -}}
+{{- $feed := dict
+  "version"       "https://jsonfeed.org/version/1.1"
+  "title"         .Site.Title
+  "home_page_url" .Site.BaseURL
+  "feed_url"      (printf "%sfeed.json" .Site.BaseURL)
+  "description"   (.Site.Params.description | default "Letters and notes by emsenn.")
+  "language"      "en"
+  "items"         $items
+-}}
+{{- with .Site.Params.properName -}}
+  {{- $author := dict "name" . -}}
+  {{- with $.Site.Params.canonicalURL -}}{{ $author = merge $author (dict "url" .) }}{{ end -}}
+  {{- $feed = merge $feed (dict "authors" (slice $author)) -}}
+{{- end -}}
+{{ $feed | jsonify (dict "indent" "  ") | safeJS }}

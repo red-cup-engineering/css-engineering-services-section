@@ -1,0 +1,50 @@
+{{- /*  Build a reverse index: RelPermalink -> slice of pages that reference it.
+        Called via partialCached so this runs exactly once per build.
+        Checks rendered content for internal href links and frontmatter
+        values against the title-index.                                   */ -}}
+{{- $index := dict -}}
+{{- $titleIndex := partialCached "title-index.html" . -}}
+
+{{- range $page := .RegularPages -}}
+  {{- /* Extract internal links from rendered content; skip broken pages */ -}}
+  {{- $result := try ($page.Content) -}}
+  {{- $links := slice -}}
+  {{- with $result.Value -}}
+    {{- $links = findRE `href="(/[^"]+)"` . -}}
+  {{- end -}}
+  {{- range $link := $links -}}
+    {{- $url := replaceRE `href="([^"]+)"` "$1" $link -}}
+    {{- if not (strings.HasSuffix $url "/") -}}
+      {{- $url = printf "%s/" $url -}}
+    {{- end -}}
+    {{- if ne $url $page.RelPermalink -}}
+      {{- $existing := index $index $url | default slice -}}
+      {{- $index = merge $index (dict $url ($existing | append $page)) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* Check frontmatter values against title-index */ -}}
+  {{- range $key, $val := $page.Params -}}
+    {{- if reflect.IsSlice $val -}}
+      {{- range $val -}}
+        {{- if not (reflect.IsMap .) -}}
+          {{- $str := lower (printf "%v" .) -}}
+          {{- $targetURL := index $titleIndex $str -}}
+          {{- if and $targetURL (ne $targetURL $page.RelPermalink) -}}
+            {{- $existing := index $index $targetURL | default slice -}}
+            {{- $index = merge $index (dict $targetURL ($existing | append $page)) -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- else if not (reflect.IsMap $val) -}}
+      {{- $str := lower (printf "%v" $val) -}}
+      {{- $targetURL := index $titleIndex $str -}}
+      {{- if and $targetURL (ne $targetURL $page.RelPermalink) -}}
+        {{- $existing := index $index $targetURL | default slice -}}
+        {{- $index = merge $index (dict $targetURL ($existing | append $page)) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return $index -}}

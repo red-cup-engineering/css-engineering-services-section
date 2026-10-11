@@ -1,0 +1,13 @@
+[Unit]
+Description=Alpaca paper redistributor loop (Esther Davis) on Cold Red Gate
+# Every redistribution order is admitted by the contract-bound venue execution
+# transport from the broker's current account and position observations.
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/emsenn/561-group/services/alpaca-esther-paper-redistributor-loop
+EnvironmentFile=%h/.config/alpaca-esther-paper.env
+ExecStart=/home/emsenn/561-group/services/alpaca-esther-paper-redistributor-loop/node_modules/.bin/alpaca-esther-paper-redistributor-loop
+StandardOutput=journal
+StandardError=journal

@@ -13,7 +13,9 @@
     "./facilitator": "./src/facilitator.mjs",
     "./src/priced-capability-boundary.mjs": "./src/priced-capability-boundary.mjs"
   },
-  "files": ["src/"],
+  "files": [
+    "src/"
+  ],
   "scripts": {
     "check": "node --check src/resource-server.mjs && node --check src/resource-observation.mjs && node --check src/public-service-market-listing.mjs && node --check src/facilitator.mjs && node --check src/priced-capability-boundary.mjs && node --check src/verify-public-x402-boundary-reference.mjs && node --check test/resource-server.test.mjs && node --check test/resource-observation.test.mjs && node --check test/public-service-market-listing.test.mjs && node --check test/facilitator.test.mjs && node --check test/priced-capability-boundary.test.mjs && node --check test/verify-public-x402-boundary-reference.test.mjs",
     "test": "node --test test/resource-server.test.mjs test/resource-observation.test.mjs test/public-service-market-listing.test.mjs test/facilitator.test.mjs test/priced-capability-boundary.test.mjs test/verify-public-x402-boundary-reference.test.mjs",
@@ -21,21 +23,25 @@
     "verify-public-reference": "node src/verify-public-x402-boundary-reference.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/canonicalize-https-url-service": "0.1.0",
     "@red-cup-engineering/semantic-content-identify-service": "0.2.2",
     "@x402/core": "2.19.0",
     "@x402/evm": "2.19.0",
     "@x402/express": "2.19.0",
     "@x402/extensions": "2.19.0",
-    "express": "5.2.1"
+    "express": "5.2.1",
+    "@red-cup-engineering/http-services-section": "workspace:*"
   },
   "peerDependencies": {
     "@a2a-js/sdk": "1.0.0-beta.0",
     "@red-cup-engineering/a2a-agent-card-discovery-service": "1.0.3"
   },
   "peerDependenciesMeta": {
-    "@a2a-js/sdk": { "optional": true },
-    "@red-cup-engineering/a2a-agent-card-discovery-service": { "optional": true }
+    "@a2a-js/sdk": {
+      "optional": true
+    },
+    "@red-cup-engineering/a2a-agent-card-discovery-service": {
+      "optional": true
+    }
   },
   "overrides": {
     "axios": "1.18.1"

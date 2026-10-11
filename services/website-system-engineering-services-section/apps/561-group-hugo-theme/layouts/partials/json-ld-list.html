@@ -1,0 +1,28 @@
+{{- $ld := dict "@context" "https://schema.org" "@type" "CollectionPage" -}}
+{{- $name := .Title -}}
+{{- if not $name -}}
+  {{- with .File -}}
+    {{- $name = .ContentBaseName | humanize -}}
+  {{- end -}}
+{{- end -}}
+{{- $ld = merge $ld (dict "name" $name) -}}
+{{- $ld = merge $ld (dict "url" .Permalink) -}}
+
+{{- with .Description -}}
+  {{- $ld = merge $ld (dict "description" .) -}}
+{{- end -}}
+
+{{- $ld = merge $ld (dict "publisher" (dict "@type" "Person" "name" $.Site.Params.properName "url" $.Site.Params.canonicalURL)) -}}
+
+{{- /* Include immediate child pages as hasPart */ -}}
+{{- $parts := slice -}}
+{{- range first 20 .RegularPages -}}
+  {{- $parts = $parts | append (dict "@type" "CreativeWork" "name" .Title "url" .Permalink) -}}
+{{- end -}}
+{{- with $parts -}}
+  {{- $ld = merge $ld (dict "hasPart" .) -}}
+{{- end -}}
+
+<script type="application/ld+json">
+{{ $ld | jsonify (dict "indent" "  ") | safeJS }}
+</script>

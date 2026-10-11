@@ -1,0 +1,64 @@
+<p class="h-card">
+  {{- with $.Site.Params.givenName -}}
+    My given name is
+    {{- with $.Site.Params.givenName }}
+      <span class="p-given-name"> {{ . }}</span>
+    {{- end -}}
+    {{- with $.Site.Params.familyName }}
+      <span class="p-family-name"> {{ . }}</span>
+    {{- end -}}
+    {{- with $.Site.Params.properName -}}
+      , but
+    {{- end -}}
+  {{- end -}}
+  {{- with $.Site.Params.properName }}
+    I go by <span class="p-name">{{ . }}</span>.
+  {{- end -}}
+  {{- with $.Site.Params.honorificPrefix }}
+    My preferred honorific prefix is <span class="p-honorific-prefix">{{ . }}</span>.
+  {{- end -}}
+  {{- if ($.Site.Params.pronounNominative | default ($.Site.Params.pronounOblique | default $.Site.Params.pronounPossessive)) }}
+    I use
+    {{- with $.Site.Params.pronounNominative }}
+      <span class="p-x-pronoun-nominative"> {{ . }}</span>,
+    {{- end -}}
+    {{- with $.Site.Params.pronounOblique }}
+      <span class="p-x-pronoun-oblique"> {{ . }}</span>,
+    {{- end -}}
+    {{- with $.Site.Params.pronounPossessive }}
+      <span class="p-x-pronoun-possessive"> {{ . }}</span>,
+    {{- end }}
+    as my pronouns.
+  {{- end -}}
+  {{- with $.Site.Params.genderIdentity }}
+    I am a <span class="p-gender-identity">{{ . }}</span>.
+  {{- end -}}
+  {{- with $.Site.Params.tribalHeritage }}
+    I am of the <span class="p-tribal-heritage">{{ . }}</span>.
+  {{- end -}}
+  {{- if ($.Site.Params.locality | default ($.Site.Params.region | default ($.Site.Params.country | default $.Site.Params.traditionalSovereignty))) }}
+    I reside in
+    {{- with $.Site.Params.locality }}
+      <span class="p-locality"> {{ . }}</span>,
+    {{- end -}}
+    {{- with $.Site.Params.region }}
+      <span class="p-region"> {{ . }}</span>,
+    {{- end -}}
+    {{- with $.Site.Params.country }}
+      <span class="p-country-name"> {{ . }}</span>
+      {{- with $.Site.Params.traditionalSovereignty -}}
+        ,
+      {{- end -}}
+    {{- end -}}
+    {{- with $.Site.Params.traditionalSovereignty }}
+      the homeland of the <span class="p-traditional-regional-sovereignty">{{ . }}</span>, who never ceded sovereignty
+    {{- end -}}
+    .
+  {{- end -}}
+  {{- with $.Site.Params.canonicalURL }}
+    My main online presence is at <a href="{{ . }}" rel="me" class="u-url u-uid">{{ . }}</a>.
+  {{- end -}}
+  {{- with $.Site.Params.email }}
+    My email is <a href="mailto:{{ . }}" class="u-email">{{ . }}</a>.
+  {{- end -}}
+</p>

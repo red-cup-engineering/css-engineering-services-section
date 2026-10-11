@@ -1,0 +1,13 @@
+[Unit]
+Description=Alpaca paper redistributor loop (Esther Davis)
+# Every redistribution order is admitted by the contract-bound venue execution
+# transport from the broker's current account and position observations.
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-esther-paper-redistributor-loop
+EnvironmentFile=/home/emsenn/info/.env
+ExecStart=/usr/bin/node src/run-loop.mjs
+StandardOutput=journal
+StandardError=journal

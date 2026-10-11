@@ -1,7 +1,7 @@
 import { isIP } from "node:net";
 import { decodePaymentRequiredHeader } from "@x402/core/http";
 import { validatePaymentRequired } from "@x402/core/schemas";
-import { makeNiUri as rawNiUri } from "@red-cup-engineering/ni-uri-services-section";
+import { makeNiUri as rawNiUri } from "@red-cup-engineering/uri-services-section/ni-uri";
 
 const EVM_NETWORK = /^eip155:[1-9][0-9]*$/u;
 const EVM_ADDRESS = /^0x[0-9a-fA-F]{40}$/u;

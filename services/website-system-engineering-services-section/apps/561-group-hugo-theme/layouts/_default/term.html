@@ -1,0 +1,8 @@
+{{ define "main" }}
+<h1>{{ .Title }}</h1>
+<ul class="pages">
+  {{ range .Pages }}
+  <li><a href="{{ .RelPermalink }}">{{ or .Title (.File.ContentBaseName | humanize) }}</a>{{ with .Date }} <span class="meta">{{ .Format "2006-01-02" }}</span>{{ end }}</li>
+  {{ end }}
+</ul>
+{{ end }}

@@ -1,0 +1,13 @@
+[Unit]
+Description=Run alpaca-esther-paper-redistributor-loop on US market-hours weekdays
+
+[Timer]
+# Weekdays only, hourly through the US regular session in Eastern time. The loop
+# itself checks Alpaca's clock and exits cleanly when the market is closed, so a
+# firing outside session hours is harmless rather than something to encode here.
+OnCalendar=Mon..Fri *-*-* 13..21:00:00 UTC
+Persistent=false
+RandomizedDelaySec=90
+
+[Install]
+WantedBy=timers.target

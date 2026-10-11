@@ -1,0 +1,56 @@
+{{- /*  Render a BibTeX citation block below the relations section.
+        Only renders for pages that have a type set.                */ -}}
+{{- $type := .Params.type | default "" -}}
+{{- if $type -}}
+
+{{- /* Resolve author name */ -}}
+{{- $authorLast := "" -}}
+{{- $authorBibtex := "" -}}
+{{- with .Params.authors -}}
+  {{- $authorLast = index . 0 -}}
+  {{- $authorBibtex = delimit . " and " -}}
+{{- else -}}
+  {{- $authorLast = $.Site.Params.properName -}}
+  {{- $authorBibtex = $.Site.Params.properName -}}
+{{- end -}}
+
+{{- /* Resolve year */ -}}
+{{- $year := "" -}}
+{{- with .Date -}}
+  {{- $year = .Format "2006" -}}
+{{- end -}}
+
+{{- /* BibTeX entry type based on content type */ -}}
+{{- $bibtexType := "misc" -}}
+{{- if or (eq $type "text") (eq $type "letter") (eq $type "paper") -}}
+  {{- $bibtexType = "article" -}}
+{{- else if or (eq $type "theorem") (eq $type "proof") (eq $type "lemma") (eq $type "proposition") (eq $type "claim") (eq $type "argument") -}}
+  {{- $bibtexType = "article" -}}
+{{- end -}}
+
+{{- /* BibTeX citekey */ -}}
+{{- $slug := "" -}}
+{{- with .File -}}
+  {{- $slug = .BaseFileName | urlize -}}
+{{- else -}}
+  {{- $slug = .Title | urlize -}}
+{{- end -}}
+{{- $citekey := printf "%s%s-%s" (lower $authorLast) $year $slug -}}
+
+<section class="cite-this" id="cite-this">
+  <h2>Cite</h2>
+  <pre class="cite-block"><code>@{{ $bibtexType }}{{ "{" }}{{ $citekey }},
+  author    = {{ "{" }}{{ $authorBibtex }}{{ "}" }},
+  title     = {{ "{" }}{{ .Title }}{{ "}" }},
+{{- with $year }}
+  year      = {{ "{" }}{{ . }}{{ "}" }},
+{{- end }}
+{{- with $.Params.description }}
+  note      = {{ "{" }}{{ . }}{{ "}" }},
+{{- end }}
+  url       = {{ "{" }}{{ $.Permalink }}{{ "}" }},
+  publisher = {{ "{" }}{{ $.Site.Title }}{{ "}" }},
+  license   = {CC BY-SA 4.0}
+{{ "}" }}</code></pre>
+</section>
+{{- end -}}

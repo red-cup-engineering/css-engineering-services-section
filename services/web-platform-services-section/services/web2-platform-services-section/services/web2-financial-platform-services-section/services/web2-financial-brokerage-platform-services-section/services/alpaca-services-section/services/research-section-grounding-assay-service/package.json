@@ -1,0 +1,22 @@
+{
+  "name": "@red-cup-engineering/research-section-grounding-assay-service",
+  "version": "0.1.2",
+  "type": "module",
+  "description": "Deterministically admits only provider-distinct forecast sections bound to supplied evidence references and typed fact identifiers.",
+  "exports": {
+    ".": "./src/assay.mjs",
+    "./schemas": "./src/schemas.mjs"
+  },
+  "files": [
+    "schemas/",
+    "src/"
+  ],
+  "dependencies": {
+    "@red-cup-engineering/json-schema-services-section": "workspace:*",
+    "@red-cup-engineering/investment-research-work-lot-service": "workspace:*"
+  },
+  "scripts": {
+    "check": "node --check src/*.mjs && node --check test/*.test.mjs",
+    "test": "node --test test/*.test.mjs"
+  }
+}
