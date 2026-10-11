@@ -1,5 +1,7 @@
 import { join } from "node:path";
 
+import { dataKindDirectory } from "@red-cup-engineering/eavt-services-section/data-artifact-address";
+
 import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 import { alpacaCredentials } from "@red-cup-engineering/alpaca-services-section/guards";
 import { allocateMandatePortfolio } from "@red-cup-engineering/mandate-portfolio-allocation-service";
@@ -14,6 +16,14 @@ import { loadBeliefOrRefuse } from "./belief-gate.mjs";
 import { loadTournamentSelection } from "./tournament-gate.mjs";
 import { loadMandate } from "./mandate-gate.mjs";
 import { createAlpacaVenueAuthority } from "./venue-authority.mjs";
+
+/** The record files the loop reads, by type: `<dataRoot>/data/records/<type>-records/<file>` (the directory is the data-artifact address law's). */
+export const LOOP_RECORDS = Object.freeze({
+  belief: Object.freeze({ type: "belief", file: "2026-09-05-esther-blk-permanent-claim-belief-record.json" }),
+  tournament: Object.freeze({ type: "strategy-tournament", file: "2026-09-05-blk-strategy-tournament-record.json" }),
+  mandate: Object.freeze({ type: "mandate", file: "2026-09-05-esther-blk-accumulation-mandate-record.json" }),
+});
+export const loopRecordPath = (dataRoot, { type, file }) => join(dataKindDirectory(dataRoot, "record", type), file);
 
 const PRINCIPAL = "urn:principal:esther-davis";
 const CONTRACT_VALID_MINUTES = 15;
@@ -79,7 +89,7 @@ function expectedPostTradeState({ preAccount, prePositions, symbol, rawOrder }) 
  * reconciliation of the account's fills against the intent.
  * @param {object} params
  * @param {NodeJS.ProcessEnv} params.env Process environment (credential guards read from this).
- * @param {string} params.dataRoot Directory holding the belief/mandate/tournament record files.
+ * @param {string} params.dataRoot The root whose `data/records/<type>-records/` hold the belief, mandate and tournament record files.
  * @param {string} [params.booksDataRoot] Directory `brokerage-independent-witness-and-books` journals into; required unless `venueAuthority` is injected.
  * @param {object} [params.venueAuthority] Pre-built `{adapter, registerExecutionRecords, recordOutcomeWitness}`, for tests; built via `createAlpacaVenueAuthority` otherwise.
  * @param {() => string} [params.clock]
@@ -93,9 +103,9 @@ export async function runTradingCycle({ env, dataRoot, booksDataRoot, venueAutho
   const CONTRACT_SCOPES = contractScopes(mode);
   const GRANT_SCOPES = grantScopes(mode);
 
-  const { belief } = loadBeliefOrRefuse(join(dataRoot, "2026-09-05-esther-blk-permanent-claim-belief-record.json"));
-  const tournament = loadTournamentSelection(join(dataRoot, "2026-09-05-blk-strategy-tournament-record.json"));
-  const mandate = loadMandate(join(dataRoot, "2026-09-05-esther-blk-accumulation-mandate-record.json"));
+  const { belief } = loadBeliefOrRefuse(loopRecordPath(dataRoot, LOOP_RECORDS.belief));
+  const tournament = loadTournamentSelection(loopRecordPath(dataRoot, LOOP_RECORDS.tournament));
+  const mandate = loadMandate(loopRecordPath(dataRoot, LOOP_RECORDS.mandate));
   const symbol = belief.affectedEntities[0].identifier;
 
   const now = clock();

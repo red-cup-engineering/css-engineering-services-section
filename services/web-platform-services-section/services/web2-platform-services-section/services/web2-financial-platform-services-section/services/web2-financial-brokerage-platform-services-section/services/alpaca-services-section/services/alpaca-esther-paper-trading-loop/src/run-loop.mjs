@@ -15,8 +15,8 @@ import { runTradingCycle } from "./pipeline.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const JOURNAL_ROOT = join(HERE, "..");
-const DATA_ROOT = join(HERE, "..", "data", "records");
-const BOOKS_DATA_ROOT = join(HERE, "..", "data", "state", "brokerage-books");
+const DATA_ROOT = JOURNAL_ROOT;
+const BOOKS_DATA_ROOT = join(HERE, "..", "data", "state", "brokerage-book-state");
 export const JOURNAL_OBJECT_KIND = "alpaca-esther-paper-trading-loop.decision";
 export const JOURNAL_CATEGORY = "esther-trading.decision";
 const relationalId = semanticIdOf("brokerage.alpaca-esther-paper-trading-loop.record");

@@ -7,10 +7,15 @@ import test from "node:test";
 
 import { createBrokerageOutcomeWitnessRecorder } from "@red-cup-engineering/brokerage-independent-witness-and-books";
 
-import { runTradingCycle } from "../src/pipeline.mjs";
+import { LOOP_RECORDS, loopRecordPath, runTradingCycle } from "../src/pipeline.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const DATA_ROOT = join(HERE, "..", "data", "records");
+const DATA_ROOT = join(HERE, "..");
+const seed = (dataRoot, record, bytes = readFileSync(loopRecordPath(DATA_ROOT, record))) => {
+  const path = loopRecordPath(dataRoot, record);
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, bytes);
+};
 const ENV = Object.freeze({ ALPACA_ACCOUNT_ESTHER_PAPER_TRADING_KEY: "fake-key", ALPACA_ACCOUNT_ESTHER_PAPER_TRADING_SECRET: "fake-secret" });
 
 /**
@@ -80,14 +85,12 @@ test("cycle emits a hold intent, never a buy, when the tournament has not establ
   const dataRoot = mkdtempSync(join(tmpdir(), "alpaca-esther-paper-trading-loop-hold-data-"));
   const booksRoot = mkdtempSync(join(tmpdir(), "alpaca-esther-paper-trading-loop-hold-books-"));
   try {
-    for (const name of ["2026-09-05-esther-blk-permanent-claim-belief-record.json", "2026-09-05-esther-blk-accumulation-mandate-record.json"]) {
-      writeFileSync(join(dataRoot, name), readFileSync(join(DATA_ROOT, name)));
-    }
-    const tournamentFile = JSON.parse(readFileSync(join(DATA_ROOT, "2026-09-05-blk-strategy-tournament-record.json"), "utf8"));
+    for (const record of [LOOP_RECORDS.belief, LOOP_RECORDS.mandate]) seed(dataRoot, record);
+    const tournamentFile = JSON.parse(readFileSync(loopRecordPath(DATA_ROOT, LOOP_RECORDS.tournament), "utf8"));
     // Rig the selection so the validation winner does not beat buy-and-hold on holdout (the honest "alpha not established" case the task names).
     tournamentFile.record = { ...tournamentFile.record, selected: { ...tournamentFile.record.selected, selectedUsingValidationOnly: "macd", untouchedHoldout: { ...tournamentFile.record.selected.untouchedHoldout, macd: { metric: 0.1, maximumDrawdown: 0.01 }, "buy-and-hold": { metric: 0.5, maximumDrawdown: 0.01 } } } };
     // inputsDigest is left as-is on purpose: this rigged record's own request is unchanged, so the digest still matches and only the recomputed judgement (holdout comparison) differs from the on-disk selection.
-    writeFileSync(join(dataRoot, "2026-09-05-blk-strategy-tournament-record.json"), JSON.stringify(tournamentFile));
+    seed(dataRoot, LOOP_RECORDS.tournament, JSON.stringify(tournamentFile));
 
     const adapter = fakeAdapter();
     const venueAuthority = { adapter, registerExecutionRecords() {}, recordOutcomeWitness: await witnessRecorder(booksRoot) };
@@ -105,11 +108,9 @@ test("cycle emits a hold intent, never a buy, when the tournament has not establ
 test("cycle refuses when the belief record's falsifier has fired", async () => {
   const dataRoot = mkdtempSync(join(tmpdir(), "alpaca-esther-paper-trading-loop-fired-"));
   try {
-    for (const name of ["2026-09-05-esther-blk-accumulation-mandate-record.json", "2026-09-05-blk-strategy-tournament-record.json"]) {
-      writeFileSync(join(dataRoot, name), readFileSync(join(DATA_ROOT, name)));
-    }
-    const belief = JSON.parse(readFileSync(join(DATA_ROOT, "2026-09-05-esther-blk-permanent-claim-belief-record.json"), "utf8"));
-    writeFileSync(join(dataRoot, "2026-09-05-esther-blk-permanent-claim-belief-record.json"), JSON.stringify({ ...belief, falsifierFired: true }));
+    for (const record of [LOOP_RECORDS.mandate, LOOP_RECORDS.tournament]) seed(dataRoot, record);
+    const belief = JSON.parse(readFileSync(loopRecordPath(DATA_ROOT, LOOP_RECORDS.belief), "utf8"));
+    seed(dataRoot, LOOP_RECORDS.belief, JSON.stringify({ ...belief, falsifierFired: true }));
 
     await assert.rejects(
       runTradingCycle({ env: ENV, dataRoot, venueAuthority: {}, clock: () => "2026-09-05T15:00:00.000Z" }),
