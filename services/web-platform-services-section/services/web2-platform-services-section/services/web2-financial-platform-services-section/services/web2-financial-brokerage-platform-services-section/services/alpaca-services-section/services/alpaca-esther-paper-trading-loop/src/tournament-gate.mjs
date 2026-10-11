@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
+import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 import { buildEntries, normalizeBars } from "@red-cup-engineering/strategy-tournament-service";
 
 const BASELINE_ID = "buy-and-hold";

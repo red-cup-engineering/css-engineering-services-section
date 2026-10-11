@@ -1,4 +1,4 @@
-import { semanticId } from "@red-cup-engineering/computer-content-engineering-services-section/semiotic-content-address";
+import { semanticId } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
 import { requestInferenceWorkLot } from "@red-cup-engineering/computer-inference-engine/dispatch/client";
 import { assayStrategyProgram } from "./strategy-program-candidate-assay.mjs";
 import { validateStrategyProgramSynthesisResult } from "./schemas.mjs";

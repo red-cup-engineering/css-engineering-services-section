@@ -1,5 +1,5 @@
 import { createAlpacaAdapter } from "@red-cup-engineering/pluggable-venue-adapter-service/alpaca";
-import { semanticIdOf } from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
+import { semanticIdOf } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 import { canonicalJson as canonical } from "@red-cup-engineering/json-services-section/canonical-json";
 
 const semanticId = semanticIdOf("brokerage.alpaca-principal-account-read.record");

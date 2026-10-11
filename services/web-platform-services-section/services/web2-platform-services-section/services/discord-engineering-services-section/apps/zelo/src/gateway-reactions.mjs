@@ -1,4 +1,4 @@
-import { semanticHex } from "@red-cup-engineering/computer-content-engineering-services-section/semiotic-content-address";
+import { semanticHex } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
 
 const text = (value) => typeof value === "string" && value.length > 0 ? value : undefined;
 const object = (value) => value !== null && typeof value === "object" && !Array.isArray(value) ? value : undefined;

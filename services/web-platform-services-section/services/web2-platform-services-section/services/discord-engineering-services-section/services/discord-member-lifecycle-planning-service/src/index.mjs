@@ -1,5 +1,5 @@
 import { createHmac } from "node:crypto";
-import { semanticHex } from "@red-cup-engineering/computer-content-engineering-services-section/semiotic-content-address";
+import { semanticHex } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
 
 const KINDS = new Set(["arrival", "leave", "milestone", "reengagement"]);
 const ID = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/u;

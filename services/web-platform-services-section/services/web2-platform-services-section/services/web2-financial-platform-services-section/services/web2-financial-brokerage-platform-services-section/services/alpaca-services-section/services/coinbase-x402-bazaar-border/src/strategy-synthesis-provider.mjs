@@ -1,4 +1,4 @@
-import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/semantic-content-identify-service";
+import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 import { assayStrategyProgram } from "@red-cup-engineering/strategy-program-candidate-assay-service";
 import { validateStrategyProgramSynthesisRequest } from "@red-cup-engineering/strategy-program-synthesis-work-lot-service";
 import { validateStrategyProgramSynthesisResult } from "@red-cup-engineering/strategy-program-synthesis-work-lot-service/schemas";
