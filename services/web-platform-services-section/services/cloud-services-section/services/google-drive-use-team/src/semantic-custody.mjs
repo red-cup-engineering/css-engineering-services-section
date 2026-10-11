@@ -1,21 +1,15 @@
 import { randomUUID } from "node:crypto";
-import { mkdirSync, readFileSync, readdirSync, renameSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve, sep } from "node:path";
+import { dataArtifactFiles } from "@red-cup-engineering/eavt-services-section/data-artifact-listing";
 import { createImmutableContentCustody } from "@red-cup-engineering/immutable-content-custody-service";
 import { admitJsonSemanticContent, EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 import { seavt } from "@red-cup-engineering/witness-journal-entry-service";
 import { appendSeavt, readSeavtAtPath } from "@red-cup-engineering/witness-journal-log-service";
 
 const OBJECT_KIND = "google-drive.semantic-record", FEED = "google-drive.semantic-records";
-function filesBelow(root, suffix) {
-  const files = [];
-  function visit(path) {
-    let entries;
-    try { entries = readdirSync(path, { withFileTypes: true }); }
-    catch (error) { if (error?.code === "ENOENT") return; throw error; }
-    for (const entry of entries) { const child = join(path, entry.name); if (entry.isDirectory()) visit(child); else if (entry.isFile() && entry.name.endsWith(suffix)) files.push(child); }
-  }
-  visit(root); return files.sort();
+function feedFiles(root) {
+  return dataArtifactFiles(root, "log", { subject: FEED, match: (filename) => filename.endsWith(".jsonl") }).map((file) => file.path);
 }
 function objectPath(root, key) {
   const path = resolve(root, "objects", ...key.split("/")), base = resolve(root, "objects");
@@ -55,7 +49,7 @@ export async function recordGoogleDriveSemanticContent(root, category, record, r
   return Object.freeze({ semanticId: addressed.token, reference: Object.freeze({ ni: addressed.token }), appended: appended.appended, record });
 }
 export async function queryGoogleDriveSemanticContent(category, { root } = {}) {
-  const entity = categorySurface(category), rows = filesBelow(join(root, "data", "logs"), ".jsonl").flatMap(readSeavtAtPath).filter((row) => row.e === entity && row.a === "google-drive-record:member");
+  const entity = categorySurface(category), rows = feedFiles(root).flatMap(readSeavtAtPath).filter((row) => row.e === entity && row.a === "google-drive-record:member");
   const content = custody(root), seen = new Set(), records = [];
   for (const row of rows) {
     const token = tokenFromSurface(row.v); if (seen.has(token)) continue; seen.add(token);
