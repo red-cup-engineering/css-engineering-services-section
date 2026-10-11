@@ -54,7 +54,7 @@
     "./admission/discord": "./src/admission/discord.mjs",
     "./admission/google": "./src/admission/google.mjs",
     "./admission/discord-command": "./src/admission/discord-command.mjs",
-    "./admission/schema": "./src/admission/schema.mjs",
+    "./admission/discord-store": "./src/admission/discord-store.mjs",
     "./admission/password": "./src/admission/password.mjs",
     "./admission/hive": "./src/admission/hive.mjs",
     "./admission/principals": "./src/admission/principals.mjs",
@@ -80,14 +80,14 @@
     "README.md"
   ],
   "scripts": {
-    "test": "node --test --test-concurrency=2 test/**/*.test.mjs test/*.test.mjs"
+    "test": "node --test --test-concurrency=2 test/**/*.test.mjs test/*.test.mjs",
+    "test:legacy-sql": "node --test scripts/historical-discord-receiving/test/*.test.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/cloudflare-d1-service": "workspace:*",
+    "@red-cup-engineering/semiotic-eavt-services-section": "workspace:*",
     "@red-cup-engineering/code-websocket-frame-service": "workspace:*",
     "@red-cup-engineering/computer-code-engineering-services-section": "workspace:*",
     "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*",
-    "@red-cup-engineering/computer-data-engineering-services-section": "workspace:*",
     "@red-cup-engineering/computer-serialized-content-engineering-services-section": "workspace:*",
     "@red-cup-engineering/computer-networking-engineering-services-section": "workspace:*",
     "@red-cup-engineering/computer-system-engine": "workspace:*",
@@ -107,12 +107,16 @@
     "@red-cup-engineering/relating": "workspace:*",
     "@red-cup-engineering/web-page-tiling-engine": "workspace:*",
     "@red-cup-engineering/signchain": "workspace:*",
-    "@red-cup-engineering/signcell": "workspace:*"
+    "@red-cup-engineering/signcell": "workspace:*",
+    "@red-cup-engineering/computer-data-engineering-services-section": "workspace:*"
   },
   "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/red-cup-engineering/bare-cedar-fog.git",
     "directory": "services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/apps/computer-web-server"
-  }
+  },
+  "receivingTests": [
+    "test/admission-account-switch.test.mjs"
+  ]
 }

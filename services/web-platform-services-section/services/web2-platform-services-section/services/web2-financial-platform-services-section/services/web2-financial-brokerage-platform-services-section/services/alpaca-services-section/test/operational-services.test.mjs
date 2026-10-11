@@ -5,7 +5,7 @@ import { join } from "node:path";
 import test from "node:test";
 import { createAuthorityCustodyActuator, createEphemeralAuthorityCustodySubstrate } from "./support/ephemeral-authority-custody.mjs";
 
-import { acceptPrincipalOnboardingOffer, formPrincipalBrokerageContract, formPrincipalOnboardingOffer, grantBrokerageAuthority, NORMAL_MARKET_PRICES } from "../services/principal-brokerage-interface/src/principal-contract.mjs";
+import { acceptPrincipalOnboardingOffer, formPrincipalBrokerageContract, formPrincipalOnboardingOffer, grantBrokerageAuthority, NORMAL_MARKET_PRICES } from "@red-cup-engineering/principal-brokerage-interface";
 import { createBrokerageAuthorityCustody } from "@red-cup-engineering/brokerage-authority-custody-service";
 import { createAlpacaConnectOAuthBroker } from "@red-cup-engineering/brokerage-authority-custody-service/alpaca-connect-oauth";
 import { quoteMeteredCompute, settleMeteredCompute } from "../scripts/metered-payment.mjs";

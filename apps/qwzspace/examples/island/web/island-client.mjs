@@ -5,12 +5,14 @@ import { createAssetResolver, wellKnownFetch } from "../../../src/assets.mjs";
 import { environmentAt } from "../../../src/environment.mjs";
 import { projectFiber } from "../../../src/fiber.mjs";
 import { createBackend } from "../../../src/render-3d.mjs";
+import { createDevice, probeDrawing, selectRung } from "../../../src/scene-view.mjs";
 import { createBackend as createTextBackend } from "../../../src/render-text.mjs";
 
 const query = new URLSearchParams(location.search);
 const time = Number(query.get("time") ?? 9);
 const status = { ready: false, graphics: null, terrain: false, lines: [], error: null };
 globalThis.island = status;
+const panel = document.getElementById("text");
 
 try {
   const [frame, world] = await Promise.all([
@@ -19,8 +21,20 @@ try {
   ]);
   const scene = projectFiber(frame, world);
   const assets = createAssetResolver({ fetchBytes: wellKnownFetch(location.origin) });
-  const view = createBackend({ canvas: document.getElementById("view"), assets });
-  const panel = document.getElementById("text");
+  // The ladder's 3D rungs, richest first: WebGPU, else WebGL2 (`webgl=1` asks for WebGL2 outright).
+  const canvas = document.getElementById("view");
+  const probe = await probeDrawing();
+  const failed = [];
+  let device = null;
+  for (let rung = selectRung({ ...probe, requested: query.get("webgl") === "1" ? "webgl2" : null }); !device && /^web/.test(rung); rung = selectRung({ ...probe, requested: query.get("webgl") === "1" ? "webgl2" : null, failed })) {
+    try {
+      device = await createDevice(canvas, rung);
+    } catch (error) {
+      console.warn(`island: no ${rung} rung`, error);
+    }
+    if (!device) failed.push(rung);
+  }
+  const view = createBackend({ canvas, assets, device });
   const text = createTextBackend({
     write(lines) {
       status.lines = lines;
@@ -43,6 +57,9 @@ try {
   };
   draw();
 } catch (error) {
+  const message = "The island could not be displayed.";
+  status.lines = [message];
+  panel.replaceChildren(Object.assign(document.createElement("p"), { textContent: message }));
   status.error = String(error?.stack ?? error);
   throw error;
 }

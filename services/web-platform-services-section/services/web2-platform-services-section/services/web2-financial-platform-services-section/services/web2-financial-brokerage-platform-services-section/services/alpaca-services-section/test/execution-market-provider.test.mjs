@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { formAggressivePortfolioIntent } from "@red-cup-engineering/alpha-portfolio-order-intent-service";
 import { createExecutionTransportProvider } from "@red-cup-engineering/brokerage-execution-transport-service";
-import { formPrincipalBrokerageContract, grantBrokerageAuthority } from "../services/principal-brokerage-interface/src/principal-contract.mjs";
+import { formPrincipalBrokerageContract, grantBrokerageAuthority } from "@red-cup-engineering/principal-brokerage-interface";
 import { createBrokerageProductProviders, indexBrokerageProvidersByService } from "../src/market-runtime.mjs";
 
 const NOW = "2026-07-22T23:45:00.000Z", EXPIRY = "2030-01-01T00:00:00.000Z";

@@ -32,6 +32,9 @@
     "@red-cup-engineering/javascript-file-services-section": "workspace:*",
     "@red-cup-engineering/json-services-section": "workspace:*"
   },
+  "devDependencies": {
+    "@fedify/fedify": "2.3.1"
+  },
   "engines": {
     "node": ">=22"
   }

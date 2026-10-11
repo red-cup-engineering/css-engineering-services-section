@@ -1,9 +1,35 @@
 // Related Video has no documented Data API field. Use Studio and verify saved UI state.
+import {createHash} from 'node:crypto';
 import {homedir} from 'node:os';
 import {join} from 'node:path';
 import {existsSync,readFileSync,writeFileSync,renameSync,mkdirSync} from 'node:fs';
 import {spawn,spawnSync} from 'node:child_process';
 import {openPersistentWindow} from '@red-cup-engineering/assisted-browser-services-section/window';
+import {checkpointSession,profileDirectory,sessionFile} from '@red-cup-engineering/assisted-browser-services-section/session-custody';
+
+// The Studio session (storage state and its tab's session storage) is a browser session in custody:
+// live in runtime memory, sealed in the host's credential store, its profile a disposable cache.
+const STUDIO='youtube-studio.json';
+const defaultStorage=()=>{sessionFile(`${STUDIO}.session`);return sessionFile(STUDIO);};
+const profileOf=storageState=>storageState===sessionFile(STUDIO)?profileDirectory('youtube-studio'):storageState+'.profile';
+const sessionFingerprint=path=>createHash('sha256').update(JSON.stringify([process.env.YOUTUBE_STUDIO_CDP_ENDPOINT??null,...[path,path+'.session'].map(p=>existsSync(p)?readFileSync(p,'utf8'):null)])).digest('hex');
+/** One browser failure applies to every channel using that browser, across worker restarts. */
+export function assertStudioAvailable({storageState=defaultStorage()}={}) {
+ const path=storageState+'.refusal.json';if(!existsSync(path))return;
+ let held;try{held=JSON.parse(readFileSync(path,'utf8'));}catch{throw blocked('YOUTUBE_STUDIO_UNAVAILABLE','The saved Studio refusal is unreadable');}
+ if(held.fingerprint===sessionFingerprint(storageState)&&Date.now()<Date.parse(held.retryAt))throw Object.assign(blocked(held.code,held.message),{retryAt:held.retryAt});
+}
+function retainStudioFailure(error,storageState) {
+ if(!['YOUTUBE_STUDIO_UNAVAILABLE','YOUTUBE_STUDIO_SESSION_UNAVAILABLE','YOUTUBE_STUDIO_SIGN_IN_REQUIRED','YOUTUBE_STUDIO_VERIFICATION_REQUIRED'].includes(error.code))return;
+ const path=storageState+'.refusal.json',fingerprint=sessionFingerprint(storageState);let prior;try{prior=JSON.parse(readFileSync(path,'utf8'));}catch{}
+ const attempts=prior?.fingerprint===fingerprint?(prior.attempts??0)+1:1,human=/SIGN_IN_REQUIRED|VERIFICATION_REQUIRED/u.test(error.code);
+ const held={fingerprint,attempts,code:error.code,message:error.message,observedAt:new Date().toISOString(),retryAt:new Date(Date.now()+(human?6*3600000:Math.min(6*3600000,15*60000*2**Math.min(attempts-1,5)))).toISOString()};
+ mkdirSync(join(storageState,'..'),{recursive:true,mode:0o700});const next=path+'.'+process.pid+'.tmp';writeFileSync(next,JSON.stringify(held),{mode:0o600});renameSync(next,path);
+}
+
+async function bounded(operation,timeout,code,message) {
+ let timer;try{return await Promise.race([operation,new Promise((_,reject)=>{timer=setTimeout(()=>reject(blocked(code,message)),timeout);})]);}finally{clearTimeout(timer);}
+}
 
 // The hosted browser's active publishing identity is shared across channels.
 // Hold its OS lock through channel switching, edits, saved-state verification
@@ -22,12 +48,13 @@ async function acquireStudio() {
 }
 
 /** The hosted Studio session includes per-tab authentication, omitted by storageState. */
-export async function openStudioSession({storageState=join(homedir(),'.config/561-group/youtube-studio-storage-state.json'),interactive=false}={}) {
+export async function openStudioSession({storageState=defaultStorage(),interactive=false}={}) {
+ assertStudioAvailable({storageState});
  const release=await acquireStudio();
  let session;
  try {
  if(!interactive&&process.env.YOUTUBE_STUDIO_CDP_ENDPOINT&&spawnSync('systemctl',['--user','is-active','--quiet','media-studio-viewer.service'],{stdio:'ignore',timeout:5000}).status===0) throw blocked('YOUTUBE_STUDIO_HUMAN_VERIFICATION_IN_PROGRESS','The hosted Studio window is reserved for human channel verification; media stays private until it is released');
- session=await openPersistentWindow({profile:storageState+'.profile',storageState,endpoint:process.env.YOUTUBE_STUDIO_CDP_ENDPOINT,headless:!interactive,userAgent:'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36'});
+ session=await openPersistentWindow({profile:profileOf(storageState),storageState,endpoint:process.env.YOUTUBE_STUDIO_CDP_ENDPOINT,headless:!interactive,userAgent:'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36'});
  const tabState=storageState+'.session';
  let retained=existsSync(tabState)?JSON.parse(readFileSync(tabState,'utf8')):{};
  // The attached browser's current tab is authoritative after human verification
@@ -48,9 +75,13 @@ export async function openStudioSession({storageState=join(homedir(),'.config/56
   }
   atomic(tabState,retained);
   atomic(storageState,await session.context.storageState({indexedDB:true}));
+  // A person's verification in an interactive window checkpoints at once; otherwise at most daily.
+  if(storageState===sessionFile(STUDIO))for(const name of [STUDIO,`${STUDIO}.session`])await checkpointSession(name,process.env,{force:interactive}).catch(()=>{});
  };
- return {...session,save,close:async()=>{try{await session.close();}finally{await release();}}};
- }catch(error){await session?.close().catch(()=>{});await release();throw error;}
+ return {...session,save:()=>bounded(save(),5000,'YOUTUBE_STUDIO_UNAVAILABLE','Studio session custody timed out'),close:async()=>{try{await bounded(session.close(),5000,'YOUTUBE_STUDIO_UNAVAILABLE','Studio control disconnect timed out');}finally{await release();}}};
+ }catch(error){if(session)await bounded(session.close(),5000,'YOUTUBE_STUDIO_UNAVAILABLE','Studio control disconnect timed out').catch(()=>{});await release();
+  if(!error.code)error=blocked('YOUTUBE_STUDIO_UNAVAILABLE','The hosted Studio browser could not open its control session');
+  retainStudioFailure(error,storageState);throw error;}
 }
 
 function blocked(code,message) {return Object.assign(new Error(message),{code});}
@@ -59,7 +90,8 @@ export async function selectStudioChannel(page,{channelId,channelName}) {
  if(page.url().startsWith(`https://studio.youtube.com/channel/${channelId}`))return;
  await page.goto('https://studio.youtube.com/',{waitUntil:'commit',timeout:60000});
  if(new URL(page.url()).hostname==='accounts.google.com')throw blocked('YOUTUBE_STUDIO_SIGN_IN_REQUIRED','The hosted Google session needs sign-in');
- await page.waitForURL(url=>url.origin==='https://studio.youtube.com'&&url.pathname.startsWith('/channel/'),{waitUntil:'commit',timeout:30000});
+ try {await page.waitForURL(url=>url.origin==='https://studio.youtube.com'&&url.pathname.startsWith('/channel/'),{waitUntil:'commit',timeout:30000});}
+ catch {if(new URL(page.url()).hostname==='accounts.google.com')throw blocked('YOUTUBE_STUDIO_SIGN_IN_REQUIRED','The hosted Google session needs sign-in');throw blocked('YOUTUBE_STUDIO_SESSION_UNAVAILABLE','Studio did not initialize an authenticated channel session');}
  if(page.url().startsWith(`https://studio.youtube.com/channel/${channelId}`))return;
  await page.locator('#avatar-btn').waitFor({state:'visible',timeout:60000});
  const welcome=page.getByRole('dialog').filter({hasText:'Welcome to YouTube Studio'});
@@ -78,7 +110,7 @@ export async function selectStudioChannel(page,{channelId,channelName}) {
 /** Convert the exact owned learning playlist and confirm its native Course type. */
 export async function setLearningCourse({channelId,channelName,playlistId}) {
  if(!/^[A-Za-z0-9_-]{10,160}$/u.test(playlistId??''))throw new Error('An exact playlist identity is required');
- const session=await openStudioSession(),page=session.page;
+ const session=await openStudioSession(),page=session.page;let failure;
  let expired=false;const deadline=setTimeout(()=>{expired=true;void session.close().catch(()=>{});},180000);
  page.on('dialog',async dialog=>{if(dialog.type()==='beforeunload')await dialog.accept();});
  const row=()=>page.locator('ytcp-playlist-row').filter({has:page.locator(`a[href="/playlist/${playlistId}/edit"]`)});
@@ -119,12 +151,13 @@ export async function setLearningCourse({channelId,channelName,playlistId}) {
   }
   await row().getByText('Course',{exact:true}).waitFor({state:'visible',timeout:60000});
   return {channelId,playlistId,status:'enabled',carrier:'youtube-studio-course',verifiedAt:new Date().toISOString()};
- }catch(error){if(expired)throw blocked('YOUTUBE_COURSE_STUDIO_TIMEOUT','The hosted Course editor exceeded three minutes; retain the playlist and reconcile its saved type next turn');throw error;}finally{try{await session.save().catch(()=>{});await session.close();}finally{clearTimeout(deadline);}}
+ }catch(error){failure=error;if(expired)throw blocked('YOUTUBE_COURSE_STUDIO_TIMEOUT','The hosted Course editor exceeded three minutes; retain the playlist and reconcile its saved type next turn');throw error;}finally{try{await session.save().catch(()=>{});if(failure)retainStudioFailure(failure,defaultStorage());await session.close();}finally{clearTimeout(deadline);}}
 }
-export async function setShortRelatedVideo({videoId,relatedVideoId,channelId,channelName,storageState=join(homedir(),'.config/561-group/youtube-studio-storage-state.json')}) {
+export async function setShortRelatedVideo({videoId,relatedVideoId,channelId,channelName,storageState=defaultStorage()}) {
  if(!/^[\w-]{11}$/u.test(videoId??'') || !/^[\w-]{11}$/u.test(relatedVideoId??'') || !/^UC[\w-]{22}$/u.test(channelId??'')) throw new Error('Exact owned YouTube IDs are required');
- const session=await openStudioSession({storageState});
+ const session=await openStudioSession({storageState});let failure;
  const page=session.page;
+ page.on('dialog',async dialog=>{if(dialog.type()==='beforeunload')await dialog.accept();});
  page.setDefaultTimeout(45_000);
  const challenge=async()=>{
   const welcome=page.getByRole('dialog').filter({hasText:'Welcome to YouTube Studio'});
@@ -190,7 +223,7 @@ export async function setShortRelatedVideo({videoId,relatedVideoId,channelId,cha
   }
  }
 
- try {
+ const edit=async()=>{
   // Merely opening another brand's video does not switch Studio's active
   // publishing identity. Select its live API name, then verify the exact ID
   // on Studio's channel home before touching the video editor.
@@ -225,5 +258,6 @@ export async function setShortRelatedVideo({videoId,relatedVideoId,channelId,cha
   await readyRelated();
   if(await savedTarget()!==relatedVideoId) throw blocked('YOUTUBE_RELATED_VIDEO_NOT_SAVED','Related Video selection did not persist after a reload');
   return {videoId,relatedVideoId,verifiedAt:new Date().toISOString(),carrier:'youtube-studio-related-video'};
- } finally {await session.save().catch(()=>{});await session.close();}
+ };
+ try {return await bounded(edit(),180000,'YOUTUBE_STUDIO_SESSION_UNAVAILABLE','The Related Video edit exceeded three minutes; reconcile saved attribution next turn');} catch(error) {failure=error;throw error;} finally {try{await session.save().catch(()=>{});if(failure)retainStudioFailure(failure,storageState);}finally{await session.close();}}
 }

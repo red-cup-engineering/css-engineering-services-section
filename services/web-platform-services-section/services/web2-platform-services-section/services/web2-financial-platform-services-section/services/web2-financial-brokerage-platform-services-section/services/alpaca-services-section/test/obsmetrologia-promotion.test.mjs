@@ -10,7 +10,7 @@ import {
 import {
   quartetCorner,
   verifyPaperPromotionCertificate,
-} from "../services/obsmetrologia-alpha-selection-proof-service/src/promotion-certificate.mjs";
+} from "@red-cup-engineering/obsmetrologia-alpha-selection-proof-service";
 import {
   formAggressivePortfolioIntent,
 } from "@red-cup-engineering/alpha-portfolio-order-intent-service";
@@ -18,7 +18,8 @@ import {
   createPaperExecutionAndReconciliationProvider,
 } from "@red-cup-engineering/brokerage-execution-transport-service";
 
-const LEAN_PROJECT_ROOT = new URL("../services/obsmetrologia-alpha-selection-proof-service/", import.meta.url);
+// The proof service's Lean project sits beside its root export, src/promotion-certificate.mjs.
+const LEAN_PROJECT_ROOT = new URL("../", import.meta.resolve("@red-cup-engineering/obsmetrologia-alpha-selection-proof-service"));
 
 /**
  * verifyPaperPromotionCertificate shells out to `lake`/`lean` to elaborate a generated

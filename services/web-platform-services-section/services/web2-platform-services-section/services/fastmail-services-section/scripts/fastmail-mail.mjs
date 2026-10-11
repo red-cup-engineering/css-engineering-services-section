@@ -11,7 +11,7 @@ const USAGE = "usage: fastmail-mail <command> [--account fastmail] [--unattended
   + "  status                          whether a token is on file, whether it sends, and the identities it sends as\n"
   + "  token                           walk the person through making the API token (opens the assisted browser)\n"
   + "  sender <address> --name <name>  make <address> ready to send as <name>, walking the person through an alias if needed\n"
-  + "  The token stays in ~/.config/561-group/fastmail/<account>.json (0600) and is never printed.";
+  + "  The token is a credential of the host's store (fastmail/<account>.json in CREDENTIALS_DIRECTORY) and is never printed.";
 
 export async function main(argv, { output = process.stdout } = {}) {
   const { values, positionals: [command, address, ...rest] } = parseArgs({

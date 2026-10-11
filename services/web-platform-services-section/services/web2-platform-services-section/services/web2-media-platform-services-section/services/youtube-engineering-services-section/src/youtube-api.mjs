@@ -6,6 +6,7 @@ import { setTimeout as delay } from 'node:timers/promises';
 
 const API = 'https://www.googleapis.com/youtube/v3/';
 const UPLOAD = 'https://www.googleapis.com/upload/youtube/v3/';
+const ANALYTICS = 'https://youtubeanalytics.googleapis.com/v2/';
 const CHUNK = 8 * 1024 * 1024; // A bounded multiple of Google's 256 KiB chunk unit.
 // Retain Google's refusal across clients and worker restarts. Each daily quota
 // bucket waits for its actual reset, rather than probing every timer turn.
@@ -38,6 +39,32 @@ function futureUtc(value) {
   const canonical = new Date(value).toISOString();
   if (canonical !== value.replace(/(?<=:\d\d)Z$/, '.000Z')) throw new Error('publishAt contains an invalid UTC calendar date');
   return canonical;
+}
+function analyticsDate(value, name) {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) throw new Error(`${name} must be YYYY-MM-DD`);
+  const [year, month, day] = value.split('-').map(Number);
+  const canonical = new Date(Date.UTC(year, month - 1, day)).toISOString().slice(0, 10);
+  if (canonical !== value) throw new Error(`${name} contains an invalid calendar date`);
+  return value;
+}
+const ANALYTICS_FIELD = /^[A-Za-z][A-Za-z0-9_]*$/u;
+const ANALYTICS_SORT = /^-?[A-Za-z][A-Za-z0-9_]*$/u;
+function analyticsFields(value, name, { required = false, pattern = ANALYTICS_FIELD } = {}) {
+  const list = value ?? [];
+  if (!Array.isArray(list) || (required && list.length === 0) || list.some(item => typeof item !== 'string' || !pattern.test(item))) {
+    throw new Error(`${name} must be ${required ? 'a nonempty' : 'an'} array of YouTube Analytics field names`);
+  }
+  return list.join(',');
+}
+function analyticsFilter(value) {
+  if (value === undefined) return undefined;
+  if (typeof value !== 'string' || !value.trim() || value.length > 4000 || /[\r\n]/u.test(value)) throw new Error('filters must be one bounded YouTube Analytics filter expression');
+  return value.trim();
+}
+function positiveInteger(value, name) {
+  if (value === undefined) return undefined;
+  if (!Number.isSafeInteger(value) || value < 1) throw new Error(`${name} must be a positive integer`);
+  return value;
 }
 async function digest(path) {
   const hash = createHash('sha256');
@@ -84,6 +111,14 @@ export function createYouTube({ channelId, refreshTokenEnv, env, fetchImpl, auth
   const fingerprint=value=>createHash('sha256').update(value).digest('hex');
   const project=fingerprint(env.YOUTUBE_OAUTH_CLIENT_ID);
   const inventoryPath=root?join(root,'inventories',fingerprint(JSON.stringify([channelId,env.YOUTUBE_OAUTH_CLIENT_ID,env[refreshTokenEnv]]))+'.json'):null;
+  const authPath=root?join(root,'authentication',fingerprint(JSON.stringify([channelId,env.YOUTUBE_OAUTH_CLIENT_ID,env.YOUTUBE_OAUTH_CLIENT_SECRET,env[refreshTokenEnv]]))+'.json'):null;
+  let authRefusal;
+  function authenticationPending(reason) {return Object.assign(new Error('YouTube authentication pending: '+reason),{code:'YOUTUBE_AUTHENTICATION_PENDING',credentialRequired:true});}
+  function assertAuthentication() {
+    if(authPath&&existsSync(authPath)){const held=JSON.parse(readFileSync(authPath,'utf8'));throw authenticationPending(held.reason);}
+    if(authRefusal)throw authenticationPending(authRefusal);
+  }
+  function refuseAuthentication(reason) {authRefusal=reason;if(authPath)privateJson(authPath,{reason,observedAt:new Date(clock()).toISOString()});return authenticationPending(reason);}
   const inventoryTtl=3600000;
   function quotaPath(bucket){return root?join(root,'quotas',project+'-'+bucket+'.json'):null;}
   function waiting(bucket) {
@@ -97,6 +132,14 @@ export function createYouTube({ channelId, refreshTokenEnv, env, fetchImpl, auth
   function retainQuota(bucket) {
     const reading={reason:'quotaExceeded',observedAt:new Date(clock()).toISOString(),retryAt:nextYouTubeQuotaReset(clock()),bucket};
     quotaWaits.set(project+':'+bucket,reading);const path=quotaPath(bucket);if(path)privateJson(path,reading);
+  }
+  // Uploads also need owned-video reads. Refuse before restoring media bytes.
+  function assertUploadAvailable({checkpoint}={}) {
+    if(checkpoint?.sessionExpiredAt&&!Number.isFinite(Date.parse(checkpoint.sessionExpiredAt)))throw new Error('Invalid expired upload checkpoint');
+    if(checkpoint?.sessionExpiredAt&&clock()<Date.parse(checkpoint.sessionExpiredAt)+3600000)throw Object.assign(new Error('YouTube upload session expired; wait one hour before reconciling a replacement'),{code:'YOUTUBE_UPLOAD_SESSION_EXPIRED',retryAt:new Date(Date.parse(checkpoint.sessionExpiredAt)+3600000).toISOString()});
+    assertAuthentication();
+    const wait=waiting('general')??waiting('uploads');
+    if(wait)throw wait;
   }
   function lastObservedUploads() {
     if(!inventoryPath||!existsSync(inventoryPath))return null;
@@ -122,11 +165,15 @@ export function createYouTube({ channelId, refreshTokenEnv, env, fetchImpl, auth
   async function authorized(url, options = {}, operation = 'youtube.observe') {
     const dataApi=url.startsWith(API)||url.startsWith(UPLOAD);
     const bucket=url.startsWith(UPLOAD+'videos?')||url.includes('/upload/youtube/v3/videos?')?'uploads':'general';
+    assertAuthentication();
     if(dataApi){const wait=waiting(bucket);if(wait)throw wait;}
     if (!token || Date.now() >= expires) {
-      const result = await responseJson(await request('youtube.auth', 'https://oauth2.googleapis.com/token', {
+      const refreshResponse=await request('youtube.auth', 'https://oauth2.googleapis.com/token', {
         method: 'POST', body: new URLSearchParams({ client_id: env.YOUTUBE_OAUTH_CLIENT_ID, client_secret: env.YOUTUBE_OAUTH_CLIENT_SECRET, refresh_token: env[refreshTokenEnv], grant_type: 'refresh_token' }),
-      }));
+      });
+      const refreshBody=await refreshResponse.clone().json().catch(()=>null);
+      if(['invalid_grant','invalid_client'].includes(refreshBody?.error))throw refuseAuthentication(refreshBody.error);
+      const result=await responseJson(refreshResponse);
       if (!result.access_token) throw new Error('Google OAuth returned no access token');
       token = result.access_token; expires = Date.now() + Math.max(0, (Number(result.expires_in ?? 3600) - 60)) * 1000;
     }
@@ -134,7 +181,15 @@ export function createYouTube({ channelId, refreshTokenEnv, env, fetchImpl, auth
       // Invalidate before attempting the write: a lost response is ambiguous.
       invalidateUploads();
     }
-    const response=await request(operation, url, { ...options, redirect: 'manual', headers: { ...options.headers, Authorization: `Bearer ${token}` } });
+    const {authenticationRetried,...requestOptions}=options;
+    const response=await request(operation, url, { ...requestOptions, redirect: 'manual', headers: { ...options.headers, Authorization: `Bearer ${token}` } });
+    if(dataApi&&response.status===401){
+      token=undefined;expires=0;
+      if(!options.method||options.method==='GET') {
+        if(options.authenticationRetried)throw refuseAuthentication('Google rejected a freshly renewed access token');
+        return authorized(url,{...options,authenticationRetried:true},operation);
+      }
+    }
     if(dataApi&&response.status===403){const body=await response.clone().json().catch(()=>null);if(body?.error?.errors?.some(item=>item.reason==='quotaExceeded'))retainQuota(bucket);}
     return response;
   }
@@ -199,10 +254,43 @@ export function createYouTube({ channelId, refreshTokenEnv, env, fetchImpl, auth
     try {const uploads=await observed;if(inventoryPath)privateJson(inventoryPath,{channelId,observedAt:new Date(uploadsObservedAt).toISOString(),uploads});return structuredClone(uploads);}
     catch (error) { if (uploadObservation === observed) uploadObservation = undefined; throw error; }
   }
+  /** Cheap current counters and duration/publish facts for a bounded set of video IDs. */
+  async function batchVideoStats(videoIds) {
+    if (!Array.isArray(videoIds) || videoIds.length === 0 || videoIds.some(id => !/^[\w-]{11}$/.test(id))) throw new Error('batchVideoStats requires one or more YouTube video IDs');
+    const ids = [...new Set(videoIds)];
+    const query = new URLSearchParams({ id: ids.join(','), part: 'id,snippet,statistics,contentDetails' });
+    return api(`videos:batchGetStats?${query}`);
+  }
+
+  /**
+   * One targeted owner Analytics report, bound to this configured channel. The caller chooses only
+   * Analytics field names and an optional provider filter expression; raw rows and headers are
+   * returned so channel-local storage can preserve the observation without baking policy here.
+   * Like `audienceReports`, it authorizes the explicit channel ID itself and makes no Data API
+   * identity request first.
+   */
+  async function analyticsReport({ startDate, endDate, metrics, dimensions = [], filters, sort = [], maxResults, startIndex } = {}) {
+    const start = analyticsDate(startDate, 'startDate'), end = analyticsDate(endDate, 'endDate');
+    if (start > end) throw new Error('startDate must not be after endDate');
+    const metricList = analyticsFields(metrics, 'metrics', { required: true });
+    const dimensionList = analyticsFields(dimensions, 'dimensions');
+    const sortList = analyticsFields(sort, 'sort', { pattern: ANALYTICS_SORT });
+    const filter = analyticsFilter(filters);
+    const maximum = positiveInteger(maxResults, 'maxResults'), first = positiveInteger(startIndex, 'startIndex');
+    const params = new URLSearchParams({ ids: `channel==${channelId}`, startDate: start, endDate: end, metrics: metricList });
+    if (dimensionList) params.set('dimensions', dimensionList);
+    if (filter) params.set('filters', filter);
+    if (sortList) params.set('sort', sortList);
+    if (maximum !== undefined) params.set('maxResults', String(maximum));
+    if (first !== undefined) params.set('startIndex', String(first));
+    return responseJson(await authorized(`${ANALYTICS}reports?${params}`, {}, 'youtube.analytics'), 'analytics');
+  }
+
   async function upload({ filePath, metadata, publishAt, marker, onCheckpoint, checkpoint, language }) {
     const when = publishAt === undefined ? undefined : (checkpoint?.publishAt === publishAt ? publishAt : futureUtc(publishAt));
     if (typeof marker !== 'string' || !/^[A-Za-z0-9_./:-]{1,200}$/.test(marker)) throw new Error('A stable production marker is required');
     if (typeof onCheckpoint !== 'function') throw new Error('A durable onCheckpoint callback is required');
+    assertUploadAvailable({checkpoint});
     const label = `[production:${marker}]`;
     const size = (await stat(filePath)).size;
     if (!Number.isSafeInteger(size) || size <= 0) throw new Error('Video file must be nonempty');
@@ -229,7 +317,9 @@ export function createYouTube({ channelId, refreshTokenEnv, env, fetchImpl, auth
       if (video && video.snippet?.channelId === channelId && (video.snippet?.description ?? '').includes(label)) return complete(video);
       throw new Error('Previously completed upload is not observable; refusing a duplicate');
     }
-    if (state.phase === 'complete' || (checkpoint && !state.sessionUrl)) throw new Error('Ambiguous upload checkpoint; refusing a duplicate');
+    if (state.phase === 'complete' || (checkpoint && !state.sessionUrl && !state.sessionExpiredAt)) throw new Error('Ambiguous upload checkpoint; refusing a duplicate');
+    if(state.sessionExpiredAt&&state.sessionUrl&&state.expiredSessionSha256!==fingerprint(state.sessionUrl))throw new Error('Expired upload session identity changed');
+    if(state.sessionExpiredAt)await save({sessionUrl:undefined,nextOffset:0,attemptedEnd:undefined,phase:'expired-reconciled'});
     if (!state.sessionUrl) {
       if (when) futureUtc(when);
       if (typeof metadata?.title !== 'string' || !metadata.title.trim() || metadata.title.length > 100) throw new Error('Video title must contain 1–100 characters');
@@ -241,7 +331,7 @@ export function createYouTube({ channelId, refreshTokenEnv, env, fetchImpl, auth
         body: JSON.stringify({ snippet: { title: metadata.title, description, tags: metadata.tags ?? [], categoryId: '27', ...(language?{defaultLanguage:new Intl.Locale(language).toString(),defaultAudioLanguage:new Intl.Locale(language).toString()}:{}) }, status: { privacyStatus: 'private', ...(when ? { publishAt: when } : {}), selfDeclaredMadeForKids: false, containsSyntheticMedia: true } }),
       }, 'youtube.upload');
       if (!response.ok) await responseJson(response);
-      await save({ phase: 'uploading', sessionUrl: sessionAddress(response.headers.get('location')), nextOffset: 0 });
+      await save({ phase: 'uploading', sessionUrl: sessionAddress(response.headers.get('location')), nextOffset: 0,sessionExpiredAt:undefined });
     } else {
       sessionAddress(state.sessionUrl);
       const response = await authorized(state.sessionUrl, { method: 'PUT', headers: { 'Content-Length': '0', 'Content-Range': `bytes */${size}` } }, 'youtube.upload');
@@ -249,6 +339,10 @@ export function createYouTube({ channelId, refreshTokenEnv, env, fetchImpl, auth
       if (response.status !== 308) {
         const recovered = await reconcile();
         if (recovered) return complete(recovered);
+        if([404,410].includes(response.status)) {
+          await save({phase:'expired',sessionExpiredAt:new Date(clock()).toISOString(),expiredSessionSha256:fingerprint(state.sessionUrl)});
+          throw Object.assign(new Error('YouTube upload session is gone; reconcile owned uploads after one hour before replacing it'),{code:'YOUTUBE_UPLOAD_SESSION_EXPIRED'});
+        }
         throw new Error(`Resumable upload status HTTP ${response.status}; outcome ambiguous, refusing a duplicate`);
       }
       await save({ phase: 'uploading', nextOffset: nextOffset(response, size) });
@@ -269,6 +363,11 @@ export function createYouTube({ channelId, refreshTokenEnv, env, fetchImpl, auth
         }
         if (response.ok) return complete(await responseJson(response));
         if (response.status !== 308) {
+          const recovered=await reconcile();if(recovered)return complete(recovered);
+          if([404,410].includes(response.status)) {
+            await save({phase:'expired',sessionExpiredAt:new Date(clock()).toISOString(),expiredSessionSha256:fingerprint(state.sessionUrl)});
+            throw Object.assign(new Error('YouTube upload session is gone; reconcile owned uploads after one hour before replacing it'),{code:'YOUTUBE_UPLOAD_SESSION_EXPIRED'});
+          }
           await save({ phase: 'uncertain' });
           throw new Error(`Upload HTTP ${response.status}; retry using persisted session, never a fresh upload`);
         }
@@ -313,10 +412,11 @@ export function createYouTube({ channelId, refreshTokenEnv, env, fetchImpl, auth
     return saved;
   }
   async function setRelatedVideo({videoId,relatedVideoId,storageState=env.YOUTUBE_STUDIO_STORAGE_STATE}) {
+    const {assertStudioAvailable,setShortRelatedVideo}=await import('./youtube-studio.mjs');
+    assertStudioAvailable({storageState});
     const short=await ownVideo(videoId), parent=await ownVideo(relatedVideoId);
     if(videoId===relatedVideoId || !['public','unlisted'].includes(parent.status.privacyStatus)) throw new Error('Related Video must be another public or unlisted video on the same channel');
     await authorize('youtube.related-video',{provider:'youtube',videoId:short.id,relatedVideoId:parent.id,channelId});
-    const {setShortRelatedVideo}=await import('./youtube-studio.mjs');
     return setShortRelatedVideo({videoId,relatedVideoId,channelId,channelName:short.snippet.channelTitle,storageState});
   }
   async function setLearningLinks({videoId,text}) {
@@ -447,7 +547,7 @@ export function createYouTube({ channelId, refreshTokenEnv, env, fetchImpl, auth
     if(videoIds.some((id,index)=>ordered[index]!==id))throw new Error('YouTube did not retain the curriculum order');
     return {playlistId:playlist.id,url:'https://www.youtube.com/playlist?list='+playlist.id,videoIds:ordered,verifiedAt:new Date().toISOString(),carrier:'youtube-playlist'};
   }
-  return { audienceReports, verifyIdentity, listUploads, lastObservedUploads, upload, setThumbnail, getVideo, schedule, setTitle, setRelatedVideo, publish, unlist, ensureLearningPlaylist, setLearningLinks, ensureLearningCourse };
+  return { audienceReports, batchVideoStats, analyticsReport, verifyIdentity, listUploads, lastObservedUploads, assertUploadAvailable, upload, setThumbnail, getVideo, schedule, setTitle, setRelatedVideo, publish, unlist, ensureLearningPlaylist, setLearningLinks, ensureLearningCourse };
 }
 
 function nextOffset(response, size) {

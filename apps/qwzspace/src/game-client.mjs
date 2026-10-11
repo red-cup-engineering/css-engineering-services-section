@@ -1,6 +1,6 @@
 // game-client — the one game client every qwzspace game plays in, in the browser: the world drawn
 // in the richest tier the browser can drive (scene-view: 3D, else the 2D plan, else none) with the
-// heads-up display standing over it. The metroplex and Farstone are both this client; what differs
+// heads-up display standing over it. The world and Farstone are both this client; what differs
 // is the game behind it, which tells the client what to show and hears what the player does.
 //
 // The client holds: the shell and its panels (where one is, the menu, what one is following, the
@@ -106,8 +106,9 @@ export async function createGameClient(mount, options = {}) {
     document.documentElement.classList.add("qz-playing");
   }
 
-  const probe = probeDrawing();
-  const view = await createSceneView({ tier: tierOf({ ...probe, requested: new URLSearchParams(location.search).get("tier") }), canvas, probe, assets, labels: false });
+  const probe = await probeDrawing();
+  const requested = new URLSearchParams(location.search).get("tier");
+  const view = await createSceneView({ tier: tierOf({ ...probe, requested }), requested, canvas, probe, assets, labels: false });
   shell.dataset.tier = view.tier;
   statusLine.textContent = TIER_NAMES[view.tier];
   // A 3D tier that found no device drew its plan on a fresh canvas in the old one's place.

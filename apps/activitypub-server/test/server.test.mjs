@@ -10,7 +10,7 @@ import { MemoryKvStore } from "@fedify/fedify";
 import { generateActorKeyMaterial } from "@red-cup-engineering/activitypub-services-section/keys";
 import { deliverFromEnvironment } from "@red-cup-engineering/activitypub-services-section/deliver";
 import { createActivityPubOutboxStore } from "@red-cup-engineering/activitypub-services-section/outbox-store";
-import { createSqliteActivityPubRuntime } from "@red-cup-engineering/activitypub-services-section/sqlite-runtime";
+import { createFlatfileActivityPubRuntime } from "@red-cup-engineering/activitypub-services-section/flatfile-runtime";
 import { createActivityPubServerEngine, serveActivityPubProvider } from "../src/server.mjs";
 
 function networkAdapters() {
@@ -571,12 +571,12 @@ test("publish broadcasts the Create to every recorded follower's inbox through F
   await writeFile(keyPath, JSON.stringify(await generateActorKeyMaterial()), { mode: 0o600 });
 
   const outboxStore = await createActivityPubOutboxStore({ outboxPath: path.join(root, "outbox.json") });
-  // A real durable SQLite queue -- the exact production shape (sqlite-runtime.mjs, wired the
+  // A real durable flat-file queue -- the exact production shape (flatfile-runtime.mjs, wired the
   // same way local-server.mjs wires it) -- so this test exercises the actual per-inbox job
-  // isolation and retry semantics Fedify's queue gives, not a stand-in for it.
-  const runtime = await createSqliteActivityPubRuntime({
-    statePath: path.join(root, "queue.sqlite"),
-    queueOptions: { pollInterval: { milliseconds: 20 } },
+  // isolation and retry semantics of the delivery spool, not a stand-in for it.
+  const runtime = createFlatfileActivityPubRuntime({
+    stateDirectory: path.join(root, "state"),
+    queueOptions: { pollInterval: 20 },
   });
 
   const goodFollower = await fakeInboxServer({ status: 202 });

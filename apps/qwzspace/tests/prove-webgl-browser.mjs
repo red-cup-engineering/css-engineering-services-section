@@ -67,7 +67,7 @@ const difference = (left, right) => {
 test("prove-webgl-browser", async () => {
   await mkdir(SHOTS, { recursive: true });
   const demo = await startIslandDemo();
-  const browser = await chromium.launch({ args: ["--enable-unsafe-swiftshader", "--use-angle=swiftshader", "--enable-unsafe-webgpu", "--ignore-gpu-blocklist"] });
+  const browser = await chromium.launch({ args: ["--enable-unsafe-webgpu", "--enable-unsafe-swiftshader", "--use-angle=vulkan", "--use-vulkan=swiftshader", "--enable-features=Vulkan", "--ignore-gpu-blocklist"] });
   try {
     async function open(name, query, { withoutWebGPU = false } = {}) {
       const page = await browser.newPage({ viewport: { width: 960, height: 540 } });

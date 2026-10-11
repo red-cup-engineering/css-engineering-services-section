@@ -164,11 +164,11 @@ export function createPrincipalAlpacaBrokerageSystem({
       const { contract, authorityGrant, decision, evidencePackets } = await resolveFleetRecords(references);
       if (modeFor({contract,authorityGrant}) !== 'live' || contract.id !== references.contractReference
         || authorityGrant.id !== references.authorityGrantReference || decision.id !== references.marketDecisionReference) throw new TypeError('current-live-fleet-bindings-required');
-      allocationsFor(decision,{venue:'alpaca',instrument:'__validate_only__',side:'long',at:clock()});
+      allocationsFor(decision,{venue:'alpaca',principal:contract.principal,instrument:'__validate_only__',side:'long',at:clock()});
       const orders = decision.orders.filter(order => order.venue === 'alpaca');
       const executions = [];
       for (const order of orders) {
-        const funded = allocationsFor(decision,{venue:'alpaca',instrument:order.instrument,side:'long',at:clock()});
+        const funded = allocationsFor(decision,{venue:'alpaca',principal:contract.principal,instrument:order.instrument,side:'long',at:clock()});
         if (funded.length !== 1 || funded[0].id !== order.id || order.carrier !== 'asset') throw new TypeError('one-funded-asset-order-per-instrument-required');
         const notional = Math.floor(Math.min(order.capitalCents / 100, contract.risk.maximumOrderNotional,
           contract.risk.maximumLossAmount, contract.capital.amount * contract.risk.concentrationLimit) * 100) / 100;
