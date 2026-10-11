@@ -23,13 +23,14 @@
     "verify-public-reference": "node src/verify-public-x402-boundary-reference.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/semantic-content-identify-service": "workspace:*",
     "@x402/core": "2.19.0",
     "@x402/evm": "2.19.0",
     "@x402/express": "2.19.0",
     "@x402/extensions": "2.19.0",
     "express": "5.2.1",
-    "@red-cup-engineering/http-services-section": "workspace:*"
+    "@red-cup-engineering/http-services-section": "workspace:*",
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/uri-services-section": "workspace:*"
   },
   "peerDependencies": {
     "@a2a-js/sdk": "1.0.0-beta.0",

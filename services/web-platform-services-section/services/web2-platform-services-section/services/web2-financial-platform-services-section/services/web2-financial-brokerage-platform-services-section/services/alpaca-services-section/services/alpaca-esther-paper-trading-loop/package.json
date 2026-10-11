@@ -10,7 +10,6 @@
     "@red-cup-engineering/alpaca-services-section": "workspace:*",
     "@red-cup-engineering/brokerage-execution-transport-service": "workspace:*",
     "@red-cup-engineering/brokerage-independent-witness-and-books": "workspace:*",
-    "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*",
     "@red-cup-engineering/eavt-services-section": "workspace:*",
     "@red-cup-engineering/mandate-portfolio-allocation-service": "workspace:*",
     "@red-cup-engineering/pluggable-venue-adapter-service": "workspace:*",
@@ -19,7 +18,8 @@
     "@red-cup-engineering/semiotic-eavt-services-section": "workspace:*",
     "@red-cup-engineering/strategy-tournament-service": "workspace:*",
     "@red-cup-engineering/trading-belief-service": "workspace:*",
-    "@red-cup-engineering/witness-journal-document-service": "workspace:*"
+    "@red-cup-engineering/witness-journal-document-service": "workspace:*",
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*"
   },
   "description": "Paper strategy loop plus explicit authorized Alpaca intent execution. The latter derives the actual venue from a matched principal contract and authority grant, supports both paper and live custody, and admits each order only from immediate broker account and position observations.",
   "exports": {

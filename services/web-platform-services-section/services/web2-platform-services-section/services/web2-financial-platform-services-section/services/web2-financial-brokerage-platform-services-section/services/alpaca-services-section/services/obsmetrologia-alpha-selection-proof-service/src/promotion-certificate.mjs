@@ -1,6 +1,6 @@
 import { spawn } from "node:child_process";
 import { createPublicKey } from "node:crypto";
-import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
+import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 import { isTruthTop, readingOfSides, truthTop } from "@red-cup-engineering/computer-data-engineering-services-section/four";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";

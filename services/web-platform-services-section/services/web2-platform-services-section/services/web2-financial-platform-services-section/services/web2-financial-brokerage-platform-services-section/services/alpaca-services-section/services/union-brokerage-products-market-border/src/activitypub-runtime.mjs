@@ -4,7 +4,7 @@ import { dirname, join, resolve } from "node:path";
 import { materializeSenActivity, extractSenActivity, projectSenActivity } from "@red-cup-engineering/activitypub-services-section/sen-activity";
 import { serveActivityPubProvider } from "@red-cup-engineering/activitypub-server";
 import { deliverActivity } from "@red-cup-engineering/activitypub-services-section";
-import { admitJsonSemanticContent, EMPTY_WITNESS_ROOT, identifyJsonSemanticContent, semanticIdOf } from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
+import { admitJsonSemanticContent, EMPTY_WITNESS_ROOT, identifyJsonSemanticContent, semanticIdOf } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 import { canonicalJson as canonical } from "@red-cup-engineering/json-services-section/canonical-json";
 const A2A_CARRIER_KIND = "rsc-quiescent.a2a-json";
 const semanticBytes = (value) => identifyJsonSemanticContent({ objectKind: A2A_CARRIER_KIND, value, witnessRoot: EMPTY_WITNESS_ROOT }).bytes;

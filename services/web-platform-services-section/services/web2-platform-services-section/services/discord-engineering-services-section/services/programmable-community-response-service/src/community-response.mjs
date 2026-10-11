@@ -1,4 +1,4 @@
-import { semanticHex } from "@red-cup-engineering/computer-content-engineering-services-section/semiotic-content-address";
+import { semanticHex } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
 
 const IDENTIFIER = /^[A-Za-z][A-Za-z0-9._:-]{0,127}$/u;
 const TOKEN = /\{\{([A-Za-z][A-Za-z0-9_]*)\}\}/gu;

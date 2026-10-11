@@ -4,7 +4,7 @@ import { normalizeCommunityResponseProgram, planCommunityResponse } from "@red-c
 import { hasActiveZeloLease } from "./lease.mjs";
 import { canonicalJson as canonical } from "@red-cup-engineering/json-services-section/canonical-json";
 import { writeFileText } from "@red-cup-engineering/computer-file-engineering-services-section/write-file";
-import { semanticHex } from "@red-cup-engineering/computer-content-engineering-services-section/semiotic-content-address";
+import { semanticHex } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
 
 const locks=new Map();
 const keys=(v, expected)=>{const actual=Object.keys(v).sort();return actual.length===expected.length&&actual.every((x,i)=>x===expected[i]);};

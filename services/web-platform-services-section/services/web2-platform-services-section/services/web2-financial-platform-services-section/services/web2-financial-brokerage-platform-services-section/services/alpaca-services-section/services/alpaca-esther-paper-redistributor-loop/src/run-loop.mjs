@@ -12,7 +12,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { createSemanticRecordJournal } from "@red-cup-engineering/semiotic-eavt-services-section/record-semantic-record";
-import { semanticIdOf } from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
+import { semanticIdOf } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 import { formAggressivePortfolioIntent } from "@red-cup-engineering/alpha-portfolio-order-intent-service";
 import { grantBrokerageAuthority, formPrincipalBrokerageContract } from "@red-cup-engineering/principal-brokerage-interface";
 import { executeAuthorizedAlpacaIntent } from "@red-cup-engineering/alpaca-esther-paper-trading-loop/execute-authorized-intent";
