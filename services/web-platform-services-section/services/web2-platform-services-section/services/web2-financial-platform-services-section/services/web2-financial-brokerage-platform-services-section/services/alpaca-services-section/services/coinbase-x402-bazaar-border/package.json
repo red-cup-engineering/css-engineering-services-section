@@ -32,14 +32,14 @@
   "peerDependencies": {
     "@red-cup-engineering/deterministic-report-graphic-service": "0.1.1",
     "@red-cup-engineering/witness-journal-document-service": "workspace:*",
-    "@red-cup-engineering/a2a-rmn-part-service": "1.0.1",
-    "@red-cup-engineering/a2a-rmn-task-client-service": "1.1.1",
+    "@red-cup-engineering/a2a-rmn-part-service": "workspace:*",
+    "@red-cup-engineering/a2a-rmn-task-client-service": "workspace:*",
     "@red-cup-engineering/issuer-research-media-service": "0.1.2",
-    "@red-cup-engineering/alpha-portfolio-order-intent-service": "0.1.2",
-    "@red-cup-engineering/account-evidence-reconciliation-service": "0.1.2",
+    "@red-cup-engineering/alpha-portfolio-order-intent-service": "workspace:*",
+    "@red-cup-engineering/account-evidence-reconciliation-service": "workspace:*",
     "@red-cup-engineering/alpaca-principal-account-read-service": "0.1.2",
-    "@red-cup-engineering/brokerage-independent-witness-and-books": "0.1.2",
-    "@lenticule-science/divination-computer-system-service": "2.0.0",
+    "@red-cup-engineering/brokerage-independent-witness-and-books": "workspace:*",
+    "@lenticule-science/divination-computer-system-service": "workspace:*",
     "@red-cup-engineering/x402-settlement-witness-identity": "0.2.0"
   },
   "peerDependenciesMeta": {
