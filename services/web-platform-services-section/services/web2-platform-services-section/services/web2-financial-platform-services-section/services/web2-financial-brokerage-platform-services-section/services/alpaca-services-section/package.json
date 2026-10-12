@@ -27,7 +27,8 @@
     "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*",
     "@red-cup-engineering/semantic-content-identify-service": "workspace:*",
     "@red-cup-engineering/computer-content-engineering-services-section": "workspace:*",
-    "@red-cup-engineering/alpaca-principal-actuation-service": "workspace:*"
+    "@red-cup-engineering/alpaca-principal-actuation-service": "workspace:*",
+    "@red-cup-engineering/signcell": "workspace:*"
   },
   "description": "Scalable customer-wallet-funded market in metered brokerage-control APIs.",
   "devDependencies": {
