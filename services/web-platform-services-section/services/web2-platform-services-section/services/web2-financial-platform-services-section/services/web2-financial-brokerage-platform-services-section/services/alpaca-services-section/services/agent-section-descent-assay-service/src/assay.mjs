@@ -1,4 +1,5 @@
 import { address, cell, knowledgeReading, told } from "@red-cup-engineering/signcell/cell";
+import { fireRule, rule } from "@red-cup-engineering/signchain/rules";
 
 const numeric = (input, label) => {
   if (!((typeof input === "number") || (typeof input === "string" && input.trim() !== "")) ||
@@ -54,7 +55,7 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
     }
   }
   const laplacian = measureSheafLaplacian({ sections: values, edges });
-  const cells = [], coordinatePairs = [];
+  const cells = [], reviewCells = [], coordinatePairs = [];
   for (const [coordinate, rows] of [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))) {
     const accepted = rows.filter((row) => row.confidence >= floor);
     // Evidence references remain assertions from their named providers; their
@@ -88,6 +89,15 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
       sourceIndependenceEstablished: false,
     });
     cells.push(claim);
+    // SignChain derives a separately witnessed REVIEW proposition from a
+    // stable (told-both) SignCell point. It never infers a positive return,
+    // a negative return, or order authority from disagreement.
+    const reviewTarget = cell(coordinate, "market-forecast-conflict-requires-review", true);
+    const reviewRule = rule("market-forecast-contestation-review", [
+      { cell: claim, atLeast: "stable" },
+    ], { cell: reviewTarget, reading: "potential" });
+    const reviewDerivation = fireRule(reviewRule, [claim]);
+    if (reviewDerivation.length) reviewCells.push(...reviewDerivation);
     coordinatePairs.push([coordinate, reading]);
   }
   const coordinateReadings = Object.fromEntries(coordinatePairs);
@@ -103,6 +113,11 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
     providers: Object.freeze([...providers].sort()),
     coordinates: Object.freeze([...groups.keys()].sort()),
     cells: Object.freeze(cells),
+    // Each review carries SignChain's rule-content identity and premise
+    // address as its support witness; no review cell is manufactured for
+    // one-sided or unknown evidence.
+    reviewCells: Object.freeze(reviewCells),
+    reviewRequired: reviewCells.length > 0,
     coordinateReadings: Object.freeze(coordinateReadings),
     four: Object.freeze({ positiveEvidence, negativeEvidence }),
     contradictionHeld,
