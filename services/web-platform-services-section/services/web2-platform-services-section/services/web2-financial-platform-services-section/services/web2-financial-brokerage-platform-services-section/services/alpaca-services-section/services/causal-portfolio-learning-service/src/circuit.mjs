@@ -37,9 +37,20 @@ function prepareFeatures(panelAssay, benchmark, graphWindow, patchSize, provider
   return Object.freeze({ at, values });
 }
 
-function sectionAdjustment(agentForecasts, entity, predictedAt, providers) {
-  const sections = agentForecasts.filter((section) => section.symbol === entity && Date.parse(section.observedAt) <= Date.parse(predictedAt))
-    .map((section) => ({ provider: section.provider, coordinate: `${entity}:${section.horizonDays}`, value: section.expectedExcessReturn, confidence: section.confidence }));
+function sectionAdjustment(agentForecasts, entity, predictedAt, horizonDays, providers) {
+  // Restrict each prediction to its own horizon and source-availability clock.
+  // Overlapping claims at different horizons are not contradictions in FOUR.
+  const sections = agentForecasts.filter((section) => section.symbol === entity &&
+      Number(section.horizonDays) === horizonDays &&
+      Number.isFinite(Date.parse(section.observedAt)) &&
+      Date.parse(section.observedAt) <= Date.parse(predictedAt))
+    .map((section) => ({
+      provider: section.provider,
+      coordinate: `${entity}:${horizonDays}`,
+      value: section.expectedExcessReturn, confidence: section.confidence,
+      evidenceReferences: section.evidenceReferences ?? [],
+      observedAt: section.observedAt,
+    }));
   if (sections.length < 2) return Object.freeze({ multiplier: 1, uncertainty: 0, assay: null });
   const assay = providers.assayAgentSectionDescent({ sections });
   return Object.freeze({ multiplier: assay.confidenceMultiplier * (assay.contradictionHeld ? 0.5 : 1), uncertainty: assay.disagreementEnergy, assay });
@@ -55,7 +66,7 @@ function evaluateVariant({ variant, folds, features, investable, benchmark, agen
     }
     const model = providers.fitDeterministicRidge({ samples, lambda: ridge }), scores = {}, uncertainty = {}, sectionAssays = {};
     for (const entity of investable) {
-      const adjustment = sectionAdjustment(agentForecasts, entity, fold.predictedAt, providers);
+      const adjustment = sectionAdjustment(agentForecasts, entity, fold.predictedAt, horizon, providers);
       scores[entity] = providers.predictDeterministicRidge(model, features.at(fold.prediction, entity, variant)) * adjustment.multiplier;
       uncertainty[entity] = adjustment.uncertainty;
       if (adjustment.assay) sectionAssays[entity] = adjustment.assay;
@@ -81,7 +92,7 @@ function formCurrentDecision({ variant, features, investable, benchmark, agentFo
   }
   const model = providers.fitDeterministicRidge({ samples, lambda: ridge }), scores = {}, uncertainty = {}, sectionAssays = {};
   for (const entity of investable) {
-    const adjustment = sectionAdjustment(agentForecasts, entity, asOf, providers);
+    const adjustment = sectionAdjustment(agentForecasts, entity, asOf, horizon, providers);
     scores[entity] = providers.predictDeterministicRidge(model, features.at(prediction, entity, variant)) * adjustment.multiplier;
     uncertainty[entity] = adjustment.uncertainty;
     if (adjustment.assay) sectionAssays[entity] = adjustment.assay;
