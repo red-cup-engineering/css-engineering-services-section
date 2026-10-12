@@ -56,6 +56,37 @@ const OUTPUT_SCHEMA = Object.freeze(INVESTMENT_RESEARCH_RESULT_CARRIER.schema.$d
 
 function validateRequest(request) {
   requireValidCarrier(request, "investment-research-request", validateInvestmentResearchRequest);
+  // Legacy numeric facts retain their prior entrance. Bounded narrative facts
+  // require source identity and the clock at which a trader could have seen
+  // them; a model's interpretation is not an original filing or news source.
+  const hasAsOf = request.asOf !== undefined;
+  const at = hasAsOf ? Date.parse(request.asOf) : NaN;
+  if (hasAsOf && !Number.isFinite(at)) throw new TypeError("research-as-of-time-invalid");
+  const ids = new Set();
+  for (const fact of request.evidenceFacts) {
+    if (ids.has(fact.id)) throw new TypeError("duplicate-research-fact-id");
+    ids.add(fact.id);
+    const narrative = typeof fact.value === "string";
+    const sourced = fact.sourceEvidenceId !== undefined || fact.availableAt !== undefined ||
+      fact.observedAt !== undefined || fact.assertionForce !== undefined || fact.evidenceStatus !== undefined;
+    if (narrative && (!fact.value.trim() || fact.value.length > 1200))
+      throw new TypeError("bounded-qualitative-evidence-required");
+    if (narrative && (!fact.assertionForce || !fact.evidenceStatus))
+      throw new TypeError("narrative-assertion-force-and-status-required");
+    if (narrative || sourced) {
+      if (!hasAsOf || !fact.sourceEvidenceId ||
+          !request.evidenceReferences.includes(fact.sourceEvidenceId) ||
+          typeof fact.availableAt !== "string" ||
+          !Number.isFinite(Date.parse(fact.availableAt)) ||
+          Date.parse(fact.availableAt) > at)
+        throw new TypeError("research-fact-point-in-time-source-required");
+      if (fact.observedAt !== undefined &&
+          (!Number.isFinite(Date.parse(fact.observedAt)) ||
+           Date.parse(fact.observedAt) < Date.parse(fact.availableAt) ||
+           Date.parse(fact.observedAt) > at))
+        throw new TypeError("research-fact-observation-time-invalid");
+    }
+  }
 }
 
 function actorOf(result) {
@@ -67,6 +98,7 @@ export function createInvestmentResearchCommittee({ contractInference, roles = R
   const trustedRoles = admittedRoles(roles);
   return async function contractCommittee(request) {
     validateRequest(request);
+    const factsById = new Map(request.evidenceFacts.map(fact => [fact.id, fact]));
     const excludedProviders = [], seats = [], residues = [];
     for (const role of trustedRoles) {
       const lot = Object.freeze({
@@ -97,7 +129,9 @@ export function createInvestmentResearchCommittee({ contractInference, roles = R
       if (excludedProviders.includes(actor)) throw new TypeError("repeated-provider-committee-refused");
       excludedProviders.push(actor);
       const symbols = candidate.sections?.map(({ symbol }) => symbol);
-      if (candidate.role !== role.id || !Array.isArray(candidate.sections) || candidate.sections.length !== request.universe.length || new Set(symbols).size !== request.universe.length || request.universe.some((symbol) => !symbols.includes(symbol)) || candidate.sections.some((section) => section.horizonDays !== request.horizonDays || section.evidenceReferences.some((reference) => !request.evidenceReferences.includes(reference)) || section.basisFactIds.some((id) => !request.evidenceFacts.some((fact) => fact.id === id)))) throw new TypeError("committee-seat-schema-binding-invalid");
+      if (candidate.role !== role.id || !Array.isArray(candidate.sections) || candidate.sections.length !== request.universe.length || new Set(symbols).size !== request.universe.length || request.universe.some((symbol) => !symbols.includes(symbol)) || candidate.sections.some((section) => section.horizonDays !== request.horizonDays || section.evidenceReferences.some((reference) => !request.evidenceReferences.includes(reference)) || section.basisFactIds.some((id) => !factsById.has(id) ||
+        (factsById.get(id).sourceEvidenceId &&
+          !section.evidenceReferences.includes(factsById.get(id).sourceEvidenceId))))) throw new TypeError("committee-seat-schema-binding-invalid");
       seats.push(Object.freeze({ role: role.id, provider: actor, candidate, receipt: exchange?.resultNi ?? result?.evidence?.receipt ?? null }));
     }
     const committeeResult = {
