@@ -67,8 +67,9 @@ function validateRequest(request) {
     if (ids.has(fact.id)) throw new TypeError("duplicate-research-fact-id");
     ids.add(fact.id);
     const narrative = typeof fact.value === "string";
-    const sourced = fact.sourceEvidenceId !== undefined || fact.availableAt !== undefined ||
-      fact.observedAt !== undefined || fact.assertionForce !== undefined || fact.evidenceStatus !== undefined;
+    const sourced = fact.sourceEvidenceId !== undefined || fact.sourceUrl !== undefined ||
+      fact.availableAt !== undefined || fact.observedAt !== undefined ||
+      fact.assertionForce !== undefined || fact.evidenceStatus !== undefined;
     if (narrative && (!fact.value.trim() || fact.value.length > 1200))
       throw new TypeError("bounded-qualitative-evidence-required");
     if (narrative && (!fact.assertionForce || !fact.evidenceStatus))
@@ -85,6 +86,12 @@ function validateRequest(request) {
            Date.parse(fact.observedAt) < Date.parse(fact.availableAt) ||
            Date.parse(fact.observedAt) > at))
         throw new TypeError("research-fact-observation-time-invalid");
+      if (fact.sourceUrl !== undefined) {
+        let origin;
+        try { origin = new URL(fact.sourceUrl); } catch { throw new TypeError("research-fact-source-url-invalid"); }
+        if (origin.protocol !== "https:" || origin.username || origin.password || origin.hash)
+          throw new TypeError("research-fact-source-url-invalid");
+      }
     }
   }
 }
