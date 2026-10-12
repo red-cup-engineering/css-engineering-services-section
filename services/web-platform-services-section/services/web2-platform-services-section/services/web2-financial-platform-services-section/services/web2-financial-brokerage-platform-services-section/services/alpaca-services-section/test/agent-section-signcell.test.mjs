@@ -139,3 +139,23 @@ test("forecast settlement admits only available time-filtered evidence", () => {
   } : entry), asOf }), /forecast-outside-as-of-filtration/);
   assert.throws(() => assay({ sections: earlier, asOf: "invalid" }), /forecast-as-of-time-invalid/);
 });
+
+test("local compatibility needs a declared tolerance and never calibrates alpha", () => {
+  const sections = [
+    forecast("filing", "SPY:5", 0.02, 0.9),
+    forecast("news", "SPY:5", 0.02, 0.9),
+  ];
+  const unspecified = assay({ sections });
+  assert.equal(unspecified.disagreementEnergy, 0);
+  assert.equal(unspecified.agreementTolerance, null);
+  assert.equal(unspecified.gluesWithinTolerance, false);
+  assert.equal(unspecified.confidenceMultiplier, null);
+  const declared = assay({ sections, agreementTolerance: 0 });
+  assert.equal(declared.gluesWithinTolerance, true);
+  assert.equal(declared.sheafGluingProven, false);
+  assert.equal(declared.confidenceCalibrationEstablished, false);
+  const differing = [sections[0], { ...sections[1], value: -0.02 }];
+  assert.equal(assay({ sections: differing, agreementTolerance: 0.01 }).gluesWithinTolerance, false);
+  for (const tolerance of [-1, Infinity, NaN, 1e200])
+    assert.throws(() => assay({ sections, agreementTolerance: tolerance }));
+});
