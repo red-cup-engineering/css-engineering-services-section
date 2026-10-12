@@ -49,12 +49,12 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
   // carry no disagreement evidence and do not prove that a global gluing exists.
   for (const rows of groups.values()) for (let i = 0; i < rows.length; i += 1) {
     for (let j = i + 1; j < rows.length; j += 1) {
-      edges.push({ left: String(rows[i].index), right: String(rows[j].index),
-        weight: rows[i].confidence * rows[j].confidence });
+      const weight = rows[i].confidence * rows[j].confidence;
+      if (weight > 0) edges.push({ left: String(rows[i].index), right: String(rows[j].index), weight });
     }
   }
   const laplacian = measureSheafLaplacian({ sections: values, edges });
-  const cells = [], coordinateReadings = {};
+  const cells = [], coordinatePairs = [];
   for (const [coordinate, rows] of [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))) {
     const accepted = rows.filter((row) => row.confidence >= floor);
     // Evidence references remain assertions from their named providers; their
@@ -74,8 +74,9 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
       sourceReferencesAttached: accepted.length > 0 && accepted.every((r) => r.evidenceReferences.length > 0),
     });
     cells.push(claim);
-    coordinateReadings[coordinate] = reading;
+    coordinatePairs.push([coordinate, reading]);
   }
+  const coordinateReadings = Object.fromEntries(coordinatePairs);
   const readings = Object.values(coordinateReadings);
   const positiveEvidence = readings.some((reading) => reading.positiveEvidence);
   const negativeEvidence = readings.some((reading) => reading.negativeEvidence);
