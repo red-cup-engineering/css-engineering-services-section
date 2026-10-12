@@ -63,18 +63,33 @@ test("the same researcher can speak on several horizons without becoming two ind
   ] }), /duplicate-provider-coordinate-forecast/);
 });
 
-test("unwitnessed and low-confidence forecasts remain FOUR bottom, not false or confirmed", () => {
+test("weak opposed forecast utterances remain witnessed while quality is tracked separately", () => {
   const result = assay({ sections: [
     forecast("urn:one", "QQQ:20", 0.03, 0.2),
     forecast("urn:two", "QQQ:20", -0.02, 0.3),
   ], confidenceFloor: 0.5 });
+  const reading = result.coordinateReadings["QQQ:20"];
+  assert.equal(reading.charge, "stable");
+  assert.equal(reading.supporters, 1);
+  assert.equal(reading.refuters, 1);
+  assert.equal(reading.qualifiedSupporters, 0);
+  assert.equal(reading.qualifiedRefuters, 0);
+  assert.equal(reading.belowConfidenceFloor, 2);
+  assert.equal(result.contradictionHeld, true);
+  assert.equal(result.reviewRequired, true);
+  assert.equal(result.confidenceCalibrationEstablished, false);
+  assert.equal(result.confidenceMultiplier, null);
+});
+
+test("neutral forecasts tell neither sign and cannot create a review witness", () => {
+  const result = assay({ sections: [
+    forecast("urn:one", "QQQ:20", 0, 0.2),
+    forecast("urn:two", "QQQ:20", 0, 0.3),
+  ] });
   assert.equal(result.coordinateReadings["QQQ:20"].charge, "absurd");
   assert.equal(result.coordinateReadings["QQQ:20"].supporters, 0);
   assert.equal(result.coordinateReadings["QQQ:20"].refuters, 0);
-  assert.equal(result.contradictionHeld, false);
   assert.equal(result.reviewRequired, false);
-  assert.ok(result.reviewSettlements.every((receipt) => receipt.admitted && !receipt.reviewDerived));
-  assert.equal(result.confidenceCalibrationEstablished, false);
 });
 
 test("coordinate-wise content addresses and FOUR readings do not depend on input ordering", () => {
