@@ -88,3 +88,23 @@ test("malformed probabilities, identities, and supplied evidence references are 
   ]) assert.throws(() => assay({ sections: [row, forecast("urn:two", "SPY:5", 0.02)] }));
   assert.throws(() => assay({ sections: [good, forecast("urn:two", "SPY:5", 0.02)], confidenceFloor: -0.1 }), /confidence-floor-out-of-range/);
 });
+
+test("two analysis providers citing the same source are not independent observations", () => {
+  const same = assay({ sections: [
+    forecast("urn:research-1", "ONDS:5", 0.03, 0.9, { evidenceReferences: ["ni:source:one", "ni:source:one"] }),
+    forecast("urn:research-2", "ONDS:5", 0.02, 0.8, { evidenceReferences: ["ni:source:one"] }),
+  ] });
+  assert.equal(same.coordinateReadings["ONDS:5"].charge, "potential");
+  assert.equal(same.coordinateReadings["ONDS:5"].crossProviderSourceReuseDetected, true);
+  assert.deepEqual(same.coordinateReadings["ONDS:5"].sharedSourceReferences, ["ni:source:one"]);
+  assert.equal(same.coordinateReadings["ONDS:5"].sourceIndependenceEstablished, false);
+  assert.equal(same.crossProviderSourceReuseDetected, true);
+  assert.deepEqual(same.cells[0].for[0].evidenceReferences, ["ni:source:one"]);
+  const distinct = assay({ sections: [
+    forecast("urn:research-1", "ONDS:5", 0.03, 0.9, { evidenceReferences: ["ni:source:a"] }),
+    forecast("urn:research-2", "ONDS:5", 0.02, 0.8, { evidenceReferences: ["ni:source:b"] }),
+  ] });
+  assert.equal(distinct.crossProviderSourceReuseDetected, false);
+  assert.equal(distinct.coordinateReadings["ONDS:5"].sourceIndependenceEstablished, false,
+    "different source IDs alone do not prove independence");
+});
