@@ -3,7 +3,7 @@ import { createBrokerageMarketEventRecorder, createBrokerageOutcomeWitnessRecord
 import { createUnionMarketState, serveUnionBrokerageActivityPub } from "@red-cup-engineering/union-brokerage-products-market-border/activitypub-runtime";
 import { formUnionBrokerageOffer } from "@red-cup-engineering/union-brokerage-products-market-border";
 import { createUnionConsiderationSettlementProvider } from "@red-cup-engineering/alpaca-services-section/settlement-provider";
-import { createSemanticRecordJournal } from "@red-cup-engineering/semiotic-eavt-services-section/record-semantic-record";
+import { put } from "@red-cup-engineering/semiotic-eavt-services-section/store";
 import { createBrokerageProductProviders, indexBrokerageProvidersByService } from "./market-runtime.mjs";
 
 const required = (env, name) => { const value = env[name]; if (typeof value !== "string" || value.trim() === "") throw new Error(`${name} is required`); return value; };
@@ -34,12 +34,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const runtime = await createFederationUnionRuntime();
   const actorId = runtime.actor?.id ?? runtime.identifier ?? "union actor";
   const stateRoot = required(process.env, "BROKERAGE_UNION_MARKET_STATE_ROOT");
-  const journal = createSemanticRecordJournal({ root: resolve(stateRoot), objectKind: "brokerage-control.union-runtime.server-event" });
-  journal.record({
-    category: "brokerage-control.union-runtime.serving",
-    recordedAt: new Date().toISOString(),
-    record: { actorId, origin: process.env.BROKERAGE_UNION_ACTIVITYPUB_ORIGIN },
-    told: { for: true, against: false },
-  });
+  put(resolve(stateRoot), "union-runtime-serving", { actorId, origin: process.env.BROKERAGE_UNION_ACTIVITYPUB_ORIGIN ?? null, at: new Date().toISOString() });
   console.log(`brokerage-control union market runtime serving as ${actorId}`);
 }

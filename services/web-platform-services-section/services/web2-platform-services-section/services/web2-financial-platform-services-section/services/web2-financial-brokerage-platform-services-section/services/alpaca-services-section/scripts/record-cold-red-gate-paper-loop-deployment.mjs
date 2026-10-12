@@ -1,24 +1,18 @@
 #!/usr/bin/env node
-import { createSemanticRecordJournal } from "@red-cup-engineering/semiotic-eavt-services-section/record-semantic-record";
+import { put } from "@red-cup-engineering/semiotic-eavt-services-section/store";
 
 const JOURNAL_ROOT = new URL("..", import.meta.url).pathname;
-const JOURNAL_OBJECT_KIND = "alpaca-services-section.cold-red-gate-deployment-receipt";
-const JOURNAL_CATEGORY = "cold-red-gate.paper-loop-deployment";
+const RECORD_TYPE = "paper-loop-deployment";
 
 /**
  * Record the 2026-09-01 cold-red-gate paper-loop deployment receipt through
- * the canonical semantic record journal, in the alpaca-services-section's
- * own custody.
+ * the semiotic-eavt store, in the alpaca-services-section's own custody.
  *
- * @returns {{id: string, objectKind: string, appended: boolean, appended: boolean}}
+ * @returns {{id: string}} the address that holds the receipt.
  */
 export function recordColdRedGateDeployment() {
   const recordedAt = new Date().toISOString();
-  return createSemanticRecordJournal({ root: JOURNAL_ROOT, objectKind: JOURNAL_OBJECT_KIND }).record({
-    category: JOURNAL_CATEGORY,
-    recordedAt,
-    told: { for: true, against: false },
-    record: {
+  return { id: put(JOURNAL_ROOT, RECORD_TYPE, {
       timestamp: recordedAt,
       host: "cold-red-gate",
       inRepoCommit: "326ebef0b3510ac381a77871e47e551e3b7d7f88",
@@ -58,8 +52,7 @@ export function recordColdRedGateDeployment() {
         registry: "https://registry.561.group",
         strayResolvedUrls: 0,
       },
-    },
-  });
+    }) };
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
