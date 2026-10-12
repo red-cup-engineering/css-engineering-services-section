@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@red-cup-engineering/signcell": "workspace:*",
-    "@red-cup-engineering/signchain": "workspace:*"
+    "@red-cup-engineering/signchain": "workspace:*",
+    "@red-cup-engineering/signcraft": "workspace:*"
   }
 }
