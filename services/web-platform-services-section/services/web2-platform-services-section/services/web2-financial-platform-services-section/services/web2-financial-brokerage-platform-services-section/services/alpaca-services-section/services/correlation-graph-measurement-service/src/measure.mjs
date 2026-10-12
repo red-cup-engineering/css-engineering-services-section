@@ -42,7 +42,7 @@ export function measureCorrelationGraph({ returnsByEntity, positiveOnly = true, 
     throw new TypeError("equal-finite-return-histories-required");
   const numeric = Object.fromEntries(entities.map((entity) => [entity, returnsByEntity[entity].map(Number)]));
   const edges = [];
-  for (let left = 0; left < entities.length; left += 1; left += 1)
+  for (let left = 0; left < entities.length; left += 1)
     for (let right = left + 1; right < entities.length; right += 1) {
       const observed = correlation(numeric[entities[left]], numeric[entities[right]]);
       const weight = positiveOnly ? Math.max(0, observed) : Math.abs(observed);
