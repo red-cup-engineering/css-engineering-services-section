@@ -10,6 +10,7 @@ import { createGeneratedStrategyFoldReplay } from "../scripts/replay-folds.mjs";
 import { createCausalPortfolioLearningCircuit } from "../scripts/circuit.mjs";
 import { runMandatedPortfolioCycle } from "./autonomous-portfolio.mjs";
 import { allocateMandatePortfolio } from "@red-cup-engineering/mandate-portfolio-allocation-service";
+import { compareMarketResearchAcquisitions } from "@red-cup-engineering/mandate-portfolio-allocation-service/market-information-value";
 import { replayTransactionCosts } from "@red-cup-engineering/transaction-cost-replay-service";
 import { selectModelCandidate } from "@red-cup-engineering/model-tournament-service";
 import { reconcileAccountEvidence } from "@red-cup-engineering/account-evidence-reconciliation-service";
@@ -306,6 +307,7 @@ export function createInstitutionalInvestmentOperatingSystem({
       synthesisRequest,
       mandate,
       modelSelectionPolicy,
+      researchAcquisitionRequest = null,
       execution = { enabled: false },
     } = {}) {
       if (!mandate || mandate.type !== "PortfolioAllocationMandate") throw new TypeError("portfolio-allocation-mandate-required");
@@ -315,8 +317,27 @@ export function createInstitutionalInvestmentOperatingSystem({
         readBrokerAccount({ observedAt: clock() }),
       ]);
       assertMarketSnapshot(market);
+      // Narrative evidence must have been available by the market-state clock.
+      // A research request dated later than the market snapshot is hindsight,
+      // even if its own source timestamps are internally consistent.
+      if (researchRequest.asOf !== undefined &&
+          (!Number.isFinite(Date.parse(researchRequest.asOf)) ||
+           Date.parse(researchRequest.asOf) > Date.parse(market.asOf)))
+        throw new TypeError("research-evidence-postdates-market-snapshot");
       const performanceWindow = await readPerformanceWindow({ benchmark: market.benchmark, asOf: market.asOf });
       const performance = measureBenchmarkRelativePerformance({ ...performanceWindow, benchmark: market.benchmark });
+      // Score alternate research purchases using the existing joint-state
+      // information-value operator. These are conditioned estimates, not
+      // instructions to purchase information or to place brokerage orders.
+      const researchAcquisition = researchAcquisitionRequest
+        ? compareMarketResearchAcquisitions({
+            forecast: researchAcquisitionRequest.forecast,
+            actions: researchAcquisitionRequest.actions,
+            candidates: researchAcquisitionRequest.candidates,
+            at: market.asOf,
+          })
+        : null;
+      if (researchAcquisition) await record("institutional-research-acquisition-menu", researchAcquisition, market.asOf);
       const currentWeights = accountWeights(beforeAccount);
       const research = await committee(researchRequest);
       const researchForecasts = agentForecasts(research, market.asOf);
@@ -375,6 +396,7 @@ export function createInstitutionalInvestmentOperatingSystem({
       });
       const decisionReceipt = await record("institutional-portfolio-decision", {
         market: market.id ?? null,
+        researchAcquisition,
         research,
         population,
         causalResult,
@@ -419,6 +441,7 @@ export function createInstitutionalInvestmentOperatingSystem({
         decision,
         decisionReceipt,
         research,
+        researchAcquisition,
         strategyPopulation: population,
         programResidues: Object.freeze(programResidues),
         tournament: selection.tournament,
