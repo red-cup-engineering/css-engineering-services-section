@@ -25,6 +25,12 @@ test("genuine same-coordinate disagreement is a SignCell FOUR contradiction, not
   assert.deepEqual(result.cells[0].for[0].evidenceReferences, ["ni:test:one"]);
   assert.equal(result.forcedConsensus, false);
   assert.equal(result.sheafGluingProven, false);
+  assert.equal(result.reviewRequired, true);
+  assert.equal(result.reviewCells.length, 1);
+  assert.deepEqual(result.reviewSettlements, [{
+    coordinate: "BLK:5", settledAt: 1, derivationVersion: 2, admitted: true, reviewDerived: true,
+  }]);
+  assert.equal(result.reviewCells[0].for[0].rule, "market-forecast-contestation-review");
 });
 
 test("opposite forecasts for different horizons are not contradictions or sheaf-gluing proofs", () => {
@@ -37,6 +43,9 @@ test("opposite forecasts for different horizons are not contradictions or sheaf-
   assert.equal(result.overlapObserved, false);
   assert.equal(result.gluesWithinTolerance, false);
   assert.equal(result.disagreementEnergy, 0);
+  assert.equal(result.reviewRequired, false);
+  assert.deepEqual(result.reviewCells, []);
+  assert.ok(result.reviewSettlements.every((receipt) => receipt.admitted && !receipt.reviewDerived && receipt.settledAt === 0));
   assert.equal(result.coordinateReadings["BLK:5"].charge, "potential");
   assert.equal(result.coordinateReadings["BLK:60"].charge, "active");
   assert.notEqual(result.coordinateReadings["BLK:5"].address, result.coordinateReadings["BLK:60"].address);
@@ -63,6 +72,8 @@ test("unwitnessed and low-confidence forecasts remain FOUR bottom, not false or 
   assert.equal(result.coordinateReadings["QQQ:20"].supporters, 0);
   assert.equal(result.coordinateReadings["QQQ:20"].refuters, 0);
   assert.equal(result.contradictionHeld, false);
+  assert.equal(result.reviewRequired, false);
+  assert.ok(result.reviewSettlements.every((receipt) => receipt.admitted && !receipt.reviewDerived));
   assert.equal(result.confidenceCalibrationEstablished, false);
 });
 
