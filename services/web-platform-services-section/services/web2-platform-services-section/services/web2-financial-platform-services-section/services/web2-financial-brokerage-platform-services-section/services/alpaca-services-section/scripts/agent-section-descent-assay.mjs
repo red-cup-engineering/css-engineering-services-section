@@ -28,13 +28,21 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
     const value = numeric(section.value, "forecast-value");
     const confidence = numeric(section.confidence, "forecast-confidence");
     if (confidence < 0 || confidence > 1) throw new RangeError("forecast-confidence-out-of-range");
+    if (section.evidenceReferences !== undefined &&
+        (!Array.isArray(section.evidenceReferences) ||
+         section.evidenceReferences.some((ref) => typeof ref !== "string" || !ref.trim())))
+      throw new TypeError("forecast-evidence-references-invalid");
+    if (section.observedAt !== undefined && !Number.isFinite(Date.parse(section.observedAt)))
+      throw new TypeError("forecast-observation-time-invalid");
     const pair = JSON.stringify([provider, coordinate]);
     if (seenPairs.has(pair)) throw new TypeError("duplicate-provider-coordinate-forecast");
     seenPairs.add(pair);
     providers.add(provider);
     values[String(index)] = value;
     const rows = groups.get(coordinate) ?? [];
-    rows.push({ provider, coordinate, value, confidence, index });
+    rows.push({ provider, coordinate, value, confidence, index,
+      evidenceReferences: Object.freeze([...(section.evidenceReferences ?? [])].sort()),
+      ...(section.observedAt === undefined ? {} : { observedAt: section.observedAt }) });
     groups.set(coordinate, rows);
   }
   // A common coordinate is necessary for comparison; unconnected components
@@ -49,7 +57,12 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
   const cells = [], coordinateReadings = {};
   for (const [coordinate, rows] of [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))) {
     const accepted = rows.filter((row) => row.confidence >= floor);
-    const witness = ({ provider, value, confidence }) => ({ provider, forecastValue: value, confidence });
+    // Evidence references remain assertions from their named providers; their
+    // presence is NOT independent validation of news, filings or market facts.
+    const witness = ({ provider, value, confidence, evidenceReferences, observedAt }) => ({
+      provider, forecastValue: value, confidence, evidenceReferences,
+      ...(observedAt === undefined ? {} : { observedAt }),
+    });
     const fore = accepted.filter((row) => row.value > 0).map(witness);
     const against = accepted.filter((row) => row.value < 0).map(witness);
     const claim = cell(coordinate, "expected-excess-return-positive", true, { for: fore, against });
@@ -58,6 +71,7 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
       address: address(claim), coordinate, charge: knowledgeReading(claim),
       positiveEvidence, negativeEvidence, supporters: fore.length, refuters: against.length,
       contradictionHeld: positiveEvidence && negativeEvidence,
+      sourceReferencesAttached: accepted.length > 0 && accepted.every((r) => r.evidenceReferences.length > 0),
     });
     cells.push(claim);
     coordinateReadings[coordinate] = reading;
