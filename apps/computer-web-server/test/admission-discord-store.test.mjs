@@ -1,11 +1,11 @@
-// Discord admission's journal store, and the read-once import of what a D1 (SQLite) database held.
+// Discord admission's store of rows as threads of records.
 import assert from 'node:assert/strict';
 import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
-import { createSemanticRecordJournal } from '@red-cup-engineering/semiotic-eavt-services-section/record-semantic-record';
-import { DISCORD_ADMISSION_OBJECT_KIND, DISCORD_ADMISSION_TABLES, createDiscordAdmissionStore } from "../src/admission/discord-store.mjs";
+import { readHead, walk } from '@red-cup-engineering/semiotic-eavt-services-section/store';
+import { DISCORD_ADMISSION_TABLES, createDiscordAdmissionStore } from "../src/admission/discord-store.mjs";
 
 function freshRoot(t, name) {
   const root = mkdtempSync(join(tmpdir(), name));
@@ -13,7 +13,7 @@ function freshRoot(t, name) {
   return root;
 }
 
-test('a row is its highest revision, a removal is told denied, and every revision stays in the journal', (t) => {
+test('a row is its highest revision, a removal is told denied, and every revision stays in the store', (t) => {
   const root = freshRoot(t, 'discord-store-');
   const store = createDiscordAdmissionStore({ root });
   assert.equal(store.oauthSessions.read('s1'), null);
@@ -24,9 +24,10 @@ test('a row is its highest revision, a removal is told denied, and every revisio
   assert.equal(store.oauthSessions.read('s1'), null);
   assert.deepEqual(store.oauthSessions.rows(), []);
 
-  const history = createSemanticRecordJournal({ root, objectKind: DISCORD_ADMISSION_OBJECT_KIND }).query({ category: DISCORD_ADMISSION_TABLES.oauthSessions });
+  const type = DISCORD_ADMISSION_TABLES.oauthSessions;
+  const history = [...walk(root, type, readHead(root, type, 's1').frontier)].reverse();
   assert.deepEqual(history.map((entry) => entry.record.revision), [1, 2, 3]);
-  assert.deepEqual(history.map((entry) => entry.told), [{ for: true, against: false }, { for: true, against: false }, { for: false, against: true }]);
+  assert.deepEqual(history.map((entry) => entry.record.told), [undefined, undefined, { for: false, against: true }]);
   // A reopened store reads the same rows from the journal.
   assert.equal(createDiscordAdmissionStore({ root }).oauthSessions.read('s1'), null);
 });

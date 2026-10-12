@@ -1,34 +1,66 @@
-// What Discord admission remembers, kept as signed records in a semantic record journal (SEAVT)
-// rather than SQL tables. Each table is a category of records keyed by its hash: OAuth sessions,
-// command-login challenges and interaction sessions. A row's history is
-// its records, each carrying the next `revision`; the row is the one with the highest revision,
-// and a removal is a record told denied (for false, against true), so nothing is erased. A change
+// What Discord admission remembers, kept as records of the semiotic-eavt store rather than SQL
+// tables. Each table is a store type of records keyed by its hash: OAuth sessions,
+// command-login challenges and interaction sessions. A row is a thread named by its key: its history is
+// its records, each carrying the next `revision` and naming the one before it; the row is the record the
+// thread's head names, and a removal is a record told denied (for false, against true), so nothing is erased. A change
 // that depends on the row it reads (a refresh that must not overwrite a concurrent one, a challenge
 // approved or consumed once) runs under one directory lock per store, which serializes writers on
 // this host the way a conditional UPDATE did. Command-login rate limits are not facts worth keeping:
 // each source's current window is one small file, rewritten in place and removed once it has
 // expired, so request traffic never grows the journal.
-import { mkdirSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { createSemanticRecordJournal } from '@red-cup-engineering/semiotic-eavt-services-section/record-semantic-record';
-import { createFieldIndex } from '@red-cup-engineering/semiotic-eavt-services-section/field-index';
-import { withDirectoryLock } from '@red-cup-engineering/semiotic-eavt-services-section/journal/filesystem/directory-lock';
-export const DISCORD_ADMISSION_OBJECT_KIND = 'web-admission.discord';
+import { extend, get, heads, readHead } from '@red-cup-engineering/semiotic-eavt-services-section/store';
+const LOCK_STALE_MS = 30_000;
+const LOCK_WAIT_MS = 15_000;
+const pause = new Int32Array(new SharedArrayBuffer(4));
+/** Run `work` holding the exclusive lock directory; a lock left by a process that died is taken over once stale. */
+function withDirectoryLock(directory, work) {
+    const lock = join(directory, '.lock');
+    mkdirSync(directory, { recursive: true });
+    const deadline = Date.now() + LOCK_WAIT_MS;
+    for (;;) {
+        try {
+            mkdirSync(lock);
+            break;
+        }
+        catch (error) {
+            if (error.code !== 'EEXIST')
+                throw error;
+            let age = 0;
+            try {
+                age = Date.now() - statSync(lock).mtimeMs;
+            }
+            catch {
+                continue;
+            }
+            if (age > LOCK_STALE_MS) {
+                rmSync(lock, { recursive: true, force: true });
+                continue;
+            }
+            if (Date.now() > deadline)
+                throw new Error(`Discord admission store ${directory} is held by another writer`);
+            Atomics.wait(pause, 0, 0, 5);
+        }
+    }
+    try {
+        return work();
+    }
+    finally {
+        rmSync(lock, { recursive: true, force: true });
+    }
+}
 export const DISCORD_ADMISSION_TABLES = Object.freeze({
     oauthSessions: 'oauth-session',
     commandChallenges: 'command-login-challenge',
     interactionSessions: 'interaction-session',
 });
-const HELD = Object.freeze({ for: true, against: false });
 const REMOVED = Object.freeze({ for: false, against: true });
-function createTable(journal, root, category) {
-    const index = createFieldIndex({ root, objectKind: DISCORD_ADMISSION_OBJECT_KIND, category, fields: { key: 'key' } });
+function createTable(root, type) {
+    /** The newest record of the row kept under `key`: the one its head names. */
     const newest = (key) => {
-        let found;
-        for (const entry of index.get('key', key))
-            if (found === undefined || entry.record.revision > found.record.revision)
-                found = entry;
-        return found;
+        const address = readHead(root, type, key)?.frontier[0];
+        return address === undefined ? undefined : { record: get(root, type, address) };
     };
     const read = (key) => {
         const entry = newest(key);
@@ -36,7 +68,7 @@ function createTable(journal, root, category) {
     };
     const write = (key, value) => {
         const revision = (newest(key)?.record.revision ?? 0) + 1;
-        journal.record({ category, recordedAt: new Date().toISOString(), told: value === null ? REMOVED : HELD, record: { key, revision, value } });
+        extend(root, type, key, { key, revision, value, ...(value === null ? { told: REMOVED } : {}) });
     };
     return Object.freeze({
         /** The row kept under `key`, or null. */
@@ -53,15 +85,15 @@ function createTable(journal, root, category) {
             write(key, next);
             return { before, after: next };
         },
-        /** Every row now held, read whole from the journal (retention runs, not request paths). */
+        /** Every row now held, read whole from the heads of the type (retention runs, not request paths). */
         rows() {
-            const newestByKey = new Map();
-            for (const entry of journal.query({ category })) {
-                const held = newestByKey.get(entry.record.key);
-                if (held === undefined || entry.record.revision > held.revision)
-                    newestByKey.set(entry.record.key, entry.record);
+            const held = [];
+            for (const { head } of heads(root, type)) {
+                const entry = get(root, type, head.frontier[0]);
+                if (entry !== undefined && entry.value !== null)
+                    held.push(structuredClone(entry.value));
             }
-            return [...newestByKey.values()].filter((entry) => entry.value !== null).map((entry) => structuredClone(entry.value));
+            return held;
         },
     });
 }
@@ -103,15 +135,14 @@ function createRateWindows(directory) {
         },
     });
 }
-/** Discord admission's store over the semantic record journal under `root`. */
+/** Discord admission's store over the semiotic-eavt store under `root`. */
 export function createDiscordAdmissionStore({ root } = {}) {
     if (typeof root !== 'string' || root.length === 0)
-        throw new TypeError('Discord admission store requires a journal root');
-    const journal = createSemanticRecordJournal({ root, objectKind: DISCORD_ADMISSION_OBJECT_KIND });
-    const tables = Object.fromEntries(Object.entries(DISCORD_ADMISSION_TABLES).map(([name, category]) => [name, createTable(journal, journal.root, category)]));
-    const lockDirectory = join(journal.root, '.discord-admission');
+        throw new TypeError('Discord admission store requires a store root');
+    const tables = Object.fromEntries(Object.entries(DISCORD_ADMISSION_TABLES).map(([name, type]) => [name, createTable(root, type)]));
+    const lockDirectory = join(root, '.discord-admission');
     return Object.freeze({
-        root: journal.root,
+        root,
         ...tables,
         rateLimits: createRateWindows(join(lockDirectory, 'rate-limits')),
         /** Run `work` as one step against every other writer of this store on this host. */
