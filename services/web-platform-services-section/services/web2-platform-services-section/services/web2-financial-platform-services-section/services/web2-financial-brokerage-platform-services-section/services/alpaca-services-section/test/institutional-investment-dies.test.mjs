@@ -38,6 +38,15 @@ test("agent descent preserves a provider-distinct contradiction", () => {
   assert.equal(result.contradictionHeld, true);
   assert.equal(result.forcedConsensus, false);
   assert.ok(result.disagreementEnergy > 0);
+  assert.equal(result.reviewRequired, true);
+  assert.equal(result.reviewCells.length, 1);
+  const review = result.reviewCells[0];
+  assert.equal(review.predicate, "market-forecast-conflict-requires-review");
+  assert.equal(review.for.length, 1);
+  assert.equal(review.against.length, 0);
+  assert.equal(review.for[0].rule, "market-forecast-contestation-review");
+  assert.match(review.for[0].ruleId, /^ni:\/\/\/sha-256;/u);
+  assert.equal(review.for[0].from.length, 1);
 });
 
 test("deterministic fitter, folds, allocation, replay, and tournament remain separate", () => {
