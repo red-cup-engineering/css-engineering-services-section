@@ -19,7 +19,7 @@ const text = (input, label) => {
  * graph-Laplacian below measures numeric disagreement on overlapping sections,
  * but is NOT a theorem that the sections form a sheaf or that alpha exists.
  */
-function assay({ sections, confidenceFloor = 0.5, asOf } = {}, measureSheafLaplacian) {
+function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = null } = {}, measureSheafLaplacian) {
   if (!Array.isArray(sections) || sections.length < 2) throw new TypeError("plural-agent-sections-required");
   // A point-in-time comparison is a filtration of what could actually have
   // been known by the cutoff, not of what a model reports after the fact.
@@ -28,6 +28,12 @@ function assay({ sections, confidenceFloor = 0.5, asOf } = {}, measureSheafLapla
     throw new TypeError("forecast-as-of-time-invalid");
   const floor = numeric(confidenceFloor, "confidence-floor");
   if (floor < 0 || floor > 1) throw new RangeError("confidence-floor-out-of-range");
+  // A tolerance is a declared quantitative criterion on ||δx||, not a
+  // theorem about global market observability. No chosen tolerance means
+  // that the assay cannot claim compatibility merely from a tiny number.
+  const tolerance = agreementTolerance === null ? null : numeric(agreementTolerance, "agreement-tolerance");
+  if (tolerance !== null && tolerance < 0)
+    throw new RangeError("agreement-tolerance-out-of-range");
   const providers = new Set(), seenPairs = new Set(), values = {}, edges = [], groups = new Map();
   for (const [index, section] of sections.entries()) {
     const provider = text(section?.provider, "agent-provider");
@@ -147,9 +153,12 @@ function assay({ sections, confidenceFloor = 0.5, asOf } = {}, measureSheafLapla
     comparedEdgeCount: edges.length,
     overlapObserved,
     disagreementEnergy: laplacian.disagreementEnergy,
-    gluesWithinTolerance: overlapObserved && laplacian.disagreementEnergy <= 0.0001,
+    agreementTolerance: tolerance,
+    gluesWithinTolerance: overlapObserved && tolerance !== null && laplacian.disagreementEnergy <= tolerance * tolerance,
     sheafGluingProven: false,
-    confidenceMultiplier: 1 / (1 + 100 * laplacian.disagreementEnergy),
+    // A structural disagreement energy cannot calibrate expected excess
+    // return or optimize capital allocation. Carry no fabricated multiplier.
+    confidenceMultiplier: null,
     confidenceCalibrationEstablished: false,
     forcedConsensus: false,
     effect: "assay-only",
