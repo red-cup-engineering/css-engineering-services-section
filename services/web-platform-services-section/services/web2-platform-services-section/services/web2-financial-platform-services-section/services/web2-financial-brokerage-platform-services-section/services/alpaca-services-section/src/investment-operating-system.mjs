@@ -3,7 +3,7 @@
 // causal link from dated evidence through competing research programs and
 // model selection to bounded execution, reconciliation, and measured active
 // return.  The broker boundary remains separately owned.
-import { createInvestmentResearchCommittee } from "../services/investment-research-work-lot-service/src/committee.mjs";
+import { createInvestmentResearchCommittee, INVESTMENT_RESEARCH_FRONTIER_ROLES } from "../services/investment-research-work-lot-service/src/committee.mjs";
 import { createStrategyProgramSynthesisMarket } from "@red-cup-engineering/strategy-program-synthesis-work-lot-service";
 import { assayStrategyProgram } from "@red-cup-engineering/strategy-program-synthesis-work-lot-service/strategy-program-candidate-assay";
 import { createGeneratedStrategyFoldReplay } from "../scripts/replay-folds.mjs";
@@ -266,6 +266,7 @@ function assertMarketSnapshot(value) {
  */
 export function createInstitutionalInvestmentOperatingSystem({
   contractInference,
+  researchRoles = INVESTMENT_RESEARCH_FRONTIER_ROLES,
   collectMarketSnapshot,
   readBrokerAccount,
   readPerformanceWindow,
@@ -283,7 +284,10 @@ export function createInstitutionalInvestmentOperatingSystem({
     || typeof executeTargetPortfolio !== "function" || typeof recordSystemEvent !== "function") {
     throw new TypeError("investment-system-boundaries-required");
   }
-  const committee = createInvestmentResearchCommittee({ contractInference });
+  // This is the existing typed, provider-distinct committee, now equipped
+  // to examine far more than a price series. It returns research only; the
+  // strategy tournament, principal mandate and venue executor still decide.
+  const committee = createInvestmentResearchCommittee({ contractInference, roles: researchRoles });
   const synthesize = createStrategyProgramSynthesisMarket({ contractInference });
   const causal = createCausalPortfolioLearningCircuit({ recordResult: recordSystemEvent, providers: causalProviders });
   const replayGeneratedStrategy = createGeneratedStrategyFoldReplay({
