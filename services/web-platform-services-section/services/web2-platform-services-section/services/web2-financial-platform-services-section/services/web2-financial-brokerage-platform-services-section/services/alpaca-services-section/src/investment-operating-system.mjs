@@ -72,6 +72,7 @@ function agentForecasts(committee, observedAt) {
 function causalVariant(result) {
   const selected = result?.tournament?.selectedUsingValidationOnly;
   if (typeof selected !== "string") throw new TypeError("causal-tournament-selection-required");
+  if (selected.endsWith("obsmetrologia-signed-transport")) return "obsmetrologiaSigned";
   if (selected.endsWith("obsmetrologia-technical")) return "obsmetrologiaTechnical";
   if (selected.endsWith("technical-analysis")) return "technical";
   if (selected.endsWith("return-risk-baseline")) return "baseline";
