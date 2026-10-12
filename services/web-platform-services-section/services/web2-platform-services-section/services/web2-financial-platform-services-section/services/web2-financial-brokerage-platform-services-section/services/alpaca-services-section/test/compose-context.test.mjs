@@ -8,6 +8,7 @@ const input = {
   asOf: "2026-08-20T13:00:00Z",
   accountObservation: {
     id: "account-observation", type: "PrincipalPaperAccountObservationReceipt", venue: "alpaca-trading-paper", accountAlias: "alpaca-paper:esther",
+    observedAt: "2026-08-20T12:30:00Z",
     account: { payload: { equity: "1000", cash: "250", buying_power: "500", status: "ACTIVE", daytrade_count: 1 } },
     positions: { payload: [
       { symbol: "SPY", side: "long", qty: "2", avg_entry_price: "400", market_value: "820", unrealized_pl: "20" },
@@ -15,7 +16,9 @@ const input = {
     ] },
   },
   newsObservation: {
-    id: "news-observation", type: "AlpacaNewsObservation", articles: [
+    id: "news-observation", type: "AlpacaNewsObservation",
+    observedAt: "2026-08-20T12:45:00Z", symbols: ["BLK", "SPY"],
+    coverage: { paginationComplete: true }, articles: [
       { providerArticleId: "2", headline: "Macro", summary: "macro", source: "wire", createdAt: "2026-08-20T12:00:00.000Z", url: "https://example.test/2", symbols: ["SPY"] },
       { providerArticleId: "1", headline: "Irrelevant", summary: "other", source: "wire", createdAt: "2026-08-20T11:00:00.000Z", url: "https://example.test/1", symbols: ["AAPL"] },
     ],
@@ -47,4 +50,44 @@ test("accepts the existing principal reader's live-or-paper account receipt", ()
     accountObservation: { ...input.accountObservation, type: "PrincipalAlpacaAccountObservationReceipt", accountAlias: undefined, accountReference: "alpaca:esther" },
   });
   assert.equal(result.accountReference, "alpaca:esther");
+});
+
+test("research extends beyond held positions without inventing coverage for unqueried issuers", () => {
+  const context = composeDailyTradingContext({ ...input, researchUniverse: ["AAPL"] });
+  assert.deepEqual(context.heldSymbols, ["BLK", "SPY"]);
+  assert.deepEqual(context.researchUniverse, ["AAPL"]);
+  assert.deepEqual(context.news.researchBySymbol.AAPL, ["1"]);
+  assert.equal(context.news.coverageBySymbol.AAPL, "unknown");
+  assert.deepEqual(context.news.bySymbol.SPY, ["2"]);
+  assert.equal(context.news.articles.length, 2);
+  assert.equal(context.orderEffect, false);
+});
+
+test("source-declared research universe and partial pagination are separate facts", () => {
+  const context = composeDailyTradingContext({ ...input, newsObservation: {
+    ...input.newsObservation, symbols: ["BLK", "SPY", "AAPL"],
+    coverage: { paginationComplete: false },
+  } });
+  assert.deepEqual(context.researchUniverse, ["AAPL", "BLK", "SPY"]);
+  assert.deepEqual(context.news.researchBySymbol.AAPL, ["1"]);
+  assert.equal(context.news.paginationComplete, false);
+  assert.equal(context.news.coverageBySymbol.AAPL, "partial-or-unknown");
+});
+
+test("historical context refuses future account reads, article revisions and news reads", () => {
+  assert.throws(() => composeDailyTradingContext({ ...input, accountObservation: {
+    ...input.accountObservation, observedAt: "2026-08-21T00:00:00Z",
+  } }), /point-in-time-account-and-news-observations-required/);
+  assert.throws(() => composeDailyTradingContext({ ...input, newsObservation: {
+    ...input.newsObservation, observedAt: "2026-08-21T00:00:00Z",
+  } }), /point-in-time-account-and-news-observations-required/);
+  assert.throws(() => composeDailyTradingContext({ ...input, newsObservation: {
+    ...input.newsObservation, articles: [{ ...input.newsObservation.articles[0],
+      updatedAt: "2026-08-21T00:00:00Z" }],
+  } }), /post-decision-news-article-refused/);
+});
+
+test("invalid research universe fails before being described as no news", () => {
+  for (const researchUniverse of ["AAPL", ["bad symbol"], Array(257).fill("SPY")])
+    assert.throws(() => composeDailyTradingContext({ ...input, researchUniverse }), /bounded-alpaca-research-universe-required/);
 });
