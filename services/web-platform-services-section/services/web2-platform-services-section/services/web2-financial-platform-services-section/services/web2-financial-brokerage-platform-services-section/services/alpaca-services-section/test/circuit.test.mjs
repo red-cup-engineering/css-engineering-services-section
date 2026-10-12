@@ -89,3 +89,47 @@ test("a five-day decision uses only same-horizon SignCell forecasts and retains 
   assert.equal(scope.coordinateReadings["BLK:5"].sourceReferencesAttached, true);
   assert.equal(scope.cells[0].for.length, 2);
 });
+
+test("signed rank-one graph transport is a preregisterable separate challenger, not silent incumbent math", async () => {
+  const barsBySymbol = panel(), asOf = barsBySymbol.SPY.at(-1).at;
+  const providers = {
+    assayAgentSectionDescent: createAgentSectionDescentAssay({ measureSheafLaplacian }),
+    assayCausalPanel, measureCausalPatchNovelty, measureCorrelationGraph,
+    fitDeterministicRidge, predictDeterministicRidge, allocateMandatePortfolio,
+    selectModelCandidate, formPurgedWalkForwardFolds,
+    measureReturnRiskFeatures, measureTechnicalAnalysisFeatures,
+    measureSheafLaplacian, simulateEventDrivenExecution,
+  };
+  let written = 0;
+  const run = createCausalPortfolioLearningCircuit({
+    providers, recordResult: async () => ({ id: `urn:record:graph-transport-${++written}` }),
+  });
+  const request = {
+    barsBySymbol, asOf,
+    mandate: { type: "PortfolioAllocationMandate", id: "urn:mandate:signed-graph",
+      maximumWeight: 0.6, grossLimit: 1, leverageLimit: 1, shorting: false,
+      maximumDrawdown: 0.5 },
+    config: { warmup: 140, trainingWindow: 100, graphWindow: 40, horizon: 5,
+      compareSignedTransport: true },
+  };
+  const withSigned = await run(request);
+  assert.deepEqual(Object.keys(withSigned.evaluations),
+    ["baseline", "technical", "obsmetrologiaTechnical", "obsmetrologiaSigned"]);
+  assert.equal(withSigned.claims.signedRankOneTransportEvaluated, true);
+  assert.equal(typeof withSigned.claims.signedRankOneTransportHoldoutBetterThanUnsigned, "boolean");
+  assert.equal(withSigned.claims.alphaEstablished, false);
+  assert.equal(withSigned.claims.liveReadinessEstablished, false);
+  assert.ok(["baseline", "technical", "obsmetrologiaTechnical", "obsmetrologiaSigned"].includes(
+    withSigned.tournament.selectedUsingValidationOnly.endsWith("obsmetrologia-signed-transport")
+      ? "obsmetrologiaSigned"
+      : withSigned.tournament.selectedUsingValidationOnly.endsWith("obsmetrologia-technical")
+      ? "obsmetrologiaTechnical"
+      : withSigned.tournament.selectedUsingValidationOnly.endsWith("technical-analysis")
+      ? "technical" : "baseline"));
+  const incumbent = await run({ ...request, config: { ...request.config, compareSignedTransport: false } });
+  assert.deepEqual(Object.keys(incumbent.evaluations),
+    ["baseline", "technical", "obsmetrologiaTechnical"]);
+  assert.equal(incumbent.claims.signedRankOneTransportEvaluated, false);
+  assert.equal(incumbent.claims.signedRankOneTransportHoldoutBetterThanUnsigned, null);
+  assert.equal(written, 2);
+});
