@@ -52,9 +52,14 @@ export function createAlpacaNewsReadService(env = process.env, {
       typeof includeContent !== "boolean"
     ) throw new TypeError("alpaca-news-request-invalid");
 
+    const requestStartedAt = now();
+    if (!Number.isFinite(Date.parse(requestStartedAt)) ||
+        Date.parse(end) > Date.parse(requestStartedAt))
+      throw new TypeError("alpaca-news-future-request-window-refused");
     const articles = [];
     const venueRequestIds = [];
     const seenPageTokens = new Set();
+    let remainingPageToken = null;
     let pageToken;
     do {
       if (pageToken && seenPageTokens.has(pageToken)) throw new TypeError("alpaca-news-pagination-cycle");
@@ -86,13 +91,19 @@ export function createAlpacaNewsReadService(env = process.env, {
         articles.push(normalizeArticle(article, includeContent));
         if (articles.length === maximumArticles) break;
       }
-      pageToken = articles.length < maximumArticles && typeof payload.next_page_token === "string" && payload.next_page_token !== ""
+      remainingPageToken = typeof payload.next_page_token === "string" && payload.next_page_token !== ""
         ? payload.next_page_token
-        : undefined;
+        : null;
+      pageToken = articles.length < maximumArticles ? remainingPageToken ?? undefined : undefined;
     } while (pageToken);
 
     const uniqueArticles = [...new Map(articles.map((article) => [article.providerArticleId, article])).values()]
       .sort((left, right) => left.createdAt.localeCompare(right.createdAt) || left.providerArticleId.localeCompare(right.providerArticleId));
+    const observedAt = now();
+    if (!Number.isFinite(Date.parse(observedAt)) || Date.parse(observedAt) < Date.parse(requestStartedAt) ||
+        uniqueArticles.some(article => Date.parse(article.createdAt) > Date.parse(observedAt) ||
+          Date.parse(article.updatedAt) > Date.parse(observedAt)))
+      throw new TypeError("alpaca-news-source-clock-invalid");
     const body = Object.freeze({
       type: "AlpacaNewsObservation",
       version: 1,
@@ -102,7 +113,13 @@ export function createAlpacaNewsReadService(env = process.env, {
       includeContent,
       articles: uniqueArticles,
       venueRequestIds,
-      observedAt: now(),
+      observedAt,
+      coverage: Object.freeze({
+        paginationComplete: remainingPageToken === null,
+        cappedByMaximumArticles: remainingPageToken !== null,
+        fetchedRows: articles.length, distinctArticles: uniqueArticles.length,
+        requestedMaximumArticles: maximumArticles,
+      }),
       requestMethod: "GET",
       orderEffect: false,
       secretBytesReturned: false,
