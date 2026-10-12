@@ -142,6 +142,9 @@ test("forecast settlement admits only available time-filtered evidence", () => {
     forecast("orderflow", "BLK:5", -0.03, 0.9, { observedAt: asOf }),
   ];
   const result = assay({ sections: earlier, asOf });
+  assert.equal(result.asOf, asOf);
+  assert.equal(result.forecastClockFilterApplied, true);
+  assert.equal(result.underlyingSourcePublicationVerified, false);
   assert.equal(result.reviewRequired, true);
   assert.deepEqual(result.reviewSettlements, [{
     coordinate: "BLK:5", settledAt: 1, derivationVersion: 2, admitted: true, reviewDerived: true,
