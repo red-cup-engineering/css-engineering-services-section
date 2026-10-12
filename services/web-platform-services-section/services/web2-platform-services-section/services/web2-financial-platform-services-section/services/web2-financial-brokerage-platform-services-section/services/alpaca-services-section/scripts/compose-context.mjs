@@ -76,6 +76,7 @@ export function composeDailyTradingContext({ principal, accountObservation, news
       summary: article.summary,
       source: article.source,
       createdAt: article.createdAt,
+      updatedAt: article.updatedAt ?? article.createdAt,
       url: article.url,
       heldSymbols: article.symbols.filter((symbol) => held.has(symbol)).sort(),
       researchSymbols: article.symbols.filter((symbol) => researchSymbols.includes(symbol)).sort(),
@@ -117,7 +118,8 @@ export function composeDailyTradingContext({ principal, accountObservation, news
     heldSymbols,
     researchUniverse: Object.freeze(researchSymbols),
     positions,
-    news: Object.freeze({ articles, bySymbol: newsBySymbol, researchBySymbol,
+    news: Object.freeze({ articles, observedAt: newsObservation.observedAt,
+      bySymbol: newsBySymbol, researchBySymbol,
       coverageBySymbol: Object.freeze(coverageBySymbol),
       paginationComplete: newsObservation.coverage?.paginationComplete ?? null }),
     mandate,
@@ -125,4 +127,60 @@ export function composeDailyTradingContext({ principal, accountObservation, news
     orderEffect: false,
   });
   return identify(body);
+}
+
+/**
+ * Project the already observed news side of a DailyTradingContextPacket into
+ * the existing investment committee's bounded evidenceFacts entrance.
+ *
+ * The ALPACA NEWS RECEIPT is the source evidence, while each article keeps
+ * its own ID, revision clock and URL. A headline is only "reports" /
+ * "unverified"; never promote a sentiment classification to observed alpha.
+ * Callers combine these facts with independently acquired issuer filings,
+ * quotes and other sources before forming an investment research request.
+ */
+export function newsEvidenceFactsForResearch(context, { maximumFacts = 128 } = {}) {
+  if (context?.type !== "DailyTradingContextPacket" || typeof context.asOf !== "string" ||
+      !Number.isFinite(Date.parse(context.asOf)) ||
+      !context.evidence?.news || !Array.isArray(context.news?.articles) ||
+      !Number.isFinite(Date.parse(context.news.observedAt)) ||
+      !Number.isInteger(maximumFacts) || maximumFacts < 1 || maximumFacts > 128)
+    throw new TypeError("bounded-dated-trading-context-required");
+  const selected = [...context.news.articles]
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt) || a.article.localeCompare(b.article));
+  if (selected.length > maximumFacts)
+    throw new RangeError("news-evidence-selection-requires-explicit-preregistration");
+  const facts = selected.map(article => {
+    let url;
+    try { url = new URL(article.url); } catch { throw new TypeError("source-linked-news-fact-required"); }
+    if (url.protocol !== "https:" || url.username || url.password || url.hash)
+      throw new TypeError("source-linked-news-fact-required");
+    if (typeof article.headline !== "string" || !article.headline.trim() ||
+        !Number.isFinite(Date.parse(article.updatedAt)) ||
+        Date.parse(article.updatedAt) > Date.parse(context.asOf))
+      throw new TypeError("source-linked-news-fact-required");
+    const value = article.summary
+      ? `${article.headline} — ${article.summary}`
+      : article.headline;
+    if (value.length > 1200)
+      throw new RangeError("bounded-news-claim-summary-required");
+    return Object.freeze({
+      id: `news:${article.article}`, metric: "news-publisher-claim",
+      value, sourceEvidenceId: context.evidence.news,
+      sourceUrl: url.href, availableAt: article.updatedAt,
+      observedAt: context.news.observedAt,
+      assertionForce: "reports", evidenceStatus: "unverified",
+    });
+  });
+  return Object.freeze({
+    asOf: context.asOf,
+    evidenceReferences: Object.freeze([context.evidence.news]),
+    evidenceFacts: Object.freeze(facts),
+    coverage: Object.freeze({
+      paginationComplete: context.news.paginationComplete,
+      selectedArticles: facts.length,
+      coverageBySymbol: context.news.coverageBySymbol,
+    }),
+    noForecastOrOrderEffect: true,
+  });
 }
