@@ -54,7 +54,7 @@ function sectionAdjustment(agentForecasts, entity, predictedAt, horizonDays, pro
   if (sections.length < 2) return Object.freeze({
     multiplier: 1, uncertainty: 0, assay: null, qualitativeSizingCalibrated: false,
   });
-  const assay = providers.assayAgentSectionDescent({ sections });
+  const assay = providers.assayAgentSectionDescent({ sections, asOf: predictedAt });
   // FOUR says which sides are told; the sheaf coboundary measures local
   // disagreement energy. Neither furnishes an empirical probability, a
   // position-size penalty or a likelihood ratio. The earlier arbitrary
