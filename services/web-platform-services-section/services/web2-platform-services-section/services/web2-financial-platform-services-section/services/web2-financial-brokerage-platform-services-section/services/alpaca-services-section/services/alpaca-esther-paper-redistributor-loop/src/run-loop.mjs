@@ -11,7 +11,7 @@
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { createSemanticRecordJournal } from "@red-cup-engineering/semiotic-eavt-services-section/record-semantic-record";
+import { each, put } from "@red-cup-engineering/semiotic-eavt-services-section/store";
 import { semanticIdOf } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 import { formAggressivePortfolioIntent } from "@red-cup-engineering/alpha-portfolio-order-intent-service";
 import { grantBrokerageAuthority, formPrincipalBrokerageContract } from "@red-cup-engineering/principal-brokerage-interface";
@@ -26,8 +26,8 @@ import { TARGET_WEIGHTS, TARGET_SYMBOLS, scaleTargets } from "./target-basket.mj
 const HERE = dirname(fileURLToPath(import.meta.url));
 const JOURNAL_ROOT = join(HERE, "..");
 const BOOKS_DATA_ROOT = join(HERE, "..", "data", "state", "brokerage-book-state");
-export const JOURNAL_OBJECT_KIND = "alpaca-esther-paper-redistributor-loop.decision";
-export const JOURNAL_CATEGORY = "esther-redistributor.decision";
+/** The store type the loop's decisions are put under. */
+export const JOURNAL_TYPE = "esther-redistributor-decision";
 const PRINCIPAL = "urn:principal:esther-davis";
 const accountReference = (mode) => `account:esther-${mode}-redistributor`;
 const contractScopes = (mode) => Object.freeze(["account:read", "activities:read", "orders:intent", `orders:${mode}`, "orders:read", "positions:read"]);
@@ -40,19 +40,14 @@ const BOOTSTRAP_TRANCHES = 4;
 const MINIMUM_ORDER_NOTIONAL = 1.0; // refuse to place dust orders
 
 /**
- * Append a decision record through the house semantic record journal.
+ * Put a decision record into the store.
  * @param {object} entry - Decision fields (type, phase, disposition, orders, responses, ...).
  * @param {object} [options]
  * @param {string} [options.root] - Journal root override, for tests.
  */
 export function journal(entry, { root = JOURNAL_ROOT } = {}) {
   const recordedAt = new Date().toISOString();
-  createSemanticRecordJournal({ root, objectKind: JOURNAL_OBJECT_KIND }).record({
-    category: JOURNAL_CATEGORY,
-    recordedAt,
-    record: { timestamp: recordedAt, ...entry },
-    told: { for: true, against: false },
-  });
+  put(root, JOURNAL_TYPE, { timestamp: recordedAt, ...entry });
 }
 
 function chicagoDate(isoTimestamp) {
@@ -61,9 +56,7 @@ function chicagoDate(isoTimestamp) {
 }
 
 function readPriorJournalEntries() {
-  return createSemanticRecordJournal({ root: JOURNAL_ROOT, objectKind: JOURNAL_OBJECT_KIND })
-    .query({ category: JOURNAL_CATEGORY })
-    .map((row) => row.record);
+  return [...each(JOURNAL_ROOT, JOURNAL_TYPE)].map((row) => row.record);
 }
 
 /**

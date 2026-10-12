@@ -8,7 +8,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { semanticIdOf } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
-import { createSemanticRecordJournal } from "@red-cup-engineering/semiotic-eavt-services-section/record-semantic-record";
+import { put } from "@red-cup-engineering/semiotic-eavt-services-section/store";
 import { alpacaCredentials, tradingFetch } from "@red-cup-engineering/alpaca-services-section/guards";
 
 import { runTradingCycle } from "./pipeline.mjs";
@@ -17,14 +17,14 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const JOURNAL_ROOT = join(HERE, "..");
 const DATA_ROOT = JOURNAL_ROOT;
 const BOOKS_DATA_ROOT = join(HERE, "..", "data", "state", "brokerage-book-state");
-export const JOURNAL_OBJECT_KIND = "alpaca-esther-paper-trading-loop.decision";
-export const JOURNAL_CATEGORY = "esther-trading.decision";
+/** The store type the loop's decisions are put under. */
+export const JOURNAL_TYPE = "esther-trading-decision";
 const relationalId = semanticIdOf("brokerage.alpaca-esther-paper-trading-loop.record");
 
 /**
  * Emit a decision receipt on stdout (content-addressed, unchanged) and
  * additionally append it as a witnessed decision record through the house
- * semantic record journal.
+ * store.
  * @param {object} entry - Decision fields (guard, disposition, cycle, ...).
  * @param {object} [options]
  * @param {string} [options.root] - Journal root override, for tests.
@@ -42,12 +42,7 @@ export function journal(entry, { root = JOURNAL_ROOT } = {}) {
   process.stdout.write(`${JSON.stringify(receipt)}\n`);
 
   const recordedAt = new Date().toISOString();
-  createSemanticRecordJournal({ root, objectKind: JOURNAL_OBJECT_KIND }).record({
-    category: JOURNAL_CATEGORY,
-    recordedAt,
-    record: { timestamp: recordedAt, ...receipt },
-    told: { for: true, against: false },
-  });
+  put(root, JOURNAL_TYPE, { timestamp: recordedAt, ...receipt });
 
   return receipt;
 }

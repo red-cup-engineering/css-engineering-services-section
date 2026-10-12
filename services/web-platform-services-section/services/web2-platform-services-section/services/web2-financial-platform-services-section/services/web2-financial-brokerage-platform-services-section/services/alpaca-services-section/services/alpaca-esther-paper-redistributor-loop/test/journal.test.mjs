@@ -4,8 +4,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import { createSemanticRecordJournal } from "@red-cup-engineering/semiotic-eavt-services-section/record-semantic-record";
-import { JOURNAL_CATEGORY, JOURNAL_OBJECT_KIND, journal } from "../src/run-loop.mjs";
+import { each } from "@red-cup-engineering/semiotic-eavt-services-section/store";
+import { JOURNAL_TYPE, journal } from "../src/run-loop.mjs";
 
 test("journal() round-trips a full evaluation decision through the house journal (unmodified behavior, post dependency-pin bump)", () => {
   const root = mkdtempSync(join(tmpdir(), "alpaca-esther-paper-redistributor-loop-"));
@@ -25,7 +25,7 @@ test("journal() round-trips a full evaluation decision through the house journal
       { root },
     );
 
-    const rows = createSemanticRecordJournal({ root, objectKind: JOURNAL_OBJECT_KIND }).query({ category: JOURNAL_CATEGORY });
+    const rows = [...each(root, JOURNAL_TYPE)];
     assert.equal(rows.length, 1);
     const [row] = rows;
     assert.equal(row.record.type, "evaluation");
@@ -41,7 +41,7 @@ test("journal() round-trips a guard-refused no-op decision", () => {
   const root = mkdtempSync(join(tmpdir(), "alpaca-esther-paper-redistributor-loop-"));
   try {
     journal({ type: "guard-refused", reason: "no-paper-credentials" }, { root });
-    const rows = createSemanticRecordJournal({ root, objectKind: JOURNAL_OBJECT_KIND }).query({ category: JOURNAL_CATEGORY });
+    const rows = [...each(root, JOURNAL_TYPE)];
     assert.equal(rows.length, 1);
     assert.equal(rows[0].record.type, "guard-refused");
     assert.equal(rows[0].record.reason, "no-paper-credentials");
