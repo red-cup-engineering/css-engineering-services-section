@@ -149,6 +149,12 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
     version: 2,
     providers: Object.freeze([...providers].sort()),
     coordinates: Object.freeze([...groups.keys()].sort()),
+    // The requested cutoff is carried with its measured refusal. A generated
+    // forecast timestamp is not by itself proof that its cited primary
+    // document/news item was already publicly available at that time.
+    asOf: cutoff === null ? null : new Date(cutoff).toISOString(),
+    forecastClockFilterApplied: cutoff !== null,
+    underlyingSourcePublicationVerified: false,
     cells: Object.freeze(cells),
     // Each review carries SignChain's rule-content identity and premise
     // address as its support witness; no review cell is manufactured for
