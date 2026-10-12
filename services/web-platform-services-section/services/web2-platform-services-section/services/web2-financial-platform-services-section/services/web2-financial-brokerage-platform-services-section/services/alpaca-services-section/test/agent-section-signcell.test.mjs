@@ -119,3 +119,23 @@ test("two analysis providers citing the same source are not independent observat
   assert.equal(distinct.coordinateReadings["ONDS:5"].sourceIndependenceEstablished, false,
     "different source IDs alone do not prove independence");
 });
+
+test("forecast settlement admits only available time-filtered evidence", () => {
+  const asOf = "2026-10-12T14:00:00Z";
+  const earlier = [
+    forecast("filing", "BLK:5", 0.04, 0.9, { observedAt: "2026-10-12T13:00:00Z" }),
+    forecast("orderflow", "BLK:5", -0.03, 0.9, { observedAt: asOf }),
+  ];
+  const result = assay({ sections: earlier, asOf });
+  assert.equal(result.reviewRequired, true);
+  assert.deepEqual(result.reviewSettlements, [{
+    coordinate: "BLK:5", settledAt: 1, derivationVersion: 2, admitted: true, reviewDerived: true,
+  }]);
+  assert.throws(() => assay({ sections: earlier.map((entry, i) => i ? {
+    ...entry, observedAt: "2026-10-12T14:00:01Z",
+  } : entry), asOf }), /forecast-outside-as-of-filtration/);
+  assert.throws(() => assay({ sections: earlier.map((entry, i) => i ? {
+    ...entry, observedAt: undefined,
+  } : entry), asOf }), /forecast-outside-as-of-filtration/);
+  assert.throws(() => assay({ sections: earlier, asOf: "invalid" }), /forecast-as-of-time-invalid/);
+});
