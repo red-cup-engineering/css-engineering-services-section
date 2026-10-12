@@ -28,7 +28,12 @@ function prepareFeatures(panelAssay, benchmark, graphWindow, patchSize, provider
     if (variant === "technical") { const result = [...basic, ...technical]; cache.set(key, result); return result; }
     const start = Math.max(1, index - graphWindow + 1);
     const histories = Object.fromEntries(entities.map((name) => [name, Array.from({ length: index - start + 1 }, (_, offset) => logReturn(values[name], start + offset - 1, start + offset))]));
-    const graph = providers.measureCorrelationGraph({ returnsByEntity: histories });
+    // Signed transport is a separately evaluated challenger, not a silent
+    // reinterpretation of the incumbent positive-correlation graph model.
+    const graph = providers.measureCorrelationGraph({
+      returnsByEntity: histories,
+      positiveOnly: variant !== "obsmetrologiaSigned",
+    });
     const sections = Object.fromEntries(entities.map((name) => [name, logReturn(values[name], index - 20, index)]));
     const laplacian = providers.measureSheafLaplacian({ sections, edges: graph.edges });
     const tokens = Array.from({ length: index }, (_, cursor) => {
@@ -130,16 +135,32 @@ export function createCausalPortfolioLearningCircuit({ recordResult, providers }
     const folds = providers.formPurgedWalkForwardFolds({ coordinates: panel.panel.map(({ at }) => at), warmup: Number(config.warmup ?? 252), horizon, cadence: Number(config.cadence ?? horizon), trainingWindow: Number(config.trainingWindow ?? 504), validationFraction: Number(config.validationFraction ?? 0.5) });
     const features = prepareFeatures(panel, benchmark, Number(config.graphWindow ?? 60), Number(config.patchSize ?? 5), providers);
     const common = { folds, features, investable, benchmark, agentForecasts, ridge: Number(config.ridge ?? 1), mandate, horizon, initialCapital: Number(config.initialCapital ?? 100_000), execution: Object.freeze({ spreadBps: Number(config.spreadBps ?? 4), impactBpsAtFullParticipation: Number(config.impactBpsAtFullParticipation ?? 25), maximumParticipationRate: Number(config.maximumParticipationRate ?? 0.1), latencyFractionOfBar: Number(config.latencyFractionOfBar ?? 0.1), minimumOrderNotional: Number(config.minimumOrderNotional ?? 1) }), providers };
-    const variants = Object.freeze({ baseline: evaluateVariant({ ...common, variant: "baseline" }), technical: evaluateVariant({ ...common, variant: "technical" }), obsmetrologiaTechnical: evaluateVariant({ ...common, variant: "obsmetrologiaTechnical" }) });
+    if (config.compareSignedTransport !== undefined && typeof config.compareSignedTransport !== "boolean")
+      throw new TypeError("compare-signed-transport-boolean-required");
+    const variants = Object.freeze({
+      baseline: evaluateVariant({ ...common, variant: "baseline" }),
+      technical: evaluateVariant({ ...common, variant: "technical" }),
+      obsmetrologiaTechnical: evaluateVariant({ ...common, variant: "obsmetrologiaTechnical" }),
+      ...(config.compareSignedTransport === true
+        ? { obsmetrologiaSigned: evaluateVariant({ ...common, variant: "obsmetrologiaSigned" }) } : {}),
+    });
     const tournament = providers.selectModelCandidate({
       candidates: [
         { id: "urn:model-candidate:return-risk-baseline", authorActor: "urn:ame:return-risk-feature-measurement-service", validation: variants.baseline.validation.metrics, holdout: variants.baseline.holdout.metrics },
         { id: "urn:model-candidate:technical-analysis", authorActor: "urn:ame:technical-analysis-feature-measurement-service", validation: variants.technical.validation.metrics, holdout: variants.technical.holdout.metrics },
         { id: "urn:model-candidate:obsmetrologia-technical", authorActor: "urn:ame:sheaf-laplacian-measurement-service", validation: variants.obsmetrologiaTechnical.validation.metrics, holdout: variants.obsmetrologiaTechnical.holdout.metrics },
+        ...(variants.obsmetrologiaSigned ? [{
+          id: "urn:model-candidate:obsmetrologia-signed-transport",
+          authorActor: "urn:ame:signed-rank-one-graph-transport",
+          validation: variants.obsmetrologiaSigned.validation.metrics,
+          holdout: variants.obsmetrologiaSigned.holdout.metrics,
+        }] : []),
       ],
       policy: { metric: "informationRatio", direction: "maximize", maximumHoldoutDrawdown: Number(config.maximumHoldoutDrawdown ?? mandate.maximumDrawdown ?? 1) },
     });
-    const selectedName = tournament.selectedUsingValidationOnly.endsWith("obsmetrologia-technical") ? "obsmetrologiaTechnical"
+    const selectedName = tournament.selectedUsingValidationOnly.endsWith("obsmetrologia-signed-transport")
+      ? "obsmetrologiaSigned"
+      : tournament.selectedUsingValidationOnly.endsWith("obsmetrologia-technical") ? "obsmetrologiaTechnical"
       : tournament.selectedUsingValidationOnly.endsWith("technical-analysis") ? "technical" : "baseline";
     const currentDecision = formCurrentDecision({ variant: selectedName, features, investable, benchmark, agentForecasts, ridge: common.ridge, mandate, horizon, trainingWindow: Number(config.trainingWindow ?? 504), observationCount: panel.panel.length, currentWeights, providers, asOf: panel.asOf });
     const result = Object.freeze({
@@ -154,7 +175,17 @@ export function createCausalPortfolioLearningCircuit({ recordResult, providers }
       evaluations: Object.freeze(Object.fromEntries(Object.entries(variants).map(([name, value]) => [name, Object.freeze({ validation: value.validation.metrics, holdout: value.holdout.metrics, full: value.full.metrics })]))),
       executionModel: common.execution,
       currentDecision,
-      claims: Object.freeze({ artificialIntelligenceTradingCircuit: agentForecasts.length > 0, technicalAnalysisTournamented: true, alphaEstablished: false, profitabilityEstablished: false, liveReadinessEstablished: false, obsmetrologiaIncrementalEdgeObserved: variants.obsmetrologiaTechnical.holdout.metrics.informationRatio > variants.technical.holdout.metrics.informationRatio }),
+      claims: Object.freeze({
+        artificialIntelligenceTradingCircuit: agentForecasts.length > 0,
+        technicalAnalysisTournamented: true,
+        signedRankOneTransportEvaluated: Boolean(variants.obsmetrologiaSigned),
+        signedRankOneTransportHoldoutBetterThanUnsigned: variants.obsmetrologiaSigned
+          ? variants.obsmetrologiaSigned.holdout.metrics.informationRatio >
+            variants.obsmetrologiaTechnical.holdout.metrics.informationRatio : null,
+        alphaEstablished: false, profitabilityEstablished: false, liveReadinessEstablished: false,
+        obsmetrologiaIncrementalEdgeObserved: variants.obsmetrologiaTechnical.holdout.metrics.informationRatio >
+          variants.technical.holdout.metrics.informationRatio,
+      }),
       effect: "model-evaluation-and-target-weights-only",
     });
     const receipt = await recordResult({ type: "institutional-causal-portfolio-learning-completed", value: result, recordedAt: panel.asOf });
