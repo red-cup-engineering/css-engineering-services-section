@@ -32,7 +32,7 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
   // theorem about global market observability. No chosen tolerance means
   // that the assay cannot claim compatibility merely from a tiny number.
   const tolerance = agreementTolerance === null ? null : numeric(agreementTolerance, "agreement-tolerance");
-  if (tolerance !== null && tolerance < 0)
+  if (tolerance !== null && (tolerance < 0 || !Number.isFinite(tolerance * tolerance)))
     throw new RangeError("agreement-tolerance-out-of-range");
   const providers = new Set(), seenPairs = new Set(), values = {}, edges = [], groups = new Map();
   for (const [index, section] of sections.entries()) {
