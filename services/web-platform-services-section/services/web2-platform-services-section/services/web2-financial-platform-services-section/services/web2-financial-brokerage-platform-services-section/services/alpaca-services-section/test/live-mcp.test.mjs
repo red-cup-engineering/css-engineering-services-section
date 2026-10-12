@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {createAlpacaLiveMcp} from '../src/live-mcp.mjs';
+import {createAlpacaLiveMcp} from '@red-cup-engineering/alpaca-principal-actuation-service/mcp';
 const refs={contractReference:'contract',authorityGrantReference:'grant',marketDecisionReference:'decision',evidencePacketReference:'packet'};
 const request=arguments_=>({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:'alpaca_live_execute_market_decision',arguments:arguments_}});
 test('fleet projection passes only stored references to the custody-bound decision executor',async()=>{

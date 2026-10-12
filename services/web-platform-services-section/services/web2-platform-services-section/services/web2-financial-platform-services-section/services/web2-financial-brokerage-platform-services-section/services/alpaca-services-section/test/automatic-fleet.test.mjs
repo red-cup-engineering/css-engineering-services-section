@@ -4,7 +4,7 @@ import {mkdtemp,writeFile,chmod,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {openProductionAlpacaBrokerage} from '../src/live-runtime.mjs';
-import {createAlpacaLiveMcp} from '../src/live-mcp.mjs';
+import {createAlpacaLiveMcp} from '@red-cup-engineering/alpaca-principal-actuation-service/mcp';
 test('automatic consumer requires a private exact binding and keeps uncertain effects explicit',async()=>{
  const root=await mkdtemp(join(tmpdir(),'automatic-alpaca-'));let fetches=0;
  try{

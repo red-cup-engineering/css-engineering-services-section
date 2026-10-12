@@ -30,6 +30,7 @@
   },
   "description": "Scalable customer-wallet-funded market in metered brokerage-control APIs.",
   "devDependencies": {
+    "@red-cup-engineering/alpaca-principal-actuation-service": "workspace:*",
     "@red-cup-engineering/computer-system-engine": "workspace:*",
     "@red-cup-engineering/obsmetrologia-alpha-selection-proof-service": "workspace:*"
   },
@@ -72,7 +73,6 @@
     "./sheaf-laplacian-measure": "./scripts/sheaf-laplacian-measure.mjs",
     "./technical-analysis-feature-measure": "./scripts/technical-analysis-feature-measure.mjs",
     "./settlement-provider": "./scripts/settlement-provider.mjs",
-    "./live-mcp": "./src/live-mcp.mjs",
     "./live-runtime": "./src/live-runtime.mjs"
   },
   "name": "@red-cup-engineering/alpaca-services-section",
