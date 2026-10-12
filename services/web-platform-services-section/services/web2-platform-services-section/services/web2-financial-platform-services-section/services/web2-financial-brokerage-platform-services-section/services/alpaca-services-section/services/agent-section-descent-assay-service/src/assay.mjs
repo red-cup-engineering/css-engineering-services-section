@@ -19,8 +19,13 @@ const text = (input, label) => {
  * graph-Laplacian below measures numeric disagreement on overlapping sections,
  * but is NOT a theorem that the sections form a sheaf or that alpha exists.
  */
-function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) {
+function assay({ sections, confidenceFloor = 0.5, asOf } = {}, measureSheafLaplacian) {
   if (!Array.isArray(sections) || sections.length < 2) throw new TypeError("plural-agent-sections-required");
+  // A point-in-time comparison is a filtration of what could actually have
+  // been known by the cutoff, not of what a model reports after the fact.
+  const cutoff = asOf === undefined ? null : Date.parse(asOf);
+  if (cutoff !== null && !Number.isFinite(cutoff))
+    throw new TypeError("forecast-as-of-time-invalid");
   const floor = numeric(confidenceFloor, "confidence-floor");
   if (floor < 0 || floor > 1) throw new RangeError("confidence-floor-out-of-range");
   const providers = new Set(), seenPairs = new Set(), values = {}, edges = [], groups = new Map();
@@ -36,6 +41,8 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
       throw new TypeError("forecast-evidence-references-invalid");
     if (section.observedAt !== undefined && !Number.isFinite(Date.parse(section.observedAt)))
       throw new TypeError("forecast-observation-time-invalid");
+    if (cutoff !== null && (section.observedAt === undefined || Date.parse(section.observedAt) > cutoff))
+      throw new TypeError("forecast-outside-as-of-filtration");
     const pair = JSON.stringify([provider, coordinate]);
     if (seenPairs.has(pair)) throw new TypeError("duplicate-provider-coordinate-forecast");
     seenPairs.add(pair);
