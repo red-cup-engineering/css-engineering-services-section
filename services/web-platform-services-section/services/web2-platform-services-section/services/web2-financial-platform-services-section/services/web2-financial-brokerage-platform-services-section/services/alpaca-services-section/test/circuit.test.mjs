@@ -88,6 +88,19 @@ test("a five-day decision uses only same-horizon SignCell forecasts and retains 
   assert.equal(scope.coordinateReadings["BLK:5"].charge, "potential");
   assert.equal(scope.coordinateReadings["BLK:5"].sourceReferencesAttached, true);
   assert.equal(scope.cells[0].for.length, 2);
+  assert.equal(scope.reviewRequired, false, "two agreeing opinions do not derive a contested-evidence review");
+  // The agent opinions are real SignCell/SignGraph observations, but there
+  // are no time-correct historical research-agent forecasts with which to
+  // calibrate their effect on position sizing. Their presence must not
+  // covertly change a validated portfolio decision.
+  const control = await run({
+    barsBySymbol, asOf, agentForecasts: [],
+    mandate: { type: "PortfolioAllocationMandate", id: "urn:mandate:synthetic-horizon-test",
+      maximumWeight: 0.6, grossLimit: 1, leverageLimit: 1, shorting: false, maximumDrawdown: 0.5 },
+    config: { warmup: 140, trainingWindow: 100, graphWindow: 40, horizon: 5 },
+  });
+  assert.deepEqual(result.currentDecision.scores, control.currentDecision.scores);
+  assert.deepEqual(result.currentDecision.targetWeights, control.currentDecision.targetWeights);
 });
 
 test("signed rank-one graph transport is a preregisterable separate challenger, not silent incumbent math", async () => {
