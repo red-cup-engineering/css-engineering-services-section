@@ -51,9 +51,24 @@ function sectionAdjustment(agentForecasts, entity, predictedAt, horizonDays, pro
       evidenceReferences: section.evidenceReferences ?? [],
       observedAt: section.observedAt,
     }));
-  if (sections.length < 2) return Object.freeze({ multiplier: 1, uncertainty: 0, assay: null });
+  if (sections.length < 2) return Object.freeze({
+    multiplier: 1, uncertainty: 0, assay: null, qualitativeSizingCalibrated: false,
+  });
   const assay = providers.assayAgentSectionDescent({ sections });
-  return Object.freeze({ multiplier: assay.confidenceMultiplier * (assay.contradictionHeld ? 0.5 : 1), uncertainty: assay.disagreementEnergy, assay });
+  // FOUR says which sides are told; the sheaf coboundary measures local
+  // disagreement energy. Neither furnishes an empirical probability, a
+  // position-size penalty or a likelihood ratio. The earlier arbitrary
+  // 1/(1+100E) * 0.5 rule applied a NEVER-CALIBRATED qualitative opinion
+  // directly to an otherwise historically scored model. Crucially, modern
+  // research agents are observed only at the current clock, so such a
+  // multiplier bypasses every earlier walk-forward validation fold.
+  // Retain the full SignCell/SignChain/SignGraph record for independent study
+  // but do not alter trades until a separately evaluated as-of-calibration
+  // provider earns inclusion in the predeclared feature/decision model.
+  return Object.freeze({
+    multiplier: 1, uncertainty: 0, assay, qualitativeSizingCalibrated: false,
+    uncalibratedForecastEvidenceQuarantined: true,
+  });
 }
 
 function evaluateVariant({ variant, folds, features, investable, benchmark, agentForecasts, ridge, mandate, horizon, transactionCostBps, providers }) {
