@@ -13,6 +13,45 @@ const ROLES = Object.freeze([
   Object.freeze({ id: "adversarial-risk", objective: "Challenge the other plausible theses by identifying hidden exposures, nonstationarity, liquidity, model, legal, and operational failure modes." }),
 ]);
 
+
+// Broader strategy research is an opt-in configuration of the SAME committee,
+// not a second agent arena, portfolio calculator, research schema or signer.
+// The provider may decline a seat when the named source family is unavailable.
+export const INVESTMENT_RESEARCH_FRONTIER_ROLES = Object.freeze([
+  ...ROLES,
+  Object.freeze({ id: "primary-issuer-disclosures", objective: "Read already-available 8-K, 10-Q, 10-K, S-1, 424B, 13D/G, Form 4 and issuer guidance evidence; compare newly asserted facts to the prior release. Missing filings or post-decision publication require an explicit no-candidate residue." }),
+  Object.freeze({ id: "capital-structure-and-dilution", objective: "Test debt maturities, convertibles, ATM facilities, shelf registrations, warrants, lockups, insider supply, buybacks and cash runway against candidate value; distinguish stated program ceilings from recognized revenue." }),
+  Object.freeze({ id: "news-claim-provenance", objective: "Evaluate event first-publication time, primary versus syndicated reporting, corrections, source independence and contradictory claim readings; require source/availability clocks and never equate a headline to a calibrated probability." }),
+  Object.freeze({ id: "attention-and-narrative", objective: "Study changes in public attention, positioning narratives and discourse disagreement across independently sourced publications; distinguish persuasive rhetoric, repeated syndication and genuine new issuer information." }),
+  Object.freeze({ id: "earnings-and-guidance", objective: "Compare reported results, management guidance, estimate revisions and conference-call evidence to prior dated expectations; separate an economic surprise from a price surprise and record each unsupported expectation." }),
+  Object.freeze({ id: "options-and-volatility", objective: "Study properly sourced option smile/skew, implied-versus-realized distributions, term structure, open interest and plausible dealer positioning; indicative or delayed quotes are non-executable and positioning is a hypothesis." }),
+  Object.freeze({ id: "order-flow-and-microstructure", objective: "Study time-stamped venue quote/trade streams, spread, depth, order imbalance, queue/fill hazards, latency, adverse selection and trade size; do not infer executable NBBO depth from IEX-only aggregates." }),
+  Object.freeze({ id: "cross-venue-conditional-events", objective: "Map Kalshi/Polymarket settlement-state possibilities to issuer, sector, commodity and listed-asset consequences using exact contract rules; do not treat venue odds as independent real-world probabilities." }),
+  Object.freeze({ id: "scarce-complements-and-supply-chain", objective: "Research physical bottlenecks in power, grid connections, fabrication, rare earths, compute, transport, water and regulation; locate upstream and downstream beneficiaries and falsifiers from actual contracts and capacity." }),
+  Object.freeze({ id: "catalyst-to-ownership", objective: "Separately test enduring company ownership value and dated catalyst/liquidity mispricing. Reclassifying a failed catalyst as a long-term thesis without fresh evidence is not allowed." }),
+  Object.freeze({ id: "flows-index-and-corporate-actions", objective: "Study index inclusion/rebalance, ETF holdings and flows, splits, tender offers, spin-offs, distributions and mechanically constrained investors; source ex/record dates and distinguish flow hypotheses from observed fills." }),
+  Object.freeze({ id: "causal-counterfactuals", objective: "Construct rival causal mechanisms, regime breaks, affected parties and counterfactual nulls; quantify uncertainty rather than promote coincident market reactions into proven causes." }),
+  Object.freeze({ id: "obsmetrologia-structure", objective: "Propose testable FOUR/bilattice contradiction, sheaf-Laplacian, causal-cone, holonomy, and context-refinement features only when source observations can instantiate them; state a simpler null baseline." }),
+  Object.freeze({ id: "information-value-and-search", objective: "Use the shared market game's fixed actions, joint scenario distribution and calibrated signal kernel to compare the expected decision value of additional research against compute, latency and opponent repricing costs." }),
+  Object.freeze({ id: "regulatory-geopolitical-transmission", objective: "Translate dated rule changes, central-bank announcements, procurement milestones, court rulings and geopolitical shocks into explicit first-, second- and third-order beneficiary/loss scenarios; preserve jurisdiction and source time." }),
+  Object.freeze({ id: "data-quality-and-adversarial-audit", objective: "Attempt to invalidate every other seat using look-ahead, corporate-action backfill, survivorship, filing-time errors, model-memory leakage, source licensing, duplicated news, fees and hidden factor exposure; withhold unsupported forecasts." }),
+]);
+
+function admittedRoles(roles) {
+  if (!Array.isArray(roles) || roles.length < 1 || roles.length > 24)
+    throw new TypeError("bounded-research-roles-required");
+  const ids = new Set();
+  for (const role of roles) {
+    if (!role || typeof role !== "object" || typeof role.id !== "string"
+        || !/^[a-z][a-z0-9-]{0,63}$/u.test(role.id)
+        || ids.has(role.id) || typeof role.objective !== "string"
+        || !role.objective.trim() || role.objective.length > 900)
+      throw new TypeError("unique-trusted-research-role-required");
+    ids.add(role.id);
+  }
+  return Object.freeze(roles.map((role) => Object.freeze({ id: role.id, objective: role.objective })));
+}
+
 const OUTPUT_SCHEMA = Object.freeze(INVESTMENT_RESEARCH_RESULT_CARRIER.schema.$defs.candidate);
 
 function validateRequest(request) {
@@ -23,12 +62,13 @@ function actorOf(result) {
   return result?.provider?.actor ?? result?.provider ?? result?.result?.provider ?? null;
 }
 
-export function createInvestmentResearchCommittee({ contractInference }) {
+export function createInvestmentResearchCommittee({ contractInference, roles = ROLES } = {}) {
   if (typeof contractInference !== "function") throw new TypeError("inference-market-contract-provider-required");
+  const trustedRoles = admittedRoles(roles);
   return async function contractCommittee(request) {
     validateRequest(request);
     const excludedProviders = [], seats = [], residues = [];
-    for (const role of ROLES) {
+    for (const role of trustedRoles) {
       const lot = Object.freeze({
         workLotId: `urn:union:investment-research:${request.contextProduct.split(";")[1]}:${role.id}`,
         customer: request.customerActor,
@@ -67,7 +107,7 @@ export function createInvestmentResearchCommittee({ contractInference }) {
       seats: Object.freeze(seats),
       residues: Object.freeze(residues),
       providerDistinct: new Set(seats.map(({ provider }) => provider)).size === seats.length,
-      committeeComplete: seats.length === ROLES.length,
+      committeeComplete: seats.length === trustedRoles.length,
       customerAcceptanceEstablished: false,
       allocationEstablished: false,
       executionEstablished: false,
