@@ -4,8 +4,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import { createSemanticRecordJournal } from "@red-cup-engineering/semiotic-eavt-services-section/record-semantic-record";
-import { JOURNAL_CATEGORY, JOURNAL_OBJECT_KIND, journal } from "../src/run-loop.mjs";
+import { each } from "@red-cup-engineering/semiotic-eavt-services-section/store";
+import { JOURNAL_TYPE, journal } from "../src/run-loop.mjs";
 
 test("journal() writes a witnessed decision record carrying the cycle disposition", () => {
   const root = mkdtempSync(join(tmpdir(), "alpaca-esther-paper-trading-loop-"));
@@ -17,7 +17,7 @@ test("journal() writes a witnessed decision record carrying the cycle dispositio
 
     assert.equal(receipt.disposition, "hold");
 
-    const rows = createSemanticRecordJournal({ root, objectKind: JOURNAL_OBJECT_KIND }).query({ category: JOURNAL_CATEGORY });
+    const rows = [...each(root, JOURNAL_TYPE)];
     assert.equal(rows.length, 1);
     const [row] = rows;
     assert.equal(row.record.disposition, "hold");
@@ -45,7 +45,7 @@ test("every current call-site disposition round-trips through the witnessed jour
     for (const disposition of dispositions) {
       journal({ guard: "passed", disposition }, { root });
     }
-    const rows = createSemanticRecordJournal({ root, objectKind: JOURNAL_OBJECT_KIND }).query({ category: JOURNAL_CATEGORY });
+    const rows = [...each(root, JOURNAL_TYPE)];
     assert.equal(rows.length, dispositions.length);
     assert.deepEqual(rows.map((row) => row.record.disposition).sort(), [...dispositions].sort());
   } finally {
