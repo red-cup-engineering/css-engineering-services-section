@@ -41,7 +41,7 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
     values[String(index)] = value;
     const rows = groups.get(coordinate) ?? [];
     rows.push({ provider, coordinate, value, confidence, index,
-      evidenceReferences: Object.freeze([...(section.evidenceReferences ?? [])].sort()),
+      evidenceReferences: Object.freeze([...new Set(section.evidenceReferences ?? [])].sort()),
       ...(section.observedAt === undefined ? {} : { observedAt: section.observedAt }) });
     groups.set(coordinate, rows);
   }
@@ -63,6 +63,17 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
       provider, forecastValue: value, confidence, evidenceReferences,
       ...(observedAt === undefined ? {} : { observedAt }),
     });
+    // Two providers citing the SAME filing, headline, or data observation are
+    // not two independent source witnesses. Preserve the provider tellings but
+    // expose shared source references rather than multiplying conviction.
+    const sourceOwners = new Map();
+    for (const row of accepted) for (const id of row.evidenceReferences) {
+      const owners = sourceOwners.get(id) ?? new Set();
+      owners.add(row.provider);
+      sourceOwners.set(id, owners);
+    }
+    const sharedSourceReferences = [...sourceOwners.entries()]
+      .filter(([, owners]) => owners.size > 1).map(([id]) => id).sort();
     const fore = accepted.filter((row) => row.value > 0).map(witness);
     const against = accepted.filter((row) => row.value < 0).map(witness);
     const claim = cell(coordinate, "expected-excess-return-positive", true, { for: fore, against });
@@ -72,6 +83,9 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
       positiveEvidence, negativeEvidence, supporters: fore.length, refuters: against.length,
       contradictionHeld: positiveEvidence && negativeEvidence,
       sourceReferencesAttached: accepted.length > 0 && accepted.every((r) => r.evidenceReferences.length > 0),
+      sharedSourceReferences: Object.freeze(sharedSourceReferences),
+      crossProviderSourceReuseDetected: sharedSourceReferences.length > 0,
+      sourceIndependenceEstablished: false,
     });
     cells.push(claim);
     coordinatePairs.push([coordinate, reading]);
@@ -81,6 +95,7 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
   const positiveEvidence = readings.some((reading) => reading.positiveEvidence);
   const negativeEvidence = readings.some((reading) => reading.negativeEvidence);
   const contradictionHeld = readings.some((reading) => reading.contradictionHeld);
+  const crossProviderSourceReuseDetected = readings.some((reading) => reading.crossProviderSourceReuseDetected);
   const overlapObserved = edges.length > 0;
   return Object.freeze({
     type: "AgentSectionDescentAssay",
@@ -91,6 +106,7 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
     coordinateReadings: Object.freeze(coordinateReadings),
     four: Object.freeze({ positiveEvidence, negativeEvidence }),
     contradictionHeld,
+    crossProviderSourceReuseDetected,
     comparedEdgeCount: edges.length,
     overlapObserved,
     disagreementEnergy: laplacian.disagreementEnergy,
