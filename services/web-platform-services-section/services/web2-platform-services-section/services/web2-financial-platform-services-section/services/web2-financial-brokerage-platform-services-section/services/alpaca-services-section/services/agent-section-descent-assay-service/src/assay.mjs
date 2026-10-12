@@ -71,7 +71,11 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
   const laplacian = measureSheafLaplacian({ sections: values, edges });
   const cells = [], reviewCells = [], reviewSettlements = [], coordinatePairs = [];
   for (const [coordinate, rows] of [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))) {
-    const accepted = rows.filter((row) => row.confidence >= floor);
+    const qualified = rows.filter((row) => row.confidence >= floor);
+    // Every received forecast is evidence that its named provider made that
+    // forecast. Filtering a weak forecast before constructing FOUR silently
+    // changes a witnessed refutation into knowledge-bottom. Confidence is a
+    // separate qualification, never a rule for deleting an attributed telling.
     // Evidence references remain assertions from their named providers; their
     // presence is NOT independent validation of news, filings or market facts.
     const witness = ({ provider, value, confidence, evidenceReferences, observedAt }) => ({
@@ -82,22 +86,28 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
     // not two independent source witnesses. Preserve the provider tellings but
     // expose shared source references rather than multiplying conviction.
     const sourceOwners = new Map();
-    for (const row of accepted) for (const id of row.evidenceReferences) {
+    for (const row of rows) for (const id of row.evidenceReferences) {
       const owners = sourceOwners.get(id) ?? new Set();
       owners.add(row.provider);
       sourceOwners.set(id, owners);
     }
     const sharedSourceReferences = [...sourceOwners.entries()]
       .filter(([, owners]) => owners.size > 1).map(([id]) => id).sort();
-    const fore = accepted.filter((row) => row.value > 0).map(witness);
-    const against = accepted.filter((row) => row.value < 0).map(witness);
+    const fore = rows.filter((row) => row.value > 0).map(witness);
+    const against = rows.filter((row) => row.value < 0).map(witness);
     const claim = cell(coordinate, "expected-excess-return-positive", true, { for: fore, against });
     const [positiveEvidence, negativeEvidence] = told(claim);
     const reading = Object.freeze({
       address: address(claim), coordinate, charge: knowledgeReading(claim),
       positiveEvidence, negativeEvidence, supporters: fore.length, refuters: against.length,
+      // Admission and source trust remain distinct from the FORE/AGAINST
+      // truth of the forecast-utterance proposition.
+      qualifiedSupporters: qualified.filter((row) => row.value > 0).length,
+      qualifiedRefuters: qualified.filter((row) => row.value < 0).length,
+      belowConfidenceFloor: rows.length - qualified.length,
+      confidenceFloor: floor,
       contradictionHeld: positiveEvidence && negativeEvidence,
-      sourceReferencesAttached: accepted.length > 0 && accepted.every((r) => r.evidenceReferences.length > 0),
+      sourceReferencesAttached: rows.every((r) => r.evidenceReferences.length > 0),
       sharedSourceReferences: Object.freeze(sharedSourceReferences),
       crossProviderSourceReuseDetected: sharedSourceReferences.length > 0,
       sourceIndependenceEstablished: false,
