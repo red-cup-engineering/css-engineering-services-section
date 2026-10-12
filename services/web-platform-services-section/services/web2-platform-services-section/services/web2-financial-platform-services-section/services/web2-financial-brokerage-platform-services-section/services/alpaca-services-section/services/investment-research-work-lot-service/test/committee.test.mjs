@@ -97,7 +97,8 @@ test("time-stamped qualitative issuer claims are admissible only as source-bound
   const evidence = {
     ...request, asOf: "2026-10-12T17:00:00Z",
     evidenceFacts: [{ id: "fact:regna", metric: "issuer-announcement", value: "An issuer announced a new venture.",
-      sourceEvidenceId: ni, availableAt: "2026-10-12T16:00:00Z",
+      sourceEvidenceId: ni, sourceUrl: "https://www.ondas.com/post/issuer-release",
+      availableAt: "2026-10-12T16:00:00Z",
       observedAt: "2026-10-12T16:15:00Z", assertionForce: "announces", evidenceStatus: "supported" }],
   };
   assert.equal(validateInvestmentResearchRequest(evidence).ok, true);
@@ -118,7 +119,8 @@ test("narrative without original source, clock or assertion force never reaches 
   let dispatched = 0;
   const committee = createInvestmentResearchCommittee({ contractInference: async () => { dispatched += 1; } });
   const fact = { id: "fact:regna", metric: "issuer-announcement", value: "Future leaked announcement",
-    sourceEvidenceId: ni, availableAt: "2026-10-13T00:00:00Z",
+    sourceEvidenceId: ni, sourceUrl: "https://www.ondas.com/post/issuer-release",
+    availableAt: "2026-10-13T00:00:00Z",
     assertionForce: "alleges", evidenceStatus: "unverified" };
   const present = { ...request, asOf: "2026-10-12T17:00:00Z", evidenceFacts: [fact] };
   for (const invalid of [
@@ -126,6 +128,8 @@ test("narrative without original source, clock or assertion force never reaches 
     { ...present, evidenceFacts: [{ ...fact, sourceEvidenceId: "ni:///sha-256;" + "Z".repeat(43) }] },
     { ...present, evidenceFacts: [{ ...fact, availableAt: "2026-10-12T16:00:00Z", assertionForce: undefined }] },
     { ...present, evidenceFacts: [fact, fact] },
+    { ...present, evidenceFacts: [{ ...fact, availableAt: "2026-10-12T16:00:00Z",
+      sourceUrl: "http://invalid.example/issuer" }] },
   ]) await assert.rejects(committee(invalid), /invalid|source|force|duplicate|time/);
   assert.equal(dispatched, 0);
 });
