@@ -1,5 +1,6 @@
 import { address, cell, knowledgeReading, told } from "@red-cup-engineering/signcell/cell";
-import { fireRule, rule } from "@red-cup-engineering/signchain/rules";
+import { rule } from "@red-cup-engineering/signchain/rules";
+import { settleCells, settlementAdmits } from "@red-cup-engineering/signcraft/settle";
 
 const numeric = (input, label) => {
   if (!((typeof input === "number") || (typeof input === "string" && input.trim() !== "")) ||
@@ -55,7 +56,7 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
     }
   }
   const laplacian = measureSheafLaplacian({ sections: values, edges });
-  const cells = [], reviewCells = [], coordinatePairs = [];
+  const cells = [], reviewCells = [], reviewSettlements = [], coordinatePairs = [];
   for (const [coordinate, rows] of [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))) {
     const accepted = rows.filter((row) => row.confidence >= floor);
     // Evidence references remain assertions from their named providers; their
@@ -96,8 +97,21 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
     const reviewRule = rule("market-forecast-contestation-review", [
       { cell: claim, atLeast: "stable" },
     ], { cell: reviewTarget, reading: "potential" });
-    const reviewDerivation = fireRule(reviewRule, [claim]);
-    if (reviewDerivation.length) reviewCells.push(...reviewDerivation);
+    const reviewSettlement = settleCells([claim], [reviewRule]);
+    const admission = settlementAdmits(reviewSettlement);
+    if (admission.admitted !== true)
+      throw new TypeError("market-forecast-review-settlement-not-admitted");
+    // The settled valuation, not a one-step local firing, is authoritative.
+    // SignCraft keeps both sides of the premise, derives the review witness
+    // when its FOUR reading is stable, and closes monotonically.
+    const reviewAddress = address(reviewTarget);
+    const derived = reviewSettlement.settled.filter((at) => address(at) === reviewAddress);
+    if (derived.length) reviewCells.push(...derived);
+    reviewSettlements.push(Object.freeze({
+      coordinate, settledAt: reviewSettlement.settledAt,
+      derivationVersion: reviewSettlement.derivationVersion,
+      admitted: admission.admitted, reviewDerived: derived.length > 0,
+    }));
     coordinatePairs.push([coordinate, reading]);
   }
   const coordinateReadings = Object.fromEntries(coordinatePairs);
@@ -118,6 +132,7 @@ function assay({ sections, confidenceFloor = 0.5 } = {}, measureSheafLaplacian) 
     // one-sided or unknown evidence.
     reviewCells: Object.freeze(reviewCells),
     reviewRequired: reviewCells.length > 0,
+    reviewSettlements: Object.freeze(reviewSettlements),
     coordinateReadings: Object.freeze(coordinateReadings),
     four: Object.freeze({ positiveEvidence, negativeEvidence }),
     contradictionHeld,
