@@ -49,3 +49,43 @@ test("composes atomic dies into recorded, non-executing walk-forward target weig
   assert.ok(Object.values(result.currentDecision.targetWeights).every((weight) => weight >= 0 && weight <= 0.6 + 1e-9));
   assert.equal(result.independentRecordReceipt.id, "urn:witnessJournal:receipt:1");
 });
+
+test("a five-day decision uses only same-horizon SignCell forecasts and retains their evidence", async () => {
+  const barsBySymbol = panel();
+  const asOf = barsBySymbol.SPY.at(-1).at;
+  const captured = [];
+  const actual = createAgentSectionDescentAssay({ measureSheafLaplacian });
+  const providers = {
+    assayAgentSectionDescent: ({ sections }) => { captured.push(sections); return actual({ sections }); },
+    assayCausalPanel, measureCausalPatchNovelty, measureCorrelationGraph,
+    fitDeterministicRidge, predictDeterministicRidge, allocateMandatePortfolio,
+    selectModelCandidate, formPurgedWalkForwardFolds, measureReturnRiskFeatures,
+    measureTechnicalAnalysisFeatures, measureSheafLaplacian, simulateEventDrivenExecution,
+  };
+  const run = createCausalPortfolioLearningCircuit({
+    providers, recordResult: async () => ({ id: "urn:receipt:synthetic-horizon-test" }),
+  });
+  const make = (provider, horizonDays, expectedExcessReturn) => ({
+    provider, symbol: "BLK", horizonDays, expectedExcessReturn,
+    observedAt: asOf, confidence: 0.9, evidenceReferences: [`ni:test:${provider}`],
+  });
+  const result = await run({
+    barsBySymbol, asOf,
+    agentForecasts: [
+      make("bull-five-1", 5, 0.03),
+      make("bull-five-2", 5, 0.02),
+      make("bear-sixty", 60, -0.04),
+    ],
+    mandate: { type: "PortfolioAllocationMandate", id: "urn:mandate:synthetic-horizon-test",
+      maximumWeight: 0.6, grossLimit: 1, leverageLimit: 1, shorting: false, maximumDrawdown: 0.5 },
+    config: { warmup: 140, trainingWindow: 100, graphWindow: 40, horizon: 5 },
+  });
+  assert.ok(captured.length > 0);
+  assert.ok(captured.every((sections) => sections.length === 2 &&
+    sections.every((row) => row.coordinate === "BLK:5" && row.provider !== "bear-sixty")));
+  const scope = result.currentDecision.sectionAssays.BLK;
+  assert.equal(scope.contradictionHeld, false);
+  assert.equal(scope.coordinateReadings["BLK:5"].charge, "potential");
+  assert.equal(scope.coordinateReadings["BLK:5"].sourceReferencesAttached, true);
+  assert.equal(scope.cells[0].for.length, 2);
+});
