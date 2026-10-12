@@ -1,6 +1,3 @@
-[submodule "services/web-protocol-services-section/services/object-capability-services-section/services/ocapn-sturdyref-admission-service"]
-	path = services/web-protocol-services-section/services/object-capability-services-section/services/ocapn-sturdyref-admission-service
-	url = https://github.com/red-cup-engineering/ocapn-sturdyref-admission-service.git
 [submodule "services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section/services/kalshi-services-section"]
 	path = services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section/services/kalshi-services-section
 	url = https://github.com/red-cup-engineering/kalshi-engineering-services-section.git
