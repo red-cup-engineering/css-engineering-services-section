@@ -10,7 +10,7 @@ import {
   createPaperExecutionAndReconciliationProvider,
 } from "@red-cup-engineering/brokerage-execution-transport-service";
 import { createAlpacaPrincipalAccountReadService } from "../scripts/principal-account-read.mjs";
-import { createMandatedPortfolioService } from "./autonomous-portfolio.mjs";
+import { createMandatedPortfolioService } from "@red-cup-engineering/alpaca-principal-actuation-service/portfolio";
 
 const PRODUCTS = Object.freeze({
   paper: Object.freeze({ product: "alpaca-trading-paper", baseUrl: "https://paper-api.alpaca.markets/" }),
