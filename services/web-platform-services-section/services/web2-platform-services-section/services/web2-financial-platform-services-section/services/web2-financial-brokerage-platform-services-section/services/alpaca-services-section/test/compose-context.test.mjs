@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { composeDailyTradingContext } from "../scripts/compose-context.mjs";
+import { composeDailyTradingContext, newsEvidenceFactsForResearch } from "../scripts/compose-context.mjs";
 
 const input = {
   principal: "urn:principal:esther-davis",
@@ -90,4 +90,29 @@ test("historical context refuses future account reads, article revisions and new
 test("invalid research universe fails before being described as no news", () => {
   for (const researchUniverse of ["AAPL", ["bad symbol"], Array(257).fill("SPY")])
     assert.throws(() => composeDailyTradingContext({ ...input, researchUniverse }), /bounded-alpaca-research-universe-required/);
+});
+
+test("dated Alpaca news becomes an untrusted but citable research fact", () => {
+  const context = composeDailyTradingContext(input);
+  const packet = newsEvidenceFactsForResearch(context);
+  assert.equal(packet.asOf, input.asOf);
+  assert.deepEqual(packet.evidenceReferences, ["news-observation"]);
+  assert.equal(packet.evidenceFacts.length, 1);
+  assert.deepEqual(packet.evidenceFacts[0], {
+    id: "news:2", metric: "news-publisher-claim",
+    value: "Macro — macro", sourceEvidenceId: "news-observation",
+    sourceUrl: "https://example.test/2", availableAt: "2026-08-20T12:00:00.000Z",
+    observedAt: "2026-08-20T12:45:00Z",
+    assertionForce: "reports", evidenceStatus: "unverified",
+  });
+  assert.equal(packet.noForecastOrOrderEffect, true);
+});
+
+test("qualitative context refuses silent truncation or uncited stories", () => {
+  const all = composeDailyTradingContext({ ...input, researchUniverse: ["AAPL"] });
+  assert.throws(() => newsEvidenceFactsForResearch(all, { maximumFacts: 1 }),
+    /selection-requires-explicit-preregistration/);
+  const mutated = { ...all, news: { ...all.news,
+    articles: [{ ...all.news.articles[0], url: "http://invalid.example/news" }] } };
+  assert.throws(() => newsEvidenceFactsForResearch(mutated), /source-linked-news-fact-required/);
 });
