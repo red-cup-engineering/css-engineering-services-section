@@ -92,3 +92,40 @@ test("untrusted or duplicate role rosters are rejected before provider dispatch"
     Array.from({ length: 25 }, (_, i) => ({ id: "seat-" + i, objective: "x" }))])
     assert.throws(() => createInvestmentResearchCommittee({ contractInference: dispatch, roles }));
 });
+
+test("time-stamped qualitative issuer claims are admissible only as source-bound research", async () => {
+  const evidence = {
+    ...request, asOf: "2026-10-12T17:00:00Z",
+    evidenceFacts: [{ id: "fact:regna", metric: "issuer-announcement", value: "An issuer announced a new venture.",
+      sourceEvidenceId: ni, availableAt: "2026-10-12T16:00:00Z",
+      observedAt: "2026-10-12T16:15:00Z", assertionForce: "announces", evidenceStatus: "supported" }],
+  };
+  assert.equal(validateInvestmentResearchRequest(evidence).ok, true);
+  let called = false;
+  const committee = createInvestmentResearchCommittee({ contractInference: async lot => {
+    called = true;
+    assert.equal(JSON.parse(lot.context).evidenceFacts[0].sourceEvidenceId, ni);
+    return { result: { outcome: "no-candidate", disposition: "not-calibrated" } };
+  } });
+  const result = await committee(evidence);
+  assert.equal(result.seats.length, 0);
+  assert.equal(result.residues.length, INVESTMENT_RESEARCH_ROLES.length);
+  assert.equal(called, true);
+  assert.equal(result.executionEstablished, false);
+});
+
+test("narrative without original source, clock or assertion force never reaches inference", async () => {
+  let dispatched = 0;
+  const committee = createInvestmentResearchCommittee({ contractInference: async () => { dispatched += 1; } });
+  const fact = { id: "fact:regna", metric: "issuer-announcement", value: "Future leaked announcement",
+    sourceEvidenceId: ni, availableAt: "2026-10-13T00:00:00Z",
+    assertionForce: "alleges", evidenceStatus: "unverified" };
+  const present = { ...request, asOf: "2026-10-12T17:00:00Z", evidenceFacts: [fact] };
+  for (const invalid of [
+    present, { ...present, asOf: undefined },
+    { ...present, evidenceFacts: [{ ...fact, sourceEvidenceId: "ni:///sha-256;" + "Z".repeat(43) }] },
+    { ...present, evidenceFacts: [{ ...fact, availableAt: "2026-10-12T16:00:00Z", assertionForce: undefined }] },
+    { ...present, evidenceFacts: [fact, fact] },
+  ]) await assert.rejects(committee(invalid), /invalid|source|force|duplicate|time/);
+  assert.equal(dispatched, 0);
+});
