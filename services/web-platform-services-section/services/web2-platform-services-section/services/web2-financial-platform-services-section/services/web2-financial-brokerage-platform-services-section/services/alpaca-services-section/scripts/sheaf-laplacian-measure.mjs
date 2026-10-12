@@ -1,6 +1,8 @@
 const finite = (value, label) => {
   const number = Number(value);
-  if (!Number.isFinite(number) || Object.is(number, -0)) throw new TypeError(`${label}-invalid`);
+  if (!((typeof value === "number") || (typeof value === "string" && value.trim() !== "")) ||
+      !Number.isFinite(number) || Object.is(number, -0))
+    throw new TypeError(`${label}-invalid`);
   return number;
 };
 
@@ -13,7 +15,7 @@ export function measureSheafLaplacian({ sections, edges } = {}) {
   const comparedPairs = new Set();
   for (const edge of edges) {
     if (!entities.includes(edge?.left) || !entities.includes(edge?.right) || edge.left === edge.right) throw new TypeError("laplacian-edge-invalid");
-    const pair = [edge.left, edge.right].sort().join("\\u0000");
+    const pair = JSON.stringify([edge.left, edge.right].sort());
     if (comparedPairs.has(pair)) throw new TypeError("duplicate-undirected-laplacian-edge");
     comparedPairs.add(pair);
     const weight = finite(edge.weight, "edge-weight");
@@ -26,7 +28,10 @@ export function measureSheafLaplacian({ sections, edges } = {}) {
   const measurement = Object.fromEntries(entities.map((entity) => {
     const degree = adjacency[entity].reduce((sum, [, weight]) => sum + weight, 0);
     const smooth = degree > 0 ? adjacency[entity].reduce((sum, [other, weight]) => sum + weight * values[other], 0) / degree : values[entity];
-    return [entity, Object.freeze({ section: values[entity], degree, smooth, laplacianResidual: values[entity] - smooth })];
+    const residual = values[entity] - smooth;
+    if (![degree, smooth, residual].every(Number.isFinite))
+      throw new RangeError("laplacian-nonfinite-measurement");
+    return [entity, Object.freeze({ section: values[entity], degree, smooth, laplacianResidual: residual })];
   }));
   // This is the Dirichlet energy of a scalar graph with identity transport.
   // It is not a general sheaf Laplacian: no stalks, restriction maps or
