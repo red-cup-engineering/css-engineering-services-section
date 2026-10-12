@@ -44,3 +44,41 @@ test("composes atomic dies into recorded, non-executing walk-forward target weig
   assert.ok(Object.values(result.currentDecision.targetWeights).every((weight) => weight >= 0 && weight <= 0.6 + 1e-9));
   assert.equal(result.independentRecordReceipt.id, "urn:witnessJournal:receipt:1");
 });
+
+test("one causal horizon admits only the same-horizon research witnesses", async () => {
+  const barsBySymbol = panel(), asOf = barsBySymbol.SPY.at(-1).at;
+  const probes = [], actualAssay = createAgentSectionDescentAssay({ measureSheafLaplacian });
+  const providers = {
+    assayAgentSectionDescent: ({ sections }) => { probes.push(sections); return actualAssay({ sections }); },
+    assayCausalPanel, measureCausalPatchNovelty, measureCorrelationGraph,
+    fitDeterministicRidge, predictDeterministicRidge, allocateMandatePortfolio,
+    selectModelCandidate, formPurgedWalkForwardFolds, measureReturnRiskFeatures,
+    measureSheafLaplacian, replayTransactionCosts,
+  };
+  const run = createCausalPortfolioLearningCircuit({
+    providers, recordResult: async () => ({ id: "urn:witness:synthetic-horizon" }),
+  });
+  const forecast = (provider, horizonDays, expectedExcessReturn) => ({
+    symbol: "BLK", provider, horizonDays, observedAt: asOf,
+    expectedExcessReturn, confidence: 0.8, evidenceReferences: [`urn:evidence:${provider}`],
+  });
+  const outcome = await run({
+    barsBySymbol, asOf, agentForecasts: [
+      forecast("five-a", 5, 0.03),
+      forecast("five-b", 5, 0.02),
+      forecast("sixty-negative", 60, -0.04),
+    ],
+    mandate: { type: "PortfolioAllocationMandate", id: "urn:mandate:synthetic-horizon",
+      maximumWeight: 0.6, grossLimit: 1, leverageLimit: 1, shorting: false, maximumDrawdown: 0.5 },
+    config: { warmup: 140, trainingWindow: 100, graphWindow: 40, horizon: 5 },
+  });
+  assert.ok(probes.length >= 1);
+  assert.ok(probes.every((sections) => sections.length === 2 &&
+    sections.every((section) => section.coordinate === "BLK:5" && section.provider !== "sixty-negative")));
+  const assay = outcome.currentDecision.sectionAssays.BLK;
+  assert.equal(assay.contradictionHeld, false);
+  assert.equal(assay.coordinateReadings["BLK:5"].charge, "potential");
+  assert.equal(assay.coordinateReadings["BLK:5"].sourceReferencesAttached, true);
+  assert.equal(assay.cells[0].for.length, 2);
+  assert.equal(outcome.claims.alphaEstablished, false);
+});
