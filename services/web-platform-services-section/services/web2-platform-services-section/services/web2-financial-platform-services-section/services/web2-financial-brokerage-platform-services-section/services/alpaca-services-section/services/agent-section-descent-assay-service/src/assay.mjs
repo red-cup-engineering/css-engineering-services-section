@@ -3,7 +3,7 @@ import { rule } from "@red-cup-engineering/signchain/rules";
 import { logOfSeavtRows } from "@red-cup-engineering/signchain/log";
 import { eavtId } from "@red-cup-engineering/eavt-services-section/row";
 import { settleCells, settlementAdmits } from "@red-cup-engineering/signcraft/settle";
-import { isAbsoluteSeavtClock, compareAbsoluteSeavtClocks, seavtOfSignCell } from "@red-cup-engineering/semiotic-eavt-services-section/admit-seavt-row";
+import { isAbsoluteSeavtClock, compareAbsoluteSeavtClocks, seavtOfSignCell, sourceClocksVisibleAt } from "@red-cup-engineering/semiotic-eavt-services-section/admit-seavt-row";
 
 const numeric = (input, label) => {
   if (!((typeof input === "number") || (typeof input === "string" && input.trim() !== "")) ||
@@ -212,9 +212,9 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
     asOf: cutoff, // preserve exact sub-millisecond cutoff rather than truncating to a Date
     forecastClockFilterApplied: cutoff !== null,
     underlyingSourcePublicationVerified: false,
-    reportedSourceClocksComplete: cutoff !== null &&
-      [...groups.values()].every(rows => rows.every(row =>
-        row.publishedAt !== undefined && row.receivedAt !== undefined)),
+    // Conditional time admission only; issuer authenticity remains unproven.
+    reportedSourceClocksWithinCutoff: cutoff !== null &&
+      [...groups.values()].every(rows => rows.every(row => sourceClocksVisibleAt(row, cutoff))),
     cells: Object.freeze(cells),
     // Already native SEN/SEAVT carriers; custody writes belong to the caller's
     // existing store, never to this pure assay or a parallel report format.

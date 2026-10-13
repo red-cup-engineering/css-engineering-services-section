@@ -245,7 +245,7 @@ test("publication, receipt and observation clocks have distinct known-at obligat
     forecast("urn:a", "SPY:5", 0.02, 0.9, before),
     forecast("urn:b", "SPY:5", -0.03, 0.8, before),
   ], asOf: cutoff });
-  assert.equal(complete.reportedSourceClocksComplete, true);
+  assert.equal(complete.reportedSourceClocksWithinCutoff, true);
   assert.equal(complete.underlyingSourcePublicationVerified, false);
   assert.equal(complete.reviewRequired, true);
   const sources = complete.seavtRows.map(signCellOfSeavt)
@@ -258,7 +258,7 @@ test("publication, receipt and observation clocks have distinct known-at obligat
     forecast("urn:a", "SPY:5", 0.02, 0.9, { observedAt: cutoff }),
     forecast("urn:b", "SPY:5", -0.03, 0.8, before),
   ], asOf: cutoff });
-  assert.equal(incomplete.reportedSourceClocksComplete, false);
+  assert.equal(incomplete.reportedSourceClocksWithinCutoff, false);
   assert.equal(incomplete.underlyingSourcePublicationVerified, false);
   for (const name of ["publishedAt", "receivedAt"]) {
     const late = { ...before, [name]: "2026-10-12T14:00:00.000000002Z" };
