@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import { openCredentials } from "../src/credentials.mjs";
-import { MAIL, SUBMISSION, ensureIdentity, messageIdFor, openSession, receivedFor, sendEmail } from "../src/jmap.mjs";
+import { MAIL, SUBMISSION, ensureIdentity, messageIdFor, openSession, receivedFor, sendEmail, sentMessages } from "../src/jmap.mjs";
 import { readySender } from "../src/provision.mjs";
 
 /** A JMAP server in memory: one account, an inbox, drafts and sent, identities, and the aliases it may send as. */
@@ -20,10 +20,18 @@ function fakeServer({ aliases = ["house@example.org"], token = "fmu1-goodtokengo
       return { created: { identity: { id: made.id } } };
     },
     "Mailbox/get": () => ({ list: [{ id: "M1", role: "inbox" }, { id: "M2", role: "drafts" }, { id: "M3", role: "sent" }, { id: "M4", name: "Folder" }] }),
-    "Email/query": ({ filter }) => {
-      if (filter.header) return { ids: state.emails.filter((email) => `<${email.messageId[0]}>` === filter.header[1]).map((email) => email.id) };
-      const to = filter.conditions[0].conditions.map((condition) => condition.to ?? condition.cc);
-      return { ids: state.emails.filter((email) => email.to.some((entry) => to.includes(entry.email))).map((email) => email.id) };
+    "Email/query": ({ filter, position = 0, limit = 100 }) => {
+      const matches = (email, check) => {
+        if (check.operator === "AND") return check.conditions.every((term) => matches(email, term));
+        if (check.operator === "OR") return check.conditions.some((term) => matches(email, term));
+        if (check.header) return `<${email.messageId?.[0]}>` === check.header[1];
+        if (check.inMailbox) return Boolean(email.mailboxIds?.[check.inMailbox]);
+        if (check.after) return email.receivedAt > check.after;
+        if (check.to || check.cc) return (email.to ?? []).some((entry) => entry.email === (check.to ?? check.cc));
+        return false;
+      };
+      const rows = state.emails.filter((email) => matches(email, filter));
+      return { ids: rows.slice(position, position + limit).map((email) => email.id), total: rows.length };
     },
     "Email/get": (args, results) => ({ list: state.emails.filter((email) => (args.ids ?? results.found.ids).includes(email.id)) }),
     "Email/set": ({ create }) => {
@@ -33,6 +41,9 @@ function fakeServer({ aliases = ["house@example.org"], token = "fmu1-goodtokengo
     },
     "EmailSubmission/set": ({ create, onSuccessUpdateEmail }) => {
       state.submissions.push({ ...create.submission, update: onSuccessUpdateEmail });
+      const email = state.emails.at(-1);
+      email.mailboxIds = { M3: true };
+      email.keywords = { $seen: true };
       return { created: { submission: { id: `S${state.submissions.length}` } } };
     },
   };
@@ -93,4 +104,41 @@ test("with a person, the token is pasted once and kept, and an alias is walked w
   assert.equal(asked.length, 2);
   assert.equal((await credentials.read("fastmail")).token, server.token);
   assert.equal((await readySender({ address: "new@example.org", name: "New", credentials, fetch: server.fetch })).state, "ready");
+});
+
+test("a Draft with the same Message-ID is not evidence of submission", async () => {
+  const server = fakeServer();
+  const session = await openSession(server.token, { fetch: server.fetch, sessionUrl: "https://jmap.example/session" });
+  const { identity } = await ensureIdentity(session, { email: "house@example.org", name: "House" });
+  const messageId = messageIdFor("book/promotion", "example.org");
+  server.state.emails.push({ id: "D1", from: [{ email: "house@example.org" }],
+    to: [{ email: "reader@example.net" }], mailboxIds: { M2: true },
+    messageId: [messageId], subject: "Draft", receivedAt: "2026-10-02T00:00:00Z",
+    textBody: [{ partId: "body" }], bodyValues: { body: { value: "Not submitted" } } });
+  const sent = await sendEmail(session, { identity, to: [{ email: "reader@example.net" }], subject: "Gift", text: "Promo link", messageId });
+  assert.equal(sent.state, "sent");
+  assert.equal(server.state.submissions.length, 1);
+  assert.equal((await sendEmail(session, { identity, to: [{ email: "reader@example.net" }], subject: "Gift", text: "Promo link", messageId })).state, "already-sent");
+  await assert.rejects(() => sendEmail(session, { identity, to: [{ email: "different@example.net" }], subject: "Gift", text: "Promo link", messageId }), /different sent message/);
+});
+
+test("Sent pagination returns full bodies and never drafts; incomplete bodies are flagged", async () => {
+  const server = fakeServer();
+  const session = await openSession(server.token, { fetch: server.fetch, sessionUrl: "https://jmap.example/session" });
+  const { identity } = await ensureIdentity(session, { email: "house@example.org", name: "House" });
+  for (let i = 0; i < 2; i++) {
+    await sendEmail(session, { identity, to: [{ email: "reader@example.net" }], subject: "Gift " + i,
+      text: "https://shop.561.group/goods/ice-out?gift-to-email=reader%40example.net", messageId: messageIdFor("gift/" + i, "example.org") });
+  }
+  server.state.emails.push({ id: "draft", from: [{ email: "house@example.org" }], mailboxIds: { M2: true },
+    receivedAt: "2026-10-03T00:00:00Z", to: [{ email: "reader@example.net" }], messageId: ["not-sent@example.org"] });
+  const first = await sentMessages(session, { limit: 1 });
+  assert.equal(first.messages.length, 1);
+  assert.equal(first.nextPosition, 1);
+  assert.equal(first.messages[0].complete, true);
+  assert.deepEqual(first.messages[0].to, ["reader@example.net"]);
+  const next = await sentMessages(session, { limit: 1, position: first.nextPosition });
+  assert.equal(next.messages.length, 1);
+  assert.equal(next.nextPosition, null);
+  assert.equal((await sentMessages(session, { after: "2026-10-03T00:00:00Z" })).messages.length, 0);
 });
