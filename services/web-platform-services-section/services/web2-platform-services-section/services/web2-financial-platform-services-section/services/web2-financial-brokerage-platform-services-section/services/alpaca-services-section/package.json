@@ -30,7 +30,9 @@
     "@red-cup-engineering/alpaca-principal-actuation-service": "workspace:*",
     "@red-cup-engineering/signcell": "workspace:*",
     "@red-cup-engineering/signchain": "workspace:*",
-    "@red-cup-engineering/signcraft": "workspace:*"
+    "@red-cup-engineering/signcraft": "workspace:*",
+    "@red-cup-engineering/signgraph": "workspace:*",
+    "@red-cup-engineering/json-schema-services-section": "workspace:*"
   },
   "description": "Scalable customer-wallet-funded market in metered brokerage-control APIs.",
   "devDependencies": {
