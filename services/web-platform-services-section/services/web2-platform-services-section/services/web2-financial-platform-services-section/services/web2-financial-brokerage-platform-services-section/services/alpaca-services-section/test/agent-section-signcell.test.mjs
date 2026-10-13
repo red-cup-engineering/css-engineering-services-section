@@ -270,9 +270,9 @@ test("publication, receipt and observation clocks have distinct known-at obligat
 });
 
 test("SCA-equivalent forecast coordinates and evidence witnesses group consistently", () => {
-  const raw="ta\\u0302che:5", normalized="tâche:5";
+  const raw="tâche:5", normalized="tâche:5";
   const result=assay({sections:[
-    forecast("urn:positive",raw,0.03,0.8,{evidenceReferences:["ni:ta\\u0302che"]}),
+    forecast("urn:positive",raw,0.03,0.8,{evidenceReferences:["ni:tâche"]}),
     forecast("urn:negative",normalized,-0.01,0.9,{evidenceReferences:["ni:tâche"]}),
   ]});
   assert.deepEqual(result.coordinates,[normalized]);
@@ -280,7 +280,7 @@ test("SCA-equivalent forecast coordinates and evidence witnesses group consisten
   assert.deepEqual(result.coordinateReadings[normalized].sharedSourceReferences,["ni:tâche"]);
   assert.equal(result.reviewRequired,true);
   assert.throws(()=>assay({sections:[
-    forecast("urn:ta\\u0302che",raw,0.03),
+    forecast("urn:tâche",raw,0.03),
     forecast("urn:tâche",normalized,-0.01),
   ]}),/duplicate-provider-coordinate-forecast/);
 });
