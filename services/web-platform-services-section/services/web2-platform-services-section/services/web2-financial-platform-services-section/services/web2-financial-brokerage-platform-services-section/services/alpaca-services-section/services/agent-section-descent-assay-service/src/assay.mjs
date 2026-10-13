@@ -53,6 +53,16 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
     if (cutoff !== null && (section.observedAt === undefined ||
         compareAbsoluteSeavtClocks(section.observedAt, cutoff) > 0))
       throw new TypeError("forecast-outside-as-of-filtration");
+    // Observation, publication and reception are distinct coordinates.
+    // Unknown publication/receipt remain unknown; asserted timestamps do not
+    // constitute independent authentication of an upstream source.
+    for (const name of ["publishedAt", "receivedAt"]) {
+      if (section[name] !== undefined && !isAbsoluteSeavtClock(section[name]))
+        throw new TypeError(`forecast-${name}-time-invalid`);
+      if (cutoff !== null && section[name] !== undefined &&
+          compareAbsoluteSeavtClocks(section[name], cutoff) > 0)
+        throw new TypeError(`forecast-${name}-outside-as-of-filtration`);
+    }
     const pair = JSON.stringify([provider, coordinate]);
     if (seenPairs.has(pair)) throw new TypeError("duplicate-provider-coordinate-forecast");
     seenPairs.add(pair);
@@ -61,7 +71,9 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
     const rows = groups.get(coordinate) ?? [];
     rows.push({ provider, coordinate, value, confidence, index,
       evidenceReferences: Object.freeze([...new Set(section.evidenceReferences ?? [])].sort()),
-      ...(section.observedAt === undefined ? {} : { observedAt: section.observedAt }) });
+      ...(section.observedAt === undefined ? {} : { observedAt: section.observedAt }),
+      ...(section.publishedAt === undefined ? {} : { publishedAt: section.publishedAt }),
+      ...(section.receivedAt === undefined ? {} : { receivedAt: section.receivedAt }) });
     groups.set(coordinate, rows);
   }
   // A common coordinate is necessary for comparison; unconnected components
@@ -76,9 +88,11 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
   // A known-at financial assay consumes actual, witnessed SEAVT observations.
   // Source assertions and their signed derived propositions are separate cells:
   // a model's forecast is not an independently verified market fact.
-  const witness = ({ provider, value, confidence, evidenceReferences, observedAt }) => ({
+  const witness = ({ provider, value, confidence, evidenceReferences, observedAt, publishedAt, receivedAt }) => ({
     provider, forecastValue: value, confidence, evidenceReferences,
     ...(observedAt === undefined ? {} : { observedAt }),
+    ...(publishedAt === undefined ? {} : { publishedAt }),
+    ...(receivedAt === undefined ? {} : { receivedAt }),
   });
   const seavtRows = [];
   if (cutoff !== null) for (const rows of groups.values()) for (const row of rows) {
@@ -86,6 +100,8 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
       coordinate: row.coordinate, forecastValue: row.value,
       confidence: row.confidence, evidenceReferences: row.evidenceReferences,
       observedAt: row.observedAt,
+      ...(row.publishedAt === undefined ? {} : { publishedAt: row.publishedAt }),
+      ...(row.receivedAt === undefined ? {} : { receivedAt: row.receivedAt }),
     }, { for: [witness(row)] });
     seavtRows.push(seavtOfSignCell(source, row.observedAt));
     if (row.value !== 0) {
@@ -196,6 +212,9 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
     asOf: cutoff, // preserve exact sub-millisecond cutoff rather than truncating to a Date
     forecastClockFilterApplied: cutoff !== null,
     underlyingSourcePublicationVerified: false,
+    reportedSourceClocksComplete: cutoff !== null &&
+      [...groups.values()].every(rows => rows.every(row =>
+        row.publishedAt !== undefined && row.receivedAt !== undefined)),
     cells: Object.freeze(cells),
     // Already native SEN/SEAVT carriers; custody writes belong to the caller's
     // existing store, never to this pure assay or a parallel report format.
