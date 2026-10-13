@@ -182,16 +182,17 @@ export async function receivedFor(session, { addresses, after = null, limit = 50
 
 /** One message with its plain-text body; consumers can prove whom it addressed. */
 export async function readEmail(session, id) {
-  const { one } = await session.call([["Email/get", { accountId: session.accountId, ids: [id], properties: [...SUMMARY, "cc", "bcc", "textBody", "bodyValues"], fetchTextBodyValues: true, maxBodyValueBytes: 200000 }, "one"]]);
+  const { one } = await session.call([["Email/get", { accountId: session.accountId, ids: [id], properties: [...SUMMARY, "cc", "bcc", "textBody", "htmlBody", "bodyValues"], fetchTextBodyValues: true, fetchHTMLBodyValues: true, maxBodyValueBytes: 200000 }, "one"]]);
   const row = one.list[0];
   if (!row) return null;
-  const parts = row.textBody ?? [];
-  const complete = parts.every(({ partId }) => typeof row.bodyValues?.[partId]?.value === "string" && !row.bodyValues[partId].isTruncated);
+  const parts = row.textBody ?? [], htmlParts = row.htmlBody ?? [];
+  const complete = [...parts, ...htmlParts].every(({ partId }) => typeof row.bodyValues?.[partId]?.value === "string" && !row.bodyValues[partId].isTruncated);
   const text = parts.map(({ partId }) => row.bodyValues?.[partId]?.value ?? "").join("\n");
+  const html = htmlParts.map(({ partId }) => row.bodyValues?.[partId]?.value ?? "").join("\n");
   const addresses = (list) => (list ?? []).map(({ email }) => email.toLowerCase());
   return { id: row.id, threadId: row.threadId, receivedAt: row.receivedAt, subject: row.subject,
     from: addresses(row.from), to: addresses(row.to), cc: addresses(row.cc), bcc: addresses(row.bcc),
-    messageId: row.messageId?.[0] ?? null, inReplyTo: row.inReplyTo?.[0] ?? null, text, complete };
+    messageId: row.messageId?.[0] ?? null, inReplyTo: row.inReplyTo?.[0] ?? null, text, html, complete };
 }
 
 /**
