@@ -99,9 +99,15 @@ export async function mailboxes(session) {
   return Object.fromEntries(boxes.list.filter((box) => box.role).map((box) => [box.role, box.id]));
 }
 
-/** The message in the account with this Message-ID, if one is there. */
+/** A matching Message-ID counts as sent only if the message is in Sent, never Drafts. */
 export async function findByMessageId(session, messageId) {
-  const { found } = await session.call([["Email/query", { accountId: session.accountId, filter: { header: ["Message-ID", `<${messageId}>`] }, limit: 1 }, "found"]]);
+  const { sent } = await mailboxes(session);
+  if (!sent) throw new Error("the account has no Sent mailbox");
+  const { found } = await session.call([["Email/query", {
+    accountId: session.accountId,
+    filter: { operator: "AND", conditions: [{ header: ["Message-ID", `<${messageId}>`] }, { inMailbox: sent }] },
+    limit: 1,
+  }, "found"]]);
   return found.ids[0] ?? null;
 }
 
@@ -118,7 +124,16 @@ export async function sendEmail(session, { identity, to, subject, text, messageI
   if (typeof text !== "string" || !text.trim()) throw new TypeError("a message needs a body");
   if (typeof messageId !== "string" || !messageId.includes("@")) throw new TypeError("a message needs a Message-ID (see messageIdFor)");
   const already = await findByMessageId(session, messageId);
-  if (already) return { state: "already-sent", emailId: already, messageId };
+  if (already) {
+    const previous = await readEmail(session, already);
+    const recipients = addressList(to).map(({ email }) => email).sort();
+    if (!previous || previous.subject !== subject || previous.text !== text
+      || previous.from.length !== 1 || previous.from[0] !== assertAddress(identity.email)
+      || JSON.stringify(previous.to.slice().sort()) !== JSON.stringify(recipients)) {
+      throw new Error("Message-ID already belongs to a different sent message; refusing to give it another meaning");
+    }
+    return { state: "already-sent", emailId: already, messageId };
+  }
   const { drafts, sent } = await mailboxes(session);
   if (!drafts || !sent) throw new Error("the account has no Drafts or Sent mailbox");
   const email = {
@@ -165,11 +180,35 @@ export async function receivedFor(session, { addresses, after = null, limit = 50
   }));
 }
 
-/** One message with its plain-text body. */
+/** One message with its plain-text body; consumers can prove whom it addressed. */
 export async function readEmail(session, id) {
-  const { one } = await session.call([["Email/get", { accountId: session.accountId, ids: [id], properties: [...SUMMARY, "textBody", "bodyValues"], fetchTextBodyValues: true }, "one"]]);
+  const { one } = await session.call([["Email/get", { accountId: session.accountId, ids: [id], properties: [...SUMMARY, "cc", "bcc", "textBody", "bodyValues"], fetchTextBodyValues: true, maxBodyValueBytes: 200000 }, "one"]]);
   const row = one.list[0];
   if (!row) return null;
-  const text = (row.textBody ?? []).map(({ partId }) => row.bodyValues?.[partId]?.value ?? "").join("\n");
-  return { id: row.id, threadId: row.threadId, receivedAt: row.receivedAt, subject: row.subject, from: (row.from ?? []).map(({ email }) => email.toLowerCase()), messageId: row.messageId?.[0] ?? null, inReplyTo: row.inReplyTo?.[0] ?? null, text };
+  const parts = row.textBody ?? [];
+  const complete = parts.every(({ partId }) => typeof row.bodyValues?.[partId]?.value === "string" && !row.bodyValues[partId].isTruncated);
+  const text = parts.map(({ partId }) => row.bodyValues?.[partId]?.value ?? "").join("\n");
+  const addresses = (list) => (list ?? []).map(({ email }) => email.toLowerCase());
+  return { id: row.id, threadId: row.threadId, receivedAt: row.receivedAt, subject: row.subject,
+    from: addresses(row.from), to: addresses(row.to), cc: addresses(row.cc), bcc: addresses(row.bcc),
+    messageId: row.messageId?.[0] ?? null, inReplyTo: row.inReplyTo?.[0] ?? null, text, complete };
+}
+
+/**
+ * Read a bounded page of *submitted* mail. Filter by the real Sent mailbox,
+ * not just by Message-ID, subject, or the sender's Drafts folder.
+ * Every page carries its next position; callers resume until it is null.
+ */
+export async function sentMessages(session, { after = null, limit = 100, position = 0 } = {}) {
+  if (!Number.isInteger(limit) || limit < 1 || limit > 100 || !Number.isInteger(position) || position < 0) throw new TypeError("bounded Sent pages require 1..100 messages and a nonnegative position");
+  const { sent } = await mailboxes(session);
+  if (!sent) throw new Error("the account has no Sent mailbox");
+  const filter = after ? { operator: "AND", conditions: [{ inMailbox: sent }, { after }] } : { inMailbox: sent };
+  const { found } = await session.call([["Email/query", {
+    accountId: session.accountId, filter, sort: [{ property: "receivedAt", isAscending: false }], position, limit, calculateTotal: true,
+  }, "found"]]);
+  const messages = await Promise.all(found.ids.map((id) => readEmail(session, id)));
+  const next = position + found.ids.length;
+  return { messages: messages.filter(Boolean), total: found.total ?? null,
+    nextPosition: found.total == null ? (found.ids.length === limit ? next : null) : (next < found.total ? next : null) };
 }
