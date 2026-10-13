@@ -1,7 +1,9 @@
 import { address, cell, knowledgeReading, told } from "@red-cup-engineering/signcell/cell";
 import { rule } from "@red-cup-engineering/signchain/rules";
+import { logOfSeavtRows } from "@red-cup-engineering/signchain/log";
+import { eavtId } from "@red-cup-engineering/eavt-services-section/row";
 import { settleCells, settlementAdmits } from "@red-cup-engineering/signcraft/settle";
-import { isAbsoluteSeavtClock, compareAbsoluteSeavtClocks } from "@red-cup-engineering/semiotic-eavt-services-section/admit-seavt-row";
+import { isAbsoluteSeavtClock, compareAbsoluteSeavtClocks, seavtOfSignCell } from "@red-cup-engineering/semiotic-eavt-services-section/admit-seavt-row";
 
 const numeric = (input, label) => {
   if (!((typeof input === "number") || (typeof input === "string" && input.trim() !== "")) ||
@@ -71,6 +73,33 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
     }
   }
   const laplacian = measureSheafLaplacian({ sections: values, edges });
+  // A known-at financial assay consumes actual, witnessed SEAVT observations.
+  // Source assertions and their signed derived propositions are separate cells:
+  // a model's forecast is not an independently verified market fact.
+  const witness = ({ provider, value, confidence, evidenceReferences, observedAt }) => ({
+    provider, forecastValue: value, confidence, evidenceReferences,
+    ...(observedAt === undefined ? {} : { observedAt }),
+  });
+  const seavtRows = [];
+  if (cutoff !== null) for (const rows of groups.values()) for (const row of rows) {
+    const source = cell(row.provider, "provider-reported-market-forecast", {
+      coordinate: row.coordinate, forecastValue: row.value,
+      confidence: row.confidence, evidenceReferences: row.evidenceReferences,
+      observedAt: row.observedAt,
+    }, { for: [witness(row)] });
+    seavtRows.push(seavtOfSignCell(source, row.observedAt));
+    if (row.value !== 0) {
+      const derived = cell(row.coordinate, "expected-excess-return-positive", true, {
+        [row.value > 0 ? "for" : "against"]: [{
+          ...witness(row), sourceCell: address(source), transform: "sign-of-forecast-value",
+        }],
+      });
+      seavtRows.push(seavtOfSignCell(derived, row.observedAt));
+    }
+  }
+  seavtRows.sort((left, right) =>
+    compareAbsoluteSeavtClocks(left.t, right.t) || eavtId(left).localeCompare(eavtId(right)));
+  const chain = cutoff === null ? null : logOfSeavtRows(seavtRows, { asOf: cutoff });
   const cells = [], reviewCells = [], reviewSettlements = [], coordinatePairs = [];
   for (const [coordinate, rows] of [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))) {
     const qualified = rows.filter((row) => row.confidence >= floor);
@@ -80,10 +109,6 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
     // separate qualification, never a rule for deleting an attributed telling.
     // Evidence references remain assertions from their named providers; their
     // presence is NOT independent validation of news, filings or market facts.
-    const witness = ({ provider, value, confidence, evidenceReferences, observedAt }) => ({
-      provider, forecastValue: value, confidence, evidenceReferences,
-      ...(observedAt === undefined ? {} : { observedAt }),
-    });
     // Two providers citing the SAME filing, headline, or data observation are
     // not two independent source witnesses. Preserve the provider tellings but
     // expose shared source references rather than multiplying conviction.
@@ -97,7 +122,13 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
       .filter(([, owners]) => owners.size > 1).map(([id]) => id).sort();
     const fore = rows.filter((row) => row.value > 0).map(witness);
     const against = rows.filter((row) => row.value < 0).map(witness);
-    const claim = cell(coordinate, "expected-excess-return-positive", true, { for: fore, against });
+    const admitted = chain?.cells({ subject: coordinate, predicate: "expected-excess-return-positive", object: true });
+    if (admitted && admitted.length > 1)
+      throw new TypeError("financial-evidence-must-resolve-to-one-proposition");
+    // If every forecast is neutral, there are no sign tellings: FOUR is neither.
+    // Without a known-at cutoff this remains an atemporal research-only assay.
+    const claim = admitted ? (admitted[0] ?? cell(coordinate, "expected-excess-return-positive", true))
+      : cell(coordinate, "expected-excess-return-positive", true, { for: fore, against });
     const [positiveEvidence, negativeEvidence] = told(claim);
     const reading = Object.freeze({
       address: address(claim), coordinate, charge: knowledgeReading(claim),
@@ -158,6 +189,9 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
     forecastClockFilterApplied: cutoff !== null,
     underlyingSourcePublicationVerified: false,
     cells: Object.freeze(cells),
+    // Already native SEN/SEAVT carriers; custody writes belong to the caller's
+    // existing store, never to this pure assay or a parallel report format.
+    seavtRows: Object.freeze(seavtRows),
     // Each review carries SignChain's rule-content identity and premise
     // address as its support witness; no review cell is manufactured for
     // one-sided or unknown evidence.
