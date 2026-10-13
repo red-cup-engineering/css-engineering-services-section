@@ -4,7 +4,7 @@
  * a rank-one local model, not empirical proof of financial dependence or
  * global sheaf gluing. Missing observations must not be read as zero.
  */
-import { cellularSheaf, completeCochain, coboundary, apply, applyLaplacian } from "@red-cup-engineering/signgraph/cellular-sheaf";
+import { cellularSheaf, cochain, coboundary, apply, applyLaplacian } from "@red-cup-engineering/signgraph/cellular-sheaf";
 
 const finite = (value, label) => {
   const number = Number(value);
@@ -55,7 +55,10 @@ export function measureSheafLaplacian({ sections, edges } = {}) {
     vertices: entities.map((id) => ({ id, dim: 1 })),
     edges: incidences,
   });
-  const section = completeCochain(sheaf, entities.map((vertex) => ({ vertex, value: values[vertex] })));
+  // Both vertices and entries come from the same validated observed entities.
+  // Every stalk is supplied exactly once; the primitive's absent-value default
+  // cannot replace a missing observation in this construction.
+  const section = cochain(sheaf, entities.map((vertex) => ({ vertex, value: values[vertex] })));
   const residuals = apply(coboundary(sheaf), section);
   const gradients = applyLaplacian(sheaf, section);
   const disagreementEnergy = residuals.reduce((sum, value) => sum + value * value, 0);
