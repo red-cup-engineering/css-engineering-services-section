@@ -177,3 +177,18 @@ test("local compatibility needs a declared tolerance and never calibrates alpha"
   for (const tolerance of [-1, Infinity, NaN, 1e200])
     assert.throws(() => assay({ sections, agreementTolerance: tolerance }));
 });
+
+test("Alpaca research admits exact SEAVT cutoffs and refuses submillisecond lookahead", () => {
+  const cutoff = "2026-10-12T14:00:00.000000001Z";
+  const earlier = forecast("urn:before", "BLK:5", 0.02, 0.8, {
+    observedAt: cutoff,
+  });
+  const future = forecast("urn:after", "BLK:5", -0.02, 0.8, {
+    observedAt: "2026-10-12T14:00:00.000000002Z",
+  });
+  assert.throws(() => assay({ sections: [earlier, future], asOf: cutoff }), /forecast-outside-as-of-filtration/);
+  const held = assay({ sections: [earlier, forecast("urn:peer", "BLK:5", -0.03, 0.7, { observedAt: cutoff })], asOf: cutoff });
+  assert.equal(held.asOf, cutoff);
+  assert.equal(held.contradictionHeld, true);
+  assert.throws(() => assay({ sections: [earlier, future], asOf: "2026-02-30T00:00:00Z" }), /forecast-as-of-time-invalid/);
+});
