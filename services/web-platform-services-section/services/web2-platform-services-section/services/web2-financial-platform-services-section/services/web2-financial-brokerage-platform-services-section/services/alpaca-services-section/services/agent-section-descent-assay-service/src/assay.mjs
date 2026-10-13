@@ -100,6 +100,7 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
   seavtRows.sort((left, right) =>
     compareAbsoluteSeavtClocks(left.t, right.t) || eavtId(left).localeCompare(eavtId(right)));
   const chain = cutoff === null ? null : logOfSeavtRows(seavtRows, { asOf: cutoff });
+  const replayedCells = chain?.cells() ?? [];
   const cells = [], reviewCells = [], reviewSettlements = [], coordinatePairs = [];
   for (const [coordinate, rows] of [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))) {
     const qualified = rows.filter((row) => row.confidence >= floor);
@@ -150,10 +151,17 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
     // stable (told-both) SignCell point. It never infers a positive return,
     // a negative return, or order authority from disagreement.
     const reviewTarget = cell(coordinate, "market-forecast-conflict-requires-review", true);
+    // In a known-at settlement, require the actual source observations whose
+    // SCA identities the derived sign witnesses name. These are the SignGraph
+    // site's material premises, not an external receipt attached afterwards.
+    const materialSources = replayedCells.filter(at =>
+      at.predicate === "provider-reported-market-forecast" &&
+      at.object.coordinate === coordinate);
     const reviewRule = rule("market-forecast-contestation-review", [
       { cell: claim, atLeast: "stable" },
+      ...materialSources.map(at => ({ cell: at, atLeast: "potential" })),
     ], { cell: reviewTarget, reading: "potential" });
-    const reviewSettlement = settleCells([claim], [reviewRule]);
+    const reviewSettlement = settleCells([claim, ...materialSources], [reviewRule]);
     const admission = settlementAdmits(reviewSettlement);
     if (admission.admitted !== true)
       throw new TypeError("market-forecast-review-settlement-not-admitted");
