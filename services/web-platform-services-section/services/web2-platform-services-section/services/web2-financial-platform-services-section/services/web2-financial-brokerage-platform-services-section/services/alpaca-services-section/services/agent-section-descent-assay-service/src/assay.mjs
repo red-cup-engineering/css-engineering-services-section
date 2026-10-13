@@ -12,7 +12,7 @@ const numeric = (input, label) => {
 };
 const text = (input, label) => {
   if (typeof input !== "string" || input.trim() === "") throw new TypeError(`${label}-required`);
-  return input;
+  return input.normalize("NFC");
 };
 
 /**
@@ -70,7 +70,7 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
     values[String(index)] = value;
     const rows = groups.get(coordinate) ?? [];
     rows.push({ provider, coordinate, value, confidence, index,
-      evidenceReferences: Object.freeze([...new Set(section.evidenceReferences ?? [])].sort()),
+      evidenceReferences: Object.freeze([...new Set((section.evidenceReferences ?? []).map(ref => ref.normalize("NFC")))].sort()),
       ...(section.observedAt === undefined ? {} : { observedAt: section.observedAt }),
       ...(section.publishedAt === undefined ? {} : { publishedAt: section.publishedAt }),
       ...(section.receivedAt === undefined ? {} : { receivedAt: section.receivedAt }) });

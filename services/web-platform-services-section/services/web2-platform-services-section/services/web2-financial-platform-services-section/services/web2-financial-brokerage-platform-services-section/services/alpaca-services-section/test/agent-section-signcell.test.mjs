@@ -268,3 +268,19 @@ test("publication, receipt and observation clocks have distinct known-at obligat
     ], asOf: cutoff }), new RegExp(name + "-outside-as-of-filtration"));
   }
 });
+
+test("SCA-equivalent forecast coordinates and evidence witnesses group consistently", () => {
+  const raw="ta\\u0302che:5", normalized="tâche:5";
+  const result=assay({sections:[
+    forecast("urn:positive",raw,0.03,0.8,{evidenceReferences:["ni:ta\\u0302che"]}),
+    forecast("urn:negative",normalized,-0.01,0.9,{evidenceReferences:["ni:tâche"]}),
+  ]});
+  assert.deepEqual(result.coordinates,[normalized]);
+  assert.equal(result.coordinateReadings[normalized].charge,"stable");
+  assert.deepEqual(result.coordinateReadings[normalized].sharedSourceReferences,["ni:tâche"]);
+  assert.equal(result.reviewRequired,true);
+  assert.throws(()=>assay({sections:[
+    forecast("urn:ta\\u0302che",raw,0.03),
+    forecast("urn:tâche",normalized,-0.01),
+  ]}),/duplicate-provider-coordinate-forecast/);
+});
