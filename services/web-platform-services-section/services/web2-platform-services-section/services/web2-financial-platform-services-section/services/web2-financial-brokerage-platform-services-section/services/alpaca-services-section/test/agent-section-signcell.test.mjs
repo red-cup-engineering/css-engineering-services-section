@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { address, knowledgeReading } from "@red-cup-engineering/signcell/cell";
+import { signCellOfSeavt } from "@red-cup-engineering/semiotic-eavt-services-section/admit-seavt-row";
+import { logOfSeavtRows } from "@red-cup-engineering/signchain/log";
 import { createAgentSectionDescentAssay } from "../scripts/agent-section-descent-assay.mjs";
 import { measureSheafLaplacian } from "../scripts/sheaf-laplacian-measure.mjs";
 
@@ -191,4 +193,43 @@ test("Alpaca research admits exact SEAVT cutoffs and refuses submillisecond look
   assert.equal(held.asOf, cutoff);
   assert.equal(held.contradictionHeld, true);
   assert.throws(() => assay({ sections: [earlier, future], asOf: "2026-02-30T00:00:00Z" }), /forecast-as-of-time-invalid/);
+});
+
+test("Alpaca known-at forecasts settle through native SEAVT and SignChain evidence", () => {
+  const a = "2026-10-12T14:00:00.000000001Z";
+  const b = "2026-10-12T14:00:00.000000002Z";
+  const result = assay({ sections: [
+    forecast("urn:negative", "BLK:5", -0.04, 0.8, {observedAt:b,evidenceReferences:["ni:source:negative"]}),
+    forecast("urn:positive", "BLK:5", 0.03, 0.9, {observedAt:a,evidenceReferences:["ni:source:positive"]}),
+  ], asOf:b });
+  assert.equal(result.seavtRows.length, 4);
+  assert.deepEqual(result.seavtRows.map(row => row.t), [a,a,b,b]);
+  const admitted = result.seavtRows.map(signCellOfSeavt);
+  const sources = admitted.filter(c => c.predicate === "provider-reported-market-forecast");
+  assert.equal(sources.length, 2);
+  assert.equal(sources.every(c => c.for.length === 1 && c.against.length === 0), true);
+  assert.deepEqual(sources.map(c=>c.object.forecastValue).sort((x,y)=>x-y),[-0.04,0.03]);
+  const log = logOfSeavtRows(result.seavtRows, { asOf:b });
+  const propositions = log.cells({subject:"BLK:5",predicate:"expected-excess-return-positive",object:true});
+  assert.equal(propositions.length,1);
+  assert.equal(knowledgeReading(propositions[0]),"stable");
+  assert.equal(address(propositions[0]),address(result.cells[0]));
+  assert.equal(knowledgeReading(result.cells[0]),"stable");
+  assert.equal(result.reviewRequired,true);
+  assert.equal(result.reviewSettlements[0].admitted,true);
+  assert.equal(result.underlyingSourcePublicationVerified,false);
+  assert.equal(result.confidenceCalibrationEstablished,false);
+});
+
+test("a neutral forecast is an addressed SEAVT observation, not false evidence", () => {
+  const asOf="2026-10-12T14:00:00Z";
+  const result=assay({sections:[
+    forecast("urn:zero","SPY:5",0,0.6,{observedAt:asOf}),
+    forecast("urn:also-zero","SPY:5",0,0.7,{observedAt:asOf}),
+  ],asOf});
+  assert.equal(result.seavtRows.length,2);
+  assert.equal(result.seavtRows.every(row=>signCellOfSeavt(row).predicate==="provider-reported-market-forecast"),true);
+  assert.equal(result.cells.length,1);
+  assert.equal(knowledgeReading(result.cells[0]),"absurd");
+  assert.equal(result.reviewRequired,false);
 });
