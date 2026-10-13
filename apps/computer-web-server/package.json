@@ -117,6 +117,7 @@
     "directory": "services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/apps/computer-web-server"
   },
   "receivingTests": [
-    "test/admission-account-switch.test.mjs"
+    "test/admission-account-switch.test.mjs",
+    "test/mount-app.test.mjs"
   ]
 }

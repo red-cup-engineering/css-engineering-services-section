@@ -184,3 +184,27 @@ test("mountAt with no app-level middlewares omits the middlewares field entirely
     });
     assert.equal("middlewares" in mounted, false);
 });
+
+test("mountAt RegExp match is deterministic across requests and leaves caller lastIndex unchanged", () => {
+    for (const flags of ["g", "y"]) {
+        const pattern = new RegExp("^/thing/(?<slug>[^/]+)$", flags);
+        const resource = mountAt("/api", {
+            resources: [{ match: pattern, handler: () => null }]
+        }).resources[0];
+        pattern.lastIndex = 5;
+        for (let i = 0; i < 3; i++) {
+            assert.deepEqual(resource.match("/api/thing/abc", ctxFor("/api/thing/abc")), { slug: "abc" });
+        }
+        assert.equal(pattern.lastIndex, 5);
+        assert.equal(resource.match("/api/other", ctxFor("/api/other")), false);
+    }
+});
+test("mountAt rejects malformed percent-encoded parameters without throwing", () => {
+    const resource = mountAt("/api", {
+        resources: [{ match: "/users/:id", handler: () => null }]
+    }).resources[0];
+    for (const path of ["/api/users/%", "/api/users/%E0%A4%A"]) {
+        assert.equal(resource.match(path, ctxFor(path)), false);
+    }
+    assert.deepEqual(resource.match("/api/users/hello%20world", ctxFor("/api/users/hello%20world")), { id: "hello world" });
+});

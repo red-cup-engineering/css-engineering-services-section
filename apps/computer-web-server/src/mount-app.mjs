@@ -20,7 +20,8 @@ function matchAddress(match, path, ctx) {
         return typeof result === "object" ? result : {};
     }
     if (match instanceof RegExp) {
-        const m = match.exec(path);
+        // Request matching must not change or inherit a RegExp lastIndex.
+        const m = new RegExp(match.source, match.flags).exec(path);
         return m ? {
             ...m.groups
         } : false;
@@ -33,7 +34,14 @@ function matchAddress(match, path, ctx) {
     for(let i = 0; i < parts.length; i++){
         const p = parts[i] ?? "";
         const pp = pathParts[i] ?? "";
-        if (p.startsWith(":")) params[p.slice(1)] = decodeURIComponent(pp);
+        if (p.startsWith(":")) {
+            try {
+                params[p.slice(1)] = decodeURIComponent(pp);
+            } catch {
+                // A malformed route parameter is a non-match, not a request crash.
+                return false;
+            }
+        }
         else if (p !== pp) return false;
     }
     return params;
