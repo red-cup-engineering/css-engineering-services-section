@@ -127,7 +127,8 @@ export async function sendEmail(session, { identity, to, subject, text, messageI
   if (already) {
     const previous = await readEmail(session, already);
     const recipients = addressList(to).map(({ email }) => email).sort();
-    if (!previous || previous.subject !== subject || previous.text !== text
+    if (!previous || !previous.complete || previous.cc.length || previous.bcc.length
+      || previous.subject !== subject || previous.text !== text
       || previous.from.length !== 1 || previous.from[0] !== assertAddress(identity.email)
       || JSON.stringify(previous.to.slice().sort()) !== JSON.stringify(recipients)) {
       throw new Error("Message-ID already belongs to a different sent message; refusing to give it another meaning");
@@ -208,8 +209,20 @@ export async function sentMessages(session, { after = null, limit = 100, positio
   const { found } = await session.call([["Email/query", {
     accountId: session.accountId, filter, sort: [{ property: "receivedAt", isAscending: false }], position, limit, calculateTotal: true,
   }, "found"]]);
+  if (!Array.isArray(found.ids) || found.ids.length > limit
+    || new Set(found.ids).size !== found.ids.length
+    || found.ids.some((id) => typeof id !== "string" || !id)) {
+    throw new Error("Sent query did not return a bounded distinct message population");
+  }
   const messages = await Promise.all(found.ids.map((id) => readEmail(session, id)));
+  if (messages.some((message, index) => !message || message.id !== found.ids[index])) {
+    throw new Error("Sent message population changed during reading; reconciliation is incomplete");
+  }
+  if (found.total != null && (!Number.isSafeInteger(found.total) || found.total < position + found.ids.length
+    || (!found.ids.length && found.total > position))) {
+    throw new Error("Sent query returned an inconsistent population count");
+  }
   const next = position + found.ids.length;
-  return { messages: messages.filter(Boolean), total: found.total ?? null,
+  return { messages, total: found.total ?? null,
     nextPosition: found.total == null ? (found.ids.length === limit ? next : null) : (next < found.total ? next : null) };
 }
