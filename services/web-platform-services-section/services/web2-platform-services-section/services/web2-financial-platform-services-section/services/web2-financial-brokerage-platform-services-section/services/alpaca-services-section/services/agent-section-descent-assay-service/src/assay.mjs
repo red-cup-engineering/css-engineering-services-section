@@ -1,6 +1,7 @@
 import { address, cell, knowledgeReading, told } from "@red-cup-engineering/signcell/cell";
 import { rule } from "@red-cup-engineering/signchain/rules";
 import { settleCells, settlementAdmits } from "@red-cup-engineering/signcraft/settle";
+import { isAbsoluteSeavtClock, compareAbsoluteSeavtClocks } from "@red-cup-engineering/semiotic-eavt-services-section/admit-seavt-row";
 
 const numeric = (input, label) => {
   if (!((typeof input === "number") || (typeof input === "string" && input.trim() !== "")) ||
@@ -23,8 +24,8 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
   if (!Array.isArray(sections) || sections.length < 2) throw new TypeError("plural-agent-sections-required");
   // A point-in-time comparison is a filtration of what could actually have
   // been known by the cutoff, not of what a model reports after the fact.
-  const cutoff = asOf === undefined ? null : Date.parse(asOf);
-  if (cutoff !== null && !Number.isFinite(cutoff))
+  const cutoff = asOf === undefined ? null : asOf;
+  if (cutoff !== null && !isAbsoluteSeavtClock(cutoff))
     throw new TypeError("forecast-as-of-time-invalid");
   const floor = numeric(confidenceFloor, "confidence-floor");
   if (floor < 0 || floor > 1) throw new RangeError("confidence-floor-out-of-range");
@@ -45,9 +46,10 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
         (!Array.isArray(section.evidenceReferences) ||
          section.evidenceReferences.some((ref) => typeof ref !== "string" || !ref.trim())))
       throw new TypeError("forecast-evidence-references-invalid");
-    if (section.observedAt !== undefined && !Number.isFinite(Date.parse(section.observedAt)))
+    if (section.observedAt !== undefined && !isAbsoluteSeavtClock(section.observedAt))
       throw new TypeError("forecast-observation-time-invalid");
-    if (cutoff !== null && (section.observedAt === undefined || Date.parse(section.observedAt) > cutoff))
+    if (cutoff !== null && (section.observedAt === undefined ||
+        compareAbsoluteSeavtClocks(section.observedAt, cutoff) > 0))
       throw new TypeError("forecast-outside-as-of-filtration");
     const pair = JSON.stringify([provider, coordinate]);
     if (seenPairs.has(pair)) throw new TypeError("duplicate-provider-coordinate-forecast");
@@ -152,7 +154,7 @@ function assay({ sections, confidenceFloor = 0.5, asOf, agreementTolerance = nul
     // The requested cutoff is carried with its measured refusal. A generated
     // forecast timestamp is not by itself proof that its cited primary
     // document/news item was already publicly available at that time.
-    asOf: cutoff === null ? null : new Date(cutoff).toISOString(),
+    asOf: cutoff, // preserve exact sub-millisecond cutoff rather than truncating to a Date
     forecastClockFilterApplied: cutoff !== null,
     underlyingSourcePublicationVerified: false,
     cells: Object.freeze(cells),
