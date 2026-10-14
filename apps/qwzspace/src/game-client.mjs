@@ -22,6 +22,9 @@
 
 import { GAME_STYLES } from "./game-styles.mjs";
 import { createPlanView, createSceneView, probeDrawing, tierOf } from "./scene-view.mjs";
+import { normalizeTufteForm, renderTufteForm } from "@red-cup-engineering/web-page-tiling-engine/browser";
+import { operationInputFields, operationCommand } from "./operation-input.mjs";
+import { cellEvidenceNodes } from "./cell-evidence.mjs";
 
 export { GAME_STYLES };
 
@@ -72,17 +75,96 @@ export async function createGameClient(mount, options = {}) {
   if (!document.getElementById("qz-game-styles")) document.head.append(element("style", { id: "qz-game-styles", textContent: GAME_STYLES }));
 
   const own = mount.classList.contains("qz-game");
-  const shell = own ? mount : element("div", { className: "qz-game", role: "application", ariaLabel: title });
+  const shell = own ? mount : element("div", { className: "qz-game", role: "region", ariaLabel: title });
   const canvas = element("canvas", { className: "qz-canvas", tabIndex: 0, ariaLabel: "The world: drag to turn, wheel to come closer, click to choose" });
   const labelLayer = element("div", { className: "qz-labels" });
   const tipBox = element("div", { className: "qz-tip", hidden: true });
   const statusLine = element("p", { className: "qz-status" }, "Drawing the world…");
   const legendBox = element("div", { className: "qz-legend" });
+  const reducedMotion = globalThis.matchMedia?.("(prefers-reduced-motion: reduce)");
+  let motionOverride = null, motion = !reducedMotion?.matches;
+  const animate = element("input", { type: "checkbox", checked: motion });
+  const motionChanged = () => {
+    motion = motionOverride ?? !reducedMotion?.matches;
+    animate.checked = motion;
+    shell.dataset.motion = motion ? "animated" : "reduced";
+  };
+  animate.addEventListener("change", () => { motionOverride = animate.checked; motionChanged(); });
+  reducedMotion?.addEventListener("change", motionChanged);
+  motionChanged();
+  const evidenceBody = element("div", { className: "qz-cell-evidence" });
+  const evidenceChoice = element("select", { ariaLabel: "Inspect perceived subject" });
+  const evidencePanel = element("details", { hidden: true }, element("summary", {}, "Perceived evidence"), evidenceChoice, evidenceBody);
+  const operationBody = element("div", { className: "qz-cell-evidence" });
+  const operationSearch = element("input", { type: "search", placeholder: "Find an operation…", ariaLabel: "Find an available operation" });
+  const operationTitle = element("summary", {}, "Operations here");
+  const operationPanel = element("details", { hidden: true }, operationTitle, operationSearch, operationBody);
+  let actions = null;
+  const listActions = () => {
+    const words = operationSearch.value.toLocaleLowerCase().trim().split(/\s+/u).filter(Boolean);
+    const selected = (actions ?? []).filter((action) => {
+      const text = [action.command, action.description, action.scope, action.provider?.actor].filter(Boolean).join(" ").toLocaleLowerCase();
+      return words.every((word) => text.includes(word));
+    });
+    operationTitle.textContent = `Operations here · ${selected.length} of ${actions?.length ?? 0}`;
+    operationBody.replaceChildren(...selected.map((action, index) => {
+      const draft = (line) => { input.value = line; input.focus(); input.setSelectionRange(line.length, line.length); };
+      const row = element("div", { className: "qz-operation" },
+        element("button", { type: "button", onclick: () => draft(action.command) }, action.command),
+        element("p", { className: "qz-meta" }, action.description),
+        action.scope !== undefined ? element("p", { className: "qz-meta" }, `Scope: ${action.scope}`) : null,
+        action.provider ? element("p", { className: "qz-meta" }, `Via ${action.provider.actor}`) : null,
+      );
+      if (action.input) {
+        const formHost = element("div");
+        formHost.innerHTML = renderTufteForm(normalizeTufteForm({ id: `operation-${index}`, action: "#", method: "post",
+          fields: operationInputFields(action), submitters: [{ label: "Prepare command" }], enhance: false,
+        }));
+        const feedback = element("p", { className: "qz-meta", ariaLive: "polite" });
+        const prepare = event => {
+          event.preventDefault();
+          try { draft(operationCommand(action, new FormData(event.currentTarget))); feedback.textContent = "Command prepared. Send it from the command field when ready."; }
+          catch (error) { feedback.textContent = error.message; }
+        };
+        formHost.querySelector("form").addEventListener("submit", prepare);
+        const jsonHost = element("div");
+        jsonHost.innerHTML = renderTufteForm(normalizeTufteForm({ id: `operation-json-${index}`, action: "#", method: "post", enhance: false,
+          fields: [{ name: "input-body", kind: "textarea", label: "Input as JSON", value: "{}", required: true }], submitters: [{ label: "Prepare command" }],
+        }));
+        jsonHost.querySelector("form").addEventListener("submit", prepare);
+        row.append(element("details", {}, element("summary", {}, "Prepare input"), formHost, feedback,
+          element("details", {}, element("summary", {}, "Full JSON input"), jsonHost),
+          element("details", {}, element("summary", {}, "Input contract"), element("pre", {}, JSON.stringify(action.input, null, 2)))));
+      }
+      return row;
+    }));
+  };
+  operationSearch.addEventListener("input", listActions);
+  let inspected = null, inspectionScene = null;
+  const inspect = (id) => {
+    inspected = id;
+    evidenceChoice.value = id ?? "";
+    const entry = inspectionScene?.entries.find((entry) => entry.id === id);
+    evidenceBody.replaceChildren(...cellEvidenceNodes(entry?.cells ?? [], element).filter(Boolean));
+  };
+  evidenceChoice.addEventListener("change", () => inspect(evidenceChoice.value));
   const menu = element("details", { className: "qz-panel qz-menu" },
     element("summary", {}, `☰ ${title}`),
     navigation.length ? element("nav", { ariaLabel: title || "Menu" }, navigation.map((link) => element("a", { href: link.href }, link.label))) : null,
     element("div", { className: "qz-about" }, about),
-    legendBox, statusLine);
+    legendBox,
+    element("details", {}, element("summary", {}, "View controls"),
+      element("div", { className: "qz-view-controls" },
+        element("button", { type: "button", onclick: () => turnBy(-0.15) }, "Turn left"),
+        element("button", { type: "button", onclick: () => turnBy(0.15) }, "Turn right"),
+        element("button", { type: "button", onclick: () => zoomBy(0.85) }, "Zoom in"),
+        element("button", { type: "button", onclick: () => zoomBy(1 / 0.85) }, "Zoom out")),
+      element("nav", { ariaLabel: "Drawing tier" }, ["webgl", "canvas2d", "text"].map((tier) => {
+        const url = new URL(location.href);
+        url.searchParams.set("tier", tier);
+        return element("a", { href: url.href }, TIER_NAMES[tier]);
+      }))),
+    element("label", { className: "qz-motion" }, animate, "Animate world"), operationPanel, evidencePanel, statusLine);
   const mapCanvas = element("canvas", { className: "qz-map-canvas", ariaLabel: "Map" });
   const you = element("i", { className: "qz-you", hidden: true });
   const minimap = element("div", { className: "qz-panel qz-minimap" }, mapCanvas, you);
@@ -92,6 +174,7 @@ export async function createGameClient(mount, options = {}) {
   const trackerBody = element("div", { className: "qz-tracked" });
   const tracker = element("details", { className: "qz-panel qz-tracker", hidden: true, open: !globalThis.matchMedia?.("(max-width:760px)").matches },
     trackerTitle, trackerBody);
+  const sidebar = element("aside", { className: "qz-sidebar", ariaLabel: "World tools" }, menu, watching ? null : tracker);
   const log = element("div", { className: "qz-log", role: "log", ariaLive: "polite" });
   const input = element("input", { name: "line", autocomplete: "off", spellcheck: false, placeholder, ariaLabel: "Say" });
   const form = element("form", { className: "qz-say" }, input, element("button", { type: "submit" }, "Say"));
@@ -100,7 +183,7 @@ export async function createGameClient(mount, options = {}) {
   const rumourBox = element("div", { className: "qz-rumours", ariaLive: "off" });
   const bottom = element("div", { className: "qz-bottom" }, watching ? null : chat, watching ? null : hotbar, rumourBox, minimap);
   shell.prepend(canvas, labelLayer);
-  shell.append(...(watching ? [] : [herePanel, tracker]), menu, bottom, tipBox);
+  shell.append(...(watching ? [] : [herePanel]), sidebar, bottom, tipBox);
   if (!own) {
     document.body.append(shell);
     document.documentElement.classList.add("qz-playing");
@@ -253,7 +336,7 @@ export async function createGameClient(mount, options = {}) {
   }
 
   // ── Keys ────────────────────────────────────────────────────────────────────────────────────
-  const typing = (target) => target instanceof HTMLElement && Boolean(target.closest("input, textarea, select, [contenteditable]"));
+  const typing = (target) => target instanceof HTMLElement && Boolean(target.closest("input, textarea, select, button, a, summary, [contenteditable]"));
   function onKeyDown(event) {
     if (event.target === input) {
       if (event.key === "Escape") { input.blur(); (surface ?? shell).focus?.(); }
@@ -265,6 +348,9 @@ export async function createGameClient(mount, options = {}) {
       return;
     }
     if (typing(event.target) || event.altKey || event.ctrlKey || event.metaKey) return;
+    // Character-key shortcuts belong to the focused world, never the page or
+    // an assistive technology's native controls.
+    if (event.target !== surface && event.target !== mapCanvas) return;
     if (keys(event, true)) { event.preventDefault(); return; }
     const exits = hotbar.querySelectorAll("button");
     if (event.key === "ArrowLeft" || event.key === "q") turnBy(-0.15);
@@ -299,8 +385,8 @@ export async function createGameClient(mount, options = {}) {
         // The camera eases toward its goal by elapsed time, so a slow machine's journey takes as
         // long as a fast one's; an untouched watching city turns.
         const ease = (tau) => 1 - Math.exp(-elapsed / tau);
-        if (idle && view.tier === "webgl" && now - idleSince > IDLE_MS) { orbit += elapsed * 0.00004; aim(); }
-        eased = eased === null ? goal : {
+        if (motion && idle && view.tier === "webgl" && now - idleSince > IDLE_MS) { orbit += elapsed * 0.00004; aim(); }
+        eased = !motion || eased === null ? goal : {
           ...goal,
           target: eased.target.map((value, index) => value + (goal.target[index] - value) * ease(320)),
           distance: eased.distance + (goal.distance - eased.distance) * ease(320),
@@ -324,17 +410,35 @@ export async function createGameClient(mount, options = {}) {
 
   return {
     tier: view.tier,
+    get motion() { return motion; },
     view,
     shell,
     canvas: surface,
     /** The scene drawn from now on (qwzspace's fiber projection). */
     show(next) {
       scene = next;
+      if (actions !== next.situation?.actions) {
+        actions = next.situation?.actions ?? null;
+        operationPanel.hidden = watching || !actions?.length;
+        listActions();
+      }
+      // Animated overlays reuse the same cell section. Rebuild only when the
+      // perceived entries change, not for every animation frame.
+      const perceived = next.entries.filter((entry) => Array.isArray(entry.cells));
+      const previous = inspectionScene?.entries.filter((entry) => Array.isArray(entry.cells)) ?? [];
+      if (perceived.length !== previous.length || perceived.some((entry, index) => entry.id !== previous[index]?.id || entry.cells !== previous[index]?.cells)) {
+        inspectionScene = next;
+        evidencePanel.hidden = watching || perceived.length === 0;
+        evidenceChoice.replaceChildren(...perceived.map((entry) => element("option", { value: entry.id }, entry.label || entry.id)));
+        inspect(perceived.some((entry) => entry.id === inspected) ? inspected : next.place?.id ?? next.actor ?? perceived[0]?.id);
+      }
       dirty = true;
     },
     get scene() {
       return scene;
     },
+    /** Focus evidence without performing a world operation. */
+    inspect,
     /** Chase `id` (the scene's actor, if null) from behind. */
     follow(id = null) {
       chasing = true;
@@ -422,10 +526,11 @@ export async function createGameClient(mount, options = {}) {
     },
     remove() {
       running = false;
+      reducedMotion?.removeEventListener("change", motionChanged);
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("keyup", onKeyUp);
       removeEventListener("resize", onResize);
-      if (own) for (const node of [canvas, surface, labelLayer, herePanel, tracker, menu, bottom, tipBox]) node?.remove();
+      if (own) for (const node of [canvas, surface, labelLayer, herePanel, sidebar, bottom, tipBox]) node?.remove();
       else {
         shell.remove();
         document.documentElement.classList.remove("qz-playing");
