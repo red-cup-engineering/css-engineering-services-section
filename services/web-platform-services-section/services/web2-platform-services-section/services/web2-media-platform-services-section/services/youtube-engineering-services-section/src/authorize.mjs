@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { randomBytes } from "node:crypto";
-import { createYouTube } from './youtube-api.mjs';
+import { createYouTube, revalidateYouTubeAuthentication } from './youtube-api.mjs';
 import { sha256Base64Url } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 const SCOPES='https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/yt-analytics.readonly';
 /** One PKCE consent request for a loopback redirect. The caller keeps state and verifier until the consent returns. */
@@ -23,7 +23,7 @@ if(!code) throw new Error('Google authorization was not completed');
 return code;
 }
 /** Exchange a returned code for an offline refresh token, kept only once it verifiably identifies channelId. */
-export async function exchangeConsent({ channelId, clientId, clientSecret, code, verifier, redirectUri, fetchImpl = globalThis.fetch }) {
+export async function exchangeConsent({ channelId, clientId, clientSecret, code, verifier, redirectUri, fetchImpl = globalThis.fetch, authenticationState }) {
 if(!clientId || !clientSecret) throw new Error('Missing shared YouTube OAuth client credentials');
 const response=await fetchImpl('https://oauth2.googleapis.com/token',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:clientId,client_secret:clientSecret,grant_type:'authorization_code',redirect_uri:redirectUri,code,code_verifier:verifier})});
 if(!response.ok) throw new Error(`Google token exchange HTTP ${response.status}`);
@@ -31,7 +31,10 @@ const tokens=await response.json();
 if(!tokens.refresh_token) throw new Error('Google did not return an offline refresh token');
 if(!tokens.scope?.split(/\s+/).some(scope=>['https://www.googleapis.com/auth/youtube.force-ssl','https://www.googleapis.com/auth/youtube'].includes(scope))) throw new Error('Video-management permission was not granted; existing credentials were preserved');
 const env={YOUTUBE_OAUTH_CLIENT_ID:clientId,YOUTUBE_OAUTH_CLIENT_SECRET:clientSecret,REFRESH_TOKEN:tokens.refresh_token};
-await createYouTube({channelId,refreshTokenEnv:'REFRESH_TOKEN',env,fetchImpl,authorize:async()=>{}}).verifyIdentity();
+if(authenticationState) {
+  const {refreshTokenEnv,env:stateEnv}=authenticationState;
+  await revalidateYouTubeAuthentication({channelId,refreshTokenEnv,env:{...stateEnv,YOUTUBE_OAUTH_CLIENT_ID:clientId,YOUTUBE_OAUTH_CLIENT_SECRET:clientSecret,[refreshTokenEnv]:tokens.refresh_token},fetchImpl,authorize:async()=>{}});
+} else await createYouTube({channelId,refreshTokenEnv:'REFRESH_TOKEN',env,fetchImpl,authorize:async()=>{}}).verifyIdentity();
 return tokens.refresh_token;
 }
 /** Start a loopback OAuth connection; callers retain a verified refresh token. */
