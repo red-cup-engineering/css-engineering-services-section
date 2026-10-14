@@ -1,9 +1,9 @@
 import {
   EMPTY_WITNESS_ROOT,
   IDENTITY_SETTLEMENT_PROFILE,
-  RMN_NORMALIZATION_PROFILE,
+  SEN_NORMALIZATION_PROFILE,
   identifyJsonSemanticContent,
-} from "@red-cup-engineering/semantic-content-identify-service";
+} from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 
 const requiredObjectKind = (value) => {
   if (typeof value !== "string" || value.trim() === "") throw new TypeError("semantic-object-kind-required");
@@ -15,16 +15,16 @@ const requiredProfile = (actual, expected, label) => {
   return actual;
 };
 
-/** Admit one brokerage JSON carrier to the current typed RMN identity boundary.
+/** Admit one brokerage JSON carrier to the current typed SEN identity boundary.
  * The caller declares its object kind and profiles; this boundary does not infer
  * evidence, polarity, FOUR charge, or evidential settlement from JSON shape. */
 export function identifyRelationalContent(value, {
   objectKind,
   witnessRoot = EMPTY_WITNESS_ROOT,
-  normalizationProfile = RMN_NORMALIZATION_PROFILE,
+  normalizationProfile = SEN_NORMALIZATION_PROFILE,
   settlementProfile = IDENTITY_SETTLEMENT_PROFILE,
 } = {}) {
-  requiredProfile(normalizationProfile, RMN_NORMALIZATION_PROFILE, "normalization-profile");
+  requiredProfile(normalizationProfile, SEN_NORMALIZATION_PROFILE, "normalization-profile");
   requiredProfile(settlementProfile, IDENTITY_SETTLEMENT_PROFILE, "settlement-profile");
   return identifyJsonSemanticContent({ objectKind: requiredObjectKind(objectKind), value, witnessRoot });
 }
