@@ -14,6 +14,7 @@
     "./static": "./src/static.mjs",
     "./validation": "./src/validation.mjs",
     "./openapi": "./src/openapi.mjs",
+    "./sparql": "./src/platform-http/sparql-query.mjs",
     "./create-application": "./src/create-application.mjs",
     "./native-application": "./src/native-application.mjs",
     ".": "./src/index.mjs",
