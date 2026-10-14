@@ -40,6 +40,18 @@ html.qz-playing,html.qz-playing body{overflow:hidden}
 .qz-menu summary{list-style:none;cursor:pointer;padding:9px 14px;font-weight:650;white-space:nowrap}
 .qz-menu summary::-webkit-details-marker{display:none}
 .qz-menu nav{display:grid;padding:0 14px 8px}
+.qz-cell-evidence{padding:0 14px 12px;max-height:55vh;overflow:auto;overflow-wrap:anywhere}
+.qz-cell-evidence pre{max-height:14rem;overflow:auto;white-space:pre-wrap;font-size:12px}
+.qz-cell-evidence code{font-size:10px}
+.qz-cell-evidence summary{white-space:normal;padding:6px 0}
+.qz-menu select{max-width:calc(100% - 28px);margin:0 14px 8px;font:inherit;color:var(--qz-ink);background:var(--qz-bg);border:1px solid var(--qz-edge)}
+.qz-menu input[type=search]{max-width:calc(100% - 28px);margin:0 14px 8px;font:inherit;padding:6px;color:var(--qz-ink);background:var(--qz-bg);border:1px solid var(--qz-edge)}
+.qz-operation{margin-bottom:12px}
+.qz-operation .tufte-form-field{display:grid;gap:4px;margin-block:10px}
+.qz-operation :is(input,textarea,select){box-sizing:border-box;width:100%;max-width:100%;margin:0;font:inherit;color:var(--qz-ink);background:var(--qz-bg);border:1px solid var(--qz-edge);padding:8px}
+.qz-operation textarea{min-height:6rem;resize:vertical}
+.qz-operation label{font-weight:600}
+.qz-operation .tufte-field-description{margin:0;font-size:12px}.qz-operation button{font:inherit;color:var(--qz-ink);background:var(--qz-bg);border:1px solid var(--qz-edge);padding:5px;cursor:pointer}
 .qz-menu a{color:#cfe0ff;text-decoration:none;padding:4px 0}.qz-menu a:hover{text-decoration:underline}
 .qz-about{padding:0 14px 8px;font-size:13px;line-height:1.5}.qz-about:empty{display:none}.qz-about p{margin:0 0 8px}
 .qz-about a{color:#cfe0ff}.qz-about input{display:block;width:100%;margin:0 0 6px;font:inherit;color:inherit;background:rgb(255 255 255/.08);border:1px solid rgb(255 255 255/.16);border-radius:8px;padding:6px 9px}
@@ -99,4 +111,16 @@ html.qz-playing,html.qz-playing body{overflow:hidden}
 .qz-game[data-tier=text] .qz-minimap{display:none}
 .qz-game[data-tier=text] .qz-menu{position:static;margin:16px}
 @media (max-width:760px){.qz-bottom{flex-direction:column-reverse;align-items:stretch}.qz-chat{flex:none}.qz-log{max-height:22vh}.qz-minimap{display:none}.qz-rumours{display:none}.qz-hotbar{flex:none;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto}.qz-card{top:auto;bottom:16px;transform:none;left:16px;right:16px;padding:20px}.qz-menu summary{padding:8px 12px}.qz-tracker{top:58px;max-height:38vh}}
-@media (prefers-reduced-motion:reduce){.qz-label{backdrop-filter:none}}`;
+.qz-game :is(button,a,input,textarea,select,summary,[tabindex]):focus-visible{outline:2px solid var(--qz-call);outline-offset:3px;scroll-margin-block:8px}
+.qz-menu :is(button,input,select,summary){min-height:44px;min-width:44px}
+.qz-menu summary{white-space:normal}.qz-motion{display:flex;align-items:center;gap:8px;padding:0 14px;min-height:44px}
+.qz-menu input[type=checkbox]{min-height:18px;min-width:18px;width:18px;height:18px}
+.qz-sidebar{position:absolute;top:16px;right:16px;z-index:2;max-width:min(24rem,calc(100% - 32px));max-height:calc(100% - 260px);overflow:auto;display:grid;gap:8px}
+.qz-sidebar>.qz-menu,.qz-sidebar>.qz-tracker{position:static;margin:0;max-width:none;max-height:none}
+.qz-view-controls{display:flex;flex-wrap:wrap;gap:8px;padding:0 14px 8px}.qz-view-controls button{font:inherit;color:var(--qz-ink);background:var(--qz-bg);border:1px solid var(--qz-edge)}
+.qz-game[data-tier=text]{display:flex;flex-direction:column;overflow:auto}.qz-game[data-tier=text] .qz-menu{order:-1;position:relative;z-index:2;flex:none;align-self:flex-start;max-height:60vh}
+.qz-game[data-tier=text] .qz-bottom{position:static;flex:1;min-height:20rem}.qz-game[data-tier=text] .qz-chat{width:100%;min-height:20rem}
+.qz-game[data-tier=text] .qz-sidebar{position:static;order:-1;flex:none;max-height:60vh;align-self:flex-start;max-width:calc(100% - 32px);margin:16px}
+.qz-game[data-tier=text] .qz-menu{max-height:none;margin:0}
+.qz-game[data-motion=reduced] .qz-rumours p{animation:none}
+@media (prefers-reduced-motion:reduce){.qz-label{backdrop-filter:none}.qz-rumours p{animation:none}}`;

@@ -9,7 +9,8 @@
 // Coordinates stay in the world's frame (`frame: "enu"`): x east, y north, z up, in metres. Each
 // backend maps that frame to its own device. `yaw` is the heading in radians clockwise from north.
 
-import { isReading, sidesOfReading } from "@red-cup-engineering/computer-data-engineering-services-section/four";
+import { readingAs } from "@red-cup-engineering/computer-data-engineering-services-section/four";
+import { cell, cellSet, certainObject, knowledgeReading } from "@red-cup-engineering/signcell/cell";
 import { COMPASS, bodyCentroid, segmentThroughPrism } from "@red-cup-engineering/feltos/geometry";
 import { environmentAt } from "./environment.mjs";
 import { SCENE_VERSION } from "./project.mjs";
@@ -28,32 +29,37 @@ export const KIND_DRAWABLES = Object.freeze({
   exit: "exit",
 });
 
-const affirmed = (evidence) => isReading(evidence) && sidesOfReading(evidence)[0];
 const isPoint = (point) => Array.isArray(point) && point.length === 3 && point.every(Number.isFinite);
 const isPose = (pose) => pose !== null && typeof pose === "object" && isPoint(pose.position) && Number.isFinite(pose.heading);
 const compareText = (left, right) => left < right ? -1 : left > right ? 1 : 0;
 
-/** The affirmed facts of each subject in a frame: id -> predicate -> objects. */
+/** The entire perceived section, normalized by SignCell's own identity and join.
+ *  Older compact frames carry a value without witness marks: retain that value
+ *  with empty sides rather than inventing support. New frames retain both sides. */
 function factsOf(frame) {
   const facts = new Map();
   for (const subject of frame?.subjects ?? []) {
-    const own = new Map();
-    for (const cell of subject.cells ?? []) {
-      if (!affirmed(cell.evidence)) continue;
-      if (!own.has(cell.predicate)) own.set(cell.predicate, []);
-      own.get(cell.predicate).push(cell.object);
+    const own = facts.get(subject.id) ?? new Map();
+    for (const at of subject.cells ?? []) {
+      const native = at.for !== undefined || at.against !== undefined;
+      if (native && (!Array.isArray(at.for) || !Array.isArray(at.against))) throw new TypeError("perceived cells require both witness sides");
+      const reading = readingAs("knowledge", at.evidence);
+      const perceived = cell(subject.id, at.predicate, at.object, {
+        for: at.for ?? [], against: at.against ?? [],
+        value: native ? at.value : reading,
+      });
+      if (knowledgeReading(perceived) !== reading) throw new TypeError("perceived cell reading disagrees with its native value");
+      if (!own.has(at.predicate)) own.set(at.predicate, []);
+      own.get(at.predicate).push(perceived);
     }
     facts.set(subject.id, own);
   }
+  for (const own of facts.values()) for (const [predicate, cells] of own) own.set(predicate, cellSet(cells));
   return facts;
 }
 
-// A functional reading: the one affirmed object, or null when there is none or the fiber holds a
-// contradiction (two affirmed objects), the same reading FeltOS's own `value` gives.
-const one = (facts, id, predicate) => {
-  const objects = facts.get(id)?.get(predicate);
-  return objects?.length === 1 ? objects[0] : null;
-};
+// The same functional reading as FeltOS.certainValue, owned once by SignCell.
+const one = (facts, id, predicate) => certainObject(facts.get(id)?.get(predicate) ?? []);
 
 /** Where a subject is in space, read inside the fiber the way FeltOS's worldPose reads the world:
  *  a place with extent holds its contents at their own poses; a posed holder carries what it holds;
@@ -147,6 +153,7 @@ export function projectFiber(frame, world = {}) {
       label: labelOf(facts, id),
       drawable: typeof own === "string" ? own : (KIND_DRAWABLES[kind] ?? "item"),
       tint: tintOf(one(facts, id, "tint")),
+      cells: cellSet([...facts.get(id).values()].flat()),
     };
     const region = one(facts, id, "region");
     if (region !== null) {
@@ -177,7 +184,8 @@ export function projectFiber(frame, world = {}) {
       drawable: KIND_DRAWABLES.exit,
       holder: placeId,
       destination,
-      placed: placeRegion !== null,
+      cells: facts.get(placeId)?.get(`exit:${direction}`) ?? [],
+      placed: placeRegion !== null && destination !== null,
     }, placeRegion ? exitPoint(placeRegion, direction, destination === null ? null : (one(facts, destination, "region") ?? mappedRegion(world.places?.[destination]))) : fallback, COMPASS[direction] ?? 0));
   }
 
@@ -187,7 +195,8 @@ export function projectFiber(frame, world = {}) {
     version: SCENE_VERSION,
     frame: SCENE_FRAME,
     actor,
-    place: frame?.place ? { id: placeId, name: frame.place.name, description: frame.place.description, exits: [...(frame.place.exits ?? [])] } : null,
+    situation: frame?.situation ?? null,
+    place: frame?.place ? { id: placeId, name: labelOf(facts, placeId), description: one(facts, placeId, "description") ?? "", exits: entries.filter((entry) => entry.kind === "exit" && entry.destination !== null).map((entry) => entry.label) } : null,
     environment: environmentAt(frame?.clock, world),
     entries,
   };
