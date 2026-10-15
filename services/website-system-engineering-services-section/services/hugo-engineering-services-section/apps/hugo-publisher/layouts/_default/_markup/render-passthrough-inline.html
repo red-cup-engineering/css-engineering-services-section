@@ -1,6 +1,0 @@
-{{- $result := try (transform.ToMath .Inner) -}}
-{{- with $result.Err -}}
-  <span class="math-error">{{ $.Inner }}</span>
-{{- else -}}
-  {{ $result.Value }}
-{{- end -}}
