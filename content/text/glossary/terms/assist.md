@@ -15,9 +15,14 @@ provenance:
     - "ni:///sha-256;qBEv_AXMKQNa6Tq9lIzJ3fDHx8170OHrQERQDLIzQ4c"
 ---
 
-ASSIST, the Agent-Supported Service Interface Simulating Topologies, is the
-one package downstream of TUFTE that every "* Assist" app of the 561 Group
-runs on. An Assist app is one parameterization of it, served at its own host
+ASSIST is the Group's agentic personal intelligence dashboard. The Leader
+clarified on 2026-10-15: "ASSIST is our agentic personal intelligence dashboard."
+Its purpose governs its architecture and comparisons: a person understands and
+acts across their information, agents, tools and ongoing work through it.
+
+ASSIST, the Agent-Supported Service Interface Simulating Topologies, composes
+TUFTE and supplies the shared application used by the specialized "* Assist"
+parameterizations of the 561 Group. An Assist app is served at its own host
 under `assist.561.group` (`eve.assist.561.group`, `gig.assist.561.group`,
 `muse.assist.561.group`, and so on). ASSIST serves the Group's micro-SaaSes to
 humans the way x402 serves them to agents: a person studies, simulates and
