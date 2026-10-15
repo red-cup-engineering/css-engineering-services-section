@@ -1,4 +1,4 @@
-import { semanticIdOf } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
+import { semanticIdOf } from "@red-cup-engineering/computer-data-engineering-services-section/semiotic-expression-notation/semantic-content-identity";
 
 const semanticId = semanticIdOf("brokerage.union-consideration-settlement.record");
 

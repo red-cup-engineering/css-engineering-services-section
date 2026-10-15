@@ -9,7 +9,8 @@
     "./src/strategy.mjs": "./src/strategy.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/computer-content-address-engineering-services-section": "0.2.0"
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "0.2.0",
+    "@red-cup-engineering/computer-data-engineering-services-section": "0.2.0"
   },
   "files": [
     "package.json",

@@ -44,7 +44,8 @@
     "@red-cup-engineering/investment-research-work-lot-service": "0.2.4",
     "@red-cup-engineering/sheaf-laplacian-measurement-service": "0.1.1",
     "@red-cup-engineering/correlation-graph-measurement-service": "0.1.1",
-    "@red-cup-engineering/agent-section-descent-assay-service": "0.1.1"
+    "@red-cup-engineering/agent-section-descent-assay-service": "0.1.1",
+    "@red-cup-engineering/computer-data-engineering-services-section": "0.2.0"
   },
   "description": "Scalable customer-wallet-funded market in metered brokerage-control APIs.",
   "devDependencies": {

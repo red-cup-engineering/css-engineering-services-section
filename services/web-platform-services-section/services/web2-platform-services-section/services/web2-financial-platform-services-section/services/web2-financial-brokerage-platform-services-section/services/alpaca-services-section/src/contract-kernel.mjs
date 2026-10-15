@@ -1,4 +1,4 @@
-import { semanticIdOf } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
+import { semanticIdOf } from "@red-cup-engineering/computer-data-engineering-services-section/semiotic-expression-notation/semantic-content-identity";
 
 const digest = (objectKind, value) => semanticIdOf(objectKind)(value);
 const positive = (value, label) => { const number = Number(value); if (!Number.isFinite(number) || number <= 0) throw new TypeError(`${label}-must-be-positive`); return number; };
