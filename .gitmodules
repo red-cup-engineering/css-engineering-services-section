@@ -7,3 +7,7 @@
 [submodule "services/web-tufte-gui-services-section"]
 	path = services/web-tufte-gui-services-section
 	url = https://github.com/red-cup-engineering/web-tufte-gui-services-section.git
+[submodule "qwzspace"]
+	path = apps/qwzspace
+	url = https://github.com/red-cup-engineering/qwzspace.git
+	branch = main
