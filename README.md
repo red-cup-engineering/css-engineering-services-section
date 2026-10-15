@@ -1,19 +1,11 @@
-# @561-group/web-triple-pattern-fragments
+# Triple Pattern Fragments — historical source carrier (retired)
 
-Triple Pattern Fragment helpers and web resources over four-valued memetic assertion
-worlds.
+The original personal `@561-group/web-triple-pattern-fragments` executable is retired; its source, tests, workspace package and pre-migration bindings remain available at [`14a3ac30`](https://github.com/emsenn/web-triple-pattern-fragments/tree/14a3ac301d7d3334e6c55b3e814a3448cfc150c9).
 
-The package settles memetic federation assertions into potential, active, and
-stable triples, filters them by triple pattern and witness, paginates the
-result, and renders JSON, JSON-LD/Hydra, and Turtle fragments through
-`@561-group/web-server`.
+The **living Web Engineering source** is [`computing-with-the-web/src/triple-pattern-fragments`](https://github.com/red-cup-engineering/computer-web-engineering-services-section/tree/main/services/web-protocol-services-section/services/computing-with-the-web/src/triple-pattern-fragments), received via [PR #117](https://github.com/red-cup-engineering/computer-web-engineering-services-section/pull/117), merged commit [`838f95a9`](https://github.com/red-cup-engineering/computer-web-engineering-services-section/commit/838f95a9978746bef8801a3335af3a92619fee3c). Use `@red-cup-engineering/computing-with-the-web/triple-pattern-fragments`, not this private package.
 
-## Package Boundary
+The actual original feature was recovered as Web-owned TPF querying (subject/predicate/object/state/witness), deterministic pagination and Link fields, Hydra JSON and JSON-LD collection and search controls, and an HTTP resource with JSON, JSON-LD and Turtle negotiation. Original source `src/index.mts` blob `9b4e7667740d`, regression source `src/index.test.mts` blob `fe5ebcf8dcc5`. New owner commits the source, five EAVT-native tests, namespace exports and package entry.
 
-Source is authored as `.mts` and built to `dist/index.mjs` with
-`dist/index.d.ts` declarations. The package root is the public API:
+**Necessary ownership correction:** the old code coupled HTTP query to `@561-group/memetics-federation` and `@561-group/web-linked-data` and had its own Turtle writing. The received Web resource instead takes typed folded EAVT evidence with independent positive and contrary witnesses, then invokes the actual Computer Triplet Serialized Content reader for RDF documentary serialization. It does not assert authority or unqualified domain facts. This changes the upstream API intentionally: historical private `WorldInput` and `fold` are **not** aliases for current EAVT. The original exact behavior remains accessible in Git history, but no old MMU compatibility shim or duplicate RDF serializer was installed.
 
-- `@561-group/web-triple-pattern-fragments`
-
-Published consumers do not need TypeScript source loading or workspace-only
-`src` paths.
+Source-receiving confirmed by Git readback. No test execution, application installation, production endpoint exposure, or independent receiving has been claimed.
