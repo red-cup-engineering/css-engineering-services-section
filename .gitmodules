@@ -27,3 +27,7 @@
 	path = apps/browser-site-conformance
 	url = https://github.com/red-cup-engineering/browser-site-conformance.git
 	branch = main
+[submodule "zelo"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/apps/zelo
+	url = https://github.com/red-cup-engineering/zelo.git
+	branch = main
