@@ -31,3 +31,8 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/apps/zelo
 	url = https://github.com/red-cup-engineering/zelo.git
 	branch = main
+
+[submodule "hugo-publisher"]
+	path = services/website-system-engineering-services-section/services/hugo-engineering-services-section/apps/hugo-publisher
+	url = https://github.com/emsenn/hugo-theme.git
+	branch = main
