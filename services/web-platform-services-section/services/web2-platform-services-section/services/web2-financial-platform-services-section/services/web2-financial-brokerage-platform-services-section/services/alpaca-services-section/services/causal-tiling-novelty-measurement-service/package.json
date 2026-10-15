@@ -1,7 +1,7 @@
 {
   "name": "@red-cup-engineering/causal-tiling-novelty-measurement-service",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "private": false,
   "type": "module",
   "description": "Measures recurrence and novelty of finite causal symbolic patches without claiming infinite tiling equivalence.",
   "exports": {
@@ -9,5 +9,11 @@
   },
   "scripts": {
     "test": "node --test test/*.test.mjs"
-  }
+  },
+  "files": [
+    "package.json",
+    "README*",
+    "LICENSE*",
+    "src"
+  ]
 }

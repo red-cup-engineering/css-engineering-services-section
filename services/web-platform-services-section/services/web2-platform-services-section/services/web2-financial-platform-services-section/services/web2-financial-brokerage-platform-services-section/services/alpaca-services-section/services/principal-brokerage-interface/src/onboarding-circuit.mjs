@@ -1,4 +1,4 @@
-import { acceptPrincipalOnboardingOffer, formPrincipalOnboardingOffer, formPrincipalPaperAccountObservationAuthorization, grantBrokerageAuthority, revokeBrokerageAuthority, revokePrincipalPaperAccountObservationAuthorization } from "./principal-contract.mjs";
+import { acceptPrincipalOnboardingOffer, formPrincipalOnboardingOffer, formPrincipalPaperAccountObservationAuthorization, grantBrokerageAuthority, revokeBrokerageAuthority, revokePrincipalPaperAccountObservationAuthorization } from "@red-cup-engineering/principal-brokerage-interface";
 
 export const PRINCIPAL_INTERFACE_ACTOR = "urn:ame:principal-brokerage-interface";
 export const INDEPENDENT_BOOKS_ACTOR = "urn:ame:brokerage-independent-witness-and-books";

@@ -1,7 +1,7 @@
 {
   "name": "@red-cup-engineering/sheaf-laplacian-measurement-service",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "private": false,
   "type": "module",
   "description": "Measures graph-Laplacian smooth and residual components and section disagreement energy for any bounded risk field.",
   "exports": {
@@ -11,6 +11,12 @@
     "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/signgraph": "workspace:*"
-  }
+    "@red-cup-engineering/signgraph": "0.1.0"
+  },
+  "files": [
+    "package.json",
+    "README*",
+    "LICENSE*",
+    "src"
+  ]
 }

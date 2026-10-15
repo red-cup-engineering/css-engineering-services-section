@@ -1,7 +1,7 @@
 import { formIssuerEvidencePacket, validateIssuerEvidenceRequest } from "@red-cup-engineering/alpaca-services-section/evidence-packet";
 import { normalizeAlpacaSnapshot, reconcileSnapshots, validateReconciliationRequest } from "@red-cup-engineering/account-evidence-reconciliation-service";
 import { formAggressivePortfolioIntent, validateAggressivePortfolioIntentRequest } from "@red-cup-engineering/alpha-portfolio-order-intent-service";
-import { evaluateBlkAccumulationStrategy } from "@red-cup-engineering/alpaca-services-section/strategy";
+import { evaluateBlkAccumulationStrategy } from "@red-cup-engineering/obsmetrologia-blk-accumulation-strategy-service";
 
 /**
  * market-runtime.mjs composes this seller's product operations -- pure

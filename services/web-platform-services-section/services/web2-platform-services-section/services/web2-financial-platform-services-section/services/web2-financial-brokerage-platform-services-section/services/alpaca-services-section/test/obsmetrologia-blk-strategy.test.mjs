@@ -4,7 +4,7 @@ import test from "node:test";
 import {
   evaluateBlkAccumulationStrategy,
   strategyInternals,
-} from "../scripts/strategy.mjs";
+} from "@red-cup-engineering/obsmetrologia-blk-accumulation-strategy-service";
 
 const START = Date.parse("2026-01-01T21:00:00.000Z");
 const bars = (dailyRate, count = 130) => Array.from({ length: count }, (_, index) => ({

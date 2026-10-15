@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { createAlpacaHistoricalBarsService } from "../scripts/historical-bars.mjs";
-import { evaluateBlkAccumulationStrategy } from "../scripts/strategy.mjs";
+import { evaluateBlkAccumulationStrategy } from "@red-cup-engineering/obsmetrologia-blk-accumulation-strategy-service";
 
 test("an independently recorded Alpaca observation feeds the BLK strategy without identity loss", async () => {
   const start = Date.parse("2098-01-01T00:00:00.000Z");

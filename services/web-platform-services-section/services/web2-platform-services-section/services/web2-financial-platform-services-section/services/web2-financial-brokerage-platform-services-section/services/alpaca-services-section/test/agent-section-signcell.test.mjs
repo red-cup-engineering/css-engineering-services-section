@@ -3,8 +3,8 @@ import test from "node:test";
 import { address, knowledgeReading } from "@red-cup-engineering/signcell/cell";
 import { signCellOfSeavt } from "@red-cup-engineering/semiotic-eavt-services-section/admit-seavt-row";
 import { logOfSeavtRows } from "@red-cup-engineering/signchain/log";
-import { createAgentSectionDescentAssay } from "../scripts/agent-section-descent-assay.mjs";
-import { measureSheafLaplacian } from "../scripts/sheaf-laplacian-measure.mjs";
+import { createAgentSectionDescentAssay } from "@red-cup-engineering/agent-section-descent-assay-service";
+import { measureSheafLaplacian } from "@red-cup-engineering/sheaf-laplacian-measurement-service";
 
 const assay = createAgentSectionDescentAssay({ measureSheafLaplacian });
 const forecast = (provider, coordinate, value, confidence = 0.9, extra = {}) =>

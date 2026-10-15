@@ -1,15 +1,15 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createAgentSectionDescentAssay } from "../scripts/agent-section-descent-assay.mjs";
-import { assayCausalPanel } from "../scripts/causal-market-panel-assay.mjs";
-import { measureCausalPatchNovelty } from "../scripts/causal-tiling-novelty-measure.mjs";
-import { measureCorrelationGraph } from "../scripts/correlation-graph-measure.mjs";
-import { fitDeterministicRidge, predictDeterministicRidge } from "../scripts/ridge.mjs";
-import { createInvestmentResearchCommittee, INVESTMENT_RESEARCH_ROLES } from "../services/investment-research-work-lot-service/src/committee.mjs";
+import { createAgentSectionDescentAssay } from "@red-cup-engineering/agent-section-descent-assay-service";
+import { assayCausalPanel } from "@red-cup-engineering/causal-market-panel-assay-service";
+import { measureCausalPatchNovelty } from "@red-cup-engineering/causal-tiling-novelty-measurement-service";
+import { measureCorrelationGraph } from "@red-cup-engineering/correlation-graph-measurement-service";
+import { fitDeterministicRidge, predictDeterministicRidge } from "@red-cup-engineering/deterministic-ridge-fit-service";
+import { createInvestmentResearchCommittee, INVESTMENT_RESEARCH_ROLES } from "@red-cup-engineering/investment-research-work-lot-service";
 import { allocateMandatePortfolio } from "@red-cup-engineering/mandate-portfolio-allocation-service";
 import { selectModelCandidate } from "@red-cup-engineering/model-tournament-service";
 import { formPurgedWalkForwardFolds } from "@red-cup-engineering/purged-walk-forward-fold-service";
-import { measureSheafLaplacian } from "../scripts/sheaf-laplacian-measure.mjs";
+import { measureSheafLaplacian } from "@red-cup-engineering/sheaf-laplacian-measurement-service";
 import { replayTransactionCosts } from "@red-cup-engineering/transaction-cost-replay-service";
 
 test("causal panel refuses future observations", () => {

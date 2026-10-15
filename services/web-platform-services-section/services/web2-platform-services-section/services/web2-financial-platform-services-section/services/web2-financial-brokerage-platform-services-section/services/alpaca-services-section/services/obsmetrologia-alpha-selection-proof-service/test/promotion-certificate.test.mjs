@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { generateKeyPairSync } from "node:crypto";
 import test from "node:test";
 import { identify, signRecord } from "@red-cup-engineering/strategy-evaluation-service";
-import { identifyProofSourceCarrier, verifyPaperPromotionCertificate, verifyProofSourceCarrier } from "../src/promotion-certificate.mjs";
+import { identifyProofSourceCarrier, verifyPaperPromotionCertificate, verifyProofSourceCarrier } from "@red-cup-engineering/obsmetrologia-alpha-selection-proof-service";
 
 const ni = "ni:///sha-256;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 const key = () => generateKeyPairSync("ed25519");

@@ -3,21 +3,21 @@ import { mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { createAgentSectionDescentAssay } from "./agent-section-descent-assay.mjs";
+import { createAgentSectionDescentAssay } from "@red-cup-engineering/agent-section-descent-assay-service";
 import { createAlpacaHistoricalBarsService } from "./historical-bars.mjs";
 import { createBrokerageMarketEventRecorder } from "@red-cup-engineering/brokerage-independent-witness-and-books";
-import { assayCausalPanel } from "./causal-market-panel-assay.mjs";
+import { assayCausalPanel } from "@red-cup-engineering/causal-market-panel-assay-service";
 import { createCausalPortfolioLearningCircuit } from "./circuit.mjs";
-import { measureCausalPatchNovelty } from "./causal-tiling-novelty-measure.mjs";
-import { measureCorrelationGraph } from "./correlation-graph-measure.mjs";
+import { measureCausalPatchNovelty } from "@red-cup-engineering/causal-tiling-novelty-measurement-service";
+import { measureCorrelationGraph } from "@red-cup-engineering/correlation-graph-measurement-service";
 import { createContentAddressedDatasetStore } from "@red-cup-engineering/computer-content-engineering-services-section/dataset-store";
-import { fitDeterministicRidge, predictDeterministicRidge } from "./ridge.mjs";
+import { fitDeterministicRidge, predictDeterministicRidge } from "@red-cup-engineering/deterministic-ridge-fit-service";
 import { allocateMandatePortfolio } from "@red-cup-engineering/mandate-portfolio-allocation-service";
 import { selectModelCandidate } from "@red-cup-engineering/model-tournament-service";
 import { formPurgedWalkForwardFolds } from "@red-cup-engineering/purged-walk-forward-fold-service";
-import { measureReturnRiskFeatures } from "./return-risk-feature-measure.mjs";
+import { measureReturnRiskFeatures } from "@red-cup-engineering/return-risk-feature-measurement-service";
 import { startLocalWitnessJournalProviderProcess } from "@red-cup-engineering/witness-journal-document-service/local-provider";
-import { measureSheafLaplacian } from "./sheaf-laplacian-measure.mjs";
+import { measureSheafLaplacian } from "@red-cup-engineering/sheaf-laplacian-measurement-service";
 import { measureTechnicalAnalysisFeatures } from "./technical-analysis-feature-measure.mjs";
 import { simulateEventDrivenExecution } from "./simulate.mjs";
 

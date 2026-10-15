@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { formPrincipalBrokerageContract, grantBrokerageAuthority } from "../src/principal-contract.mjs";
+import { formPrincipalBrokerageContract, grantBrokerageAuthority } from "@red-cup-engineering/principal-brokerage-interface";
 const input=()=>({principal:"Équipe 😀",venue:"alpaca-trading-paper",accountReference:"urn:account:fixture",capital:{amount:100,currency:"USD"},risk:{maximumLossAmount:10,maximumOrderNotional:20,maximumAggregateNotional:50,concentrationLimit:0.5},scopes:["positions:read","account:read"],validUntil:"2026-09-06T00:00:00Z"});
 test("contract identity is stable across record order and scope set presentation",()=>{
  const a=formPrincipalBrokerageContract(input());

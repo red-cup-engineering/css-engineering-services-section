@@ -25,6 +25,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@red-cup-engineering/computer-file-engineering-services-section": "workspace:*"
-  }
+    "@red-cup-engineering/computer-file-engineering-services-section": "0.4.0"
+  },
+  "private": false
 }

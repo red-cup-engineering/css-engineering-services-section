@@ -1,7 +1,7 @@
 {
   "name": "@red-cup-engineering/return-risk-feature-measurement-service",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "private": false,
   "type": "module",
   "description": "Measures causal return, relative-return, volatility, drawdown, volume, and price-reference features.",
   "exports": {
@@ -9,5 +9,11 @@
   },
   "scripts": {
     "test": "node --test test/*.test.mjs"
-  }
+  },
+  "files": [
+    "package.json",
+    "README*",
+    "LICENSE*",
+    "src"
+  ]
 }

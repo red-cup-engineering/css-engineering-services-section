@@ -1,7 +1,7 @@
 {
   "name": "@red-cup-engineering/agent-section-descent-assay-service",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "private": false,
   "type": "module",
   "description": "Assays whether independently produced local forecast sections glue, and preserves contradiction without forced consensus.",
   "exports": {
@@ -11,8 +11,14 @@
     "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/signcell": "workspace:*",
-    "@red-cup-engineering/signchain": "workspace:*",
-    "@red-cup-engineering/signcraft": "workspace:*"
-  }
+    "@red-cup-engineering/signcell": "0.1.0",
+    "@red-cup-engineering/signchain": "0.1.0",
+    "@red-cup-engineering/signcraft": "0.1.0"
+  },
+  "files": [
+    "package.json",
+    "README*",
+    "LICENSE*",
+    "src"
+  ]
 }

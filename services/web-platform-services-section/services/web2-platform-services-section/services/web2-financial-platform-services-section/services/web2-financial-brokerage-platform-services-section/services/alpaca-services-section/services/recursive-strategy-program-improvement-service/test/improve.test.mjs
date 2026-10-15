@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createRecursiveStrategyProgramImprovement } from "../src/improve.mjs";
+import { createRecursiveStrategyProgramImprovement } from "@red-cup-engineering/recursive-strategy-program-improvement-service";
 
 const ni = (letter) => `ni:///sha-256;${letter.repeat(43)}`;
 test("generated successor advances only after replay, tournament, review, and paper promotion", async () => {

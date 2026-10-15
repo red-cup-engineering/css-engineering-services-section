@@ -1,7 +1,7 @@
 {
   "name": "@red-cup-engineering/recursive-strategy-program-improvement-service",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "private": false,
   "type": "module",
   "description": "Runs a bounded generate-assay-replay-tournament-review lineage loop that can promote only witnessed paper strategy programs.",
   "exports": {
@@ -11,5 +11,11 @@
     "check": "node --check src/improve.mjs",
     "test": "node --test test/*.test.mjs",
     "verify": "npm run check && npm test"
-  }
+  },
+  "files": [
+    "package.json",
+    "README*",
+    "LICENSE*",
+    "src"
+  ]
 }

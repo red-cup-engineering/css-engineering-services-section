@@ -1,7 +1,7 @@
 {
   "name": "@red-cup-engineering/deterministic-ridge-fit-service",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "private": false,
   "type": "module",
   "description": "Fits and applies a deterministic standardized ridge model to bounded numeric samples.",
   "exports": {
@@ -9,5 +9,11 @@
   },
   "scripts": {
     "test": "node --test test/*.test.mjs"
-  }
+  },
+  "files": [
+    "package.json",
+    "README*",
+    "LICENSE*",
+    "src"
+  ]
 }

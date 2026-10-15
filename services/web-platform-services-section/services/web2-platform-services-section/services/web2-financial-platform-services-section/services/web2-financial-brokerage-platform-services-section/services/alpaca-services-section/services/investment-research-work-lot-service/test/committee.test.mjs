@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createInvestmentResearchCommittee, INVESTMENT_RESEARCH_ROLES } from "../src/committee.mjs";
+import { createInvestmentResearchCommittee, INVESTMENT_RESEARCH_ROLES } from "@red-cup-engineering/investment-research-work-lot-service";
 import {
   INVESTMENT_RESEARCH_CARRIER_ASSERTIONS,
   INVESTMENT_RESEARCH_REQUEST_CARRIER,
@@ -57,7 +57,7 @@ test("transport failures become schema-valid explicit refusal carriers", async (
 });
 
 test("the frontier seats multiple research disciplines using the existing typed provider", async () => {
-  const { INVESTMENT_RESEARCH_FRONTIER_ROLES: roles } = await import("../src/committee.mjs");
+  const { INVESTMENT_RESEARCH_FRONTIER_ROLES: roles } = await import("@red-cup-engineering/investment-research-work-lot-service");
   assert.equal(roles.length, 20);
   assert.equal(new Set(roles.map(({ id }) => id)).size, roles.length);
   for (const name of ["news-claim-provenance", "primary-issuer-disclosures", "options-and-volatility", "obsmetrologia-structure", "information-value-and-search"])

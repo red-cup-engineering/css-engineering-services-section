@@ -3,10 +3,10 @@
 // causal link from dated evidence through competing research programs and
 // model selection to bounded execution, reconciliation, and measured active
 // return.  The broker boundary remains separately owned.
-import { createInvestmentResearchCommittee, INVESTMENT_RESEARCH_FRONTIER_ROLES } from "../services/investment-research-work-lot-service/src/committee.mjs";
+import { createInvestmentResearchCommittee, INVESTMENT_RESEARCH_FRONTIER_ROLES } from "@red-cup-engineering/investment-research-work-lot-service";
 import { createStrategyProgramSynthesisMarket } from "@red-cup-engineering/strategy-program-synthesis-work-lot-service";
 import { assayStrategyProgram } from "@red-cup-engineering/strategy-program-synthesis-work-lot-service/strategy-program-candidate-assay";
-import { createGeneratedStrategyFoldReplay } from "../scripts/replay-folds.mjs";
+import { createGeneratedStrategyFoldReplay } from "@red-cup-engineering/generated-strategy-fold-replay-service";
 import { createCausalPortfolioLearningCircuit } from "../scripts/circuit.mjs";
 import { runMandatedPortfolioCycle } from "./autonomous-portfolio.mjs";
 import { allocateMandatePortfolio } from "@red-cup-engineering/mandate-portfolio-allocation-service";

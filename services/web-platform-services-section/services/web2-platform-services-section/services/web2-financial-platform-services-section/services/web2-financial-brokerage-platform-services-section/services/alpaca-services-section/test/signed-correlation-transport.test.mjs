@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { measureCorrelationGraph } from "../scripts/correlation-graph-measure.mjs";
-import { measureSheafLaplacian } from "../scripts/sheaf-laplacian-measure.mjs";
+import { measureCorrelationGraph } from "@red-cup-engineering/correlation-graph-measurement-service";
+import { measureSheafLaplacian } from "@red-cup-engineering/sheaf-laplacian-measurement-service";
 
 const opposite = { a: [1, 2, 3, 4, 5], b: [-1, -2, -3, -4, -5] };
 test("opposite movements carry an explicit negative transport, not a positive neighbor weight", () => {

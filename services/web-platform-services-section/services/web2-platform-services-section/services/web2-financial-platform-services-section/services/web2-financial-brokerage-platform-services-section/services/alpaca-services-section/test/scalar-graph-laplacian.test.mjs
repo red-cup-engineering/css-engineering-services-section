@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { measureSheafLaplacian } from "../scripts/sheaf-laplacian-measure.mjs";
+import { measureSheafLaplacian } from "@red-cup-engineering/sheaf-laplacian-measurement-service";
 
 test("the existing Laplacian computes undirected scalar Dirichlet energy", () => {
   const result = measureSheafLaplacian({
