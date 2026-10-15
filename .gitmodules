@@ -36,3 +36,7 @@
 	path = services/website-system-engineering-services-section/services/hugo-engineering-services-section/apps/hugo-publisher
 	url = https://github.com/emsenn/hugo-theme.git
 	branch = main
+[submodule "assisted-browser-services-section"]
+	path = services/assisted-browser-services-section
+	url = https://github.com/red-cup-engineering/assisted-browser-services-section.git
+	branch = main
