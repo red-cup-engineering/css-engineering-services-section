@@ -29,6 +29,7 @@
     "./build-cloudflare-worker": "./src/deployment/build-cloudflare-worker.mjs"
   },
   "files": [
+    "bin/deploy-worker-sites.mjs",
     "src",
     "README.md"
   ],
