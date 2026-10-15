@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/web-theming-service",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
   "description": "Derives certified light/dark CSS custom-property palettes and a shared reset and component stylesheet from design tokens. Use when a site needs a themed CSS system rather than a hand-written stylesheet.",
   "engines": {
@@ -23,13 +23,14 @@
     "./design-tokens": "./src/theming-computer/design-tokens.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/metrologic": "workspace:*",
-    "@red-cup-engineering/computer-data-engineering-services-section": "workspace:*",
-    "@red-cup-engineering/css-services-section": "workspace:*",
-    "@red-cup-engineering/html-engineering-services-section": "workspace:*",
-    "@red-cup-engineering/html-structural-projection-service": "workspace:*",
-    "@red-cup-engineering/xml-document-rendering-service": "workspace:*",
-    "@red-cup-engineering/signcell": "workspace:*"
+    "@red-cup-engineering/metrologic": "0.3.0",
+    "@red-cup-engineering/computer-data-engineering-services-section": "0.2.0",
+    "@red-cup-engineering/css-services-section": "0.1.1",
+    "@red-cup-engineering/html-engineering-services-section": "0.1.1",
+    "@red-cup-engineering/html-structural-projection-service": "0.3.1",
+    "@red-cup-engineering/xml-document-rendering-service": "0.1.7",
+    "@red-cup-engineering/signcell": "0.1.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "private": false
 }
