@@ -15,3 +15,7 @@
 	path = apps/activitypub-server
 	url = https://github.com/red-cup-engineering/activitypub-server.git
 	branch = main
+[submodule "computer-web-server"]
+	path = apps/computer-web-server
+	url = https://github.com/red-cup-engineering/computer-web-server.git
+	branch = main

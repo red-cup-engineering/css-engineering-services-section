@@ -1,4 +1,0 @@
-{"e":"doc:hello","a":"has-title","v":"Hello SPOTCOMP","t":"2026-05-27T00:00:00Z"}
-{"e":"doc:hello","a":"has-shp-paragraph","v":"EAVT rows are the trace substrate.","t":"2026-05-27T00:00:01Z"}
-{"e":"doc:hello","a":"project-as-shp","v":true,"t":"2026-05-27T00:00:02Z"}
-{"e":"player:alice","a":"has-capability","v":"project-shp","t":"2026-05-27T00:00:03Z"}
