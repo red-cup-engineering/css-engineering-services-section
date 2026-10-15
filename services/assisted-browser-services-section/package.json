@@ -21,16 +21,22 @@
     "scripts"
   ],
   "dependencies": {
-    "@red-cup-engineering/credential-custody-service": "workspace:*",
+    "@red-cup-engineering/credential-custody-service": "0.1.0",
     "playwright": "1.62.1"
   },
   "scripts": {
     "sign-in": "node scripts/assisted-sign-in.mjs",
     "discover": "node scripts/portal-discover.mjs",
-    "check": "for f in src/*.mjs scripts/*.mjs; do node --check \"$f\" || exit 1; done"
+    "check": "for f in src/*.mjs scripts/*.mjs; do node --check \"$f\" || exit 1; done",
+    "test": "node --test test/*.test.mjs"
   },
   "engines": {
     "node": ">=22.18"
   },
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/assisted-browser-services-section"
+  }
 }
