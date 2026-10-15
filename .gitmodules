@@ -19,3 +19,7 @@
 	path = apps/computer-web-server
 	url = https://github.com/red-cup-engineering/computer-web-server.git
 	branch = main
+[submodule "computer-web-platform"]
+	path = apps/computer-web-platform
+	url = https://github.com/red-cup-engineering/computer-web-platform.git
+	branch = main
