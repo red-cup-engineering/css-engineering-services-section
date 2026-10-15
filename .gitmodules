@@ -11,3 +11,7 @@
 	path = apps/indieweb-server
 	url = https://github.com/red-cup-engineering/indieweb-server.git
 	branch = main
+[submodule "activitypub-server"]
+	path = apps/activitypub-server
+	url = https://github.com/red-cup-engineering/activitypub-server.git
+	branch = main
