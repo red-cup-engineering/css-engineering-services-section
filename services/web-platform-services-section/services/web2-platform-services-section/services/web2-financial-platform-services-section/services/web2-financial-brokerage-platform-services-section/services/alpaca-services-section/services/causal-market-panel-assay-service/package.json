@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/causal-market-panel-assay-service",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "type": "module",
   "description": "Causally aligns observed entity series and refuses leakage, duplicate time, or malformed measures.",

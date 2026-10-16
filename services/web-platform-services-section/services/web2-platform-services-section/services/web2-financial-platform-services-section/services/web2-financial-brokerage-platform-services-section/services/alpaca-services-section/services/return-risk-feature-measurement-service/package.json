@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/return-risk-feature-measurement-service",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "type": "module",
   "description": "Measures causal return, relative-return, volatility, drawdown, volume, and price-reference features.",

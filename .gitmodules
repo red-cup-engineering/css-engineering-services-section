@@ -1,3 +1,31 @@
+[submodule "activitypub-server"]
+	path = apps/activitypub-server
+	url = https://github.com/red-cup-engineering/activitypub-server.git
+	branch = main
+[submodule "browser-site-conformance"]
+	path = apps/browser-site-conformance
+	url = https://github.com/red-cup-engineering/browser-site-conformance.git
+	branch = main
+[submodule "computer-web-platform"]
+	path = apps/computer-web-platform
+	url = https://github.com/red-cup-engineering/computer-web-platform.git
+	branch = main
+[submodule "computer-web-server"]
+	path = apps/computer-web-server
+	url = https://github.com/red-cup-engineering/computer-web-server.git
+	branch = main
+[submodule "indieweb-server"]
+	path = apps/indieweb-server
+	url = https://github.com/red-cup-engineering/indieweb-server.git
+	branch = main
+[submodule "assisted-browser-services-section"]
+	path = services/assisted-browser-services-section
+	url = https://github.com/red-cup-engineering/assisted-browser-services-section.git
+	branch = main
+[submodule "zelo"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/apps/zelo
+	url = https://github.com/red-cup-engineering/zelo.git
+	branch = main
 [submodule "services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section/services/kalshi-services-section"]
 	path = services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section/services/kalshi-services-section
 	url = https://github.com/red-cup-engineering/kalshi-engineering-services-section.git
@@ -7,36 +35,7 @@
 [submodule "services/web-tufte-gui-services-section"]
 	path = services/web-tufte-gui-services-section
 	url = https://github.com/red-cup-engineering/web-tufte-gui-services-section.git
-[submodule "indieweb-server"]
-	path = apps/indieweb-server
-	url = https://github.com/red-cup-engineering/indieweb-server.git
-	branch = main
-[submodule "activitypub-server"]
-	path = apps/activitypub-server
-	url = https://github.com/red-cup-engineering/activitypub-server.git
-	branch = main
-[submodule "computer-web-server"]
-	path = apps/computer-web-server
-	url = https://github.com/red-cup-engineering/computer-web-server.git
-	branch = main
-[submodule "computer-web-platform"]
-	path = apps/computer-web-platform
-	url = https://github.com/red-cup-engineering/computer-web-platform.git
-	branch = main
-[submodule "browser-site-conformance"]
-	path = apps/browser-site-conformance
-	url = https://github.com/red-cup-engineering/browser-site-conformance.git
-	branch = main
-[submodule "zelo"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/apps/zelo
-	url = https://github.com/red-cup-engineering/zelo.git
-	branch = main
-
 [submodule "hugo-publisher"]
 	path = services/website-system-engineering-services-section/services/hugo-engineering-services-section/apps/hugo-publisher
 	url = https://github.com/emsenn/hugo-theme.git
-	branch = main
-[submodule "assisted-browser-services-section"]
-	path = services/assisted-browser-services-section
-	url = https://github.com/red-cup-engineering/assisted-browser-services-section.git
 	branch = main
