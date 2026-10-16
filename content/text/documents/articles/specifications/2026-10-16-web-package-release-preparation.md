@@ -69,3 +69,16 @@ and dependency admission, not to a parallel metadata system.
 - Clearly distinguish qualified source composition from unresolved publication
   admission and frozen registry consumer receiving. No merge, publish, install
   override, downstream SWARM migration, retirement or live activation.
+
+## Receiving result
+
+The prepared source passes the unchanged 95-case suite, all 20 packed runtime
+exports and all 19 packed type exports with strict checking; normal prepack
+passes. The installed 0.14.3 owner's module-graph assay admits both carriers
+after the literal-request correction. Exact source equality covers 69 Web and
+38 HTTP package files. See data/records/receiving/web-release-preparation-2026-10-16.
+
+This does not complete publication readiness: private-source audience authority
+is missing, three Web and two HTTP lint-tool ranges remain unqualified, and
+neither package is released for frozen registry receiving. No lock, visibility
+change, installation, registry write or downstream migration was performed.
