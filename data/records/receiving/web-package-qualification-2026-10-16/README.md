@@ -47,3 +47,22 @@ production wiring and the complete native run are finished.
 
 No merge, release, activation, source retirement, connector/session mutation,
 federation probe, installation, spending or change to the three held effects.
+
+## Integrated checkpoint after the preparatory checkpoint
+
+The production wiring and direct test enrollment are now present. The original
+checkpoint files above retain their historical meaning; integrated-* files are
+the separate 10:47 UTC run. integrated-source-receipt.json verifies every source,
+test and package/config byte against that tested workspace snapshot.
+
+Native check/build passed; native tests passed 89/90, retaining the 15 taxonomy
+and 19 theme cases. The sole failing original sync HTTP case stops at its first
+GET500, so its later no-import assertions have not yet executed. It currently
+mounts the Node-context App in a Fetch-context engine. The correct owning
+pipeline/adapter and complete HTML provider remain composition work. Neither
+partial provider output nor these 89 passes establishes full qualification.
+
+The exact historical ordinary token fixture and a Unicode-value fixture are
+byte-identical with JSON0.4.0. Mixed-case extension keys differ in new token
+ordering; all historical tokens still verify. See the owning specification and
+test/fixtures/indieauth-byte-fixtures.json; no new auth policy is inferred.

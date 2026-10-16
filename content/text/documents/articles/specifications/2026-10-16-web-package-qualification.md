@@ -181,3 +181,58 @@ or the package test command. All original production files, package metadata,
 taxonomy tests and 19 theme cases remain unchanged. Full native qualification
 is pending. See the separate checkpoint receipt for exact commands/providers.
 
+## Integrated production checkpoint, 10:47 UTC
+
+The production entrypoints now consume the received wire/evidence boundaries.
+ActivityPub and Micropub import Web's wire types; sync re-exports the Web wire
+contract; theming uses ThemeJudgment/ThemeAssessment and genuine evidence;
+traversal returns TraversalEvidence without altering hop order or multiplicity;
+feed history exposes the supplied witness and evidence beside its utterance.
+Webmention's test log types now derive from FetchLike's parameter contract.
+The manifest directly declares SignCell 0.4.2 and JSON 0.4.0, removes the unused
+Animating/Relating dependencies and declares Node >=24.2.0.
+
+The two reviewed helper modules remain byte-identical to checkpoint 9b09e89.
+Native check/build pass (the previous 13/11 diagnostics are cleared). The
+directly enrolled native suite passes 89 of 90 cases, including all 15 taxonomy
+and all 19 original theme cases. The added boundary tests substitute supplier
+results only in disposable child test processes; production has no injection
+hook. Missing/noncallable exports and malformed carriers are refused.
+
+The historical auth-report test now checks the actual HTTP owner's utterances
+for the same request judgment instead of its removed datoms representation.
+No auth decision is changed. The remaining sync HTTP case fails at initial GET
+(500 versus 200), before its refusal/no-import assertions execute: its Node App
+Context contract was incorrectly passed to the portable Fetch engine. The
+candidate private response helper now returns Response with the same body,
+status and headers, but this does not resolve the incompatible context. A
+genuine existing Node-context pipeline or established adapter must be selected.
+No test-only transport or auth-policy adaptation is acceptable.
+
+### Token bytes and compatibility
+
+The original source fixture from web-indieauth c3d61b29 and a supplemental
+well-formed Unicode-value fixture produce identical token bytes and HMAC with
+JSON 0.4.0. The mixed-case extension-key fixture (a/Z) differs: historical
+localeCompare ordering and RFC8785 UTF-16 ordering are not equivalent. Both
+exact strings are recorded in test/fixtures/indieauth-byte-fixtures.json.
+Every historical fixture remains accepted by the unchanged raw-signing-input
+verifier. Expiry, wrong-key refusal, claims, scope and token extraction pass.
+
+The immediately preceding Web receiving source already delegated serialization
+to canonical(requireJsonValue(...)) from a now-removed Relating export. Its
+resolved Relating 0.10.8 has no executable codecs contract; therefore it cannot
+establish a currently working byte oracle. We do not infer a new auth policy or
+claim universal legacy byte equivalence. The source-level change is to the real
+canonical owner, with the above older wire-byte difference explicit. Historical
+fixture acceptance is preserved; exact-byte consumers using noncanonical
+extension ordering must not assume newly minted strings remain identical.
+
+### Composition still pending
+
+The diagnostic graph still contains partial legacy HTML compilation and emitted
+output from a failed HTTP-core build. Native Web results on that graph are
+useful receiving evidence, not a complete-provider qualification claim. Complete
+installed canonical HTML/HTTP providers are being compared before any upstream
+repair. Normal prepack and every packed runtime/declaration export remain open.
+
