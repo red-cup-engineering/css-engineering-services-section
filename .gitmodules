@@ -28,10 +28,10 @@
 	branch = main
 [submodule "services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section/services/kalshi-services-section"]
 	path = services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section/services/kalshi-services-section
-	url = https://github.com/red-cup-engineering/kalshi-engineering-services-section.git
+	url = https://github.com/red-cup-engineering/kalshi-services-section.git
 [submodule "services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section/services/polymarket-services-section"]
 	path = services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section/services/polymarket-services-section
-	url = https://github.com/red-cup-engineering/polymarket-engineering-services-section.git
+	url = https://github.com/red-cup-engineering/polymarket-services-section.git
 [submodule "services/web-tufte-gui-services-section"]
 	path = services/web-tufte-gui-services-section
 	url = https://github.com/red-cup-engineering/web-tufte-gui-services-section.git
