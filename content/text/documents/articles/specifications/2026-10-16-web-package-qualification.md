@@ -117,8 +117,13 @@ assignment or charge seeding is performed by traversal.
 Feed claims retain their complete/archive/subscription and contrary predicate
 selection and their potential/active judgment data. Supplied witnesses remain
 available unchanged in the Web record, outside the utterance identity.
-SignCell receives the actual asserted predicate's positive witness, never an
-automatic negative side caused by the summary classification.
+The proposed shared boundary calls SignCell's genuine utterEvidence operation
+and cell constructor. Each cell is witnessed by its own utterance: this records
+the actual asserted predicate without attributing it to an actor. The opaque
+caller witness remains unchanged on the Web evidence record; it is not forced
+through JSON admission or inserted into canonical identity. A function-bearing
+testimony object is therefore still retained. There is no automatic negative
+side caused by the Web summary classification.
 foldFeedHistoryClaims folds Data knowledgeJoinReading from absurd and retains
 the original classifications. Empty folds, all four names, commutativity and
 repetition must be covered explicitly.
@@ -169,5 +174,10 @@ consumer retirement is made by this source increment.
   diagnostic graph need explicit reconciliation. Emitted output from a failed
   provider build is not evidence that this new complete graph is qualified.
 
-Status: requirements and responsibilities recorded before implementation.
+Status at the first checkpoint: requirements/design committed before two
+preparatory helper modules were added. The helpers pass strict compilation and
+five focused contract tests. They are not yet wired to production entrypoints
+or the package test command. All original production files, package metadata,
+taxonomy tests and 19 theme cases remain unchanged. Full native qualification
+is pending. See the separate checkpoint receipt for exact commands/providers.
 
