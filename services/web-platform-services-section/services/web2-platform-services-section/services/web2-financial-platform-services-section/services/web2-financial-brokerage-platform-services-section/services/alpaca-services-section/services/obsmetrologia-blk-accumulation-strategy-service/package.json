@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/obsmetrologia-blk-accumulation-strategy-service",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": false,
   "type": "module",
   "description": "Causal topological BLK accumulation strategy benchmarked to SPY.",

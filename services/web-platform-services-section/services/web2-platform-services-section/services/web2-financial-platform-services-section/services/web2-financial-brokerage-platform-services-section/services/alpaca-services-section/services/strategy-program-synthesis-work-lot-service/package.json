@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/strategy-program-synthesis-work-lot-service",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "type": "module",
   "description": "Contracts provider-distinct inference workers to generate bounded executable strategy programs and falsification tests from an exact evidence context.",
   "exports": {
@@ -16,11 +16,11 @@
     "src/"
   ],
   "dependencies": {
-    "@red-cup-engineering/computer-inference-engine": "0.1.0",
     "@red-cup-engineering/json-schema-services-section": "0.5.0",
-    "@red-cup-engineering/javascript-node-services-section": "0.3.1",
     "@red-cup-engineering/uri-services-section": "0.1.1",
-    "@red-cup-engineering/computer-content-address-engineering-services-section": "0.2.0"
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "0.2.0",
+    "@red-cup-engineering/javascript-node-services-section": "0.3.2",
+    "@red-cup-engineering/computer-inference-engine": "0.1.2"
   },
   "peerDependencies": {},
   "peerDependenciesMeta": {

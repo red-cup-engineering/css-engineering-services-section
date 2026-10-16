@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/sheaf-laplacian-measurement-service",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "type": "module",
   "description": "Measures graph-Laplacian smooth and residual components and section disagreement energy for any bounded risk field.",
