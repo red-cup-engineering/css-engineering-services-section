@@ -15,7 +15,7 @@
     "specification": "content/text/documents/articles/specifications/2026-10-16-web-package-release-preparation.md",
     "accountable-carrier": "https://github.com/coesite-operations/operations-services-section/issues/10",
     "accepted-source": "4990fcfe89975d72b8628d1e5a887518301c48c9",
-    "status": "source preparation passes 95 tests, all packed exports and both owner module graphs; audience authority, exact lint tooling and frozen registry receiving remain unresolved",
+    "status": "source preparation passes 95 tests, all packed exports and both owner module graphs; qualify-web-lint-toolchain resolves exact lint admission and manifest ranges; audience authority and frozen registry receiving remain unresolved",
     "acceptance-evidence": "data/records/receiving/web-release-preparation-2026-10-16/source-acceptance.json"
   }
 }

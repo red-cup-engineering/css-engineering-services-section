@@ -62,6 +62,11 @@ def run(label,args,cwd):
  commands.append(row);(work/'commands.json').write_text(json.dumps(commands,indent=2)+'\n')
  print(json.dumps({**row,'tail':p.stdout[-400:] if label.endswith('pack') else p.stdout[-5500:]}),flush=True)
  return p
+
+def run_gate(label,args,cwd):
+ p=run(label,args,cwd)
+ if p.returncode:raise RuntimeError(label+' failed with exit '+str(p.returncode))
+ return p
 def pack(label,path):
  if label=='http-pack' and any(c['stage']==label and c['exit']==0 for c in commands):
   output=(work/(label+'.log')).read_text()
@@ -104,8 +109,8 @@ with open('/run/user/1000/agent-heavy.lock','a+') as lease:
   types.append('import * as e'+str(i)+' from '+json.dumps(spec)+'; void e'+str(i)+';')
  (consumer/'runtime.mjs').write_text('\n'.join(runtime)+'\nconsole.log("All '+str(len(entries))+' declared packed runtime exports loaded");\n')
  (consumer/'types.mts').write_text('\n'.join(types)+'\n')
- run('packed-runtime',[node,'runtime.mjs'],consumer)
- run('packed-types',[node,str(ts/'bin/tsc'),'--noEmit','--strict','--module','NodeNext','--target','ES2024','--lib','ES2024','--types','node','--skipLibCheck','false','types.mts'],consumer)
+ run_gate('packed-runtime',[node,'runtime.mjs'],consumer)
+ run_gate('packed-types',[node,str(ts/'bin/tsc'),'--noEmit','--strict','--module','NodeNext','--target','ES2024','--lib','ES2024','--types','node','--skipLibCheck','false','types.mts'],consumer)
  for p in providers:
   after=snapshot(Path(p['path']));assert after['treeSha256']==p['treeSha256'],p['name']
  (work/'providers-unchanged.json').write_text(json.dumps({'observedAt':datetime.now(timezone.utc).isoformat(),'allDirectProvidersUnchanged':True,'count':len(providers)},indent=2)+'\n')

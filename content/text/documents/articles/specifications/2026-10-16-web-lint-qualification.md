@@ -31,3 +31,25 @@ Publication and private-marker removal remain held pending audience authority.
 The two package identities are still absent from their canonical registry. No
 downstream release receiving, migration, deployment or unrelated effect is
 authorized by this increment.
+
+## Received result
+
+The ordinary isolated install succeeded without age/security exceptions. Its
+generated lock contains the 90 admitted tooling packages. Registry SHA-512
+identities match both lock entries and pnpm content-addressed store keys; the
+three installed lint package manifests match those exact identities.
+
+All four actual lint runs passed without errors or warnings: accepted and
+prepared Web each checked 42 files; accepted and prepared HTTP each checked
+34. The authored configurations define no explicit lint rules; this result
+establishes their parser/project-service execution, not additional style or
+semantic rules. No configuration or source cleanup was needed.
+
+The five ranged declarations are now exact. Fresh native acceptance retains
+95 passing tests, both normal prepack lifecycles, 20 runtime and 19 typed Web
+exports. Both owner module graphs pass and both dependency manifest assays
+have zero violations. The actual packed gate implementation and call sites
+reject runtime exit 17 and type-check exit 23; only zero/zero continues.
+All source and test files, versions and private markers are unchanged.
+
+Evidence: data/records/receiving/web-lint-qualification-2026-10-16/.

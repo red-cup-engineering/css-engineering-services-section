@@ -60,3 +60,9 @@ receive the pair. No lock was fabricated with local artifacts or source links.
 The qualified retained complete artifacts support source acceptance only.
 Publication, consumer locks/receiving, downstream SWARM migration, live effects
 and the three unrelated holds remain outside this completed source increment.
+
+Subsequent source increment: ../web-lint-qualification-2026-10-16/ records an
+admitted exact lint toolchain, zero remaining manifest dependency violations,
+and fresh 95-test/pack/export acceptance. It supersedes the lint prerequisite
+above while preserving these historical observations and the publication hold.
+The retained qualify-preparation.py now rejects nonzero packed-consumer exits.

@@ -14,6 +14,7 @@
     "base": "ea120f8011bb420e87f4f9f4a4f015270194c369",
     "accountable-carrier": "https://github.com/coesite-operations/operations-services-section/issues/10",
     "specification": "content/text/documents/articles/specifications/2026-10-16-web-lint-qualification.md",
-    "status": "Qualification in progress. Both private markers and publication hold remain. No registry receiving claim."
+    "status": "Exact lint toolchain admitted with unchanged install policy; actual accepted/prepared configurations pass; both packed-consumer failure paths reject continuation; pinned source retains 95 tests and all packed exports. Both private markers and publication hold remain. No registry receiving claim.",
+    "acceptance-evidence": "data/records/receiving/web-lint-qualification-2026-10-16/source-acceptance.json"
   }
 }
