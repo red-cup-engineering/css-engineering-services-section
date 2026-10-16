@@ -36,7 +36,7 @@ The existing Operations issue 10 remains the accountable carrier.
 | R1 Complete public surface | Preserve all exported source types and functions, ordinary scheme indexing, slugs, item ordering, pagination, related ranking, escaped archive HTML, and negotiated JSON/HTML resources. Publish the receiving entry as `/taxonomy`. |
 | R2 Knowledge family | `absurd=(0,0)`, `potential=(1,0)`, `active=(0,1)`, `stable=(1,1)`. Missing cells read absurd. Merging delegates to Data's knowledge join; other reading families cannot enter the public cell type. |
 | R3 Relation semantics | Preserve custom/default predicates, subject order, deterministic term order, potential-only members/termsOf/related, stable contested membership, duplicate/idempotent evidence and opposite-order evidence. |
-| R4 Owner composition | Use real Data 0.2.0 `/four`, URI, HTML and HTTP owners where equivalent. Reuse pagination contracts without inventing a second institutional carrier. |
+| R4 Owner composition | Use real Data 0.2.0 `/four`, URI, HTML and HTTP owners. Adopt the URI owner's stricter well-formed-Unicode admission as an explicit migration; reuse equivalent HTML and pagination contracts without inventing a second institutional carrier. |
 | R5 Consumer evidence | Exercise SWARM's actual positive/negative/both/neither projections and ordinary archive/relation-document behavior from pinned source; record the old HTTP adapter as an unresolved live-consumer migration. |
 | R6 Reviewable delivery | Original seven tests, exhaustive 16 joins, escaping/ordering/custom-path tests, genuine current HTTP negotiation including 404/406, native check/build/test, and a packed subpath import with TypeScript consumption. Record unavailable prerequisites explicitly. Independent review precedes merge. |
 
@@ -73,7 +73,11 @@ knowledge readings and the installed real provider.
 
 - `src/taxonomy/index.mts` retains the complete source API. A small private
   checked Data boundary supplies only knowledge joining.
-- URI's `assertHttpUrl` replaces the equivalent local URL validator.
+- URI's `assertHttpUrl` replaces the local URL validator and deliberately
+  tightens admission. It requires well-formed Unicode before parsing an
+  absolute HTTP(S) URL. The legacy validator used `new URL` directly, so a
+  lone surrogate in a path could be accepted after replacement-character
+  normalization. The validators are not equivalent on that input.
   HTML's `escapeHtml` supplies escaping after equivalence inspection.
 - HTTP representation constructors and `App/Resource` come from
   `computing-with-http/app`; acceptance exercises the genuine owner handler.
@@ -94,6 +98,27 @@ knowledge readings and the installed real provider.
   `/taxonomy` type/import export, taxonomy namespace and test entries.
   Tests and checked consumer fixtures do not enter production semantics.
 
+## URI admission migration scenarios
+
+Ordinary well-formed HTTP and HTTPS URL strings remain accepted, including
+non-ASCII text and correctly paired surrogate characters. Taxonomy retains
+the admitted item URL string as supplied; this migration does not introduce
+an item-URL rewriting step.
+
+For a URL whose path contains a lone high surrogate (U+D800) or lone low
+surrogate (U+DC00), legacy `new URL` parsing produces a replacement character
+(serialized as `%EF%BF%BD`) and would pass the old protocol check. The canonical
+URI owner instead refuses the original ill-formed string with a `TypeError`
+naming the field and its well-formed-Unicode requirement. This stricter
+admission is intentional: callers must supply a well-formed URL instead of
+depending on implicit replacement.
+
+The receiving scenario exercises both outcomes through item indexing,
+related-item validation, app construction, and archive base-URL validation.
+The URI owner and production taxonomy validation remain unchanged. HTTP(S)
+scheme restrictions, archive ordering/pagination, HTTP responses and FOUR
+semantics retain their existing contracts.
+
 ## Consumer disposition
 
 `emsenn/swarm@72847d0a5a0e3303a0ec417e793daabb0634fa8d` imports the
@@ -111,7 +136,7 @@ deployment and merge remain outside the increment.
 
 ## Verification record
 
-The complete API is implemented. Focused compilation, 14 acceptance cases,
+The complete API is implemented. Focused compilation, 15 acceptance cases,
 strict packed-subpath TypeScript consumption and the diagnostic packed runtime
 import pass. Native check/build/test and normal prepack remain blocked by the
 same existing owner-contract failures reproduced on the unchanged base.
@@ -122,4 +147,9 @@ FOUR bytes from the pinned source; all 16 joins agree, and all 32 installed
 package files match the existing integrity index. These records do not establish
 the installed release's Git source commit. Independent review and full native
 qualification remain outstanding; this is a source-only draft.
+
+The URI admission review adds an explicit acceptance/refusal scenario; the
+latest focused run and unchanged-production-source check are recorded in
+`uri-review-acceptance.log` and `uri-review-receipt.json` in that evidence
+directory. The earlier 14-case result remains historical evidence.
 

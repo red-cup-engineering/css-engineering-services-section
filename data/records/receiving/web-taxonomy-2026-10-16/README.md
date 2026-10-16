@@ -31,6 +31,27 @@ See `taxonomy-acceptance.log`, `receiving-commands.json`,
 `publication-commands.json`, and `publication-source-hashes.json`.
 Focused tsconfig files are included so their scope is reviewable.
 
+## URI admission review follow-up
+
+Independent review identified an intentional migration that the specification
+had incorrectly described as equivalent validation. Canonical `assertHttpUrl`
+requires well-formed Unicode. Legacy `new URL` parsing accepted lone surrogates
+in a URL path by replacement-character normalization. The requirement and
+specification now document the stricter refusal explicitly.
+
+The new scenario admits ordinary HTTP(S), non-ASCII text and paired-surrogate
+URLs, preserves admitted item strings, and refuses lone high/low surrogates
+through indexing, related-item validation, app construction and archive base
+validation. It also demonstrates the legacy replacement-character result.
+Production code and the URI owner are unchanged; the validation is not weakened.
+
+Both focused compilations and all **15 acceptance cases** pass in the latest
+run under the existing exclusive compute lease. See `uri-review-acceptance.log`
+and `uri-review-receipt.json` for commands, times and the changed test's hash.
+The prior 14-case and packed-import receipts remain historical evidence;
+production source is byte-identical to that accepted snapshot. Native baseline
+repair and full native qualification remain outstanding.
+
 ## Native package failures remain
 
 The unchanged base and current source use the same existing dependencies.
