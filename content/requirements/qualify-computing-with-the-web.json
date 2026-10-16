@@ -23,7 +23,8 @@
     "specification": "content/text/documents/articles/specifications/2026-10-16-web-package-qualification.md",
     "accountable-carrier": "https://github.com/coesite-operations/operations-services-section/issues/10",
     "reviewed-taxonomy-head": "8fb1a6a18e926bdb0da0ca47b3cb43f8271764bc",
-    "status": "design recorded before implementation; qualification pending"
+    "status": "native check/build, 95 tests, normal prepack and every packed runtime/type export passed on the complete recorded graph; review pending, no merge/release/activation",
+    "acceptance-evidence": "data/records/receiving/web-package-qualification-2026-10-16/final-source-receipt.json"
   }
 }
 

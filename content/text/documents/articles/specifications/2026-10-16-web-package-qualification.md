@@ -236,3 +236,82 @@ useful receiving evidence, not a complete-provider qualification claim. Complete
 installed canonical HTML/HTTP providers are being compared before any upstream
 repair. Normal prepack and every packed runtime/declaration export remain open.
 
+## Complete provider selection
+
+The installed Computer Web Server 0.6.2 `/native-application` export supplies
+`nativeHttpHandler(app)`, the genuine Node Context transport required by sync.
+Its installed module SHA-256 is
+`07d5aab47461b416625f85b66e0b29277e6f976a1132ca3d50f537cfae66e716`.
+The corresponding source owner is computer-web-server at
+`b70b7a6c73ba58af3fe4c00b90f0789338f23417`. Artifact and source identities are
+recorded separately; a version number alone is not a byte-equality assertion.
+The original HTTP case passes through this adapter, including its refused and
+rate-limited POST requests and explicit unchanged import count.
+The private response helper is restored byte-for-byte to its original `Repr`
+contract. The temporary Response workaround from the diagnostic checkpoint is
+removed. A direct handler case uses the genuine provider's `contextFor` and
+asserts the original representation object, including cache control and body.
+An additional HTTP case posts one valid plus one invalid assertion: although
+the pure validator retains accepted entries beside faults, the transport
+refuses the entire batch and never calls `importAssertions`.
+
+Web's only use of legacy HTTP core was `getSignedCookie`. HTTP 0.6.2 publishes
+that same Node transport contract at `/cookies`; Web now checks its JavaScript
+export and string-or-null return without an ambient type stub. Signing remains
+in the unchanged HTTP primitive codec. Cross-provider fixtures compare exact
+HMAC bytes, Unicode/dotted/empty values, missing cookies, malformed input,
+wrong key, wrong name/salt, duplicate names and tampering. Empty signed values
+remain refused by both implementations. No cookie/auth policy is introduced.
+
+HTML Structural Projection 0.3.3 publishes all three rendering operations Web
+uses at `/string-rendering`. Web delegates through a checked JavaScript
+boundary, preserving the existing public parameter types. The complete
+installed package replaces the partial legacy HTML compilation. Canonical
+HTML preserves quote/ampersand/bracket escaping, boolean attributes, trusted
+children and XHTML void spelling. There is an explicit lexical migration:
+carriage return becomes `&#13;` and NUL becomes U+FFFD, whereas legacy HTML
+emitted these characters raw. These two cases are now fixtures; universal
+historical HTML byte equivalence is not claimed. No local escaping algorithm
+or synthetic HTML implementation is substituted for the owner.
+The normalization applies to escaped shell values, not trusted article markup:
+both reference themes retain an article containing literal CR/NUL byte-for-byte
+while its page title takes the canonical escaping. The original 19 reference
+theme cases, including article-rewriting refusal, remain enrolled.
+
+Direct runtime providers are pinned to the versions selected for this graph:
+Web Server 0.6.2, HTTP 0.6.2, HTML Structural Projection 0.3.3, Serialized
+Content 0.1.0, URI 0.1.1, Triplet 0.1.0, Data 0.2.0, JSON 0.4.0 and SignCell
+0.4.2. The unchanged workspace HTTP primitives are fully checked, built and
+normally packed first; Web consumes their complete extracted package. Neither
+legacy HTTP core's failed output nor partial HTML output remains in the graph.
+Installed providers are read from the existing immutable registry runtime.
+No package installation, service activation, access change or retirement occurs.
+
+The token fixtures now also exercise Unicode extension keys (z/ä): as with
+mixed-case keys, the historical localeCompare order differs from canonical
+JSON. The existing raw-byte verifier accepts both recorded historical tokens.
+
+## Final acceptance
+
+The final composition passed native check/build/test (95/95), normal prepack,
+all 20 declared packed runtime imports and all 19 declared packed type imports
+with strict TypeScript and skipLibCheck=false, 11:09:35–11:10:05 UTC. Node was
+24.19.0, TypeScript 5.9.3 and @types/node 22.7.5. The unchanged HTTP primitive
+provider had already passed check/build and normal prepack at 11:03:25–11:03:32
+UTC; its extracted package remained byte-identical throughout Web qualification.
+
+The receipt compares all 69 package source/test/config files to the tested
+snapshot, records exact provider paths/content hashes and verifies that all
+ten direct provider trees remained unchanged. The reviewed evidence and wire
+helpers remain byte-identical. The full original sync source now differs only
+in the wire import and public re-exports; its validator, authentication,
+limiting and Repr behavior are unchanged. All original taxonomy/theme cases
+remain enrolled. The genuine native HTTP mixed-batch case observes zero import
+calls, and article-byte preservation covers CR/NUL explicitly.
+
+See `data/records/receiving/web-package-qualification-2026-10-16/final-*` for
+actual commands, timestamps, outputs, packed artifact SHA-256 and source hashes.
+There is no remaining failing package acceptance. This establishes qualification
+of the recorded composition; it does not merge, release or activate it, retire
+source/consumers, or alter the three unrelated held effects.
+

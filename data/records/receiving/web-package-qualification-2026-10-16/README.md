@@ -1,4 +1,35 @@
-# Web package qualification checkpoint
+# Web package qualification
+
+Final acceptance passed on 2026-10-16, 11:09:35–11:10:05 UTC. The final-*
+files are the authoritative complete-provider run; earlier checkpoint and
+integrated files retain their historical meaning.
+
+- Native check/build/test: passed, 95/95 tests, including all 15 taxonomy and
+  19 original theme cases, original sync refusal/rate limiting, direct Repr
+  behavior and zero import calls for a mixed valid/invalid batch.
+- Normal npm pack executed prepack -> rebuild -> clean/build and passed.
+- All 20 declared packed runtime exports load. All 19 packed type exports
+  pass strict consumption with skipLibCheck=false.
+- final-source-receipt.json compares all 69 package source/test/config files
+  byte-for-byte with the tested snapshot and records their SHA-256 hashes.
+- final-providers.json records exact versions, paths, content tree hashes and
+  the complete normally packed HTTP primitive artifact. All ten direct provider
+  trees remained unchanged through the run. The nine installed providers are
+  in the immutable registry runtime; no partial legacy provider remains.
+- final-commands.json gives actual commands, UTC intervals and exit codes.
+  Packed consumer files and qualification/recording scripts are retained here.
+
+The original private sync Repr contract is restored; its only production
+differences from the received source are the wire import and public re-exports.
+Canonical JSON ordering can change new token bytes for mixed-case/Unicode
+extension keys; historical raw tokens still verify. Canonical HTML normalizes
+escaped CR/NUL, while the actual article bytes remain intact in both reference
+themes. These migrations have explicit fixtures and specification text.
+
+No package acceptance remains failing. This is qualification evidence, with no
+merge, release, activation, source retirement or change to the three held effects.
+
+## Historical preparatory checkpoint
 
 This is a preparatory checkpoint, not native package qualification or release.
 It is stacked on reviewed taxonomy head 8fb1a6a18e926bdb0da0ca47b3cb43f8271764bc.
@@ -28,7 +59,7 @@ checkpoint-receipt.json records observation times, commands, historical blob
 identities, provider paths and file SHA-256 hashes, and the existing compute lease.
 checkpoint-helper-tests.log is the focused test output. No tests remain running.
 
-## Pending before delivery
+## Pending at that historical checkpoint
 
 Wire the helpers into sync/ActivityPub/Micropub, theming/traversal/feed; migrate
 IndieAuth to the typed JSON exports; derive webmention test types from FetchLike;
