@@ -77,12 +77,19 @@ knowledge readings and the installed real provider.
   HTML's `escapeHtml` supplies escaping after equivalence inspection.
 - HTTP representation constructors and `App/Resource` come from
   `computing-with-http/app`; acceptance exercises the genuine owner handler.
+  Inspection of the current HTTP 0.6.2 engine shows it requires a standard
+  `Response`, although the older typed App accepts representation records
+  too. Taxonomy converts its string representations to Responses, using the
+  HTTP owner's cache serializer. It does not invent a req/res/send adapter.
   Preserve pretty JSON with newline, public 300-second cache metadata, routes,
   page-query normalization, 404 body and 406 negotiation.
 - Pagination reuse must preserve the source's page clamp, encoded path
   expansion and links. The shared page-count and link contracts are eligible;
   stricter pagination argument validation or changed navigation markup is
   not silently substituted.
+  The dependency-free page-count functions move intact to
+  `pagination/count.mts` and remain re-exported from the original entry;
+  taxonomy therefore does not load unrelated pagination evidence machinery.
 - Package metadata adds the genuine Data dependency, the conditional
   `/taxonomy` type/import export, taxonomy namespace and test entries.
   Tests and checked consumer fixtures do not enter production semantics.
