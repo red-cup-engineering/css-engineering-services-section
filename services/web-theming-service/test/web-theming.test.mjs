@@ -212,7 +212,7 @@ test("admitTheme judges a well-formed theme as satisfying the contract and a mal
   const good = decodeTheme({ name: "good", seeds: SEEDS });
   const goodAdmission = admitTheme(good);
   assert.equal(goodAdmission.admitted, true);
-  assert.equal(goodAdmission.value, "potential");
+  assert.equal(goodAdmission.reading, "potential");
 
   const bad = { name: "", css: 42, head: null, header: null, footer: null, wrap: null };
   const badAdmission = admitTheme(bad);
