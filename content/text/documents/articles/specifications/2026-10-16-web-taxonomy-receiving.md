@@ -111,7 +111,15 @@ deployment and merge remain outside the increment.
 
 ## Verification record
 
-Pending implementation. Results, exact commands, dependency identities,
-packed-import evidence and unresolved blockers will be recorded alongside
-this specification before review.
+The complete API is implemented. Focused compilation, 14 acceptance cases,
+strict packed-subpath TypeScript consumption and the diagnostic packed runtime
+import pass. Native check/build/test and normal prepack remain blocked by the
+same existing owner-contract failures reproduced on the unchanged base.
+
+See `data/records/receiving/web-taxonomy-2026-10-16/README.md` and its command,
+diagnostic and supplier-integrity receipts. Installed Data 0.2.0 has different
+FOUR bytes from the pinned source; all 16 joins agree, and all 32 installed
+package files match the existing integrity index. These records do not establish
+the installed release's Git source commit. Independent review and full native
+qualification remain outstanding; this is a source-only draft.
 
