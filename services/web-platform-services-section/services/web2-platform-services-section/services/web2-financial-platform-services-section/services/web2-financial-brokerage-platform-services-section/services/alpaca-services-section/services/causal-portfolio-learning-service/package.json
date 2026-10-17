@@ -10,5 +10,11 @@
   "scripts": {
     "check": "node --check src/circuit.mjs",
     "test": "node --test test/*.test.mjs"
+  },
+  "devDependencies": {
+    "@red-cup-engineering/mandate-portfolio-allocation-service": "0.2.3",
+    "@red-cup-engineering/model-tournament-service": "0.1.2",
+    "@red-cup-engineering/purged-walk-forward-fold-service": "0.1.2",
+    "@red-cup-engineering/transaction-cost-replay-service": "0.1.3"
   }
 }
