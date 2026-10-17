@@ -6,7 +6,7 @@ import { assayCausalPanel } from "../../causal-market-panel-assay-service/src/as
 import { measureCausalPatchNovelty } from "../../causal-tiling-novelty-measurement-service/src/measure.mjs";
 import { measureCorrelationGraph } from "../../correlation-graph-measurement-service/src/measure.mjs";
 import { fitDeterministicRidge, predictDeterministicRidge } from "../../deterministic-ridge-fit-service/src/ridge.mjs";
-import { allocateMandatePortfolio } from "../../mandate-portfolio-allocation-service/src/allocate.mjs";
+import { allocateMandatePortfolio } from "@red-cup-engineering/mandate-portfolio-allocation-service";
 import { selectModelCandidate } from "@red-cup-engineering/model-tournament-service";
 import { formPurgedWalkForwardFolds } from "@red-cup-engineering/purged-walk-forward-fold-service";
 import { measureReturnRiskFeatures } from "../../return-risk-feature-measurement-service/src/measure.mjs";
