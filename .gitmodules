@@ -141,3 +141,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/coinbase-x402-bazaar-border
 	url = https://github.com/red-cup-engineering/coinbase-x402-bazaar-border.git
 	branch = main
+[submodule "causal-tiling-novelty-measurement-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/causal-tiling-novelty-measurement-service
+	url = https://github.com/red-cup-engineering/causal-tiling-novelty-measurement-service.git
+	branch = main
