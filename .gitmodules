@@ -101,3 +101,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/services/discord-community-moderation-planning-service
 	url = https://github.com/red-cup-engineering/discord-community-moderation-planning-service.git
 	branch = main
+[submodule "gcloud-cloud-build-image-fabrication-service"]
+	path = services/web-platform-services-section/services/cloud-services-section/services/gcloud-services-section/services/gcloud-cloud-build-image-fabrication-service
+	url = https://github.com/red-cup-engineering/gcloud-cloud-build-image-fabrication-service.git
+	branch = main
