@@ -181,3 +181,7 @@
 	path = services/web-platform-services-section/services/web3-platform-services-section/services/561-group-hive-blockchain-services-section
 	url = https://github.com/red-cup-engineering/561-group-hive-blockchain-services-section.git
 	branch = main
+[submodule "slack-engineering-services-section"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/slack-engineering-services-section
+	url = https://github.com/red-cup-engineering/slack-engineering-services-section.git
+	branch = main
