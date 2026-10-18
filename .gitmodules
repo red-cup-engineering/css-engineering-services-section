@@ -189,3 +189,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-alert-watch-service
 	url = https://github.com/red-cup-engineering/alpaca-alert-watch-service.git
 	branch = main
+[submodule "alpaca-account-kill-switch-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-account-kill-switch-service
+	url = https://github.com/red-cup-engineering/alpaca-account-kill-switch-service.git
+	branch = main
