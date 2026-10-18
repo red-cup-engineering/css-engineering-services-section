@@ -133,3 +133,7 @@
 	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/cloudflare-activitystreams-operation-services-section
 	url = https://github.com/red-cup-engineering/cloudflare-activitystreams-operation-services-section.git
 	branch = main
+[submodule "http-server-core-service"]
+	path = services/web-protocol-services-section/services/http-services-section/services/http-server-core-service
+	url = https://github.com/red-cup-engineering/http-server-core-service.git
+	branch = main
