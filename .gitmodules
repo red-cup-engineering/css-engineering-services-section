@@ -137,3 +137,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/correlation-graph-measurement-service
 	url = https://github.com/red-cup-engineering/correlation-graph-measurement-service.git
 	branch = main
+[submodule "coinbase-x402-bazaar-border"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/coinbase-x402-bazaar-border
+	url = https://github.com/red-cup-engineering/coinbase-x402-bazaar-border.git
+	branch = main
