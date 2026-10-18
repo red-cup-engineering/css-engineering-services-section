@@ -201,3 +201,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/crowdfunding-services-section
 	url = https://github.com/red-cup-engineering/crowdfunding-services-section.git
 	branch = main
+[submodule "buttondown-services-section"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/buttondown-services-section
+	url = https://github.com/red-cup-engineering/buttondown-services-section.git
+	branch = main
