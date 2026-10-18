@@ -3,6 +3,11 @@
   "version": "0.0.7",
   "type": "module",
   "description": "Derives certified light/dark CSS custom-property palettes and a shared reset and component stylesheet from design tokens. Use when a site needs a themed CSS system rather than a hand-written stylesheet.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-serialized-content-engineering-services-section.git",
+    "directory": "services/css-services-section/services/web-theming-service"
+  },
   "engines": {
     "node": ">=22.18"
   },
