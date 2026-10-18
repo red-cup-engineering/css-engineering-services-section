@@ -201,3 +201,7 @@
 	path = services/web-advertising-system-engineering-services-section
 	url = https://github.com/red-cup-engineering/web-advertising-system-engineering-services-section.git
 	branch = main
+[submodule "living-web-server"]
+	path = apps/living-web-server
+	url = https://github.com/red-cup-engineering/living-web-server.git
+	branch = main
