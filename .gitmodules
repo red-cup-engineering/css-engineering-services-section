@@ -77,3 +77,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/strategy-program-candidate-assay-service
 	url = https://github.com/red-cup-engineering/strategy-program-candidate-assay-service.git
 	branch = main
+[submodule "sheaf-laplacian-measurement-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/sheaf-laplacian-measurement-service
+	url = https://github.com/red-cup-engineering/sheaf-laplacian-measurement-service.git
+	branch = main
