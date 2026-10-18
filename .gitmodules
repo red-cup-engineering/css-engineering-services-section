@@ -77,3 +77,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-social-platform-services-section/services/discord-services-section
 	url = https://github.com/red-cup-engineering/discord-services-section.git
 	branch = main
+[submodule "visual-asset-generation-services-section"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-media-platform-services-section/services/visual-asset-generation-services-section
+	url = https://github.com/red-cup-engineering/visual-asset-generation-services-section.git
+	branch = main
