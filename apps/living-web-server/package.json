@@ -1,0 +1,22 @@
+{
+  "name": "@red-cup-engineering/living-web-server",
+  "version": "0.1.0-dev.0",
+  "type": "module",
+  "private": true,
+  "description": "Reusable live source-read web application platform: TUFTE pages over the original house HTTP listener.",
+  "exports": {
+    ".": "./src/application.mjs",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/web-page-tiling-engine": "0.15.1",
+    "@red-cup-engineering/computer-web-server": "0.6.2"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "license": "UNLICENSED"
+}
