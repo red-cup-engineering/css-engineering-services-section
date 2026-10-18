@@ -161,3 +161,7 @@
 	path = services/web-protocol-services-section/services/a2a-services-section/services/a2a-coordination-state-custody-service
 	url = https://github.com/red-cup-engineering/a2a-coordination-state-custody-service.git
 	branch = main
+[submodule "a2a-contracted-agent-service"]
+	path = services/web-protocol-services-section/services/a2a-services-section/services/a2a-contracted-agent-service
+	url = https://github.com/red-cup-engineering/a2a-contracted-agent-service.git
+	branch = main
