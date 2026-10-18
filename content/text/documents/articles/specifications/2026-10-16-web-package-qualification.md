@@ -366,3 +366,36 @@ No source implementation, test enrollment, dependency version, visibility or
 registry state changed to clear the 49 diagnostics. This closes that original
 source-package receiving gap; it does not claim public deployment, registry
 availability of either private package, or a newly fabricated supplier API.
+
+
+## Shared theme renderer receiving (2026-10-18)
+
+The semantic-article shell, reference themes, context/metadata/navigation helpers,
+CSS assembly and palette decoder have one executable owner at Serialized Content
+Engineering's existing `web-theming-service/theming` subpath. Web delegates these
+existing public exports directly and keeps its own `admitTheme` evidence adapter:
+Web's SignCell 0.4 `value`/`settlement` receipt and Data's existing SignCell 0.2
+`reading`/`contract` receipt are distinct contracts. They MUST NOT be aliased.
+The original renderer cases run at Data; the original Web evidence case and
+separate contrary-predicate regressions run at Web. The existing
+`test/provider-contracts.test.mjs` is the executable receiving carrier: canonical
+function identity, two real HTTP reference themes, invalid-only and mixed
+navigation, escaped shell values, unchanged article bytes, malformed seeds and
+article-dropping refusal. Empty navigation means no surviving links after the
+existing filter, so no empty navigation landmark is emitted.
+
+The shell renders trusted article markup and theme hooks verbatim; it escapes
+caller context values. Fixture heading/landmark counts establish only the shell
+around that fixture. They do not certify arbitrary HTML, whole-page accessibility
+or WCAG conformance. An article or hook can supply additional headings/landmarks;
+the renderer preserves them. Theme CSS is trusted HTML style raw text, not XML
+CDATA and not a sanitization boundary. Canonical HTML CR/NUL shell escaping and
+verbatim article bytes retain the explicit lexical contract above.
+
+For a public Data supplier update, reconcile the accepted source with the actual
+native landing publisher journal and fresh registry metadata/artifact first.
+Source/pack qualification is not publication; an immutable version that already
+exists MUST NOT be bumped or republished merely because another gate did not
+witness the landing receiver. Consume the published exact source-bound artifact
+before merging Web's pin, then run the native and normal-pack receiving carrier.
+The private Web/HTTP packages retain their private publication boundary.
