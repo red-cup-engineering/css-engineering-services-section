@@ -189,3 +189,7 @@
 	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section
 	url = https://github.com/red-cup-engineering/cloudflare-services-section.git
 	branch = main
+[submodule "web-mesh-services-section"]
+	path = services/web-protocol-services-section/services/web-mesh-services-section
+	url = https://github.com/red-cup-engineering/web-mesh-services-section.git
+	branch = main
