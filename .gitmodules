@@ -213,3 +213,7 @@
 	path = services/web-platform-services-section/services/cloud-services-section/services/hugging-face-cpu-compute-provider
 	url = https://github.com/red-cup-engineering/hugging-face-cpu-compute-provider.git
 	branch = main
+[submodule "google-drive-use-team"]
+	path = services/web-platform-services-section/services/cloud-services-section/services/google-drive-use-team
+	url = https://github.com/red-cup-engineering/google-drive-use-team.git
+	branch = main
