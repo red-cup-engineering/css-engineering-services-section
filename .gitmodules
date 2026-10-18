@@ -61,3 +61,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/virtuals-brokerage-products-border
 	url = https://github.com/red-cup-engineering/virtuals-brokerage-products-border.git
 	branch = main
+[submodule "union-consideration-settlement-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/union-consideration-settlement-service
+	url = https://github.com/red-cup-engineering/union-consideration-settlement-service.git
+	branch = main
