@@ -193,3 +193,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-account-kill-switch-service
 	url = https://github.com/red-cup-engineering/alpaca-account-kill-switch-service.git
 	branch = main
+[submodule "agent-section-descent-assay-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/agent-section-descent-assay-service
+	url = https://github.com/red-cup-engineering/agent-section-descent-assay-service.git
+	branch = main
