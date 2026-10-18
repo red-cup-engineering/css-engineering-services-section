@@ -145,3 +145,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/causal-tiling-novelty-measurement-service
 	url = https://github.com/red-cup-engineering/causal-tiling-novelty-measurement-service.git
 	branch = main
+[submodule "causal-portfolio-learning-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/causal-portfolio-learning-service
+	url = https://github.com/red-cup-engineering/causal-portfolio-learning-service.git
+	branch = main
