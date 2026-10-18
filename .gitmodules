@@ -93,3 +93,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/services/discord-reaction-system-observation-service
 	url = https://github.com/red-cup-engineering/discord-reaction-system-observation-service.git
 	branch = main
+[submodule "discord-member-lifecycle-planning-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/services/discord-member-lifecycle-planning-service
+	url = https://github.com/red-cup-engineering/discord-member-lifecycle-planning-service.git
+	branch = main
