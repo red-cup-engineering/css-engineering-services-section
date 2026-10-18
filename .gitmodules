@@ -101,3 +101,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/obsmetrologia-blk-accumulation-strategy-service
 	url = https://github.com/red-cup-engineering/obsmetrologia-blk-accumulation-strategy-service.git
 	branch = main
+[submodule "obsmetrologia-alpha-selection-proof-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/obsmetrologia-alpha-selection-proof-service
+	url = https://github.com/red-cup-engineering/obsmetrologia-alpha-selection-proof-service.git
+	branch = main
