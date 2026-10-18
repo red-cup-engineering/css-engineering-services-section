@@ -101,34 +101,6 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/services/discord-community-moderation-planning-service
 	url = https://github.com/red-cup-engineering/discord-community-moderation-planning-service.git
 	branch = main
-[submodule "linux-cloudflare-authentication-service"]
-	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/linux-cloudflare-authentication-service
-	url = https://github.com/red-cup-engineering/linux-cloudflare-authentication-service.git
-	branch = main
-[submodule "cloudflare-tunnel-config-checker-service"]
-	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/cloudflare-tunnel-config-checker-service
-	url = https://github.com/red-cup-engineering/cloudflare-tunnel-config-checker-service.git
-	branch = main
-[submodule "cloudflare-tunnel-auth-service"]
-	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/cloudflare-tunnel-auth-service
-	url = https://github.com/red-cup-engineering/cloudflare-tunnel-auth-service.git
-	branch = main
-[submodule "cloudflare-r2-services-section"]
-	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/cloudflare-r2-services-section
-	url = https://github.com/red-cup-engineering/cloudflare-r2-services-section.git
-	branch = main
-[submodule "cloudflare-dns-record-reconciliation-service"]
-	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/cloudflare-dns-record-reconciliation-service
-	url = https://github.com/red-cup-engineering/cloudflare-dns-record-reconciliation-service.git
-	branch = main
-[submodule "cloudflare-d1-service"]
-	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/cloudflare-d1-service
-	url = https://github.com/red-cup-engineering/cloudflare-d1-service.git
-	branch = main
-[submodule "cloudflare-activitystreams-operation-services-section"]
-	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/cloudflare-activitystreams-operation-services-section
-	url = https://github.com/red-cup-engineering/cloudflare-activitystreams-operation-services-section.git
-	branch = main
 [submodule "http-server-core-service"]
 	path = services/web-protocol-services-section/services/http-services-section/services/http-server-core-service
 	url = https://github.com/red-cup-engineering/http-server-core-service.git
@@ -212,4 +184,8 @@
 [submodule "gcloud-services-section"]
 	path = services/web-platform-services-section/services/cloud-services-section/services/gcloud-services-section
 	url = https://github.com/red-cup-engineering/gcloud-services-section.git
+	branch = main
+[submodule "cloudflare-services-section"]
+	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section
+	url = https://github.com/red-cup-engineering/cloudflare-services-section.git
 	branch = main
