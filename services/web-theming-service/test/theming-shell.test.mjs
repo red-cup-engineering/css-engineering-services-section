@@ -1,5 +1,5 @@
-// Original rendering cases from emsenn/web-theming@376697f6 src/index.test.mts
-// blob 0d504b9f, received through the existing Web suite. Its distinct Web
+// Original rendering cases from emsenn/web-theming@376697f6667f1f5ca18c37fa8757e1f65537cf52 src/index.test.mts
+// blob 0d504b9f7515ae5972edc9e1bf5c83946fb67f36, received through the existing Web suite. Its distinct Web
 // evidence-admission case remains with that consumer.
 import test from "node:test";
 import assert from "node:assert/strict";
