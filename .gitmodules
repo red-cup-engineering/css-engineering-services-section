@@ -169,3 +169,7 @@
 	path = services/web-protocol-services-section/services/a2a-services-section/services/a2a-channel-portfolio-status-service
 	url = https://github.com/red-cup-engineering/a2a-channel-portfolio-status-service.git
 	branch = main
+[submodule "a2a-agent-card-key-service"]
+	path = services/web-protocol-services-section/services/a2a-services-section/services/a2a-agent-card-key-service
+	url = https://github.com/red-cup-engineering/a2a-agent-card-key-service.git
+	branch = main
