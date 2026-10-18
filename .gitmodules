@@ -205,3 +205,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-social-platform-services-section/services/discord-services-section/services/discord-territory-planning-service
 	url = https://github.com/red-cup-engineering/discord-territory-planning-service.git
 	branch = main
+[submodule "discord-rest-transport-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-social-platform-services-section/services/discord-services-section/services/discord-rest-transport-service
+	url = https://github.com/red-cup-engineering/discord-rest-transport-service.git
+	branch = main
