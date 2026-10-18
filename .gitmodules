@@ -153,3 +153,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/causal-market-panel-assay-service
 	url = https://github.com/red-cup-engineering/causal-market-panel-assay-service.git
 	branch = main
+[submodule "causal-feature-frame-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/causal-feature-frame-service
+	url = https://github.com/red-cup-engineering/causal-feature-frame-service.git
+	branch = main
