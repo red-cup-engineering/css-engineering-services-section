@@ -197,7 +197,7 @@
 	path = services/web-protocol-services-section/services/computing-with-the-web
 	url = https://github.com/red-cup-engineering/computing-with-the-web.git
 	branch = main
-[submodule "house-ads-server-site"]
-	path = services/web-advertising-system-engineering-services-section/sites/house-ads-server
-	url = https://github.com/red-cup-engineering/house-ads-server-site.git
+[submodule "web-advertising-system-engineering-services-section"]
+	path = services/web-advertising-system-engineering-services-section
+	url = https://github.com/red-cup-engineering/web-advertising-system-engineering-services-section.git
 	branch = main
