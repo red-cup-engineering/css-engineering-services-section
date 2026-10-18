@@ -105,3 +105,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/obsmetrologia-alpha-selection-proof-service
 	url = https://github.com/red-cup-engineering/obsmetrologia-alpha-selection-proof-service.git
 	branch = main
+[submodule "metered-compute-payment-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/metered-compute-payment-service
+	url = https://github.com/red-cup-engineering/metered-compute-payment-service.git
+	branch = main
