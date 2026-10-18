@@ -209,3 +209,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-social-platform-services-section/services/discord-services-section/services/discord-rest-transport-service
 	url = https://github.com/red-cup-engineering/discord-rest-transport-service.git
 	branch = main
+[submodule "tips-services-section"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-payment-platform-services-section/services/tips-services-section
+	url = https://github.com/red-cup-engineering/tips-services-section.git
+	branch = main
