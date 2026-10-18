@@ -368,6 +368,29 @@ source-package receiving gap; it does not claim public deployment, registry
 availability of either private package, or a newly fabricated supplier API.
 
 
+## Finite taxonomy identity receiving (2026-10-18)
+
+A finite Web relation has one row per subject in first-seen order. Every repeated
+record still contributes its potential/active/stable evidence through the real
+Data knowledge join; repeated testimony MUST NOT duplicate membership, related
+subjects or serialized relation rows. A predicate/object pair has structural tuple
+identity: separator characters inside either string MUST NOT make distinct terms
+coincide or create a false stable reading. Internal identity encoding is separate
+from the established displayed term order; public types and ordinary ordering
+remain unchanged. The original source's unused separator-splitting helper has no
+consumer and is removed with the ambiguous identity encoding.
+
+The existing taxonomy receiving suite covers all sixteen joins and repeated
+inputs, unique-subject membership, genuine contested membership, distinct
+separator-bearing pairs, unrelated terms and invalid empty subjects. The existing
+SWARM projection fixture is the genuine original serialized `relationDocument`
+consumer: repeating a source entry yields the same document, not an extra subject
+row. This is native serialized-document receiving, not a running SWARM route or a
+new HTTP endpoint. Existing taxonomy index/archive HTTP behavior stays enrolled.
+Offset-date chronological ordering is a separate observed inquiry; this identity
+increment does not claim to repair it.
+
+
 ## Shared theme renderer receiving (2026-10-18)
 
 The semantic-article shell, reference themes, context/metadata/navigation helpers,
