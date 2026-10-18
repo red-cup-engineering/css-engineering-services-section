@@ -315,3 +315,54 @@ There is no remaining failing package acceptance. This establishes qualification
 of the recorded composition; it does not merge, release or activate it, retire
 source/consumers, or alter the three unrelated held effects.
 
+
+## Source prerequisite gate and current Webmention retirement receiving
+
+The original Work's 2026-10-18 receiving inquiry reproduced 49 diagnostics on
+Web Engineering `e82ddbebd42328a4f4107a9741845a4684e77579` before building
+its existing, source-private HTTP prerequisite. Every diagnostic disappeared
+when that unchanged prerequisite passed its own `check` and `build`. These
+were unresolved package export targets and their derived contextual-type
+errors, not evidence of 49 independent Web source defects.
+
+For each later source qualification, the receiving operator must:
+
+1. Bind the exact consumer source, declared provider versions and native tools.
+   Resolve every advertised runtime and declaration export used by that consumer.
+   An absent source-only supplier artifact makes the graph incomplete; do not
+   rename imports, add ambient declarations or diagnose derived `any` errors
+   as consumer defects before qualifying the original supplier.
+2. Check and build the exact `computing-with-http` source through its existing
+   package commands, then run its normal `npm pack` including `prepack`.
+   Receive the complete packed supplier in the qualification composition.
+   Do not reuse emitted output from a failed build or treat an empty/missing
+   `dist` as an unavailable protocol implementation.
+3. On the same fixed provider graph, run Web's declared `check`, `build` and
+   complete `test`, followed by normal `npm pack`. Derive runtime/declaration
+   consumption from the **current manifest**, fail on either consumer's nonzero
+   exit, and exercise the existing native HTTP consumer and its refusals.
+   Preserve every enrolled test. Historical test/export counts are not current
+   completion criteria after a separately accepted API retirement.
+4. Keep source qualification separate from registry publication and deployment.
+   Both private manifests remain private and unchanged in version. A local
+   qualification composition or tarball does not authorize a production lock,
+   broader package audience, publication or installed-consumer upgrade.
+
+Actual current receiving used Node 24.19.0, TypeScript 5.9.3 and @types/node
+22.7.5 with the ten exact manifest dependencies. The unchanged HTTP supplier's
+native check/build and normal prepack passed. The Web consumer then passed
+check/build and all 83 currently enrolled tests, including native HTTP sync
+admission/refusal and taxonomy negotiation. Its normal prepack passed; the
+separately extracted packed consumer loaded all 19 current runtime exports and
+strictly checked all 18 current declaration exports with `skipLibCheck=false`.
+The retired Webmention subpath was absent as accepted in PR131; its dedicated
+protocol owner's separate receiving remains authoritative.
+
+The HTTP tarball SHA-256 was
+`efafa1ce99f3fb8804d0e90535d87af059c56bd78eb40cab50301d8fc5cf57b0`;
+the Web tarball SHA-256 was
+`76c17a7c3261dd904eee267c1df2b8217c2bdaada90566e10c660481273f0029`.
+No source implementation, test enrollment, dependency version, visibility or
+registry state changed to clear the 49 diagnostics. This closes that original
+source-package receiving gap; it does not claim public deployment, registry
+availability of either private package, or a newly fabricated supplier API.
