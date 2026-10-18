@@ -26,12 +26,6 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/apps/zelo
 	url = https://github.com/red-cup-engineering/zelo.git
 	branch = main
-[submodule "services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section/services/kalshi-services-section"]
-	path = services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section/services/kalshi-services-section
-	url = https://github.com/red-cup-engineering/kalshi-services-section.git
-[submodule "services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section/services/polymarket-services-section"]
-	path = services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section/services/polymarket-services-section
-	url = https://github.com/red-cup-engineering/polymarket-services-section.git
 [submodule "services/web-tufte-gui-services-section"]
 	path = services/web-tufte-gui-services-section
 	url = https://github.com/red-cup-engineering/web-tufte-gui-services-section.git
@@ -54,4 +48,8 @@
 [submodule "services/web-platform-services-section/services/web2-platform-services-section/services/web2-media-platform-services-section/services/youtube-engineering-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-media-platform-services-section/services/youtube-engineering-services-section
 	url = https://github.com/red-cup-engineering/youtube-engineering-services-section.git
+	branch = main
+[submodule "web3-gambling-platform-services-section"]
+	path = services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section
+	url = https://github.com/red-cup-engineering/web3-gambling-platform-services-section.git
 	branch = main
