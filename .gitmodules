@@ -57,3 +57,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-software-platform-services-section/services/github-services-section/services/github-actions-public-compute-provider/content/assay-target
 	url = https://github.com/red-cup-engineering/union-public-compute-assay.git
 	branch = main
+[submodule "virtuals-brokerage-products-border"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/virtuals-brokerage-products-border
+	url = https://github.com/red-cup-engineering/virtuals-brokerage-products-border.git
+	branch = main
