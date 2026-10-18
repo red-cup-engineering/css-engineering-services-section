@@ -169,3 +169,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-paper-trading-guards-service
 	url = https://github.com/red-cup-engineering/alpaca-paper-trading-guards-service.git
 	branch = main
+[submodule "alpaca-paper-account-read-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-paper-account-read-service
+	url = https://github.com/red-cup-engineering/alpaca-paper-account-read-service.git
+	branch = main
