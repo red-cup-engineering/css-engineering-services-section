@@ -145,3 +145,7 @@
 	path = services/web-protocol-services-section/services/http-services-section/services/computing-with-http
 	url = https://github.com/red-cup-engineering/computing-with-http.git
 	branch = main
+[submodule "a2a-task-state-custody-service"]
+	path = services/web-protocol-services-section/services/a2a-services-section/services/a2a-task-state-custody-service
+	url = https://github.com/red-cup-engineering/a2a-task-state-custody-service.git
+	branch = main
