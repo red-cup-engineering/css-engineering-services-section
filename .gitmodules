@@ -137,3 +137,7 @@
 	path = services/web-protocol-services-section/services/http-services-section/services/http-server-core-service
 	url = https://github.com/red-cup-engineering/http-server-core-service.git
 	branch = main
+[submodule "http-edge-service"]
+	path = services/web-protocol-services-section/services/http-services-section/services/http-edge-service
+	url = https://github.com/red-cup-engineering/http-edge-service.git
+	branch = main
