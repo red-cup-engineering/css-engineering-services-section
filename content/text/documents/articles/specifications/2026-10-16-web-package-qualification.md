@@ -454,6 +454,9 @@ Bearer decisions retain their explicit token/source fields for Micropub,
 Microsub, ActivityPub and IndieAuth. Diagnostic reports omit credential claims,
 redact token-as-source aliases, and project each header/URL witness through the
 existing HTTP redactor without erasing duplicate or differently cased entries.
+When a token is itself the source ID, the app also omits that ID from
+source-mismatch/unrecognized fault descriptions; standalone validation and
+explicit credential decisions keep their original contracts.
 These finite checks are not whole OAuth or cryptographic-verification claims.
 Readable source/signature.by/t.by provenance remains a source claim.
 
