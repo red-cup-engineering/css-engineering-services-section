@@ -425,3 +425,52 @@ exists MUST NOT be bumped or republished merely because another gate did not
 witness the landing receiver. Consume the published exact source-bound artifact
 before merging Web's pin, then run the native and normal-pack receiving carrier.
 The private Web/HTTP packages retain their private publication boundary.
+
+
+## Guarded exchange through current suppliers (2026-10-18)
+
+Original web-sync-guard's necessary effect is a guarded GET/POST assertion
+exchange: source-bound bearer policy, shape/size/source-claim/recognition limits,
+rate windows and refusal before import. Its complete eleven-commit original
+history at `137409ccd9a6b2f7d53a17ba2f307d6cf06e8eeb` and the attributed
+three-leaf root snapshot `9ca5c0ca5780d2b17b5d6087458f9701c268f184` are inert
+ancestry, not competing active packages. Retired federation/server imports and
+legacy `settled.datoms` receipts are not modern runtime contracts.
+
+Web owns exchange policy and its existing all-or-nothing import callback;
+Networking HTTP owns bounded body collection, decompression, charset decoding,
+JSON syntax and diagnostic trace redaction. The guard calls those actual
+providers rather than its older private body loop or its own header-value copy.
+Provider-owned declarations preserve that direction; no lower provider imports
+Web types. JSON syntax alone does not establish an object envelope. Null,
+primitive, array and malformed envelopes are refused before import. Configured
+caps are nonnegative safe integers, preserving zero as an explicit bound;
+invalid caps fail construction before any callback. Unserializable direct
+assertions become existing shape faults. The pure validator still retains valid
+entries beside faults, while the app refuses the entire mixed batch.
+
+Bearer decisions retain their explicit token/source fields for Micropub,
+Microsub, ActivityPub and IndieAuth. Diagnostic reports omit credential claims,
+redact token-as-source aliases, and project each header/URL witness through the
+existing HTTP redactor without erasing duplicate or differently cased entries.
+These finite checks are not whole OAuth or cryptographic-verification claims.
+Readable source/signature.by/t.by provenance remains a source claim.
+
+The existing `test/sync-guard.http.test.mjs` is the receiving carrier. Its
+meaningful datum is work/sync-guard's qualified→received status, with peer-a's
+witness and fixed instant. Actual Data `appendEavtEntries`, `journalPath`, strict
+`readEavtEntries` and `identifyContentAddressedRow` carry populated GET, guarded
+append, replay zero and unchanged content identity. Refused requests leave that
+existing journal byte-identical and cannot trigger export/import. A separate
+custom-path callback receives the wider legacy {e,a,source} form with v absent,
+under open or recognized mapped-bearer policy. This is deliberately not strict
+EAVT: object identity, missing v, provenance precedence, potential/stable
+recognition and false→absurd coercion remain its supported contract. Systems
+federate's stricter row schema and different false/.four coercions are not aliases.
+
+Qualification is trusted local native HTTP/journal operation and packed API
+consumption. It does not assert an installed production sync service. Reconcile
+the exact accepted RPC→HTTP publication artifacts before receiving a published
+Web supplier pin; source packs and a publisher's admitted landing are not that
+registry result. Original deletion additionally requires the separate native
+custody/retirement chain on Operations Work #10 comment 6254142611.
