@@ -177,3 +177,7 @@
 	path = services/web-protocol-services-section/services/a2a-services-section/services/a2a-agent-card-discovery-service
 	url = https://github.com/red-cup-engineering/a2a-agent-card-discovery-service.git
 	branch = main
+[submodule "561-group-hive-blockchain-services-section"]
+	path = services/web-platform-services-section/services/web3-platform-services-section/services/561-group-hive-blockchain-services-section
+	url = https://github.com/red-cup-engineering/561-group-hive-blockchain-services-section.git
+	branch = main
