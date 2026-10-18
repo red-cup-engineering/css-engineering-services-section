@@ -193,3 +193,7 @@
 	path = services/web-protocol-services-section/services/web-mesh-services-section
 	url = https://github.com/red-cup-engineering/web-mesh-services-section.git
 	branch = main
+[submodule "computing-with-the-web"]
+	path = services/web-protocol-services-section/services/computing-with-the-web
+	url = https://github.com/red-cup-engineering/computing-with-the-web.git
+	branch = main
