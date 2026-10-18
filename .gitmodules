@@ -209,3 +209,7 @@
 	path = services/web-platform-services-section/services/cloud-services-section/services/tailscale-services-section
 	url = https://github.com/red-cup-engineering/tailscale-services-section.git
 	branch = main
+[submodule "hugging-face-cpu-compute-provider"]
+	path = services/web-platform-services-section/services/cloud-services-section/services/hugging-face-cpu-compute-provider
+	url = https://github.com/red-cup-engineering/hugging-face-cpu-compute-provider.git
+	branch = main
