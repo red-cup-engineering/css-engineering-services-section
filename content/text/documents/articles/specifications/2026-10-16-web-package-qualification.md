@@ -437,7 +437,8 @@ three-leaf root snapshot `9ca5c0ca5780d2b17b5d6087458f9701c268f184` are inert
 ancestry, not competing active packages. Retired federation/server imports and
 legacy `settled.datoms` receipts are not modern runtime contracts.
 
-Web owns exchange policy and its existing all-or-nothing import callback;
+Web owns exchange policy and refuses invalid batches before invoking the
+existing import callback;
 Networking HTTP owns bounded body collection, decompression, charset decoding,
 JSON syntax and diagnostic trace redaction. The guard calls those actual
 providers rather than its older private body loop or its own header-value copy.
@@ -460,8 +461,8 @@ The existing `test/sync-guard.http.test.mjs` is the receiving carrier. Its
 meaningful datum is work/sync-guard's qualified→received status, with peer-a's
 witness and fixed instant. Actual Data `appendEavtEntries`, `journalPath`, strict
 `readEavtEntries` and `identifyContentAddressedRow` carry populated GET, guarded
-append, replay zero and unchanged content identity. Refused requests leave that
-existing journal byte-identical and cannot trigger export/import. A separate
+append, replay zero and unchanged content identity. Requests rejected by these guard checks leave that existing journal
+byte-identical and do not invoke the guarded export/import callbacks. A separate
 custom-path callback receives the wider legacy {e,a,source} form with v absent,
 under open or recognized mapped-bearer policy. This is deliberately not strict
 EAVT: object identity, missing v, provenance precedence, potential/stable
