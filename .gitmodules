@@ -197,3 +197,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/agent-section-descent-assay-service
 	url = https://github.com/red-cup-engineering/agent-section-descent-assay-service.git
 	branch = main
+[submodule "github-software-induction-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-software-platform-services-section/services/github-services-section/services/github-software-induction-service
+	url = https://github.com/red-cup-engineering/github-software-induction-service.git
+	branch = main
