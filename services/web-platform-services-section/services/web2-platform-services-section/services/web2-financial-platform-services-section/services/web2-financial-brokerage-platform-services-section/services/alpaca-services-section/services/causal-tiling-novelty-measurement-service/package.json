@@ -4,6 +4,11 @@
   "private": false,
   "type": "module",
   "description": "Measures recurrence and novelty of finite causal symbolic patches without claiming infinite tiling equivalence.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/causal-tiling-novelty-measurement-service"
+  },
   "exports": {
     ".": "./src/measure.mjs"
   },

@@ -4,6 +4,11 @@
   "private": false,
   "type": "module",
   "description": "Runs a bounded generate-assay-replay-tournament-review lineage loop that can promote only witnessed paper strategy programs.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/recursive-strategy-program-improvement-service"
+  },
   "exports": {
     ".": "./src/improve.mjs"
   },

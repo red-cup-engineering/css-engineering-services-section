@@ -48,6 +48,11 @@
     "@red-cup-engineering/strategy-program-synthesis-work-lot-service": "0.1.7"
   },
   "description": "Scalable customer-wallet-funded market in metered brokerage-control APIs.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section"
+  },
   "devDependencies": {
     "@red-cup-engineering/obsmetrologia-alpha-selection-proof-service": "0.1.5",
     "@red-cup-engineering/computer-system-engine": "0.1.2"

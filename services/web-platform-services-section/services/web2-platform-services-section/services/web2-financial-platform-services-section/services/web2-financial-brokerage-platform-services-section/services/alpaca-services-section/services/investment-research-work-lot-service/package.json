@@ -3,6 +3,11 @@
   "version": "0.2.5",
   "type": "module",
   "description": "Contracts provider-distinct bounded institutional research roles and returns untrusted typed forecast sections or explicit seat residues.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/investment-research-work-lot-service"
+  },
   "exports": {
     ".": "./src/committee.mjs",
     "./inference-market-runtime": "./src/inference-market-runtime.mjs",

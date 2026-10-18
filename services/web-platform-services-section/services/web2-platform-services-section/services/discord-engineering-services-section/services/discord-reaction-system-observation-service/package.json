@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "type": "module",
   "description": "GET-only, privacy-bounded Discord reaction-system observation and state projection.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/services/discord-reaction-system-observation-service"
+  },
   "engines": {
     "node": ">=22.18"
   },

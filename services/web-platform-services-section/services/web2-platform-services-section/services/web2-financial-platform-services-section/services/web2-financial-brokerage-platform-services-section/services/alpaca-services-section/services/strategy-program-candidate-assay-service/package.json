@@ -4,6 +4,11 @@
   "private": true,
   "type": "module",
   "description": "Statically assays generated strategy modules against a pure deterministic decision ABI before sandbox execution.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/strategy-program-candidate-assay-service"
+  },
   "exports": {
     ".": "./src/assay.mjs",
     "./src/assay.mjs": "./src/assay.mjs"

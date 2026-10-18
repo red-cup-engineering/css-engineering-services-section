@@ -4,6 +4,11 @@
   "type": "module",
   "private": true,
   "description": "Purpose-bound Google Drive v3 die with semantic content over A2A, customer-custodied credentials, and immutable semantic evidence.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/cloud-services-section/services/google-drive-use-team"
+  },
   "exports": {
     ".": "./src/client.mjs",
     "./client": "./src/client.mjs",

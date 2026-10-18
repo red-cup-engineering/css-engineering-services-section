@@ -4,6 +4,11 @@
   "private": false,
   "type": "module",
   "description": "Causal topological BLK accumulation strategy benchmarked to SPY.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/obsmetrologia-blk-accumulation-strategy-service"
+  },
   "exports": {
     ".": "./src/strategy.mjs",
     "./src/strategy.mjs": "./src/strategy.mjs"

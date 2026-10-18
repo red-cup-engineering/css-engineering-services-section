@@ -4,6 +4,11 @@
   "type": "module",
   "exports": "./src/market-funded-improvement.mjs",
   "version": "0.1.4",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/market-funded-strategy-improvement-service"
+  },
   "dependencies": {
     "@red-cup-engineering/strategy-evaluation-service": "0.1.7"
   },

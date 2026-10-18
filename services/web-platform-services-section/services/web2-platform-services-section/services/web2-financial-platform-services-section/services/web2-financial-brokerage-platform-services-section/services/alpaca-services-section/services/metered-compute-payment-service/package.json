@@ -10,6 +10,11 @@
     "check": "node --check src/metered-payment.mjs"
   },
   "description": "metered-compute-payment-service sovereign enterprise",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/metered-compute-payment-service"
+  },
   "dependencies": {
     "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*"
   }

@@ -6,6 +6,11 @@
     "src/"
   ],
   "description": "Executes an admitted generated strategy module twice in a networkless bubblewrap sandbox under a hard wall-clock bound.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/bubblewrap-strategy-replay-service"
+  },
   "exports": {
     ".": "./src/replay.mjs"
   },
