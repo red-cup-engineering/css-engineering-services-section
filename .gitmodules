@@ -69,3 +69,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/union-brokerage-products-market-border
 	url = https://github.com/red-cup-engineering/union-brokerage-products-market-border.git
 	branch = main
+[submodule "strategy-program-synthesis-work-lot-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/strategy-program-synthesis-work-lot-service
+	url = https://github.com/red-cup-engineering/strategy-program-synthesis-work-lot-service.git
+	branch = main
