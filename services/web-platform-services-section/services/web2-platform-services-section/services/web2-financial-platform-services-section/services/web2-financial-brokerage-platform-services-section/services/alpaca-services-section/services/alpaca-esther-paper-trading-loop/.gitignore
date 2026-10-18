@@ -1,7 +1,0 @@
-# Logs live in machine state (~/.local/state/561-group/settlements/alpaca-esther-paper-trading-loop/data/logs); data/logs links there and is never tracked.
-/data/logs
-
-# The brokerage books' witness store is runtime state.
-/data/state/brokerage-book-state/
-/data/state/*-lock-state/
-*.lock

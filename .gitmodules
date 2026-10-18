@@ -177,3 +177,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-market-data-read-service
 	url = https://github.com/red-cup-engineering/alpaca-market-data-read-service.git
 	branch = main
+[submodule "alpaca-esther-paper-trading-loop"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-esther-paper-trading-loop
+	url = https://github.com/red-cup-engineering/alpaca-esther-paper-trading-loop.git
+	branch = main
