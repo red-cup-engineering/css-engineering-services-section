@@ -125,3 +125,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/institutional-investment-shadow-deployment
 	url = https://github.com/red-cup-engineering/institutional-investment-shadow-deployment.git
 	branch = main
+[submodule "generated-strategy-fold-replay-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/generated-strategy-fold-replay-service
+	url = https://github.com/red-cup-engineering/generated-strategy-fold-replay-service.git
+	branch = main
