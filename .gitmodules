@@ -109,3 +109,7 @@
 	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/linux-cloudflare-authentication-service
 	url = https://github.com/red-cup-engineering/linux-cloudflare-authentication-service.git
 	branch = main
+[submodule "cloudflare-tunnel-config-checker-service"]
+	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/cloudflare-tunnel-config-checker-service
+	url = https://github.com/red-cup-engineering/cloudflare-tunnel-config-checker-service.git
+	branch = main
