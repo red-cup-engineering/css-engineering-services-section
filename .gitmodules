@@ -89,3 +89,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/services/programmable-community-response-service
 	url = https://github.com/red-cup-engineering/programmable-community-response-service.git
 	branch = main
+[submodule "discord-reaction-system-observation-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/services/discord-reaction-system-observation-service
+	url = https://github.com/red-cup-engineering/discord-reaction-system-observation-service.git
+	branch = main
