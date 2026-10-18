@@ -9,6 +9,9 @@ export function parseColor(input) {
     const s = input.trim().toLowerCase();
     if (s.startsWith("#")) {
         const hex = s.slice(1);
+        if (!/^(?:[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/.test(hex)) {
+            throw new Error(`unrecognised hex colour: ${input}`);
+        }
         const expand = (h)=>parseInt(h.length === 1 ? h + h : h, 16);
         if (hex.length === 3 || hex.length === 4) {
             return {
@@ -30,7 +33,12 @@ export function parseColor(input) {
     }
     const m = s.match(/^rgba?\(([^)]+)\)$/);
     if (m) {
-        const parts = m[1].split(/[,/]/).map((p)=>p.trim()).filter(Boolean);
+        const parts = m[1].split(/[,/]/).map((p)=>p.trim());
+        const numeric = /^[+-]?(?:\d*\.\d+|\d+)(?:e[+-]?\d+)?%?$/;
+        if ((parts.length !== 3 && parts.length !== 4)
+            || parts.some((part)=>!numeric.test(part) || !Number.isFinite(parseFloat(part)))) {
+            throw new Error(`unrecognised colour: ${input}`);
+        }
         const chan = (p)=>p.endsWith("%") ? parseFloat(p) / 100 : parseFloat(p) / 255;
         return {
             r: clamp01(chan(parts[0])),
