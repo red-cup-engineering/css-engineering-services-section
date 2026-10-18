@@ -193,3 +193,7 @@
 	path = services/web-platform-services-section/services/cloud-services-section/services/gcloud-services-section/services/gcloud-compute-observation-service
 	url = https://github.com/red-cup-engineering/gcloud-compute-observation-service.git
 	branch = main
+[submodule "internet-archive-services-section"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/internet-archive-services-section
+	url = https://github.com/red-cup-engineering/internet-archive-services-section.git
+	branch = main
