@@ -189,3 +189,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/services/discord-community-automation-service
 	url = https://github.com/red-cup-engineering/discord-community-automation-service.git
 	branch = main
+[submodule "gcloud-compute-observation-service"]
+	path = services/web-platform-services-section/services/cloud-services-section/services/gcloud-services-section/services/gcloud-compute-observation-service
+	url = https://github.com/red-cup-engineering/gcloud-compute-observation-service.git
+	branch = main
