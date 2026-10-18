@@ -197,3 +197,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/internet-archive-services-section
 	url = https://github.com/red-cup-engineering/internet-archive-services-section.git
 	branch = main
+[submodule "crowdfunding-services-section"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/crowdfunding-services-section
+	url = https://github.com/red-cup-engineering/crowdfunding-services-section.git
+	branch = main
