@@ -161,3 +161,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/bubblewrap-strategy-replay-service
 	url = https://github.com/red-cup-engineering/bubblewrap-strategy-replay-service.git
 	branch = main
+[submodule "alpaca-principal-account-read-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-principal-account-read-service
+	url = https://github.com/red-cup-engineering/alpaca-principal-account-read-service.git
+	branch = main
