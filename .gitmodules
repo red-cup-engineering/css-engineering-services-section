@@ -173,3 +173,7 @@
 	path = services/web-protocol-services-section/services/a2a-services-section/services/a2a-agent-card-key-service
 	url = https://github.com/red-cup-engineering/a2a-agent-card-key-service.git
 	branch = main
+[submodule "a2a-agent-card-discovery-service"]
+	path = services/web-protocol-services-section/services/a2a-services-section/services/a2a-agent-card-discovery-service
+	url = https://github.com/red-cup-engineering/a2a-agent-card-discovery-service.git
+	branch = main
