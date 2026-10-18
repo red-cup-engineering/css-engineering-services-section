@@ -389,6 +389,7 @@ export function renderNav(items, ariaLabel = "Primary") {
             href: item.href,
             "aria-current": item.current ? "page" : null
         }, escapeHtmlText(item.label)))).join("");
+    if (links.length === 0) return "";
     return el("nav", {
         role: LANDMARK_ROLE.nav,
         "aria-label": ariaLabel

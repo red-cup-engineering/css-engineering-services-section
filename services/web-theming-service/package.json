@@ -1,8 +1,8 @@
 {
   "name": "@red-cup-engineering/web-theming-service",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "type": "module",
-  "description": "Derives light/dark CSS custom-property palettes and a shared stylesheet from design tokens, with numerical checks of specified token-pair contrast and color scarcity.",
+  "description": "Deterministic semantic-article HTML shells and light/dark design-token CSS palettes, with numerical checks of specified token-pair contrast and color scarcity.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/red-cup-engineering/computer-serialized-content-engineering-services-section.git",
@@ -21,7 +21,10 @@
     "README.md"
   ],
   "exports": {
-    "./theming": "./src/theming/index.mjs",
+    "./theming": {
+      "types": "./src/theming/index.d.mts",
+      "default": "./src/theming/index.mjs"
+    },
     "./theming-computer": {
       "types": "./src/theming-computer/index.d.mts",
       "default": "./src/theming-computer/index.mjs"
