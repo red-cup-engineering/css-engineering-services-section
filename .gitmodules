@@ -117,3 +117,7 @@
 	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/cloudflare-tunnel-auth-service
 	url = https://github.com/red-cup-engineering/cloudflare-tunnel-auth-service.git
 	branch = main
+[submodule "cloudflare-r2-services-section"]
+	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/cloudflare-r2-services-section
+	url = https://github.com/red-cup-engineering/cloudflare-r2-services-section.git
+	branch = main
