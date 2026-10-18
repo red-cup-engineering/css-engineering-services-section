@@ -93,3 +93,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/recursive-strategy-program-improvement-service
 	url = https://github.com/red-cup-engineering/recursive-strategy-program-improvement-service.git
 	branch = main
+[submodule "principal-brokerage-interface"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/principal-brokerage-interface
+	url = https://github.com/red-cup-engineering/principal-brokerage-interface.git
+	branch = main
