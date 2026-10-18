@@ -85,3 +85,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/return-risk-feature-measurement-service
 	url = https://github.com/red-cup-engineering/return-risk-feature-measurement-service.git
 	branch = main
+[submodule "research-section-grounding-assay-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/research-section-grounding-assay-service
+	url = https://github.com/red-cup-engineering/research-section-grounding-assay-service.git
+	branch = main
