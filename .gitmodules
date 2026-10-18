@@ -53,146 +53,6 @@
 	path = services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section
 	url = https://github.com/red-cup-engineering/web3-gambling-platform-services-section.git
 	branch = main
-[submodule "virtuals-brokerage-products-border"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/virtuals-brokerage-products-border
-	url = https://github.com/red-cup-engineering/virtuals-brokerage-products-border.git
-	branch = main
-[submodule "union-consideration-settlement-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/union-consideration-settlement-service
-	url = https://github.com/red-cup-engineering/union-consideration-settlement-service.git
-	branch = main
-[submodule "union-brokerage-products-market-border"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/union-brokerage-products-market-border
-	url = https://github.com/red-cup-engineering/union-brokerage-products-market-border.git
-	branch = main
-[submodule "strategy-program-synthesis-work-lot-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/strategy-program-synthesis-work-lot-service
-	url = https://github.com/red-cup-engineering/strategy-program-synthesis-work-lot-service.git
-	branch = main
-[submodule "strategy-program-candidate-assay-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/strategy-program-candidate-assay-service
-	url = https://github.com/red-cup-engineering/strategy-program-candidate-assay-service.git
-	branch = main
-[submodule "sheaf-laplacian-measurement-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/sheaf-laplacian-measurement-service
-	url = https://github.com/red-cup-engineering/sheaf-laplacian-measurement-service.git
-	branch = main
-[submodule "return-risk-feature-measurement-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/return-risk-feature-measurement-service
-	url = https://github.com/red-cup-engineering/return-risk-feature-measurement-service.git
-	branch = main
-[submodule "research-section-grounding-assay-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/research-section-grounding-assay-service
-	url = https://github.com/red-cup-engineering/research-section-grounding-assay-service.git
-	branch = main
-[submodule "recursive-strategy-program-improvement-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/recursive-strategy-program-improvement-service
-	url = https://github.com/red-cup-engineering/recursive-strategy-program-improvement-service.git
-	branch = main
-[submodule "principal-brokerage-interface"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/principal-brokerage-interface
-	url = https://github.com/red-cup-engineering/principal-brokerage-interface.git
-	branch = main
-[submodule "obsmetrologia-blk-accumulation-strategy-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/obsmetrologia-blk-accumulation-strategy-service
-	url = https://github.com/red-cup-engineering/obsmetrologia-blk-accumulation-strategy-service.git
-	branch = main
-[submodule "obsmetrologia-alpha-selection-proof-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/obsmetrologia-alpha-selection-proof-service
-	url = https://github.com/red-cup-engineering/obsmetrologia-alpha-selection-proof-service.git
-	branch = main
-[submodule "metered-compute-payment-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/metered-compute-payment-service
-	url = https://github.com/red-cup-engineering/metered-compute-payment-service.git
-	branch = main
-[submodule "market-funded-strategy-improvement-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/market-funded-strategy-improvement-service
-	url = https://github.com/red-cup-engineering/market-funded-strategy-improvement-service.git
-	branch = main
-[submodule "issuer-research-media-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/issuer-research-media-service
-	url = https://github.com/red-cup-engineering/issuer-research-media-service.git
-	branch = main
-[submodule "investment-research-work-lot-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/investment-research-work-lot-service
-	url = https://github.com/red-cup-engineering/investment-research-work-lot-service.git
-	branch = main
-[submodule "institutional-investment-shadow-deployment"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/institutional-investment-shadow-deployment
-	url = https://github.com/red-cup-engineering/institutional-investment-shadow-deployment.git
-	branch = main
-[submodule "generated-strategy-fold-replay-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/generated-strategy-fold-replay-service
-	url = https://github.com/red-cup-engineering/generated-strategy-fold-replay-service.git
-	branch = main
-[submodule "deterministic-ridge-fit-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/deterministic-ridge-fit-service
-	url = https://github.com/red-cup-engineering/deterministic-ridge-fit-service.git
-	branch = main
-[submodule "correlation-graph-measurement-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/correlation-graph-measurement-service
-	url = https://github.com/red-cup-engineering/correlation-graph-measurement-service.git
-	branch = main
-[submodule "coinbase-x402-bazaar-border"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/coinbase-x402-bazaar-border
-	url = https://github.com/red-cup-engineering/coinbase-x402-bazaar-border.git
-	branch = main
-[submodule "causal-tiling-novelty-measurement-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/causal-tiling-novelty-measurement-service
-	url = https://github.com/red-cup-engineering/causal-tiling-novelty-measurement-service.git
-	branch = main
-[submodule "causal-portfolio-learning-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/causal-portfolio-learning-service
-	url = https://github.com/red-cup-engineering/causal-portfolio-learning-service.git
-	branch = main
-[submodule "causal-market-panel-assay-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/causal-market-panel-assay-service
-	url = https://github.com/red-cup-engineering/causal-market-panel-assay-service.git
-	branch = main
-[submodule "causal-feature-frame-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/causal-feature-frame-service
-	url = https://github.com/red-cup-engineering/causal-feature-frame-service.git
-	branch = main
-[submodule "bubblewrap-strategy-replay-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/bubblewrap-strategy-replay-service
-	url = https://github.com/red-cup-engineering/bubblewrap-strategy-replay-service.git
-	branch = main
-[submodule "alpaca-principal-account-read-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-principal-account-read-service
-	url = https://github.com/red-cup-engineering/alpaca-principal-account-read-service.git
-	branch = main
-[submodule "alpaca-paper-trading-guards-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-paper-trading-guards-service
-	url = https://github.com/red-cup-engineering/alpaca-paper-trading-guards-service.git
-	branch = main
-[submodule "alpaca-paper-account-read-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-paper-account-read-service
-	url = https://github.com/red-cup-engineering/alpaca-paper-account-read-service.git
-	branch = main
-[submodule "alpaca-market-data-read-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-market-data-read-service
-	url = https://github.com/red-cup-engineering/alpaca-market-data-read-service.git
-	branch = main
-[submodule "alpaca-esther-paper-trading-loop"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-esther-paper-trading-loop
-	url = https://github.com/red-cup-engineering/alpaca-esther-paper-trading-loop.git
-	branch = main
-[submodule "alpaca-esther-paper-redistributor-loop"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-esther-paper-redistributor-loop
-	url = https://github.com/red-cup-engineering/alpaca-esther-paper-redistributor-loop.git
-	branch = main
-[submodule "alpaca-alert-watch-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-alert-watch-service
-	url = https://github.com/red-cup-engineering/alpaca-alert-watch-service.git
-	branch = main
-[submodule "alpaca-account-kill-switch-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-account-kill-switch-service
-	url = https://github.com/red-cup-engineering/alpaca-account-kill-switch-service.git
-	branch = main
-[submodule "agent-section-descent-assay-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/agent-section-descent-assay-service
-	url = https://github.com/red-cup-engineering/agent-section-descent-assay-service.git
-	branch = main
 [submodule "github-software-induction-service"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-software-platform-services-section/services/github-services-section/services/github-software-induction-service
 	url = https://github.com/red-cup-engineering/github-software-induction-service.git
@@ -220,4 +80,8 @@
 [submodule "digital-goods-storefront-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-payment-platform-services-section/services/digital-goods-storefront-services-section
 	url = https://github.com/red-cup-engineering/digital-goods-storefront-services-section.git
+	branch = main
+[submodule "alpaca-services-section"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section
+	url = https://github.com/red-cup-engineering/alpaca-services-section.git
 	branch = main
