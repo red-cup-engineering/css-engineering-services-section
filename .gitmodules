@@ -129,3 +129,7 @@
 	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/cloudflare-d1-service
 	url = https://github.com/red-cup-engineering/cloudflare-d1-service.git
 	branch = main
+[submodule "cloudflare-activitystreams-operation-services-section"]
+	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section/services/cloudflare-activitystreams-operation-services-section
+	url = https://github.com/red-cup-engineering/cloudflare-activitystreams-operation-services-section.git
+	branch = main
