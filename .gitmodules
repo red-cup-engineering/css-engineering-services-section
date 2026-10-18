@@ -81,3 +81,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-media-platform-services-section/services/visual-asset-generation-services-section
 	url = https://github.com/red-cup-engineering/visual-asset-generation-services-section.git
 	branch = main
+[submodule "social-publication-services-section"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-media-platform-services-section/services/social-publication-services-section
+	url = https://github.com/red-cup-engineering/social-publication-services-section.git
+	branch = main
