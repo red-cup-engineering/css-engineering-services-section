@@ -1,0 +1,24 @@
+{
+  "name": "@561-group/web-taxonomy",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Tags, categories and author archives as a Chu space over the four-valued bilattice: a taxonomy IS the relation terms × subjects → FOUR. A subject is in a term's extension iff it affirms that taxonomy cell; a contested membership settles to ⊤ (shown, not silently dropped). extension(term) is the archive member set; the transpose gives a subject's terms; relatedness is shared-term overlap. Built on @561-group/math/chu + @561-group/semantic-hypertext; archive member lists compose straight into engine Pages.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emsenn/561-group.git",
+    "directory": "apps/web/web-taxonomy"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "exports": {
+    ".": "./src/index.mjs",
+    "./taxonomy": "./src/taxonomy.mjs",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@561-group/math": "workspace:*",
+    "@561-group/semantic-hypertext": "workspace:*"
+  }
+}
