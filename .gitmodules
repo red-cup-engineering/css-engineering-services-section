@@ -81,3 +81,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-software-platform-services-section/services/github-services-section
 	url = https://github.com/red-cup-engineering/github-services-section.git
 	branch = main
+[submodule "mastodon-services-section"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-social-platform-services-section/services/mastodon-services-section
+	url = https://github.com/red-cup-engineering/mastodon-services-section.git
+	branch = main
