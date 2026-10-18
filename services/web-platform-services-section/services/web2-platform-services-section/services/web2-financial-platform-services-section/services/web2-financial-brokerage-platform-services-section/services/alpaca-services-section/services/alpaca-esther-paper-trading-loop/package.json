@@ -22,6 +22,11 @@
     "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*"
   },
   "description": "Paper strategy loop plus explicit authorized Alpaca intent execution. The latter derives the actual venue from a matched principal contract and authority grant, supports both paper and live custody, and admits each order only from immediate broker account and position observations.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/alpaca-esther-paper-trading-loop"
+  },
   "exports": {
     "./pipeline": "./src/pipeline.mjs",
     "./venue-authority": "./src/venue-authority.mjs",

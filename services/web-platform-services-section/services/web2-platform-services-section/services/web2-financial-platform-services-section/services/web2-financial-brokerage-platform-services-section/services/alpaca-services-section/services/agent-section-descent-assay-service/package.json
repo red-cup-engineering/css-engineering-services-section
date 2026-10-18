@@ -4,6 +4,11 @@
   "private": false,
   "type": "module",
   "description": "Assays whether independently produced local forecast sections glue, and preserves contradiction without forced consensus.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/agent-section-descent-assay-service"
+  },
   "exports": {
     ".": "./src/assay.mjs"
   },

@@ -11,6 +11,11 @@
     "check": "node --check src/evidence-packet.mjs"
   },
   "description": "issuer-research-media-service sovereign enterprise",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/issuer-research-media-service"
+  },
   "dependencies": {
     "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*"
   }

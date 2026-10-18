@@ -4,6 +4,11 @@
   "private": true,
   "type": "module",
   "description": "A conductor that contracts atomic causal metrology, fitting, evaluation, allocation, and witnessing dies without owning their implementations.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/causal-portfolio-learning-service"
+  },
   "exports": {
     ".": "./src/circuit.mjs"
   },

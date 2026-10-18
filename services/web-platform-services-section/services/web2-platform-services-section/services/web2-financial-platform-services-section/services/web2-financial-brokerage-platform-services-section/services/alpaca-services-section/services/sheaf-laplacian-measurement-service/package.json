@@ -4,6 +4,11 @@
   "private": false,
   "type": "module",
   "description": "Measures graph-Laplacian smooth and residual components and section disagreement energy for any bounded risk field.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/sheaf-laplacian-measurement-service"
+  },
   "exports": {
     ".": "./src/measure.mjs"
   },

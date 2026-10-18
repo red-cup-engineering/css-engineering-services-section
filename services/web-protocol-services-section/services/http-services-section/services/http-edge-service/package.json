@@ -4,6 +4,11 @@
   "private": true,
   "type": "module",
   "description": "HTTP edge middleware: TLS/ACME, virtual hosting, reverse proxy, rate limiting, CORS, CSRF, sessions, auth, WebSocket upgrade, ESI, and surrogate caching. Sits in front of an @red-cup-engineering/http-server-core-service app.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-web-engineering-services-section.git",
+    "directory": "services/web-protocol-services-section/services/http-services-section/services/http-edge-service"
+  },
   "engines": {
     "node": ">=22.18"
   },
