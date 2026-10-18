@@ -97,3 +97,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/principal-brokerage-interface
 	url = https://github.com/red-cup-engineering/principal-brokerage-interface.git
 	branch = main
+[submodule "obsmetrologia-blk-accumulation-strategy-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/obsmetrologia-blk-accumulation-strategy-service
+	url = https://github.com/red-cup-engineering/obsmetrologia-blk-accumulation-strategy-service.git
+	branch = main
