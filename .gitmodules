@@ -117,3 +117,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/issuer-research-media-service
 	url = https://github.com/red-cup-engineering/issuer-research-media-service.git
 	branch = main
+[submodule "investment-research-work-lot-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/investment-research-work-lot-service
+	url = https://github.com/red-cup-engineering/investment-research-work-lot-service.git
+	branch = main
