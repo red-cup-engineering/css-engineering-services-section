@@ -133,3 +133,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/deterministic-ridge-fit-service
 	url = https://github.com/red-cup-engineering/deterministic-ridge-fit-service.git
 	branch = main
+[submodule "correlation-graph-measurement-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/correlation-graph-measurement-service
+	url = https://github.com/red-cup-engineering/correlation-graph-measurement-service.git
+	branch = main
