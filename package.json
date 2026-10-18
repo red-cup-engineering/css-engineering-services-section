@@ -3,6 +3,11 @@
   "version": "0.1.3",
   "type": "module",
   "description": "Web-tier home for CSS packages: cascade computation and certification, plus a certified theming system built on top of it. Sibling to the web html-services-section; together they carry the rendering stack that used to live inside the file-format HTML codec.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-serialized-content-engineering-services-section.git",
+    "directory": "services/css-services-section"
+  },
   "dependencies": {
     "@red-cup-engineering/computer-content-address-engineering-services-section": "0.2.0",
     "@red-cup-engineering/computer-content-engineering-services-section": "0.1.0",
