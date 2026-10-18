@@ -213,3 +213,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-payment-platform-services-section/services/tips-services-section
 	url = https://github.com/red-cup-engineering/tips-services-section.git
 	branch = main
+[submodule "stripe-services-section"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-payment-platform-services-section/services/stripe-services-section
+	url = https://github.com/red-cup-engineering/stripe-services-section.git
+	branch = main
