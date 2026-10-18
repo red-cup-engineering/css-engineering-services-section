@@ -185,3 +185,7 @@
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/slack-engineering-services-section
 	url = https://github.com/red-cup-engineering/slack-engineering-services-section.git
 	branch = main
+[submodule "discord-community-automation-service"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/services/discord-community-automation-service
+	url = https://github.com/red-cup-engineering/discord-community-automation-service.git
+	branch = main
