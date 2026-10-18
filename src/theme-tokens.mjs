@@ -4,7 +4,7 @@
  * A palette is data, not an opaque CSS string: `ThemeTokens` names a fixed
  * 19-role vocabulary (colour roles ink/surface/accent/…, type/layout roles
  * sans/measure/…) with one canonical CSS custom-property mapping
- * (`tokenVar`). The colour math itself — `derivePalette`'s perceptual OKLCH
+ * (`tokenVar`) at this lower CSS owner. The colour math itself — `derivePalette`'s perceptual OKLCH
  * derivation from seed colours, `deriveDark`'s dark-scheme synthesis, and
  * the whole hex/OKLCH pipeline underneath them — lives once, in
  * `@red-cup-engineering/web-theming-service`; this codec adds only the
@@ -14,14 +14,33 @@
  *
  * @packageDocumentation
  */
-import {
-  THEME_TOKEN_ROLES,
-  tokenVar,
-
-} from "@red-cup-engineering/web-theming-service/theming-computer";
+const TOKEN_VARS = Object.freeze({
+    ink: "--ink",
+    inkSoft: "--ink-soft",
+    surface: "--surface",
+    surfaceDeep: "--surface-deep",
+    surfaceEdge: "--surface-edge",
+    rule: "--rule",
+    tint: "--tint",
+    tintStrong: "--tint-strong",
+    selection: "--selection",
+    accent: "--accent",
+    alarm: "--alarm",
+    visited: "--visited",
+    sans: "--sans",
+    serif: "--serif",
+    mono: "--mono",
+    gutter: "--gutter",
+    max: "--max",
+    measure: "--measure",
+    radius: "--radius"
+});
+export const THEME_TOKEN_ROLES = Object.freeze(Object.keys(TOKEN_VARS));
+export function tokenVar(role) {
+    return TOKEN_VARS[role];
+}
 import { assignmentSetToStylesheet } from "./css-cascade.mjs";
 
-export { THEME_TOKEN_ROLES, tokenVar };
 
 /** The canonical theme design-token vocabulary: every role a theme may declare. */
 

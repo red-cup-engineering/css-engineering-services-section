@@ -1,8 +1,8 @@
 {
   "name": "@red-cup-engineering/css-services-section",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "type": "module",
-  "description": "Web-tier home for CSS packages: cascade computation and certification, plus a certified theming system built on top of it. Sibling to the web html-services-section; together they carry the rendering stack that used to live inside the file-format HTML codec.",
+  "description": "Web-tier home for CSS packages: cascade computation and checks, plus a computed theming system built on top of it. Sibling to the web html-services-section; together they carry the rendering stack that used to live inside the file-format HTML codec.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/red-cup-engineering/computer-serialized-content-engineering-services-section.git",
@@ -14,13 +14,15 @@
     "@red-cup-engineering/computer-data-engineering-services-section": "0.2.0",
     "@red-cup-engineering/metrologic": "0.4.0",
     "@red-cup-engineering/signcell": "0.2.0",
-    "@red-cup-engineering/xml-document-rendering-service": "0.1.7",
-    "@red-cup-engineering/web-theming-service": "0.0.7"
+    "@red-cup-engineering/xml-document-rendering-service": "0.1.7"
   },
   "exports": {
     "./css-style-resolution": "./src/css-style-resolution.mjs",
     "./css-cascade": "./src/css-cascade.mjs",
-    "./theme-tokens": "./src/theme-tokens.mjs",
+    "./theme-tokens": {
+      "types": "./src/theme-tokens.d.mts",
+      "default": "./src/theme-tokens.mjs"
+    },
     "./typography": "./src/typography.mjs"
   },
   "scripts": {
