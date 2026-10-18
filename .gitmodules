@@ -53,3 +53,7 @@
 	path = services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section
 	url = https://github.com/red-cup-engineering/web3-gambling-platform-services-section.git
 	branch = main
+[submodule "union-public-compute-assay"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-software-platform-services-section/services/github-services-section/services/github-actions-public-compute-provider/content/assay-target
+	url = https://github.com/red-cup-engineering/union-public-compute-assay.git
+	branch = main
