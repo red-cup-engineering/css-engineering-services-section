@@ -157,3 +157,7 @@
 	path = services/web-protocol-services-section/services/a2a-services-section/services/a2a-rmn-task-client-service
 	url = https://github.com/red-cup-engineering/a2a-rmn-task-client-service.git
 	branch = main
+[submodule "a2a-coordination-state-custody-service"]
+	path = services/web-protocol-services-section/services/a2a-services-section/services/a2a-coordination-state-custody-service
+	url = https://github.com/red-cup-engineering/a2a-coordination-state-custody-service.git
+	branch = main
