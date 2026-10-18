@@ -373,9 +373,12 @@ availability of either private package, or a newly fabricated supplier API.
 The semantic-article shell, reference themes, context/metadata/navigation helpers,
 CSS assembly and palette decoder have one executable owner at Serialized Content
 Engineering's existing `web-theming-service/theming` subpath. Web delegates these
-existing public exports directly and keeps its own `admitTheme` evidence adapter:
+existing public exports directly and consumes Data's existing structural
+judgments when creating its own `admitTheme` evidence adapter:
 Web's SignCell 0.4 `value`/`settlement` receipt and Data's existing SignCell 0.2
 `reading`/`contract` receipt are distinct contracts. They MUST NOT be aliased.
+Web retains its genuine stricter evidence encoding, including refusal of an
+unpaired-surrogate name even when Data's structural judgment accepts that name.
 The original renderer cases run at Data; the original Web evidence case and
 separate contrary-predicate regressions run at Web. The existing
 `test/provider-contracts.test.mjs` is the executable receiving carrier: canonical
