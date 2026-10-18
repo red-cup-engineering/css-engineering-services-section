@@ -53,14 +53,6 @@
 	path = services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section
 	url = https://github.com/red-cup-engineering/web3-gambling-platform-services-section.git
 	branch = main
-[submodule "github-software-induction-service"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-software-platform-services-section/services/github-services-section/services/github-software-induction-service
-	url = https://github.com/red-cup-engineering/github-software-induction-service.git
-	branch = main
-[submodule "github-actions-public-compute-provider"]
-	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-software-platform-services-section/services/github-services-section/services/github-actions-public-compute-provider
-	url = https://github.com/red-cup-engineering/github-actions-public-compute-provider.git
-	branch = main
 [submodule "discord-territory-planning-service"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-social-platform-services-section/services/discord-services-section/services/discord-territory-planning-service
 	url = https://github.com/red-cup-engineering/discord-territory-planning-service.git
@@ -84,4 +76,8 @@
 [submodule "alpaca-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section
 	url = https://github.com/red-cup-engineering/alpaca-services-section.git
+	branch = main
+[submodule "github-services-section"]
+	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-software-platform-services-section/services/github-services-section
+	url = https://github.com/red-cup-engineering/github-services-section.git
 	branch = main
