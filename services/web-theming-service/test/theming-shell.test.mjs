@@ -179,13 +179,13 @@ test("the component library styles content against canonical tokens only", () =>
     }
 });
 test("the component layer styles held contradiction via the --alarm token", () => {
-    // Anti-closure with rails: a contested cell is always visible (default rule),
-    // restrained, amplified only under audit mode, and themeable (no hardcoded
-    // hazard color — mainstream theming kits cannot express a both-true state).
+    // The shared stylesheet declares the contested selector with the alarm
+    // token, plus separate audit/calm selectors. Source matching establishes
+    // these rules, not browser visibility or parity with other theme systems.
     assert.match(COMPONENT_CSS, /\[data-contested=true\]\{[^}]*var\(--alarm/);
     assert.match(COMPONENT_CSS, /\[data-mode=audit\] \[data-contested=true\]/);
     assert.match(COMPONENT_CSS, /\[data-mode=calm\] \[data-contested=true\]/);
-    // Honest absence is rendered, not blank (Tuftean integrity).
+    // The gap selectors have a declared shared component rule.
     assert.match(COMPONENT_CSS, /\.gap,\[data-gap=true\]/);
 });
 test("render emits per-page head links (feed alternates etc.)", () => {
