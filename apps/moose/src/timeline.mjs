@@ -21,15 +21,17 @@ function localPost(item, identifier, origin) {
   if (typeof object.id !== "string" || typeof object.content !== "string") return null;
   let id;
   try { id = new URL(object.id); } catch { return null; }
-  if (id.origin !== origin || !id.pathname.startsWith("/actors/" + identifier + "/posts/")
-      || id.search || id.hash || id.username || id.password) return null;
-  const postId = id.pathname.slice(("/actors/" + identifier + "/posts/").length);
-  if (!postId || postId.includes("/")) return null;
+  // ActivityPub authors choose the original object URI. The native provider
+  // already accepts /notes/{id}, /articles/{id}, etc.; do not invent a MOOSE
+  // /actors/.../posts namespace and accidentally hide legitimate publications.
+  if (id.origin !== origin || !id.pathname.startsWith("/") ||
+      id.href !== object.id || id.search || id.hash || id.username || id.password) return null;
   const published = object.published ?? item.published;
   const instant = typeof published === "string" ? Date.parse(published) : NaN;
-  if (!Number.isFinite(instant)) return null;
+  // Published is optional in ActivityStreams. Never invent a timestamp.
+  const observedPublication = Number.isFinite(instant) ? new Date(instant).toISOString() : null;
   return Object.freeze({
-    id: id.href, identifier, actor, published: new Date(instant).toISOString(),
+    id: id.href, identifier, actor, published: observedPublication,
     content: object.content, summary: typeof object.summary === "string" ? object.summary : "",
     inReplyTo: identity(object.inReplyTo) ?? null,
   });
@@ -64,9 +66,16 @@ export async function readPublicTimeline({ origin, provider, identifiers, limit 
     const collection = await request(outbox.href);
     if (collection.type !== "OrderedCollection" || !Number.isSafeInteger(collection.totalItems) ||
         collection.totalItems < 0) throw new TypeError("MOOSE received a malformed public outbox collection");
+    // ActivityPub OrderedCollection allows an embedded orderedItems list or
+    // a first-page link. Both read the SAME original outbox, never a shadow index.
+    if (Array.isArray(collection.orderedItems)) {
+      if (collection.orderedItems.length > 100) throw new TypeError("MOOSE public outbox exceeds a bounded page");
+      return collection.orderedItems.map(item => localPost(item, identifier, base.origin)).filter(Boolean);
+    }
     if (collection.totalItems === 0) return [];
-    if (typeof collection.first !== "string") throw new TypeError("MOOSE outbox lacks the original first page");
-    const first = new URL(collection.first);
+    const firstId = identity(collection.first);
+    if (typeof firstId !== "string") throw new TypeError("MOOSE outbox lacks the original first page");
+    const first = new URL(firstId);
     if (first.origin !== base.origin || first.pathname !== outbox.pathname || first.username || first.password ||
         first.hash || first.searchParams.get("page") !== "true") {
       throw new TypeError("MOOSE refuses a foreign or noncanonical outbox cursor");
@@ -81,6 +90,10 @@ export async function readPublicTimeline({ origin, provider, identifiers, limit 
   const unique = new Map();
   for (const post of entries.flat()) unique.set(post.id, post);
   return Object.freeze([...unique.values()]
-    .sort((a, b) => b.published.localeCompare(a.published) || a.id.localeCompare(b.id))
+    // Known instants sort newest first. Absent instants retain original
+    // outbox order (stable Array.sort), not a fabricated cross-actor clock.
+    .sort((a, b) => a.published && b.published
+      ? b.published.localeCompare(a.published) || a.id.localeCompare(b.id)
+      : a.published ? -1 : b.published ? 1 : 0)
     .slice(0, limit));
 }
