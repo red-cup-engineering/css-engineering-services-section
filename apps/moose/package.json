@@ -1,0 +1,32 @@
+{
+  "name": "@red-cup-engineering/moose",
+  "version": "0.1.0-dev.0",
+  "type": "module",
+  "private": true,
+  "description": "MOOSE federated Semioverse social application over Living Web Server and original Fedify ActivityPub provider",
+  "exports": {
+    ".": "./src/application.mjs",
+    "./timeline": "./src/timeline.mjs"
+  },
+  "bin": {
+    "serve-moose": "./bin/serve.mjs"
+  },
+  "files": [
+    "src",
+    "bin",
+    "README.md"
+  ],
+  "scripts": {
+    "test:timeline": "node --test test/timeline.test.mjs",
+    "test": "node --test test/*.test.mjs",
+    "check": "node --check src/application.mjs && node --check src/timeline.mjs && node --check bin/serve.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/activitypub-services-section": "0.9.3",
+    "@red-cup-engineering/activitypub-server": "0.1.3",
+    "@red-cup-engineering/living-web-server": "0.1.0-dev.0"
+  },
+  "engines": {
+    "node": ">=22.18"
+  }
+}
