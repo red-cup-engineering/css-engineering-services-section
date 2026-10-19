@@ -1,43 +1,10 @@
-/**
- * The public Semioverse timeline is a live projection of the SAME Fedify
- * outboxes that hold signed ActivityStreams publication. No second post store.
- * Only locally authored, explicitly Public Create{Note,Article} is rendered.
- */
-export const PUBLIC = "https://www.w3.org/ns/activitystreams#Public";
+import { projectPublicActorPosts } from "@red-cup-engineering/activitypub-services-section/public-posts";
+export { PUBLIC } from "@red-cup-engineering/activitypub-services-section/as2";
 
 const actorPattern = /^[a-z0-9][a-z0-9._-]*$/u;
-const values = value => value === undefined || value === null ? [] : Array.isArray(value) ? value : [value];
 const identity = value => typeof value === "string" ? value : value?.id;
-const hasPublicAudience = value => [...values(value?.to), ...values(value?.cc)]
-  .some(recipient => identity(recipient) === PUBLIC);
 
-function localPost(item, identifier, origin) {
-  if (item?.type !== "Create" || !item.object || typeof item.object !== "object") return null;
-  const object = item.object;
-  if (object.type !== "Note" && object.type !== "Article") return null;
-  const actor = new URL("/actors/" + identifier, origin).href;
-  if (identity(item.actor) !== actor || identity(object.attributedTo) !== actor) return null;
-  if (!hasPublicAudience(item) && !hasPublicAudience(object)) return null;
-  if (typeof object.id !== "string" || typeof object.content !== "string") return null;
-  let id;
-  try { id = new URL(object.id); } catch { return null; }
-  // ActivityPub authors choose the original object URI. The native provider
-  // already accepts /notes/{id}, /articles/{id}, etc.; do not invent a MOOSE
-  // /actors/.../posts namespace and accidentally hide legitimate publications.
-  if (id.origin !== origin || !id.pathname.startsWith("/") ||
-      id.href !== object.id || id.search || id.hash || id.username || id.password) return null;
-  const published = object.published ?? item.published;
-  const instant = typeof published === "string" ? Date.parse(published) : NaN;
-  // Published is optional in ActivityStreams. Never invent a timestamp.
-  const observedPublication = Number.isFinite(instant) ? new Date(instant).toISOString() : null;
-  return Object.freeze({
-    id: id.href, identifier, actor, published: observedPublication,
-    content: object.content, summary: typeof object.summary === "string" ? object.summary : "",
-    inReplyTo: identity(object.inReplyTo) ?? null,
-  });
-}
-
-/** Read only same-origin public actor outboxes. A broken upstream read fails closed. */
+/** Read the original source-owned public outbox; protocol interpretation is upstream. */
 export async function readPublicTimeline({ origin, provider, identifiers, limit = 40 } = {}) {
   const base = new URL(origin);
   if (base.href !== base.origin + "/" ||
@@ -66,32 +33,36 @@ export async function readPublicTimeline({ origin, provider, identifiers, limit 
     const collection = await request(outbox.href);
     if (collection.type !== "OrderedCollection" || !Number.isSafeInteger(collection.totalItems) ||
         collection.totalItems < 0) throw new TypeError("MOOSE received a malformed public outbox collection");
-    // ActivityPub OrderedCollection allows an embedded orderedItems list or
-    // a first-page link. Both read the SAME original outbox, never a shadow index.
+    let items;
     if (Array.isArray(collection.orderedItems)) {
-      if (collection.orderedItems.length > 100) throw new TypeError("MOOSE public outbox exceeds a bounded page");
-      return collection.orderedItems.map(item => localPost(item, identifier, base.origin)).filter(Boolean);
+      items = collection.orderedItems;
+    } else if (collection.totalItems === 0) {
+      items = [];
+    } else {
+      const firstId = identity(collection.first);
+      if (typeof firstId !== "string") throw new TypeError("MOOSE outbox lacks the original first page");
+      const first = new URL(firstId);
+      if (first.origin !== base.origin || first.pathname !== outbox.pathname ||
+          first.username || first.password || first.hash ||
+          first.searchParams.get("page") !== "true" ||
+          [...first.searchParams.keys()].some(key => !["page", "cursor"].includes(key))) {
+        throw new TypeError("MOOSE refuses a foreign or noncanonical outbox cursor");
+      }
+      const page = await request(first.href);
+      if (page.type !== "OrderedCollectionPage" || !Array.isArray(page.orderedItems)) {
+        throw new TypeError("MOOSE received a malformed public outbox page");
+      }
+      items = page.orderedItems;
     }
-    if (collection.totalItems === 0) return [];
-    const firstId = identity(collection.first);
-    if (typeof firstId !== "string") throw new TypeError("MOOSE outbox lacks the original first page");
-    const first = new URL(firstId);
-    if (first.origin !== base.origin || first.pathname !== outbox.pathname || first.username || first.password ||
-        first.hash || first.searchParams.get("page") !== "true") {
-      throw new TypeError("MOOSE refuses a foreign or noncanonical outbox cursor");
-    }
-    const page = await request(first.href);
-    if (page.type !== "OrderedCollectionPage" || !Array.isArray(page.orderedItems) ||
-        page.orderedItems.length > 100) {
-      throw new TypeError("MOOSE received a malformed public outbox page");
-    }
-    return page.orderedItems.map(item => localPost(item, identifier, base.origin)).filter(Boolean);
+    if (items.length > 100) throw new TypeError("MOOSE public outbox exceeds a bounded page");
+    const actor = new URL("/actors/" + identifier, base).href;
+    return projectPublicActorPosts(items, { actor, origin: base.origin })
+      .map(post => Object.freeze({ ...post, identifier }));
   }));
   const unique = new Map();
   for (const post of entries.flat()) unique.set(post.id, post);
   return Object.freeze([...unique.values()]
-    // Known instants sort newest first. Absent instants retain original
-    // outbox order (stable Array.sort), not a fabricated cross-actor clock.
+    // Time is optional. Undated authoring is not assigned a fictional timestamp.
     .sort((a, b) => a.published && b.published
       ? b.published.localeCompare(a.published) || a.id.localeCompare(b.id)
       : a.published ? -1 : b.published ? 1 : 0)
