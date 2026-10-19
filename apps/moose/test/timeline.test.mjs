@@ -153,3 +153,12 @@ test("ActivityStreams ordered collections with inline public items need no inven
   assert.equal(rows.length, 1);
   assert.equal(rows[0].id, actorId("alice") + "/posts/one");
 });
+
+
+test("a retired original actor cannot deny every remaining actor's public timeline", async () => {
+  const { provider, calls } = source({ alice: [note("alice", "one", "2026-10-19T05:00:00Z")], bob: [] });
+  provider.resolveActor = async id => id === "alice" ? { identifier: id } : null;
+  const posts = await readPublicTimeline({ origin, provider, identifiers: actors });
+  assert.deepEqual(posts.map(row => row.identifier), ["alice"]);
+  assert.equal(calls.length, 2);
+});
