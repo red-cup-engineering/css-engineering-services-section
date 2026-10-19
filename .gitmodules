@@ -1,0 +1,4 @@
+[submodule "web-theming-service"]
+	path = services/web-theming-service
+	url = https://github.com/red-cup-engineering/web-theming-service.git
+	branch = main
