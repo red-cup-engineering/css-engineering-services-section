@@ -15,27 +15,37 @@ function admittedOrigin(origin) {
   return url.origin;
 }
 
+function admittedIdentifiers(identifiers) {
+  if (!Array.isArray(identifiers) || identifiers.length === 0 || identifiers.length > 100 ||
+      identifiers.some(id => typeof id !== "string" || !/^[a-z0-9][a-z0-9._-]*$/u.test(id)) ||
+      new Set(identifiers).size !== identifiers.length) {
+    throw new TypeError("MOOSE requires distinct source-owned actor identifiers");
+  }
+  return Object.freeze([...identifiers]);
+}
+
 function admittedActors(actors) {
   if (!Array.isArray(actors) || actors.length === 0 || actors.length > 100 ||
       actors.some(actor => !actor || typeof actor !== "object" ||
-        typeof actor.identifier !== "string" || !/^[a-z0-9][a-z0-9._-]*$/u.test(actor.identifier) ||
         typeof actor.actorName !== "string" || !actor.actorName.trim() ||
         typeof actor.summary !== "string" ||
-        (typeof actor.keyPath !== "string" && !Array.isArray(actor.keyPairs))) ||
-      new Set(actors.map(actor => actor.identifier)).size !== actors.length) {
-    throw new TypeError("MOOSE requires distinct provisioned actors with original signing keys");
+        (typeof actor.keyPath !== "string" && !Array.isArray(actor.keyPairs)))) {
+    throw new TypeError("MOOSE requires provisioned actors with original signing keys");
   }
+  admittedIdentifiers(actors.map(actor => actor.identifier));
   return Object.freeze(actors.map(actor => Object.freeze({ ...actor })));
 }
 
-function timelinePage(posts) {
+const navigation = prefix => Object.freeze([
+  { href: prefix, label: "Home" },
+  { href: prefix === "/" ? "/timeline" : prefix + "/timeline", label: "Timeline" },
+  { href: prefix === "/" ? "/about" : prefix + "/actors", label: "Actors" },
+]);
+
+function timelinePage(posts, nav) {
   return Object.freeze({
     title: "MOOSE · Semioverse",
-    navigation: [
-      { href: "/", label: "Home" },
-      { href: "/timeline", label: "Timeline" },
-      { href: "/about", label: "Actors" },
-    ],
+    navigation: nav,
     tiles: Object.freeze(posts.length === 0 ? [{
       id: "empty-timeline", title: "No public posts yet",
       content: "The actors on this server have not published any public posts.",
@@ -52,14 +62,65 @@ function timelinePage(posts) {
 }
 
 /**
- * MOOSE is a social *application*, not a second ActivityPub implementation.
+ * The reusable MOOSE *application*, consumed by FeltOS with the very same
+ * source-owned ActivityPub provider and listener already used by that world.
  *
- * - Protocol identities, signed delivery, Follow/Accept/Undo, keys, durable
- *   inbox/outbox, idempotency and per-actor bearer rights stay with Fedify.
- * - HTML/JSON presentation and HTTP binding stay with Living Web Server and
- *   ActivityPub Server. A public-page read reopens the source outbox every time.
- * - No inbound social activity is promoted to MetroPlat office authority.
+ * This does not create keys, a second protocol face, a delivery queue or
+ * enterprise authority. The standalone MOOSE host below provisions a provider
+ * only when there is no FeltOS/world owner for that origin.
  */
+export function createMooseSocialApplication({
+  origin, provider, identifiers, authorizePublicRead, prefix = "/social",
+} = {}) {
+  const base = admittedOrigin(origin);
+  const names = admittedIdentifiers(identifiers);
+  if (!provider || provider.origin !== base || typeof provider.fetch !== "function" ||
+      typeof provider.resolveActor !== "function") {
+    throw new TypeError("MOOSE requires its original same-origin ActivityPub actor provider");
+  }
+  if (typeof authorizePublicRead !== "function") {
+    throw new TypeError("MOOSE requires its consumer's explicit public-read policy");
+  }
+  if (prefix !== "/" && !/^\/[a-z][a-z0-9-]*$/u.test(prefix)) {
+    throw new TypeError("MOOSE needs an exact public application prefix");
+  }
+  const nav = navigation(prefix);
+  const root = prefix;
+  const timeline = prefix === "/" ? "/timeline" : prefix + "/timeline";
+  const actors = prefix === "/" ? "/about" : prefix + "/actors";
+  const readPosts = () => readPublicTimeline({ origin: base, provider, identifiers: names });
+  const pages = [
+    { match: timeline, name: "public-timeline",
+      read: async () => timelinePage(await readPosts(), nav) },
+    { match: actors, name: "public-actors", read: async () => ({
+      title: "MOOSE actors", navigation: nav,
+      tiles: (await Promise.all(names.map(identifier => provider.resolveActor(identifier))))
+        .filter(actor => actor !== null && actor !== undefined)
+        .map(actor => ({
+          id: "actor-" + actor.identifier,
+          title: "@" + actor.identifier,
+          content: actor.actorName + (actor.summary ? " — " + actor.summary : ""),
+          links: [{ href: base + "/actors/" + actor.identifier, label: "Federated actor" }],
+        })),
+    }) },
+  ];
+  const website = createLivingWebServer({
+    origin: base, authorizePublicRead,
+    ...(prefix === "/" ? { home: async () => timelinePage(await readPosts(), nav) }
+                       : { pages: [{ match: root, name: "home", read: async () => timelinePage(await readPosts(), nav) }, ...pages] }),
+    ...(prefix === "/" ? { pages } : {}),
+  });
+  const resources = Object.freeze([root, timeline, actors].map((match, index) => Object.freeze({
+    id: ["moose.home", "moose.timeline", "moose.actors"][index],
+    match, public: true,
+    handler: context => website.fetch(context.request),
+  })));
+  return Object.freeze({
+    origin: base, website, resources, fetch: website.fetch,
+  });
+}
+
+/** Independent MOOSE node when FeltOS has not supplied a provider. */
 export async function createMoose({
   origin, stateDirectory, actors, authorizePublicRead, onSocialActivity,
 } = {}) {
@@ -69,55 +130,32 @@ export async function createMoose({
     throw new TypeError("MOOSE needs an original canonical absolute persistent state directory");
   }
   const identities = admittedActors(actors);
-  if (typeof authorizePublicRead !== "function" || typeof onSocialActivity !== "function") {
-    throw new TypeError("MOOSE needs explicit public-read and signed social-activity policies");
+  if (typeof onSocialActivity !== "function") {
+    throw new TypeError("MOOSE requires an explicit signed social-arrival policy");
   }
   const local = await createLocalActivityPubProvider({
     origin: base, stateDirectory, actors: identities, onActivity: onSocialActivity,
     manuallyStartQueue: true,
   });
   try {
-    // These are the original persistent KV and delivery spool returned by the
-    // networking supplier, never another MOOSE-owned sidecar or credential map.
     if (local.provider.origin !== base || local.provider.queueStartup !== "manual" ||
         !local.kv || typeof local.kv.get !== "function" ||
         !local.queue || typeof local.queue.enqueue !== "function" ||
         typeof local.queue.listen !== "function" || local.custodyRoot !== stateDirectory) {
       throw new TypeError("MOOSE requires the current durable ActivityPub provider/host contract");
     }
-    const identifiers = identities.map(actor => actor.identifier);
-    const readPosts = () => readPublicTimeline({
-      origin: base, provider: local.provider, identifiers,
-    });
-    const website = createLivingWebServer({
-      origin: base, authorizePublicRead,
-      home: async () => timelinePage(await readPosts()),
-      pages: [
-        { match: "/timeline", name: "public-timeline",
-          read: async () => timelinePage(await readPosts()) },
-        { match: "/about", name: "public-actors", read: async () => ({
-          title: "MOOSE actors",
-          navigation: [
-            { href: "/", label: "Home" },
-            { href: "/timeline", label: "Timeline" },
-            { href: "/about", label: "Actors" },
-          ],
-          tiles: identities.map(actor => ({
-            id: "actor-" + actor.identifier,
-            title: "@" + actor.identifier,
-            content: actor.actorName + (actor.summary ? " — " + actor.summary : ""),
-            links: [{ href: base + "/actors/" + actor.identifier, label: "Federated actor" }],
-          })),
-        }) },
-      ],
+    const social = createMooseSocialApplication({
+      origin: base, provider: local.provider,
+      identifiers: identities.map(actor => actor.identifier),
+      authorizePublicRead, prefix: "/",
     });
     const site = Object.freeze({
-      origin: base, provider: local.provider, website,
+      origin: base, provider: local.provider, website: social.website,
       kv: local.kv, queue: local.queue,
       custodyRoot: local.custodyRoot, release: local.close,
     });
     return Object.freeze({
-      origin: base, site, website, provider: local.provider,
+      origin: base, site, website: social.website, provider: local.provider,
       actorBearerTokenPaths: local.actorBearerTokenPaths,
       close: local.close,
     });
@@ -127,13 +165,11 @@ export async function createMoose({
   }
 }
 
-/** The shared listener and original Fedify queue are the ONLY running host. */
+/** Shared HTTP listener and original Fedify queue are the only node host. */
 export async function serveMoose({
   hostname = "127.0.0.1", port = 8000, trustProxy = false, ...options
 } = {}) {
   const moose = await createMoose(options);
-  // Managed hosting owns shutdown of both its listener and the supplied
-  // durable provider. On startup failure it closes that provider itself.
   const running = await serveManagedActivityPubSites({
     sites: [moose.site], hostname, port, trustProxy,
   });
