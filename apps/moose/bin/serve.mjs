@@ -27,7 +27,7 @@ async function main() {
   const running = await serveMoose({
     origin, stateDirectory, actors, onSocialActivity,
     authorizePublicRead: async ({ resource }) =>
-      ["home", "public-timeline", "public-actors"].includes(resource),
+      ["home", "public-timeline", "public-actors", "public-actor"].includes(resource),
     hostname: process.env.HOST ?? "127.0.0.1",
     port: process.env.PORT === undefined ? 8000 : Number(process.env.PORT),
     trustProxy: process.env.TRUST_PROXY === "true",
