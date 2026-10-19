@@ -88,7 +88,11 @@ export function createMooseSocialApplication({
   const root = prefix;
   const timeline = prefix === "/" ? "/timeline" : prefix + "/timeline";
   const actors = prefix === "/" ? "/about" : prefix + "/actors";
+  const profilePath = identifier =>
+    (prefix === "/" ? "/people/" : prefix + "/people/") + identifier;
   const readPosts = () => readPublicTimeline({ origin: base, provider, identifiers: names });
+  const readActorPosts = identifier =>
+    readPublicTimeline({ origin: base, provider, identifiers: [identifier] });
   const pages = [
     { match: timeline, name: "public-timeline",
       read: async () => timelinePage(await readPosts(), nav) },
@@ -100,9 +104,33 @@ export function createMooseSocialApplication({
           id: "actor-" + actor.identifier,
           title: "@" + actor.identifier,
           content: actor.actorName + (actor.summary ? " — " + actor.summary : ""),
-          links: [{ href: base + "/actors/" + actor.identifier, label: "Federated actor" }],
+          links: [
+            { href: profilePath(actor.identifier), label: "Public profile" },
+            { href: base + "/actors/" + actor.identifier, label: "Federated actor" },
+          ],
         })),
     }) },
+    // Each profile is an actual exact Living Web route, not an unbounded
+    // MOOSE-owned router. An actor removed by the original identity owner
+    // is not rendered just because a stale identifier was once configured.
+    ...names.map(identifier => ({
+      match: profilePath(identifier), name: "public-actor",
+      read: async () => {
+        const actor = await provider.resolveActor(identifier);
+        if (actor === null || actor === undefined) return null;
+        const posts = await readActorPosts(identifier);
+        return {
+          title: "@" + identifier + " · MOOSE",
+          navigation: nav,
+          tiles: [
+            { id: "actor", title: actor.actorName,
+              content: actor.summary ?? "",
+              links: [{ href: base + "/actors/" + identifier, label: "Federated actor" }] },
+            ...timelinePage(posts, nav).tiles,
+          ],
+        };
+      },
+    })),
   ];
   const website = createLivingWebServer({
     origin: base, authorizePublicRead,
@@ -110,9 +138,15 @@ export function createMooseSocialApplication({
                        : { pages: [{ match: root, name: "home", read: async () => timelinePage(await readPosts(), nav) }, ...pages] }),
     ...(prefix === "/" ? { pages } : {}),
   });
-  const resources = Object.freeze([root, timeline, actors].map((match, index) => Object.freeze({
-    id: ["moose.home", "moose.timeline", "moose.actors"][index],
-    match, public: true,
+  const paths = [
+    { id: "moose.home", match: root },
+    { id: "moose.timeline", match: timeline },
+    { id: "moose.actors", match: actors },
+    ...names.map(identifier => ({ id: "moose.actor." + identifier,
+      match: profilePath(identifier) })),
+  ];
+  const resources = Object.freeze(paths.map(resource => Object.freeze({
+    ...resource, public: true,
     handler: context => website.fetch(context.request),
   })));
   return Object.freeze({
