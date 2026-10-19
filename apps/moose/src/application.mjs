@@ -31,13 +31,22 @@ function admittedActors(actors) {
 function timelinePage(posts) {
   return Object.freeze({
     title: "MOOSE · Semioverse",
+    navigation: [
+      { href: "/", label: "Home" },
+      { href: "/timeline", label: "Timeline" },
+      { href: "/about", label: "Actors" },
+    ],
     tiles: Object.freeze(posts.length === 0 ? [{
       id: "empty-timeline", title: "No public posts yet",
       content: "The actors on this server have not published any public posts.",
     }] : posts.map((post, index) => ({
       id: "post-" + (index + 1),
-      title: "@" + post.identifier + " · " + post.published,
+      title: "@" + post.identifier + (post.published ? " · " + post.published : ""),
       content: post.content,
+      links: [
+        { href: post.id, label: "Original post" },
+        { href: post.actor, label: "Actor" },
+      ],
     }))),
   });
 }
@@ -88,10 +97,16 @@ export async function createMoose({
           read: async () => timelinePage(await readPosts()) },
         { match: "/about", name: "public-actors", read: async () => ({
           title: "MOOSE actors",
+          navigation: [
+            { href: "/", label: "Home" },
+            { href: "/timeline", label: "Timeline" },
+            { href: "/about", label: "Actors" },
+          ],
           tiles: identities.map(actor => ({
             id: "actor-" + actor.identifier,
             title: "@" + actor.identifier,
             content: actor.actorName + (actor.summary ? " — " + actor.summary : ""),
+            links: [{ href: base + "/actors/" + actor.identifier, label: "Federated actor" }],
           })),
         }) },
       ],
