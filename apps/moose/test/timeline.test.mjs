@@ -117,3 +117,39 @@ test("origin, actor provenance and bounded query requirements are mandatory", as
   await assert.rejects(readPublicTimeline({ origin, provider, identifiers: ["alice"], limit: 999 }),
     /limit must be between/);
 });
+
+
+test("native ActivityPub undated /notes IDs remain visible without a fictional clock", async () => {
+  const originalActor = actorId("alice");
+  const publishedElsewhere = {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    type: "Create", id: origin + "/activities/alice-1",
+    actor: originalActor, to: PUBLIC,
+    object: {
+      id: origin + "/notes/alice-1", type: "Note",
+      attributedTo: originalActor, content: "Original provider post",
+    },
+  };
+  const { provider } = source({ alice: [publishedElsewhere] });
+  const rows = await readPublicTimeline({ origin, provider, identifiers: ["alice"] });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].id, origin + "/notes/alice-1");
+  assert.equal(rows[0].content, "Original provider post");
+  assert.equal(rows[0].published, null);
+});
+
+test("ActivityStreams ordered collections with inline public items need no invented cursor", async () => {
+  const original = note("alice", "one", "2026-10-19T05:00:00Z");
+  const provider = {
+    origin,
+    fetch: async request => {
+      assert.equal(new URL(request.url).search, "");
+      return Response.json({
+        type: "OrderedCollection", totalItems: 1, orderedItems: [original],
+      });
+    },
+  };
+  const rows = await readPublicTimeline({ origin, provider, identifiers: ["alice"] });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].id, actorId("alice") + "/posts/one");
+});
