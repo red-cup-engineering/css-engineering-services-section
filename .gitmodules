@@ -205,3 +205,7 @@
 	path = apps/living-web-server
 	url = https://github.com/red-cup-engineering/living-web-server.git
 	branch = main
+[submodule "moose"]
+	path = apps/moose
+	url = https://github.com/red-cup-engineering/moose.git
+	branch = main
