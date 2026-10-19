@@ -29,6 +29,11 @@ export async function readPublicTimeline({ origin, provider, identifiers, limit 
     return result.json();
   };
   const entries = await Promise.all(identifiers.map(async identifier => {
+    // The original identity provider, not a MOOSE-maintained list, decides
+    // whether a once-provisioned actor still exists. A retired actor's 404
+    // must not take down the public timeline of every remaining actor.
+    if (typeof provider.resolveActor === "function" &&
+        await provider.resolveActor(identifier) == null) return [];
     const outbox = new URL("/actors/" + identifier + "/outbox", base);
     const collection = await request(outbox.href);
     if (collection.type !== "OrderedCollection" || !Number.isSafeInteger(collection.totalItems) ||
