@@ -48,12 +48,23 @@ actor, durably retains the outbox record, signs recipient delivery and reports
 an incomplete handoff as HTTP 503. Retrying the same activity ID resumes the
 handoff without inventing a second publication. Federation peers follow
 /actors/{identifier} through the original Fedify Follow/Accept/Undo handlers.
+An authenticated local actor may also initiate a Follow by posting one
+ActivityStreams Follow (actor = its own /actors/{identifier}, object = the
+remote actor, and to = an array containing exactly that remote actor) to its
+original actor-scoped outbox. The upstream provider refuses a public or
+misaddressed Follow before custody; neither an outbox receipt nor a signed
+inbound Accept automatically grants local institutional standing.
 
 GET / and GET /timeline show only original outbox Create{Note,Article} objects
 with locally matching actor/attribution, the explicit Public audience and a
 local post permalink. The page source is freshly read on every request.
-GET /about displays provisioned actor descriptions. HTML/JSON content
-negotiation remains with Living Web Server. Public readers cannot access the
+GET /about displays provisioned actor descriptions; each actor links to its
+own /people/{identifier} public profile. FeltOS embedding instead mounts
+/social, /social/timeline, /social/actors, and /social/people/{identifier}
+on the existing instance origin, still using the ONE signed provider and
+web listener. Removed original identities return no profile and do not
+bring down unrelated actors' timelines. HTML/JSON content negotiation remains
+with Living Web Server. Public readers cannot access the
 private incoming inbox or publish through MOOSE's website.
 
 A signed inbox arrival is only a social event. It is not a MetroPlat Work
@@ -64,12 +75,17 @@ business Work on arrivals.
 
 ## Scope and tests
 
-The Node 22 timeline suite can run without private external packages:
+Run the selected MOOSE test suite from an actually installed source/package
+closure:
 
-    node --test test/timeline.test.mjs
+    node --test test/*.test.mjs
 
-The package's actual native host path additionally requires installed original
-Fedify, Living Web Server and ActivityPub Server packages. A pure timeline
+The timeline now consumes ActivityPub Services' public-post projection at
+version 0.9.5-dev.0, including Update/Delete visibility. Tests therefore
+require that original package too. Source-isolated tests with substituted
+dependencies are strictly lower evidence than a native Fedify run. The
+package's host additionally requires installed original Fedify,
+Living Web Server and ActivityPub Server packages. A pure timeline
 test cannot establish a real federation, native host, external Mastodon
 compatibility, customer receipt, public deployment or published registry
 artifact. A real native startup/restart, signed two-node federation, moderation,
