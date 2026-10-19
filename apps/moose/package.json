@@ -22,7 +22,7 @@
     "check": "node --check src/application.mjs && node --check src/timeline.mjs && node --check bin/serve.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/activitypub-services-section": "0.9.4-dev.0",
+    "@red-cup-engineering/activitypub-services-section": "0.9.5-dev.0",
     "@red-cup-engineering/activitypub-server": "0.1.3",
     "@red-cup-engineering/living-web-server": "0.1.0-dev.0"
   },
