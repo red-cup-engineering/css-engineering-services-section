@@ -42,7 +42,7 @@ const navigation = prefix => Object.freeze([
   { href: prefix === "/" ? "/about" : prefix + "/actors", label: "Actors" },
 ]);
 
-function timelinePage(posts, nav) {
+function timelinePage(posts, nav, profilePath) {
   return Object.freeze({
     title: "MOOSE · Semioverse",
     navigation: nav,
@@ -53,10 +53,13 @@ function timelinePage(posts, nav) {
       id: "post-" + (index + 1),
       title: "@" + post.identifier + (post.published ? " · " + post.published : ""),
       content: post.content,
+      // The original object IRI may be served by a publication owner other
+      // than Fedify. Do not invent a working HTML permalink to that IRI.
       links: [
-        { href: post.id, label: "Original post" },
-        { href: post.actor, label: "Actor" },
+        { href: profilePath(post.identifier), label: "Author profile" },
+        { href: post.actor, label: "Federated actor" },
       ],
+      data: { objectId: post.id },
     }))),
   });
 }
@@ -95,7 +98,7 @@ export function createMooseSocialApplication({
     readPublicTimeline({ origin: base, provider, identifiers: [identifier] });
   const pages = [
     { match: timeline, name: "public-timeline",
-      read: async () => timelinePage(await readPosts(), nav) },
+      read: async () => timelinePage(await readPosts(), nav, profilePath) },
     { match: actors, name: "public-actors", read: async () => ({
       title: "MOOSE actors", navigation: nav,
       tiles: (await Promise.all(names.map(identifier => provider.resolveActor(identifier))))
@@ -126,7 +129,7 @@ export function createMooseSocialApplication({
             { id: "actor", title: actor.actorName,
               content: actor.summary ?? "",
               links: [{ href: base + "/actors/" + identifier, label: "Federated actor" }] },
-            ...timelinePage(posts, nav).tiles,
+            ...timelinePage(posts, nav, profilePath).tiles,
           ],
         };
       },
@@ -134,8 +137,8 @@ export function createMooseSocialApplication({
   ];
   const website = createLivingWebServer({
     origin: base, authorizePublicRead,
-    ...(prefix === "/" ? { home: async () => timelinePage(await readPosts(), nav) }
-                       : { pages: [{ match: root, name: "home", read: async () => timelinePage(await readPosts(), nav) }, ...pages] }),
+    ...(prefix === "/" ? { home: async () => timelinePage(await readPosts(), nav, profilePath) }
+                       : { pages: [{ match: root, name: "home", read: async () => timelinePage(await readPosts(), nav, profilePath) }, ...pages] }),
     ...(prefix === "/" ? { pages } : {}),
   });
   const paths = [
