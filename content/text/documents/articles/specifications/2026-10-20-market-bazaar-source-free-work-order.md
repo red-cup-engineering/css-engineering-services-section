@@ -1,12 +1,12 @@
 # market-bazaar-navigation-modules
 ## Requirements
-- `pure-input-admission`: projectCommerceNavigation consumes only the exact typed JSON input and returns the exact output without input mutation, network, environment or clock reads. Reject malformed schema/configuration, duplicate or unknown identities, invalid explicit-timezone now, unsupported role-kind combinations, duplicate selected pairs and unknown query.source by TypeError. Empty sources are valid. Follow normative deterministic-projection-contract input admission and declaration ordering.
+- `pure-input-admission`: projectCommerceNavigation consumes only the exact typed JSON input and returns the exact output without input mutation, network, environment or clock reads. Reject malformed schema/configuration, duplicate configured source IDs, duplicate observation source IDs, unknown observation source IDs, invalid explicit-timezone now, unsupported role-kind combinations, duplicate selected pairs, nonempty Market selection and unknown non-null query.source by TypeError. A structurally valid selected sourceId/id pair need not identify a configured source or current item; absent selected identity is comparison data not-found, never an input TypeError. Empty sources are valid. Follow normative deterministic-projection-contract input admission and declaration ordering.
 - `pure-coverage`: Produce exactly one coverage entry per configured source in source order, preserving observation evidence and configured URL. Apply deterministic-projection-contract disposition precedence and EXACT public reasons, including withdrawn/unverified/expired consent, absent observation, URL drift, invalid/future/stale clock, unavailable/incomplete/invalid read and malformed digest/payload. Only current observations contribute rows; a refused source never suppresses healthy siblings. Do not reflect arbitrary error text.
 - `pure-commerce-mapping`: For Bazaar map ONLY body.offerings for Shop and body.offers with body.settlement for original x402, using exact deterministic-projection-contract field paths, price admission, typed identity and row inclusion. Preserve original public rows and seller/edition/status without invention, coming-soon inspection and unavailable action. Invalid required row identity/container or duplicate IDs refuses the source atomically; absent/malformed fixed quote stays price null. Original action URL admission is independent; unsafe source scheme/credential/private/local target remains inert original evidence and normalized url null. No action URL is fetched.
 - `pure-search-selection`: Use original row order, exact source filtering and trimmed case-insensitive substring q across original id/title/description/string keywords through shared TUFTE semantics. Output filtered Bazaar items only; retain all coverage. Resolve selected pairs from all admitted items before query filtering in supplied reference order; missing identity never substitutes a title match. Market items empty, Bazaar venues empty, and Market selection invalid.
 - `pure-comparison`: No selection yields null comparison. Selection returns found original items and EXACT deterministic-projection-contract comparison reason precedence. Fixed quotes, exact asset/network/unit and same complete typed declared outcome are all required for priceComparable. Different source row/SKU/operation labels and equal amounts do not infer equivalent outcomes. Preserve both original terms without FX, ranking winner, budget or transaction.
 - `pure-market-metrics`: For Market admit only exact index-health/mpp-catalog/bazaar-summary containers and emit exact deterministic-projection-contract metric names, order, value mapping, units, populations, methods, sourceField and venue limitations. Unsupported commercial metrics remain explicit null; sourceDate is original publisher evidence or null. Never sum venue populations or turn reported providers/catalog entries/house surfaces into independently controlled sellers.
-- `pure-output-invariants`: Return exact admitted role/origin/revision and ordered global limitations shown in examples. Empty sources yield empty coverage/items/venues and null comparison. All observations/inputs and original rows remain unchanged. Source-listed qualification never claims external consent, sale, useful delivery, revenue or independent seller control.
+- `pure-output-invariants`: Return exact admitted role/origin/revision and ordered global limitations shown in examples. For otherwise admitted input, empty sources yield empty coverage/items/venues; comparison is null ONLY if selected is empty, otherwise Bazaar returns {items:[],priceComparable:false,reason:selected-offer-not-found}. Nonempty Market selection is an input TypeError before projection. All observations/inputs and original rows remain unchanged. Source-listed qualification never claims external consent, sale, useful delivery, revenue or independent seller control.
 ## Prohibitions
 - `pure-no-authority-invention`: Do not change source originals, turn price/display/count metadata into seller consent, independent control, qualified winner, sale/revenue/delivery or a completed transaction; do not include unsafe original action URLs as admitted actions. [claims: original-requirement]
 ## Laws
@@ -20,7 +20,7 @@
 - `retained-projection-and-read-law` | Web Engineering design producer and independent source receiver | production-contract-retained | https://github.com/red-cup-engineering/computer-web-engineering-services-section/blob/625f615598d3088a695bff6c82d958be53fc40de/content/text/documents/articles/specifications/2026-10-20-market-bazaar-design.md | Mandatory complete generated production source and separate runtime receiving; not a pure JSON assay claim | Process configured descriptors in declaration order, one observation per source. Retain failed coverage before processing healthy siblings. Admit successful complete observations only when source identity and freshness agree; reject malformed payload atomically per source. Filter source-listed public rows; preserve original row order. Search is case-insensitive substring over original title/description/id and declared keywords, with exact source filter using shared TUFTE filtering; no model inference or new economic ranking. Detail/selection uses the pair (sourceId,originalId), never title equality. Same edition may be disclosed, but different source row identity and rail remain distinct. Comparison is side-by-side, not an automatic winner: priceComparable requires every selected item have a fixed valid integer quote with the same asset, network, unit, and same declared operation/outcome identity; absent comparability returns false and an explicit reason. If comparable, do not change the original values or add FX; show exact source terms. No default source ownership boost, paid placement, quantity arithmetic, budget debit, endorsement or commercial contract occurs. Every fetch is exactly the configured GET URL with no user credentials, wallet headers or user query appended. Use binding.fetch(new Request(source.url,{method:'GET',redirect:'manual'})) when the descriptor names an existing env service binding; otherwise fetchImpl with redirect:'manual'. Reject any redirect/payment-required/non-success, unsupported MIME, over-budget stream or invalid JSON as a source-local refusal. Streaming byte limit is enforced before JSON parsing. SHA-256 digests use the runtime cryptographic primitive over exact complete bytes. Timeout aborts only that read; no automatic retry of a payment or source request. Configuration fixes finite limits; initial proposed bounds are {{source-read-bound}} bytes/source and {{source-timeout-bound}} milliseconds/source, based on the current complete MPP public-body observation, not capacity reservations. All sources can be fetched concurrently; no output list is considered complete if a source was cut off. No persistent cache is needed initially. In-request observations feed every representation of that request; no list import becomes a second mutable catalog. Optional future cache must be keyed by descriptor/consent revision and expose age; revoked/changed descriptors invalidate cached visibility. Loss of ephemeral observations loses no merchant data or accepted Work. No new R2/KV/DO is required for navigation. Durable source/fabrication/bundle/installation provenance remains with the existing release owner; root obtains fresh storage/capacity admission before materialization.
 - `retained-http-and-mcp` | Web Engineering design producer and independent source receiver | production-contract-retained | https://github.com/red-cup-engineering/computer-web-engineering-services-section/blob/625f615598d3088a695bff6c82d958be53fc40de/content/text/documents/articles/specifications/2026-10-20-market-bazaar-design.md | Mandatory complete generated production source and separate runtime receiving; not a pure JSON assay claim | Bazaar GET/HEAD / renders TUFTE search results and source coverage; /offers uses one source/id pair; /compare uses matched repeated source/id pairs. /discovery.json lists role, canonical origin, revision, source scope and exact free endpoint/tool links; /v1/discovery/search and /v1/discovery/compare return the same pure projection/results. POST /mcp mounts search_offers({q?,source?}), get_offer({source,id}), compare_offers({selected:[{sourceId,id}]}). Unknown fields, incomplete pairs and duplicate singleton parameters refuse HTTP Bad Request; missing selected ID returns HTTP Not Found. Public q is bounded by the exact maxLength in the input schema and selection by its exact maxItems; these are configured technical limits, not claims of optimum workload. GET/HEAD only for data/HTML; other methods HTTP Method Not Allowed, unknown path HTTP Not Found. HEAD uses corresponding headers/status without a body. Source directory can return HTTP OK without live data; data search/readout with all configured sources unavailable returns HTTP Service Unavailable; partial availability returns HTTP OK with explicit coverage. Market handles exactly /, /markets/discovery.json, /markets/observations, /markets/venues and /markets/mcp. Its MCP tools are list_markets({}), read_observations({source?}). All other requests go immediately to env.MERCHANT.fetch(originalRequest) before reading body or parsing the URL beyond exact routing. The original /mcp, /v1/*, /actors/*, /.well-known/*, settlement/recovery headers and raw signed bodies are neither interpreted nor rebuilt. Return the actual binding Response object unchanged. Missing required binding yields HTTP Service Unavailable for the forwarding branch, never a fallback copy. The generic generated default Worker entry reads only env.COMMERCE_CONFIGURATION as host configuration, selects configuration only by canonical request host and calls createCommerceNavigator; unknown host refuses HTTP Misdirected Request before sources. Bazaar has no merchant fallback and never serves original payable routes.
 - `retained-receiving` | Web Engineering design producer and independent source receiver | production-contract-retained | https://github.com/red-cup-engineering/computer-web-engineering-services-section/blob/625f615598d3088a695bff6c82d958be53fc40de/content/text/documents/articles/specifications/2026-10-20-market-bazaar-design.md | Mandatory complete generated production source and separate runtime receiving; not a pure JSON assay claim | Source contract assays: accepted two house catalogs retain all original identity/edition/source status; alternate q/source changes results without altering source order; unverified external consent, revoked consent, stale/future clock, malformed price, URL drift and incomplete body refuse their current records. A same-title and same-edition alternate with incompatible rails stays distinct and noncomparable. Same asset/network/unit without the same declared original outcome also remains noncomparable. Fixtures cannot establish independent seller consent or received sale. Component assays: native TUFTE renders both roles, escapes script-shaped source titles, rejects unsafe action schemes/credential/private/local hosts as active hrefs while retaining inert original evidence, has working URL search/detail/back links and original direct seller actions; MCP initialize/tools/list/tools/call and HTTP produce the same original records; fake source fetch observes only allowlisted configured GETs and no user credential forwarding; all-source/partial outage status is honest. Native test-only fake fetch and clock are host supplied, never request fields. Preservation assays: send signed-like binary/non-UTF8 POST bytes, payment and recovery headers, cookies, query order and canonical market URL to a fake merchant binding; assert same original Request identity at binding, one fetch, and same returned Response identity/headers/body. Test /mcp and original /v1/publications resource dispatch; root route and exact Market discovery do not reach merchant. Bazaar payable paths refuse. Probe live original catalog/Shop goods/unsigned x402 challenge before and after rollout; do not pay. Freeze original merchant deployment identifier and Shop catalog/accepted artifact fingerprints. Independent receiving: use exact built module/source/dependency digests, qualified native proposal, actual test results, esbuild/Worker manifest, service binding, DNS/TLS and installed release evidence. Verify a real human title search/detail/compare and real read-only MCP call, plus both original external Market observations with source times/units and uncertainties. Keep unseen cases with the receiver, including factory/default Worker HTTP/MCP behavior, unsafe item action URLs and same-price different-outcome comparison; five pure-generation examples are not whole-system receiving. A failed or malformed derivation returns its actual phase/refusal to the original Work; it is not repaired by hand or declared complete from a plan.
-- `retained-exact-examples` | Web Engineering design producer and independent source receiver | production-contract-retained | https://github.com/red-cup-engineering/computer-web-engineering-services-section/blob/625f615598d3088a695bff6c82d958be53fc40de/content/text/documents/articles/specifications/2026-10-20-market-bazaar-design.md | Mandatory complete generated production source and separate runtime receiving; not a pure JSON assay claim | The returned limitations are exactly the ordered strings in admitted examples. Empty configured sources produce empty coverage/items/venues and null comparison in the pure operation, without inventing sources; the runtime still returns unavailable for a dynamic read without any healthy configured source. For a coming-soon Shop row retain the original merchant object from top-level merchant as its declared seller and original source row unchanged; the UI offers inspection only, never purchase. A revoked source preserves source observation timestamps/digest in coverage but status refused and reason consent-revoked, no rows. A source failure preserves fetch observation time, sets digest null and returns original bounded failure reason. Examples use fake host-controlled sources and grants and establish no external consent.
+- `retained-exact-examples` | Web Engineering design producer and independent source receiver | production-contract-retained | https://github.com/red-cup-engineering/computer-web-engineering-services-section/blob/625f615598d3088a695bff6c82d958be53fc40de/content/text/documents/articles/specifications/2026-10-20-market-bazaar-design.md | Mandatory complete generated production source and separate runtime receiving; not a pure JSON assay claim | The returned limitations are exactly the ordered strings in admitted examples. For otherwise admitted input, empty configured sources produce empty coverage/items/venues and null comparison ONLY when selected is empty; a nonempty Bazaar selection produces an empty-items comparison with priceComparable false and reason selected-offer-not-found, without inventing sources; the runtime still returns unavailable for a dynamic read without any healthy configured source. For a coming-soon Shop row retain the original merchant object from top-level merchant as its declared seller and original source row unchanged; the UI offers inspection only, never purchase. A revoked source preserves source observation timestamps/digest in coverage but status refused and reason consent-revoked, no rows. A source failure preserves fetch observation time, sets digest null and returns original bounded failure reason. Examples use fake host-controlled sources and grants and establish no external consent.
 - `retained-meaningful-runtime` | Web Engineering design producer and independent source receiver | production-contract-retained | https://github.com/red-cup-engineering/computer-web-engineering-services-section/blob/625f615598d3088a695bff6c82d958be53fc40de/content/text/documents/articles/specifications/2026-10-20-market-bazaar-design.md | Mandatory complete generated production source and separate runtime receiving; not a pure JSON assay claim | The default Worker and factory are required delivered source, not stubs or optional TODOs. The pure JSON operation does not return functions. Factory/default live HTTP paths must actually fetch admitted complete source observations, derive the SAME projection, render shared TUFTE, dispatch native MCP and perform exact merchant Request/Response forwarding. Test-only fetch/clock injection is through factory options supplied by the trusted host, never HTTP arguments. Do not stop at schema/model generation or a landing page.
 - `retained-no-authority-invention` | Web Engineering design producer and independent source receiver | production-contract-retained | https://github.com/red-cup-engineering/computer-web-engineering-services-section/blob/625f615598d3088a695bff6c82d958be53fc40de/content/text/documents/articles/specifications/2026-10-20-market-bazaar-design.md | Mandatory complete generated production source and separate runtime receiving; not a pure JSON assay claim | Do not infer independent seller control, listing consent, rights, qualified ranking, order/payment authority, completed delivery, revenue or feature parity from URLs, index telemetry, fixtures, a source projection or native fabrication. [claims: original-requirement]
 - `retained-no-merchant-change` | Web Engineering design producer and independent source receiver | production-contract-retained | https://github.com/red-cup-engineering/computer-web-engineering-services-section/blob/625f615598d3088a695bff6c82d958be53fc40de/content/text/documents/articles/specifications/2026-10-20-market-bazaar-design.md | Mandatory complete generated production source and separate runtime receiving; not a pure JSON assay claim | Do not import/rebundle original merchant src/worker.mjs or change original merchant/Shop source, state, secrets, payee, routes, SKU, signed bodies, payment or recovery headers. Pass the SAME original Request and actual Response for every forwarded Market route without reading or retrying it. [claims: original-requirement]
@@ -34,6 +34,7 @@
 - `exact-mcp-supplier-boundary` | Original published supplier and Web Engineering source receiver | attempt-004-complete-supplier-refinement | source-owned:2026-10-20-market-bazaar-design.md | Actual published MCP and admitted transport/results; mandatory generated complete runtime | ## Complete measured native MCP supplier boundary Selected installed @red-cup-engineering/mcp-engineering-services-section 0.1.7 source hashes: server.mjs f127828579c09dc011dcd68243e53022c093d092dbfa61db2c66dbce2764bc0a; http.mjs 46476c3e5eb4d457386bf6c3c65221dcbd718e5f19bf3ac6fdd08de4868491b9; protocol-versions.mjs 68b5a0096eaf5e03225ba04e45ae56373233a735759c8bd0df7bfa6bc64946b2. Read original server.test.mjs/http.test.mjs for exact refusal/result conventions; directly executed initialize/tools/list/tools/call/invalid args against the installed supplier and retained actual JSON responses, not a custom dispatcher. /server createMcpServer({name:string,version:string,tools:[tool,...],instructions?:string}) returns a frozen object {name,version,handleMessage,onNotification,serveStdio}. tool is {name,description,inputSchema:JSONSchema,handler:async(args,context)=>object,annotations:{readOnlyHint:true,destructiveHint:false,idempotentHint:true,openWorldHint:true}}; the schema is the actual SignCell admission, additionalProperties:false and exact required keys. Handlers are host functions, never public request-supplied functions. Do not set pageSize, call serveStdio or install resource/prompt/write/auth tool catalogs. The selected stateless Fetch path never invokes supplier optional Node cursor/stdio helpers. No principal/payment authority is inferred from this public server. /http mcpResource({server,path:roleMcpPath,sessions:false,allowedOrigins:[configuration.origin]}) returns frozen resource {id:'mcp.endpoint',name:'MCP Endpoint',route:path,match:path,methods:['GET','HEAD','POST','DELETE'],handler:async(ctx)=>Response}. OPTIONAL maxBodyBytes is omitted, selecting the ACTUAL supplier finite default 4194304 bytes; it checks declared Content-Length and enforces streaming UTF-8 bytes before JSON parsing. The required invocation is resource.handler({request:originalMcpRequest}); ctx.req, ctx.input, Node streams and a second body reader are NOT required. The resource does not itself route pathname, so the navigator invokes this handler ONLY at the exact role MCP path. Return its actual Response; no custom JSON-RPC/HTTP encoder, error-status rewrite or body preconsumption. Omit modern, verifyToken, bind and loopbackBypass unless a receiving-authorized host context is genuinely required; no bearer auth is required for these free read-only tools. Source reads happen lazily inside an argument-admitted tool handler, not before native body/origin/protocol/schema checks; initialize/tools/list are metadata, not source-reader bypasses. A request-local source-read promise may be shared by tool representations; there is no durable cache. The selected native legacy stateless protocol versions are exactly ['2025-11-25','2025-06-18','2025-03-26','2024-11-05'], latest is the first. Requests use POST, Content-Type application/json, Accept application/json (or application/json, text/event-stream), and MCP-Protocol-Version:2025-11-25. JSON initialize request shape is {jsonrpc:'2.0',id:1,method:'initialize',params:{protocolVersion:'2025-11-25',capabilities:{},clientInfo:{name:'receiving-client',version:'1.0.0'}}}; response result has protocolVersion,capabilities:{tools:{listChanged:false},logging:{},completions:{}},serverInfo:{name,version}. Choose server name bazaar.561.group for Bazaar and market.561.group/markets for Market; server version '1.0.0' denotes this API contract, not a fabrication/release receipt. No MCP session ID is issued or required with sessions:false. Modern protocol is not silently inferred; original Market /mcp remains the original merchant service untouched. Tools/list request {jsonrpc:'2.0',id:2,method:'tools/list',params:{}} returns {jsonrpc:'2.0',id:2,result:{tools:[advertised views]}} with no handler functions. Tools/call request {jsonrpc:'2.0',id:3,method:'tools/call',params:{name:'search_offers',arguments:{q:'book'}}}. Supply each successful tool value as {content:[{type:'text',text:JSON.stringify(value)}],structuredContent:value}, where value is the exact plain object below. Native server also wraps a plain object automatically, but explicit identical JSON/structuredContent prevents arbitrary output shape. No outputSchema is necessary unless it exactly matches the selected envelope; inputSchema is mandatory. Tools are declared in the accepted role order. Optional argument defaults are q empty/source null/selected empty; unknown argument keys, wrong types or selection/query bounds refuse in native admission before any source read. A source argument that is a string but not configured is a domain INVALID_SOURCE refusal, not a replacement source. Success tool values: search_offers is the FULL pure Bazaar projection with its accepted q/source. get_offer is {item:exactNormalizedItem,coverage:projection.coverage,limitations:projection.limitations,origin:projection.origin,revision:projection.revision}; resolve only the requested original pair. compare_offers is {items:projection.comparison.items,priceComparable:projection.comparison.priceComparable,reason:projection.comparison.reason,coverage:projection.coverage,limitations:projection.limitations,origin:projection.origin,revision:projection.revision}. list_markets is {venues:projection.venues,coverage:projection.coverage,limitations:projection.limitations,origin:projection.origin,revision:projection.revision}. read_observations has the SAME Market envelope, filtering both venues and coverage to the exact requested source if provided, preserving order; otherwise all source observations. Empty compare selection is native argument refusal (at least one selected pair), while one valid selection is the exact insufficient-selection comparison. All envelope arrays/objects are the actual projection facts, not new source/seller authority. HTTP navigation/search/detail/compare routes still use the accepted 400/404/503 statuses. MCP semantic errors use the ORIGINAL supplier's transport/result contract, not those HTML-route statuses. Missing requested current identity throws domain {code:'OFFER_NOT_FOUND',message:'No current offer exists for the requested original identity.'}; all-source failure on a dynamic tool throws {code:'SOURCE_UNAVAILABLE',message:'No configured source has a current complete observation.'}; unknown source throws {code:'INVALID_SOURCE',message:'The requested source is not configured.'}. Native mcpToolError returns result {isError:true,content:[{type:'text',text:code+': '+message}]} inside HTTP200. No source/private exception details escape. Invalid tool argument schema or unknown tool returns JSON-RPC error.code=-32602 inside native HTTP200; unknown RPC method gives -32601. Malformed JSON/UTF-8 gets HTTP400 with -32700; body too large HTTP413; unsupported protocol header HTTP400; foreign Origin HTTP403; GET/HEAD/DELETE at stateless endpoint HTTP405 with Allow:POST. Notifications have HTTP202 and no body. Accept only text/event-stream returns native single event 'event: message\ndata: '+JSON.stringify(answer)+'\n\n' with text/event-stream; Accept containing application/json receives JSON. Do not rewrite native server errors as alleged completed operations.
 - `exact-reader-clock-ports` | Original published supplier and Web Engineering source receiver | attempt-004-complete-supplier-refinement | source-owned:2026-10-20-market-bazaar-design.md | Fixed configured source read and post-read projection time; mandatory generated complete runtime | ## Exact source reader and clock ports createCommerceNavigator(configuration,{fetchImpl,now}={}) accepts only host-supplied hooks. fetchImpl is a function taking ONE already constructed Fetch Request and returning a Promise<Response>; default is globalThis.fetch. Each source read constructs a new Request for EXACT descriptor.url with method GET, redirect manual, an AbortController signal and NO guest headers or credentials. Pass that Request directly as the sole fetchImpl argument; a named existing env binding uses binding.fetch with the SAME source-read Request shape. Missing named binding is source-binding-unavailable, with no public-network fallback. This source-read Request is deliberately different from original merchant forwarding. Only forwarding must preserve the SAME incoming Request and returned merchant Response identity. now is a zero-argument host function returning a finite explicit-timezone ISO timestamp STRING; default is new Date().toISOString(). It is not a Date object, number, frozen instant string, public query or dependency on process state. Validate its value before using it. Timestamp EACH source observation by calling now() when that read completes or fails, after all bytes/parsing or refusal, not once at request entry. After ALL source read promises settle, call now() AGAIN for the pure projection input.now; this avoids genuine read latency making fresh completion observations appear future. Preserve original sourceDate/digests and do not clamp times, copy projection time into source time, or invent a timestamp to hide a backwards clock. A genuinely future observation remains refused by the pure law. The independent receiving driver MUST include an advancing fake-clock case where source completion timestamps are later than request entry and projection now is later than all completions, checking fresh records remain current; also keep the genuine future-clock refusal case. Hooks never cross HTTP/MCP arguments, affect the original merchant branch or supply a new clock authority.
 - `optional-source-normalization` | Web Engineering source producer and independent receiver | native-form-empty-selection | source-owned:2026-10-20-market-bazaar-design.md#optional-source-filter-normalization | Existing native GET and optional MCP source filters before pure admission | Before constructing pure input, HTTP navigation query and MCP OPTIONAL source arguments normalize missing or the exact empty string to null. The native All sources GET option submits source=; that is a valid unfiltered source selection, not an unknown configured ID. Do not trim, lowercase or otherwise rewrite any nonempty original source ID; nonempty unknown source still refuses. This rule applies only to optional search/read-observations source filters, not REQUIRED source identity in get_offer, /offers, selected comparison pairs or configured descriptors. Missing q defaults to empty and uses the existing trimmed query semantics. Direct pure input query.source remains exactly null or a known nonempty source ID; an empty direct pure value is still malformed. Independently receive default form submission with empty source, omitted source and a valid nonempty source, plus refusal of an unknown nonempty source, through actual HTTP and native MCP. No new public argument, fixture policy exception or change to original identities is introduced.
+- `pure-empty-selection-intersections` | Web Engineering source producer and independent receiver | attempt-005-pure-intersection-refinement | source-owned:2026-10-20-market-bazaar-design.md#pure-empty-source-and-selection-intersections | Exact input admission versus source absence and comparison; all admitted pure inputs | For the registered PURE operation, structural input admission happens before source processing and empty-source shortcuts. Unknown configured observations and unknown non-null query.source are malformed input, even when sources is empty. An empty direct pure query.source is unknown and invalid; the separate optional HTTP/MCP filter normalization remains upstream. Market query.selected MUST be empty regardless of source/observation state; nonempty Market selection throws TypeError. Duplicate selected tuples are malformed and throw TypeError regardless of existence. Otherwise selected sourceId/id strings are references, not claims of existing configured sources or offers: a string pair that is not in admitted all-items (including an unknown source, a known source with missing item, empty string field or an unavailable/refused source) is a selected-offer-not-found datum, not an input TypeError. No selected reference creates source configuration or a fetch. Empty sources plus non-null query.source still throws; empty sources plus arbitrary valid q and null query.source is valid. For valid Bazaar input, comparison is null if and ONLY if selected.length is zero. With any selection, comparison is an object: preserve actually found items in selection order, set priceComparable false and reason selected-offer-not-found if ANY reference is missing. This first comparison reason wins over insufficient-selection, missing quote or incompatibility. Partial missing selection retains the found subset; all missing selection returns items empty. Resolve selected refs from all admitted items BEFORE q/source filtering, so a valid found comparison item can remain even when output.items is empty because q/source excludes it. With sources empty and valid nonempty selection, coverage/items/venues are empty, comparison exactly {items:[],priceComparable:false,reason:'selected-offer-not-found'}. Empty-source/null-comparison statements throughout this order are conditional on empty selection; they never erase this comparison rule or the preceding role/input admission. HTTP/tool layers keep original explicit not-found semantics; pure returns evidence and does not throw for missing offers.
 ## Open questions
 none
 ## Claims
@@ -2365,6 +2366,309 @@ none
           "Independent external Shop consent, qualified selection and completed commerce are not established by this projection."
         ]
       }
+    },
+    {
+      "name": "empty-sources-with-selected-missing-reference",
+      "operation": "project-commerce-navigation",
+      "input": {
+        "role": "bazaar",
+        "origin": "https://bazaar.561.group",
+        "revision": "fixture-revision",
+        "now": "2026-10-20T23:00:00.000Z",
+        "query": {
+          "q": "",
+          "source": null,
+          "selected": [
+            {
+              "sourceId": "missing",
+              "id": "missing"
+            }
+          ]
+        },
+        "sources": [],
+        "observations": []
+      },
+      "output": {
+        "role": "bazaar",
+        "origin": "https://bazaar.561.group",
+        "revision": "fixture-revision",
+        "coverage": [],
+        "items": [],
+        "comparison": {
+          "items": [],
+          "priceComparable": false,
+          "reason": "selected-offer-not-found"
+        },
+        "venues": [],
+        "limitations": [
+          "Coverage is limited to the configured original sources.",
+          "Independent external Shop consent, qualified selection and completed commerce are not established by this projection."
+        ]
+      }
+    },
+    {
+      "name": "partial-missing-selection-resolves-before-q-filter",
+      "operation": "project-commerce-navigation",
+      "input": {
+        "role": "bazaar",
+        "origin": "https://bazaar.561.group",
+        "revision": "fixture-revision",
+        "now": "2026-10-20T23:00:00.000Z",
+        "query": {
+          "q": "no-title-matches-this",
+          "source": null,
+          "selected": [
+            {
+              "sourceId": "book-shop",
+              "id": "book"
+            },
+            {
+              "sourceId": "book-shop",
+              "id": "missing-item"
+            }
+          ]
+        },
+        "sources": [
+          {
+            "id": "book-shop",
+            "kind": "shop-catalog",
+            "url": "https://shop.561.group/catalog.json",
+            "publisher": "House Publisher",
+            "consent": {
+              "status": "house-publication",
+              "evidence": "https://owner.example/authorized-projection",
+              "revision": "fixture-grant",
+              "expiresAt": null
+            },
+            "maxAgeSeconds": 300,
+            "maxBytes": 1048576,
+            "timeoutMs": 8000
+          }
+        ],
+        "observations": [
+          {
+            "sourceId": "book-shop",
+            "url": "https://shop.561.group/catalog.json",
+            "observedAt": "2026-10-20T23:00:00.000Z",
+            "sourceDate": null,
+            "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "status": "ok",
+            "body": {
+              "merchant": {
+                "name": "House Merchant"
+              },
+              "offerings": [
+                {
+                  "id": "book",
+                  "title": "Original Book",
+                  "blurb": "A book.",
+                  "status": "coming-soon",
+                  "priceCents": 900,
+                  "currency": "usd",
+                  "book": {
+                    "edition": {
+                      "digest": "ni:///sha-256;fixture-edition"
+                    }
+                  }
+                }
+              ]
+            },
+            "error": null
+          }
+        ]
+      },
+      "output": {
+        "role": "bazaar",
+        "origin": "https://bazaar.561.group",
+        "revision": "fixture-revision",
+        "coverage": [
+          {
+            "sourceId": "book-shop",
+            "url": "https://shop.561.group/catalog.json",
+            "status": "current",
+            "observedAt": "2026-10-20T23:00:00.000Z",
+            "sourceDate": null,
+            "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "reason": null
+          }
+        ],
+        "items": [],
+        "comparison": {
+          "items": [
+            {
+              "sourceId": "book-shop",
+              "id": "book",
+              "publisher": "House Publisher",
+              "seller": {
+                "name": "House Merchant"
+              },
+              "title": "Original Book",
+              "description": "A book.",
+              "url": "https://shop.561.group/goods/book",
+              "protocol": "shop",
+              "status": "coming-soon",
+              "edition": "ni:///sha-256;fixture-edition",
+              "price": {
+                "amount": "900",
+                "asset": "usd",
+                "network": null,
+                "unit": "minor-currency-per-edition"
+              },
+              "qualification": "source-listed",
+              "original": {
+                "id": "book",
+                "title": "Original Book",
+                "blurb": "A book.",
+                "status": "coming-soon",
+                "priceCents": 900,
+                "currency": "usd",
+                "book": {
+                  "edition": {
+                    "digest": "ni:///sha-256;fixture-edition"
+                  }
+                }
+              }
+            }
+          ],
+          "priceComparable": false,
+          "reason": "selected-offer-not-found"
+        },
+        "venues": [],
+        "limitations": [
+          "Coverage is limited to the configured original sources.",
+          "Independent external Shop consent, qualified selection and completed commerce are not established by this projection."
+        ]
+      }
+    },
+    {
+      "name": "unknown-selected-source-is-data-not-input-error",
+      "operation": "project-commerce-navigation",
+      "input": {
+        "role": "bazaar",
+        "origin": "https://bazaar.561.group",
+        "revision": "fixture-revision",
+        "now": "2026-10-20T23:00:00.000Z",
+        "query": {
+          "q": "",
+          "source": null,
+          "selected": [
+            {
+              "sourceId": "unknown-source",
+              "id": "book"
+            }
+          ]
+        },
+        "sources": [
+          {
+            "id": "book-shop",
+            "kind": "shop-catalog",
+            "url": "https://shop.561.group/catalog.json",
+            "publisher": "House Publisher",
+            "consent": {
+              "status": "house-publication",
+              "evidence": "https://owner.example/authorized-projection",
+              "revision": "fixture-grant",
+              "expiresAt": null
+            },
+            "maxAgeSeconds": 300,
+            "maxBytes": 1048576,
+            "timeoutMs": 8000
+          }
+        ],
+        "observations": [
+          {
+            "sourceId": "book-shop",
+            "url": "https://shop.561.group/catalog.json",
+            "observedAt": "2026-10-20T23:00:00.000Z",
+            "sourceDate": null,
+            "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "status": "ok",
+            "body": {
+              "merchant": {
+                "name": "House Merchant"
+              },
+              "offerings": [
+                {
+                  "id": "book",
+                  "title": "Original Book",
+                  "blurb": "A book.",
+                  "status": "coming-soon",
+                  "priceCents": 900,
+                  "currency": "usd",
+                  "book": {
+                    "edition": {
+                      "digest": "ni:///sha-256;fixture-edition"
+                    }
+                  }
+                }
+              ]
+            },
+            "error": null
+          }
+        ]
+      },
+      "output": {
+        "role": "bazaar",
+        "origin": "https://bazaar.561.group",
+        "revision": "fixture-revision",
+        "coverage": [
+          {
+            "sourceId": "book-shop",
+            "url": "https://shop.561.group/catalog.json",
+            "status": "current",
+            "observedAt": "2026-10-20T23:00:00.000Z",
+            "sourceDate": null,
+            "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "reason": null
+          }
+        ],
+        "items": [
+          {
+            "sourceId": "book-shop",
+            "id": "book",
+            "publisher": "House Publisher",
+            "seller": {
+              "name": "House Merchant"
+            },
+            "title": "Original Book",
+            "description": "A book.",
+            "url": "https://shop.561.group/goods/book",
+            "protocol": "shop",
+            "status": "coming-soon",
+            "edition": "ni:///sha-256;fixture-edition",
+            "price": {
+              "amount": "900",
+              "asset": "usd",
+              "network": null,
+              "unit": "minor-currency-per-edition"
+            },
+            "qualification": "source-listed",
+            "original": {
+              "id": "book",
+              "title": "Original Book",
+              "blurb": "A book.",
+              "status": "coming-soon",
+              "priceCents": 900,
+              "currency": "usd",
+              "book": {
+                "edition": {
+                  "digest": "ni:///sha-256;fixture-edition"
+                }
+              }
+            }
+          }
+        ],
+        "comparison": {
+          "items": [],
+          "priceComparable": false,
+          "reason": "selected-offer-not-found"
+        },
+        "venues": [],
+        "limitations": [
+          "Coverage is limited to the configured original sources.",
+          "Independent external Shop consent, qualified selection and completed commerce are not established by this projection."
+        ]
+      }
     }
   ],
   "dependencies": {
@@ -2397,11 +2701,11 @@ none
 ]
 ```
 ## Traceability
-- `pure-input-admission` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
-- `pure-coverage` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
-- `pure-commerce-mapping` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
-- `pure-search-selection` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
-- `pure-comparison` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
-- `pure-market-metrics` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
-- `pure-output-invariants` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
-- `pure-no-authority-invention` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
+- `pure-input-admission` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
+- `pure-coverage` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
+- `pure-commerce-mapping` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
+- `pure-search-selection` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
+- `pure-comparison` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
+- `pure-market-metrics` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
+- `pure-output-invariants` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
+- `pure-no-authority-invention` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
