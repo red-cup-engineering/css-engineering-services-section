@@ -38,6 +38,8 @@
 - `host-navigation-source-scope` | Original behavior owner and independent source receiver | post-006-source-receiving-refinement | source-owned:2026-10-20-market-bazaar-design.md | Optional host navigation and mandatory human visible original scope | ## Host navigation and visible source scope refinement The independently received behavior M1 requires a usable human observation/navigation homepage with links to the actual Bazaar and Shop; M2/architecture also require original external source links. Native candidate006 did not satisfy this: Market render used JSON pre tiles without any links, and its exact configuration had no Shop-link authority. This refinement supplies the minimal original host-owned data and generic native presentation; it changes no pure input/output or original commerce engine. Factory/default configuration remains ONE object with required role,origin,title,revision,sources and optional navigation. If absent, navigation is an empty list, preserving original factory callers. If present it MUST be an array of exact plain {href,label} entries, both nonempty strings, no other entry keys. Admit href as either direct public HTTPS under the existing uniform URL law, or a single-leading-slash root-relative URL resolved against the canonical configuration origin under that same law; reject scheme-relative //, backslash/control, credentials, private/local/special-use host and fragment. Do not fetch navigation targets, derive a sibling hostname or merge public request data into navigation. Invalid navigation is configuration TypeError from factory and bounded default503 before any source read/forwarding. The pure projector schema still forbids unrelated keys; never pass navigation/title into pure input. Causeway config owns the real navigation href/label values. Generic engine uses only admitted configuration.navigation in native TUFTE model.navigation, rendered as real accessible anchors even during source outage; machine directory may also expose this original host navigation as data, but cannot replace human links with JSON. Market source venue URLs are already admitted descriptor.url and MUST be rendered as actual native source links with original publisher/source label. Required internal observation/discovery links are host navigation entries supplied by the instance, not inferred from a hostname. Preserve original merchant routes; Market includes an explicit free original /v1/catalog navigation link, no paid request or changed merchant path. No engine hardcoded 561 domains or source-provider hostname topology. Both human roles MUST visibly expose source scope next to source freshness/coverage: for EVERY configured descriptor, display sourceId,publisher,kind,url and consent.status,evidence,revision,expiresAt as safe original host-owned PUBLIC/redacted text. Include clear wording that house-publication means publisher-authorized projection, not independently controlled seller consent or transaction qualification, and public-market-observation is publisher testimony, not Bazaar membership. Native safe node composition or native data tile can render this configured-source-scope tile; no raw source HTML, private tokens or guessed authority. Evidence locators stay inert text unless independently admitted as safe links; do not dereference grant evidence. Source directory and source scope stay inspectable during no current observations; no stale/withdrawn source produces an admitted current offer. Include a usable role-local discovery link from configuration or the original fixed endpoint path. Grant metadata in discovery alone does not discharge B1's HUMAN visible scope requirement. Current instance selected Market navigation is original data: Bazaar https://bazaar.561.group, Shop https://shop.561.group, Market discovery /markets/discovery.json, dated observations /markets/observations, venue sources /markets/venues and original merchant catalog /v1/catalog. Original source links use each admitted descriptor.url including 402 Index health and MPP services. This link list is Causeway data, not reusable engine constants. Bazaar configuration may omit optional navigation; its own fixed discovery link and source-scope/source links still render. Existing canonical source URLs, bounds, bindings, merchant and Shop source remain unchanged. Native/source receiving must inspect actual rendered anchors and source-scope text for both healthy and unavailable sources, verify default/factory invalid navigation no effects and missing navigation compatibility, and retain all original B/M/P/R behavior. The complete original observable contract is delivered inline to the text-only writer below; a statement that an unavailable source document is retained is not enough.
 - `native-mcp-domain-selected-correction` | Original behavior owner and independent source receiver | post-006-source-receiving-refinement | source-owned:2026-10-20-market-bazaar-design.md | Original native MCP domain object and pre-read duplicate/selected semantics | ## Native MCP domain and selected-reference receiving correction Use EXACT plain {code,message} domain objects and existing native mcpToolError; do not return domain Error instances with attached code. Original MCP 0.1.7 was directly invoked: a thrown plain OFFER_NOT_FOUND object produced HTTP200 result.isError true/content text beginning OFFER_NOT_FOUND:. A compare tool input schema with selected.uniqueItems:true rejected structural duplicate objects EVEN when property order differed, JSON-RPC -32602 and ZERO handler calls. Actual fixture record data/records/source-observation-records/commerce-navigation-20261020/mcp-domain-and-unique-items.json SHA2563ae8647ed1b82d1e5a1e3b370229ef56b1bcf021a1dbabde30edf2cb34327d21 is supplier evidence, not target implementation/test or complete runtime acceptance. Top-level optional source filter and get_offer source retain existing INVALID_SOURCE admission before reading when the configured source is unknown. compare_offers nested selected refs have no configured-source existence precheck: valid unknown/missing pairs use the same pure missing-pair law; after reads, if no current source then SOURCE_UNAVAILABLE wins, otherwise a missing selected pair throws plain OFFER_NOT_FOUND. Duplicate tuples are native schema-refused before reads using uniqueItems:true, not left for a post-read domain handler. Keep HTTP duplicate query validation before source reads. Preserve exact public reason/error text and every pure example; no new production operation or custom MCP status mapper.
 - `complete-original-observable-contract` | Original behavior owner and independent source receiver | post-006-source-receiving-refinement | source-owned:2026-10-20-market-bazaar-design.md | Unabridged original operative B/M/P/R behavior, all required source/runtime products | ## Complete original observable B/M/P/R contract supplied to the writer The following is the ORIGINAL operative behavioral specification, not a narrowed summary; it is retained alongside all prior detailed/pure contracts. Source: https://github.com/red-cup-engineering/computer-web-engineering-services-section/blob/4a618823f837c351f618aaec2e9f8525b5b7ef5e/content/text/documents/articles/specifications/2026-10-20-market-bazaar-behavior.md . It includes human links/consent, source originals, machine behavior, preservation, bounds and actual receiving. No clause is discharged by pure projection tests. - B1: bazaar.561.group MUST serve its own searchable human HTML at /, offering detail at /offers?source=...&id=..., and side-by-side comparison at /compare?source=...&id=... using repeated source/id pairs. Original IDs are URL-encoded; requests never supply new upstream URLs. Active item actions MUST be direct HTTPS URLs without credentials or private/local hosts; an unsafe original URL survives only as inert original-source evidence with no actionable URL. It MUST search actual current source offerings and show original product/offer identity, publisher, known seller, origin link, offered delivery kind, price/asset/unit where declared, freshness, consent scope and uncertainty. Unknown seller/payee remains unknown. - B2: Bazaar MUST provide GET /discovery.json, /v1/discovery/search, /v1/discovery/compare and read-only POST /mcp with search_offers, get_offer, compare_offers. Human and machine views MUST consume the same request projection. Search supports q and source; compare returns the selected original records and explicit price-comparability result. No own catalog or duplicate offer authority is created. - B3: The initial eligible sources are the original public shop.561.group/catalog.json and market.561.group/v1/catalog, whose publication/configuration custody is held by Causeway. Neither URL proves individual seller rights, external seller consent or independent control. Where rights are unqualified, display source-listed inspection/navigation and mark transaction qualification unavailable. Coming-soon items remain source-visible and non-buyable. Source hidden/private items MUST NOT be included. - B4: Bazaar MUST retain book edition digest and artifact digests, original x402 SKU/cell/law, original invocation method/URL/schema, and original payment/recovery descriptors when present. It MUST NOT rename, merge or fabricate seller goods, mark a bare HTTP 402 as a paid delivery, or proxy purchases. A human follows the original Shop goods page; an agent inspects the original invocation. Different rails/units/assets are not price-comparable, even for the same edition, absent a separately qualified conversion contract. - B5: Revoked, expired, contested, unknown or unsupported external membership MUST NOT produce an admitted listing. Current house-publication status means only publisher-authorized source projection; it is not provider verification. External discovery is admitted only from source-owner grant with publication/representation scope, revision, expiry and revocation evidence. Public provenance redacts private consent material while preserving independently verifiable evidence locators. - M1: market.561.group MUST serve an observation/navigation HTML homepage, GET /markets/discovery.json, /markets/observations, /markets/venues and read-only POST /markets/mcp. It MUST link the actual Bazaar and Shop, and observe at least two unrelated external market publishers with source date, request time, source URL, method, measurement scope, units, coverage and uncertainty. It MUST NOT substitute the merchant offer catalog for this Market role. - M2: Initial external observations read 402 Index's published /api/v1/health and MPP's published /api/services. The former supplies publisher-reported endpoint/service/provider/health counts; the latter supplies a count of entries and declared endpoints in the complete fetched curated catalog. These populations overlap and MUST NOT be summed, equated with independent Shops, attributed to Group income, or treated as proven settlement/delivery. Unknown liquidity, demand, transactions, revenue and net contribution remain explicit null/unknown, never zero. Original external source links remain available. - P1: Existing market x402 catalog, well-known metadata, ActivityPub actor/outbox, merchant MCP, payable routes, request bodies, SKU, payee, settlement/recovery and installed state MUST remain served by the original merchant handler at their original paths and origin. A new navigation front controller serves only the homepage and exact /markets/ observation paths; every other request is forwarded intact to the existing immutable merchant Worker through its existing-platform service binding. The original merchant /mcp remains unchanged; observation MCP has its distinct path. No payable merchant endpoint is served under Bazaar merely because it shares code. - P2: Existing Shop /, /goods/*, /catalog.json, checkout/account/gift/fulfillment and accepted artifact identities MUST remain under its original Worker and storage. Preserve the currently installed behavior of /mcp; this does not assert that Shop MCP is live. The independently observed initial agent resource is /catalog.json. This slice does not require Shop source changes, purchases, unarming checkout or a second fulfillment store. - R1: Source requests are read-only, finite, allowlisted HTTPS without credentials, redirects or user-controlled targets. Each observation carries original source bytes digest, fetch clock, source clock when supplied, and complete/incomplete state. A failed source yields an explicit partial result alongside surviving sources. All unavailable sources yield 503 for dynamic search/readouts, while the source directory remains inspectable. A timeout, stale cached value or incomplete body MUST NOT be called a fresh current quote. - R2: Public query input cannot set source configuration, actor, consent, payee, clock, budget, release identity or upstream request headers. Mutating Bazaar methods and unknown MCP tools refuse. Reads create no order, charge, grant, seller signup or hidden referral fee. Public source visibility does not authorize external seller contact or purchase. - R3: Release receiving MUST independently verify DNS, canonical HTTPS/TLS, each origin's resource identity, source/deployed revision, working search/detail/comparison, machine discovery/MCP and meaningful positive/alternate/refusal cases. Domain attachment, HTTP 200 or a landing page is insufficient. Preserve original merchant/Shop smoke checks and before/after fingerprints without paying.
+- `measured-tufte-query-facet` | Original published TUFTE supplier and Web Engineering source receiver | attempt-007-supplier-contract-correction | source-owned:2026-10-20-market-bazaar-design.md#measured-tufte-item-facets-and-query-facets--native-regression | Required original supplier search semantics and admitted native regression; no runtime acceptance | ## Measured TUFTE item facets and query facets — native regression The original published @red-cup-engineering/web-page-tiling-engine@0.14.2 ./storefront filterStorefrontItems(catalog, query) has DISTINCT item and query facet shapes. Each catalog item facets value is an array of strings; each query.facets value is one scalar string. For source filtering, item.facets.source is [item.sourceId], while query.facets.source is query.source, never [query.source]. With no source filter query.facets is {}. The existing trimmed case-insensitive substring term and source filter are combined. This is the measured original supplier contract, not a new filtering API or change to pure input/output schemas. The selected original supplier source src/tufte-storefront.mjs SHA256 ec4a7b6d199cf3fd81d3afde52971c7676a4e1ecbb6aaf7dcb5920e67ebd32e9 implements the decisive predicate `(item.facets?.[key] ?? []).includes(value)` for each `[key, value]` query facet. Attributed dependency evidence: the array belongs on the item; `value` is the scalar query string. The source-qualified direct supplier execution retained in data/records/source-observation-records/commerce-navigation-20261020/tufte-item-query-facets.json (SHA256 80cf34007122fe7abe4e80309a17f45a59fc55024d751b1ed75fc651ce7c0089) observes scalar query {term:"NEEDLE",facets:{source:"x"}} returning item "one", and the wrong array query {term:"NEEDLE",facets:{source:["x"]}} returning no items for that same catalog. This observation establishes the supplier boundary only. Native attempt-007 source candidate SHA256 2f933701a341f3028d375a45688f4ee72045e346a998f0116d42c544f11d857d incorrectly supplied an array query facet. Its original derived case keyword-search-preserves-inert-original-and-unquoted-inspection is promoted unchanged in name, operation, input and expected output as the additional admitted regression example. The original native case metadata clauses are pure-commerce-mapping, pure-search-selection, pure-comparison, pure-no-authority-invention and pure-output-invariants; throws is null. The source order carrier uses its existing four-field admitted-example schema, without altering those native payloads. Every preceding admitted example and operation/dependency schema is retained unchanged. The selected item must survive the keyword/source search while its unsafe original loopback URL remains inert, its malformed atomic-price spelling yields null price, and its single selected pair yields insufficient-selection. Comparison still resolves from all admitted items before display filtering. The original isolated replay observed 23 tests, 22 passes and one failure, with no skipped or truncated result. The sole output difference was top-level items being empty; comparison retained the original selected item. This is a rejected derivation, never target runtime or production acceptance. Original native clause-lot receipt jXjrp6CN89MD7p-Fhqd8myBe8PGqY99nxfea0ziX6XU and source-writer receipt qJgjbz2GBb0wP4hBycfldx4R2GOmffUVQsI04a9ayhQ retain the causal evidence. Bare Cedar Fog data/records/fabrication-run-records/commerce-navigation-20261020/attempt-007/pre-assay-readback/stdout.tap SHA256 2a1db8034fe8caccfc6d5fd56a8623da83a7c8f7b8a551b355ea9ea95bab49fd and exact native executor request SHA256 c9b10c621f53012c6137f01ec6cd9841a62a471a8489a196648be59261608493 identify the independent diagnostic replay. Full existing runtime, supplier, consent, navigation, source-scope, MCP, merchant preservation and independent receiving duties remain mandatory; this correction does not claim their fulfillment.
+
 ## Open questions
 none
 ## Claims
@@ -50,6 +52,8 @@ none
 - `executed-supplier-boundary` | measured | api | Actual installed published TUFTE rendering/model and native MCP HTTP/argument contracts directly invoked on explicit host fixture; this does not establish target runtime or deployment | none | /home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/data/records/source-observation-records/commerce-navigation-20261020/supplier-interface-observation.json | sha256:5fef803da0ebb1d9c1fee572c59c22c520775d65232680cb3c64ab83a2c0b21f | Read actual published source and original native test conventions, invoke original supplier exports and retain exact models, response JSON and HTML digests; no target implementation or test source authored
 
 - `native-mcp-plain-domain-unique-items` | measured | api | Actual published MCP plain domain-object formatting and structural uniqueItems argument refusal before handler calls | none | /home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/data/records/source-observation-records/commerce-navigation-20261020/mcp-domain-and-unique-items.json | sha256:3ae8647ed1b82d1e5a1e3b370229ef56b1bcf021a1dbabde30edf2cb34327d21 | Direct original server/http invocation on explicit host supplier fixture; no target source or generated target test edited
+
+- `executed-tufte-query-facet` | measured | api | Original selected published TUFTE distinguishes item string-array facets from query scalar-string facets; direct original supplier execution observes healthy scalar match and wrong array-query empty result; target acceptance remains pending | none | /home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/data/records/source-observation-records/commerce-navigation-20261020/tufte-item-query-facets.json | sha256:80cf34007122fe7abe4e80309a17f45a59fc55024d751b1ed75fc651ce7c0089 | Executed original filterStorefrontItems against the retained same-catalog scalar and array query fixtures
 
 ## Modules
 ```json
@@ -2674,6 +2678,156 @@ none
           "Independent external Shop consent, qualified selection and completed commerce are not established by this projection."
         ]
       }
+    },
+    {
+      "name": "keyword-search-preserves-inert-original-and-unquoted-inspection",
+      "operation": "project-commerce-navigation",
+      "input": {
+        "role": "bazaar",
+        "origin": "https://bazaar.561.group",
+        "revision": "assay-4",
+        "now": "2026-10-20T23:00:00Z",
+        "query": {
+          "q": "  NEEDLE  ",
+          "source": "x",
+          "selected": [
+            {
+              "sourceId": "x",
+              "id": "one"
+            }
+          ]
+        },
+        "sources": [
+          {
+            "id": "x",
+            "kind": "x402-catalog",
+            "url": "https://market.561.group/v1/catalog",
+            "publisher": "Publisher",
+            "consent": {
+              "status": "house-publication",
+              "evidence": "grant:fixture",
+              "revision": "grant-1",
+              "expiresAt": null
+            },
+            "maxAgeSeconds": 300,
+            "maxBytes": 1024,
+            "timeoutMs": 1000
+          }
+        ],
+        "observations": [
+          {
+            "sourceId": "x",
+            "url": "https://market.561.group/v1/catalog",
+            "observedAt": "2026-10-20T23:00:00Z",
+            "sourceDate": "publisher edition seven",
+            "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "status": "ok",
+            "body": {
+              "settlement": {
+                "scheme": "exact",
+                "asset": "asset",
+                "network": "network"
+              },
+              "offers": [
+                {
+                  "sku": "one",
+                  "name": "Original",
+                  "method": "GET",
+                  "url": "https://127.0.0.1/private",
+                  "amountAtomic": "01",
+                  "keywords": [
+                    "Needle"
+                  ],
+                  "price": "$1"
+                },
+                {
+                  "listed": false
+                }
+              ]
+            },
+            "error": null
+          }
+        ]
+      },
+      "output": {
+        "role": "bazaar",
+        "origin": "https://bazaar.561.group",
+        "revision": "assay-4",
+        "coverage": [
+          {
+            "sourceId": "x",
+            "url": "https://market.561.group/v1/catalog",
+            "status": "current",
+            "observedAt": "2026-10-20T23:00:00Z",
+            "sourceDate": "publisher edition seven",
+            "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "reason": null
+          }
+        ],
+        "items": [
+          {
+            "sourceId": "x",
+            "id": "one",
+            "publisher": "Publisher",
+            "seller": null,
+            "title": "Original",
+            "description": "",
+            "url": null,
+            "protocol": "x402",
+            "status": "live",
+            "edition": null,
+            "price": null,
+            "qualification": "source-listed",
+            "original": {
+              "sku": "one",
+              "name": "Original",
+              "method": "GET",
+              "url": "https://127.0.0.1/private",
+              "amountAtomic": "01",
+              "keywords": [
+                "Needle"
+              ],
+              "price": "$1"
+            }
+          }
+        ],
+        "comparison": {
+          "items": [
+            {
+              "sourceId": "x",
+              "id": "one",
+              "publisher": "Publisher",
+              "seller": null,
+              "title": "Original",
+              "description": "",
+              "url": null,
+              "protocol": "x402",
+              "status": "live",
+              "edition": null,
+              "price": null,
+              "qualification": "source-listed",
+              "original": {
+                "sku": "one",
+                "name": "Original",
+                "method": "GET",
+                "url": "https://127.0.0.1/private",
+                "amountAtomic": "01",
+                "keywords": [
+                  "Needle"
+                ],
+                "price": "$1"
+              }
+            }
+          ],
+          "priceComparable": false,
+          "reason": "insufficient-selection"
+        },
+        "venues": [],
+        "limitations": [
+          "Coverage is limited to the configured original sources.",
+          "Independent external Shop consent, qualified selection and completed commerce are not established by this projection."
+        ]
+      }
     }
   ],
   "dependencies": {
@@ -2709,7 +2863,7 @@ none
 - `pure-input-admission` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `host-navigation-source-scope`, `native-mcp-domain-selected-correction`, `complete-original-observable-contract`, `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
 - `pure-coverage` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `host-navigation-source-scope`, `native-mcp-domain-selected-correction`, `complete-original-observable-contract`, `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
 - `pure-commerce-mapping` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `host-navigation-source-scope`, `native-mcp-domain-selected-correction`, `complete-original-observable-contract`, `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
-- `pure-search-selection` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `host-navigation-source-scope`, `native-mcp-domain-selected-correction`, `complete-original-observable-contract`, `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
+- `pure-search-selection` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `measured-tufte-query-facet`, `host-navigation-source-scope`, `native-mcp-domain-selected-correction`, `complete-original-observable-contract`, `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
 - `pure-comparison` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `host-navigation-source-scope`, `native-mcp-domain-selected-correction`, `complete-original-observable-contract`, `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
 - `pure-market-metrics` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `host-navigation-source-scope`, `native-mcp-domain-selected-correction`, `complete-original-observable-contract`, `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
 - `pure-output-invariants` -> projection `jsnode-modules`; acceptance `pure-projection-assays`; constraints `host-navigation-source-scope`, `native-mcp-domain-selected-correction`, `complete-original-observable-contract`, `pure-empty-selection-intersections`, `optional-source-normalization`, `exact-tufte-supplier-boundary`, `exact-mcp-supplier-boundary`, `exact-reader-clock-ports`, `default-worker-single-configuration`, `uniform-url-admission`, `portable-worker-closure`, `original-custody`, `http-mcp-semantics`, `deterministic-projection-contract`, `retained-original-demand`, `retained-source-ownership`, `retained-supplier-interfaces`, `retained-data-contracts`, `retained-projection-and-read-law`, `retained-http-and-mcp`, `retained-receiving`, `retained-exact-examples`, `retained-meaningful-runtime`, `retained-no-authority-invention`, `retained-no-merchant-change`, `retained-no-shadow-registry`, `retained-no-unbounded-network`
