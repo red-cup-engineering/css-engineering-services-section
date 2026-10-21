@@ -12,11 +12,11 @@
       "provenance": {
         "type": "ArtifactFabricationSourceProvenance",
         "locator": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/content/text/documents/articles/specifications/2026-10-20-commerce-navigation-receiving-source-free-work-order.md",
-        "digest": "sha256:745a6c9e6df97c8753b07891daec138bf5090017f8b6c1b253c80c1bfbd37a7a",
+        "digest": "sha256:311133a58782e577063f71768305c53b31c2f9013db9876a6a84b0f0e5464774",
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
           "startLine": 1,
-          "endLine": 1724
+          "endLine": 2137
         }
       }
     },
@@ -43,8 +43,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 36,
-          "endLine": 36
+          "startLine": 38,
+          "endLine": 38
         },
         "groundedOn": []
       },
@@ -64,8 +64,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 37,
-          "endLine": 37
+          "startLine": 39,
+          "endLine": 39
         },
         "groundedOn": []
       },
@@ -85,8 +85,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 38,
-          "endLine": 38
+          "startLine": 40,
+          "endLine": 40
         },
         "groundedOn": []
       },
@@ -106,8 +106,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 40,
-          "endLine": 40
+          "startLine": 42,
+          "endLine": 42
         },
         "groundedOn": []
       }
@@ -117,7 +117,7 @@
         "type": "ArtifactFabricationRequirement",
         "version": 2,
         "id": "receiving-input-admission",
-        "statement": "Consume the exact scenario JSON schema and relational instrument contract; malformed scenario, invalid step pairing, duplicate binding names or fixture URLs, or invalid clock throws TypeError before any target effect. Otherwise schema-valid actual HTML exceeding an original parser bound throws instrument RangeError during response observation, never an input TypeError or target exception field. Target configuration stays deliberately unconstrained JSON for actual target refusal assays. Preserve input values.",
+        "statement": "Consume the exact scenario JSON schema and relational instrument contract; malformed scenario, invalid step pairing, duplicate binding names or fixture URLs, or invalid clock throws TypeError before any target effect. Otherwise schema-valid actual HTML exceeding an original parser bound throws instrument RangeError during response observation, never an input TypeError or target exception field. Target configuration stays deliberately unconstrained JSON for actual target refusal assays. Optional observation selectors follow exact-observation-selection; malformed selectors or duplicate selector IDs throw instrument TypeError before target effects. Preserve input values.",
         "parameters": [],
         "claimIds": [],
         "sourceSpan": {
@@ -156,7 +156,7 @@
         "type": "ArtifactFabricationRequirement",
         "version": 2,
         "id": "receiving-response-html",
-        "statement": "Observe actual Response clones, original native MCP JSON/SSE envelopes and bounded original HTML parser tree. Preserve actual JSON, status, headers, decoded text canaries, original anchors and ordered labelled native form controls according to the exact observation schema; never manufacture target resource data or infer payment/consent.",
+        "statement": "Observe actual Response clones, original native MCP JSON/SSE envelopes and bounded original HTML parser tree. Preserve actual JSON, status, headers, decoded text canaries, original anchors and ordered labelled native form controls according to the exact observation schema; never manufacture target resource data or infer payment/consent. Always build the complete actual response snapshot and perform real parsed form submissions before optional mechanical observation selection. With observe absent the complete original output remains unchanged; with observe present return exact measured selected values plus unchanged exception/sourceReads/merchant/clockCalls/events under exact-observation-selection.",
         "parameters": [],
         "claimIds": [],
         "sourceSpan": {
@@ -511,6 +511,24 @@
           "startLine": 31,
           "endLine": 31
         }
+      },
+      {
+        "type": "ArtifactFabricationConstraint",
+        "version": 2,
+        "id": "exact-observation-selection",
+        "kind": "standard",
+        "authority": "Independently received Web Engineering measuring-instrument design",
+        "revision": "receiving-attempt-002",
+        "locator": "native-receipt:ni:///sha-256;KFfFC08bqCKXyiV5teGvKvGNNIdulEtTE5FB2ZVszHU",
+        "applicability": "Bounded optional actual-snapshot selection only; no production change",
+        "statement": "Optional test-only observe is a bounded list of {id,path}. It selects only actual JSON snapshot values and never changes target behavior, parsed form submission or public schemas. Every selector ID is nonempty and unique; validate all selector shapes/IDs/bounds before constructing or invoking the target. Malformed selectors or duplicate IDs throw instrument TypeError before target effects. Path starts at the complete actual original receiving output object. At each segment apply to every current value in order, starting from [snapshot]: a string key other than * selects an own property of a non-array JSON object; a nonnegative integer selects that existing array index; * expands actual array elements in order; {field,equals} applies only to an actual array and expands its non-array object rows whose own field value is exactly equal to the supplied JSON primitive, without coercion. Missing keys/indices, incompatible value kinds and no matching row contribute no values. Apply no eval, dotted syntax, prototype traversal, JSONPath expression, fixture expected-value substitution, sorting or target recomputation. Path exhaustion returns the ordered actual values; a terminal array remains one array value unless * explicitly expands it. Primitive equality is strict equality of same primitive type/value, with JSON zero and negative zero equal. Copy selected JSON values without mutating the snapshot or scenario. If observe is absent, return exactly the original full output, with no added fields; all original eight examples and existing receiver inputs remain valid unchanged. If observe is present, return exactly {exception,observations,sourceReads,merchant,clockCalls,events}, where observations is the selector-order array of {id,values}; all other fields are unchanged actual snapshot fields. Do not return the responses array in selected mode, but keep the complete response cache internally so responseIndex and native form submission work identically. Empty/missing paths never turn into a pass verdict; they return values:[] and the receiver's exact expected output determines whether that is correct. Always fully parse each actual Response and native HTML forms before selection; parser failures and instrument errors still propagate, never disappear by selecting fewer fields. Full response headers/anchors/forms remain observable whenever requested by paths or by omitting observe. The admitted directory selection demonstrates own keys, array index, ordered wildcard, exact primitive record filtering and missing path. The mandatory human receiving cases can select actual hrefs, method/action, ordered control names/labels/options or submitter labels, then submit the actual form and inspect actual resulting original identities without inventing complete incidental renderer snapshots. Submitter kind is the effective lowercase control type: submit for button with absent/submit type and input submit; non-submit buttons are not usable submitters. This only settles the measuring field, not target rendering. Every existing mandatory runtime case, source-scope/navigation, malformed/unsafe action, native MCP error/schema, partial/all outage, advancing/backward clock and original merchant identity remains required; selected observations never establish live domain or commerce acceptance.",
+        "parameters": [],
+        "claimIds": [],
+        "sourceSpan": {
+          "type": "ArtifactFabricationSourceSpan",
+          "startLine": 33,
+          "endLine": 33
+        }
       }
     ],
     "projections": [
@@ -786,352 +804,611 @@
                       "maxLength": 4096
                     },
                     "maxItems": 32
+                  },
+                  "observe": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 32,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "id",
+                        "path"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128
+                        },
+                        "path": {
+                          "type": "array",
+                          "minItems": 1,
+                          "maxItems": 16,
+                          "items": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 256
+                              },
+                              {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 1024
+                              },
+                              {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "required": [
+                                  "field",
+                                  "equals"
+                                ],
+                                "properties": {
+                                  "field": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 256
+                                  },
+                                  "equals": {
+                                    "anyOf": [
+                                      {
+                                        "type": "string",
+                                        "maxLength": 4096
+                                      },
+                                      {
+                                        "type": "number"
+                                      },
+                                      {
+                                        "type": "boolean"
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               },
               "outputSchema": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": [
-                  "exception",
-                  "responses",
-                  "sourceReads",
-                  "merchant",
-                  "clockCalls",
-                  "events"
-                ],
-                "properties": {
-                  "exception": {
-                    "type": [
-                      "string",
-                      "null"
-                    ]
-                  },
-                  "responses": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "additionalProperties": false,
-                      "required": [
-                        "status",
-                        "headers",
-                        "json",
-                        "textChecks",
-                        "anchors",
-                        "forms",
-                        "requestUrl"
-                      ],
-                      "properties": {
-                        "status": {
-                          "type": "integer"
-                        },
-                        "headers": {
-                          "type": "array",
-                          "items": {
-                            "type": "array",
-                            "prefixItems": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "string"
-                              }
-                            ],
-                            "minItems": 2,
-                            "maxItems": 2,
-                            "items": false
-                          },
-                          "maxItems": 64
-                        },
-                        "json": {},
-                        "textChecks": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "additionalProperties": false,
-                            "required": [
-                              "needle",
-                              "present"
-                            ],
-                            "properties": {
-                              "needle": {
-                                "type": "string"
-                              },
-                              "present": {
-                                "type": "boolean"
-                              }
-                            }
-                          }
-                        },
-                        "anchors": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "additionalProperties": false,
-                            "required": [
-                              "href",
-                              "text"
-                            ],
-                            "properties": {
-                              "href": {
-                                "type": "string"
-                              },
-                              "text": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        },
-                        "forms": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "additionalProperties": false,
-                            "required": [
-                              "action",
-                              "method",
-                              "controls",
-                              "submitters"
-                            ],
-                            "properties": {
-                              "action": {
-                                "type": "string"
-                              },
-                              "method": {
-                                "type": "string"
-                              },
-                              "controls": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "additionalProperties": false,
-                                  "required": [
-                                    "name",
-                                    "kind",
-                                    "value",
-                                    "options",
-                                    "label"
-                                  ],
-                                  "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "kind": {
-                                      "type": "string"
-                                    },
-                                    "value": {
-                                      "type": "string"
-                                    },
-                                    "options": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object",
-                                        "additionalProperties": false,
-                                        "required": [
-                                          "value",
-                                          "label",
-                                          "selected"
-                                        ],
-                                        "properties": {
-                                          "value": {
-                                            "type": "string"
-                                          },
-                                          "label": {
-                                            "type": "string"
-                                          },
-                                          "selected": {
-                                            "type": "boolean"
-                                          }
-                                        }
-                                      }
-                                    },
-                                    "label": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              },
-                              "submitters": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "additionalProperties": false,
-                                  "required": [
-                                    "label",
-                                    "name",
-                                    "value",
-                                    "kind"
-                                  ],
-                                  "properties": {
-                                    "label": {
-                                      "type": "string"
-                                    },
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "value": {
-                                      "type": "string"
-                                    },
-                                    "kind": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "requestUrl": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "sourceReads": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "additionalProperties": false,
-                      "required": [
-                        "url",
-                        "method",
-                        "headers",
-                        "redirect",
-                        "signalPresent"
-                      ],
-                      "properties": {
-                        "url": {
-                          "type": "string"
-                        },
-                        "method": {
-                          "type": "string"
-                        },
-                        "headers": {
-                          "type": "array",
-                          "items": {
-                            "type": "array",
-                            "prefixItems": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "string"
-                              }
-                            ],
-                            "minItems": 2,
-                            "maxItems": 2,
-                            "items": false
-                          },
-                          "maxItems": 64
-                        },
-                        "redirect": {
-                          "type": "string"
-                        },
-                        "signalPresent": {
-                          "type": "boolean"
-                        }
-                      }
-                    }
-                  },
-                  "merchant": {
+                "anyOf": [
+                  {
                     "type": "object",
                     "additionalProperties": false,
                     "required": [
-                      "calls",
-                      "sameRequest",
-                      "sameResponse",
-                      "bodyUnusedAtBinding",
-                      "url",
-                      "headers",
-                      "bodyBase64"
+                      "exception",
+                      "responses",
+                      "sourceReads",
+                      "merchant",
+                      "clockCalls",
+                      "events"
                     ],
                     "properties": {
-                      "calls": {
-                        "type": "integer"
-                      },
-                      "sameRequest": {
-                        "type": [
-                          "boolean",
-                          "null"
-                        ]
-                      },
-                      "sameResponse": {
-                        "type": [
-                          "boolean",
-                          "null"
-                        ]
-                      },
-                      "bodyUnusedAtBinding": {
-                        "type": [
-                          "boolean",
-                          "null"
-                        ]
-                      },
-                      "url": {
+                      "exception": {
                         "type": [
                           "string",
                           "null"
                         ]
                       },
-                      "headers": {
+                      "responses": {
                         "type": "array",
                         "items": {
-                          "type": "array",
-                          "prefixItems": [
-                            {
-                              "type": "string"
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "status",
+                            "headers",
+                            "json",
+                            "textChecks",
+                            "anchors",
+                            "forms",
+                            "requestUrl"
+                          ],
+                          "properties": {
+                            "status": {
+                              "type": "integer"
                             },
-                            {
+                            "headers": {
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "prefixItems": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string"
+                                  }
+                                ],
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "items": false
+                              },
+                              "maxItems": 64
+                            },
+                            "json": {},
+                            "textChecks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "required": [
+                                  "needle",
+                                  "present"
+                                ],
+                                "properties": {
+                                  "needle": {
+                                    "type": "string"
+                                  },
+                                  "present": {
+                                    "type": "boolean"
+                                  }
+                                }
+                              }
+                            },
+                            "anchors": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "required": [
+                                  "href",
+                                  "text"
+                                ],
+                                "properties": {
+                                  "href": {
+                                    "type": "string"
+                                  },
+                                  "text": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "forms": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "required": [
+                                  "action",
+                                  "method",
+                                  "controls",
+                                  "submitters"
+                                ],
+                                "properties": {
+                                  "action": {
+                                    "type": "string"
+                                  },
+                                  "method": {
+                                    "type": "string"
+                                  },
+                                  "controls": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "additionalProperties": false,
+                                      "required": [
+                                        "name",
+                                        "kind",
+                                        "value",
+                                        "options",
+                                        "label"
+                                      ],
+                                      "properties": {
+                                        "name": {
+                                          "type": "string"
+                                        },
+                                        "kind": {
+                                          "type": "string"
+                                        },
+                                        "value": {
+                                          "type": "string"
+                                        },
+                                        "options": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "additionalProperties": false,
+                                            "required": [
+                                              "value",
+                                              "label",
+                                              "selected"
+                                            ],
+                                            "properties": {
+                                              "value": {
+                                                "type": "string"
+                                              },
+                                              "label": {
+                                                "type": "string"
+                                              },
+                                              "selected": {
+                                                "type": "boolean"
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "label": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "submitters": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "additionalProperties": false,
+                                      "required": [
+                                        "label",
+                                        "name",
+                                        "value",
+                                        "kind"
+                                      ],
+                                      "properties": {
+                                        "label": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        },
+                                        "value": {
+                                          "type": "string"
+                                        },
+                                        "kind": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "requestUrl": {
                               "type": "string"
                             }
-                          ],
-                          "minItems": 2,
-                          "maxItems": 2,
-                          "items": false
-                        },
-                        "maxItems": 64
+                          }
+                        }
                       },
-                      "bodyBase64": {
-                        "type": [
-                          "string",
-                          "null"
-                        ]
+                      "sourceReads": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "url",
+                            "method",
+                            "headers",
+                            "redirect",
+                            "signalPresent"
+                          ],
+                          "properties": {
+                            "url": {
+                              "type": "string"
+                            },
+                            "method": {
+                              "type": "string"
+                            },
+                            "headers": {
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "prefixItems": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string"
+                                  }
+                                ],
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "items": false
+                              },
+                              "maxItems": 64
+                            },
+                            "redirect": {
+                              "type": "string"
+                            },
+                            "signalPresent": {
+                              "type": "boolean"
+                            }
+                          }
+                        }
+                      },
+                      "merchant": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "calls",
+                          "sameRequest",
+                          "sameResponse",
+                          "bodyUnusedAtBinding",
+                          "url",
+                          "headers",
+                          "bodyBase64"
+                        ],
+                        "properties": {
+                          "calls": {
+                            "type": "integer"
+                          },
+                          "sameRequest": {
+                            "type": [
+                              "boolean",
+                              "null"
+                            ]
+                          },
+                          "sameResponse": {
+                            "type": [
+                              "boolean",
+                              "null"
+                            ]
+                          },
+                          "bodyUnusedAtBinding": {
+                            "type": [
+                              "boolean",
+                              "null"
+                            ]
+                          },
+                          "url": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "headers": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "string"
+                                }
+                              ],
+                              "minItems": 2,
+                              "maxItems": 2,
+                              "items": false
+                            },
+                            "maxItems": 64
+                          },
+                          "bodyBase64": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        }
+                      },
+                      "clockCalls": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "events": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "kind",
+                            "url",
+                            "at"
+                          ],
+                          "properties": {
+                            "kind": {
+                              "type": "string"
+                            },
+                            "url": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "at": {
+                              "type": "string"
+                            }
+                          }
+                        }
                       }
                     }
                   },
-                  "clockCalls": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "events": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "additionalProperties": false,
-                      "required": [
-                        "kind",
-                        "url",
-                        "at"
-                      ],
-                      "properties": {
-                        "kind": {
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "exception",
+                      "observations",
+                      "sourceReads",
+                      "merchant",
+                      "clockCalls",
+                      "events"
+                    ],
+                    "properties": {
+                      "exception": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "sourceReads": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "url",
+                            "method",
+                            "headers",
+                            "redirect",
+                            "signalPresent"
+                          ],
+                          "properties": {
+                            "url": {
+                              "type": "string"
+                            },
+                            "method": {
+                              "type": "string"
+                            },
+                            "headers": {
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "prefixItems": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string"
+                                  }
+                                ],
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "items": false
+                              },
+                              "maxItems": 64
+                            },
+                            "redirect": {
+                              "type": "string"
+                            },
+                            "signalPresent": {
+                              "type": "boolean"
+                            }
+                          }
+                        }
+                      },
+                      "merchant": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "calls",
+                          "sameRequest",
+                          "sameResponse",
+                          "bodyUnusedAtBinding",
+                          "url",
+                          "headers",
+                          "bodyBase64"
+                        ],
+                        "properties": {
+                          "calls": {
+                            "type": "integer"
+                          },
+                          "sameRequest": {
+                            "type": [
+                              "boolean",
+                              "null"
+                            ]
+                          },
+                          "sameResponse": {
+                            "type": [
+                              "boolean",
+                              "null"
+                            ]
+                          },
+                          "bodyUnusedAtBinding": {
+                            "type": [
+                              "boolean",
+                              "null"
+                            ]
+                          },
+                          "url": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "headers": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "string"
+                                }
+                              ],
+                              "minItems": 2,
+                              "maxItems": 2,
+                              "items": false
+                            },
+                            "maxItems": 64
+                          },
+                          "bodyBase64": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        }
+                      },
+                      "clockCalls": {
+                        "type": "array",
+                        "items": {
                           "type": "string"
-                        },
-                        "url": {
-                          "type": [
-                            "string",
-                            "null"
-                          ]
-                        },
-                        "at": {
-                          "type": "string"
+                        }
+                      },
+                      "events": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "kind",
+                            "url",
+                            "at"
+                          ],
+                          "properties": {
+                            "kind": {
+                              "type": "string"
+                            },
+                            "url": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "at": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "observations": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "id",
+                            "values"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "values": {
+                              "type": "array",
+                              "items": {}
+                            }
+                          }
                         }
                       }
                     }
                   }
-                }
+                ]
               }
             }
           ],
@@ -2170,6 +2447,158 @@
                   }
                 ]
               }
+            },
+            {
+              "name": "select-actual-directory-fields-without-implicit-values",
+              "operation": "run-commerce-receiving-case",
+              "input": {
+                "adapter": "factory",
+                "configuration": {
+                  "role": "bazaar",
+                  "origin": "https://bazaar.561.group",
+                  "title": "Receiving fixture",
+                  "revision": "receiving-1",
+                  "sources": []
+                },
+                "hostConfiguration": null,
+                "bindings": [],
+                "clock": {
+                  "start": "2026-10-20T23:00:00.000Z",
+                  "stepMilliseconds": 0
+                },
+                "sourceFixtures": [],
+                "merchantResponse": {
+                  "status": 202,
+                  "headers": [
+                    [
+                      "content-type",
+                      "application/octet-stream"
+                    ],
+                    [
+                      "x-original-signature",
+                      "signed-fixture"
+                    ]
+                  ],
+                  "bodyBase64": "AP9B"
+                },
+                "steps": [
+                  {
+                    "kind": "request",
+                    "request": {
+                      "url": "https://bazaar.561.group/discovery.json",
+                      "method": "GET",
+                      "headers": [],
+                      "bodyBase64": null
+                    },
+                    "responseIndex": null,
+                    "actionPath": null,
+                    "values": []
+                  }
+                ],
+                "textNeedles": [],
+                "observe": [
+                  {
+                    "id": "canonical-origin",
+                    "path": [
+                      "responses",
+                      0,
+                      "json",
+                      "origin"
+                    ]
+                  },
+                  {
+                    "id": "native-post-endpoint",
+                    "path": [
+                      "responses",
+                      0,
+                      "json",
+                      "endpoints",
+                      {
+                        "field": "method",
+                        "equals": "POST"
+                      },
+                      "path"
+                    ]
+                  },
+                  {
+                    "id": "ordered-tools",
+                    "path": [
+                      "responses",
+                      0,
+                      "json",
+                      "tools",
+                      "*"
+                    ]
+                  },
+                  {
+                    "id": "first-endpoint",
+                    "path": [
+                      "responses",
+                      0,
+                      "json",
+                      "endpoints",
+                      0,
+                      "path"
+                    ]
+                  },
+                  {
+                    "id": "missing-field",
+                    "path": [
+                      "responses",
+                      0,
+                      "json",
+                      "notPresent"
+                    ]
+                  }
+                ]
+              },
+              "output": {
+                "exception": null,
+                "sourceReads": [],
+                "merchant": {
+                  "calls": 0,
+                  "sameRequest": null,
+                  "sameResponse": null,
+                  "bodyUnusedAtBinding": null,
+                  "url": null,
+                  "headers": [],
+                  "bodyBase64": null
+                },
+                "clockCalls": [],
+                "events": [],
+                "observations": [
+                  {
+                    "id": "canonical-origin",
+                    "values": [
+                      "https://bazaar.561.group"
+                    ]
+                  },
+                  {
+                    "id": "native-post-endpoint",
+                    "values": [
+                      "/mcp"
+                    ]
+                  },
+                  {
+                    "id": "ordered-tools",
+                    "values": [
+                      "search_offers",
+                      "get_offer",
+                      "compare_offers"
+                    ]
+                  },
+                  {
+                    "id": "first-endpoint",
+                    "values": [
+                      "/"
+                    ]
+                  },
+                  {
+                    "id": "missing-field",
+                    "values": []
+                  }
+                ]
+              }
             }
           ],
           "dependencies": {
@@ -2179,8 +2608,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 43,
-          "endLine": 1702
+          "startLine": 45,
+          "endLine": 2115
         }
       }
     ],
@@ -2197,8 +2626,8 @@
         ],
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 1704,
-          "endLine": 1715
+          "startLine": 2117,
+          "endLine": 2128
         }
       }
     ],
@@ -2210,6 +2639,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2239,6 +2669,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2268,6 +2699,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2297,6 +2729,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2326,6 +2759,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2355,6 +2789,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2384,6 +2819,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2413,6 +2849,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2436,13 +2873,13 @@
         ]
       }
     ],
-    "specificationDigest": "ni:///sha-256;1TCH4Q-iZVdxbcv6GBKzQADRm7gAdN5Wzr_cpv_7eZM"
+    "specificationDigest": "ni:///sha-256;ApcOIXg5ZOYtYDztzyy7zecEhVx2yPMh1fx9ZseXPf0"
   },
   "plan": {
     "type": "ArtifactFabricationRealizationPlan",
     "version": 1,
     "artifactId": "commerce-navigation-independent-receiving-modules",
-    "specificationDigest": "ni:///sha-256;1TCH4Q-iZVdxbcv6GBKzQADRm7gAdN5Wzr_cpv_7eZM",
+    "specificationDigest": "ni:///sha-256;ApcOIXg5ZOYtYDztzyy7zecEhVx2yPMh1fx9ZseXPf0",
     "projectionIds": [
       "jsnode-modules"
     ],
@@ -2457,6 +2894,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2486,6 +2924,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2515,6 +2954,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2544,6 +2984,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2573,6 +3014,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2602,6 +3044,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2631,6 +3074,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
@@ -2660,6 +3104,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
