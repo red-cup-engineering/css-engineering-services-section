@@ -1,12 +1,12 @@
 {
   "type": "JsnodeModuleFabricationPlan",
   "version": 1,
-  "workOrderSpecificationDigest": "ni:///sha-256;ApcOIXg5ZOYtYDztzyy7zecEhVx2yPMh1fx9ZseXPf0",
+  "workOrderSpecificationDigest": "ni:///sha-256;RYBY3w3tXug3nDxTKC6Lnmx7WH3DrXu8hzs642LicQU",
   "realizationPlan": {
     "type": "ArtifactFabricationRealizationPlan",
     "version": 1,
     "artifactId": "commerce-navigation-independent-receiving-modules",
-    "specificationDigest": "ni:///sha-256;ApcOIXg5ZOYtYDztzyy7zecEhVx2yPMh1fx9ZseXPf0",
+    "specificationDigest": "ni:///sha-256;RYBY3w3tXug3nDxTKC6Lnmx7WH3DrXu8hzs642LicQU",
     "projectionIds": [
       "jsnode-modules"
     ],
@@ -21,6 +21,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -51,6 +52,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -81,6 +83,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -111,6 +114,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -141,6 +145,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -171,6 +176,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -201,6 +207,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -231,6 +238,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
