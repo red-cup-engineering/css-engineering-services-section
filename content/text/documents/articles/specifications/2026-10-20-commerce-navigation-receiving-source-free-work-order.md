@@ -1,9 +1,9 @@
 # commerce-navigation-independent-receiving-modules
 ## Requirements
-- `receiving-input-admission`: Consume the exact scenario JSON schema and relational instrument contract; malformed scenario, invalid step pairing, duplicate binding names or fixture URLs, or invalid clock throws TypeError before any target effect. Otherwise schema-valid actual HTML exceeding an original parser bound throws instrument RangeError during response observation, never an input TypeError or target exception field. Target configuration stays deliberately unconstrained JSON for actual target refusal assays. Preserve input values.
+- `receiving-input-admission`: Consume the exact scenario JSON schema and relational instrument contract; malformed scenario, invalid step pairing, duplicate binding names or fixture URLs, or invalid clock throws TypeError before any target effect. Otherwise schema-valid actual HTML exceeding an original parser bound throws instrument RangeError during response observation, never an input TypeError or target exception field. Target configuration stays deliberately unconstrained JSON for actual target refusal assays. Optional observation selectors follow exact-observation-selection; malformed selectors or duplicate selector IDs throw instrument TypeError before target effects. Preserve input values.
 - `receiving-target-boundary`: Import the exact selected original target export; invoke its actual factory or default Worker, never a copied projector/router or rewritten target behavior. Return actual target exceptions and responses under the exact measurement conventions, stopping later steps after an actual thrown target exception. Never repair malformed host configuration or target input.
 - `receiving-source-clock`: Use only fixed in-memory source fixtures through captured actual Fetch Requests, with exact response bytes, manual redirect/signal/header observations and explicit network/timeout behavior. Clock measurement follows exact event/completion/advance rules including advancing and backward host clocks. Unknown fixture or invalid instrument behavior throws and performs no real network.
-- `receiving-response-html`: Observe actual Response clones, original native MCP JSON/SSE envelopes and bounded original HTML parser tree. Preserve actual JSON, status, headers, decoded text canaries, original anchors and ordered labelled native form controls according to the exact observation schema; never manufacture target resource data or infer payment/consent.
+- `receiving-response-html`: Observe actual Response clones, original native MCP JSON/SSE envelopes and bounded original HTML parser tree. Preserve actual JSON, status, headers, decoded text canaries, original anchors and ordered labelled native form controls according to the exact observation schema; never manufacture target resource data or infer payment/consent. Always build the complete actual response snapshot and perform real parsed form submissions before optional mechanical observation selection. With observe absent the complete original output remains unchanged; with observe present return exact measured selected values plus unchanged exception/sourceReads/merchant/clockCalls/events under exact-observation-selection.
 - `receiving-form-flow`: Submit only real usable same-origin GET forms from a prior actual HTML response, with parsed labelled controls, available original values and repeated source/id order. Derive each action from that form and serialize successful controls; no typed target endpoint, invented form, presentation-ID substitution or recomputed search/comparison counts as an ordinary human flow.
 - `receiving-merchant-identity`: Measure original Request and Response reference identity, unread incoming body at merchant binding entry, actual binary bytes, URL/query/headers and call count. Inspect a clone only after target return. Merchant and source reads remain distinct and no observation invokes another target request.
 - `receiving-isolation-restoration`: Run scenario steps sequentially using fresh isolated host state. Observe default Worker through restored fake global fetch/Date only inside this scenario; restore original globals in finally on every success/refusal. Return no hardcoded success verdict and expose no new production test operation.
@@ -29,6 +29,8 @@
 - `measured-target-entry` | Actual accepted original native source and immutable published artifact | 62ce4b3eed7104d47f7ceb3445ef3b5d27584af7 | https://registry.561.group/@red-cup-engineering/computer-web-platform/-/computer-web-platform-0.7.0.tgz | Receiving invokes only actual published ./commerce-navigation | {"recordType": "commerce-navigation-native-source-interface-observation", "source": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/data/state/fabrication-proposal-state/commerce-navigation-008/src/commerce-navigation.mjs", "sourceSha256": "ff2d457a38cd34b1437bb15bbb3ac6efb8ed2e648fcbb669211631637e62089d", "scope": "Actual source interface evidence of selected published artifact; runtime receiving remains independently mandatory", "exports": {"projectCommerceNavigation": "Named synchronous pure input-to-projection function", "createCommerceNavigator": "Named function(configuration,options={}) returning frozen {fetch:async(request,env={})}", "default": "Worker object with async fetch(request,env); no observed ctx use"}, "factoryOptions": ["fetchImpl: function(Request) returns Fetch Response/Promise<Response>", "now: zero-argument function returns explicit-timezone ISO timestamp string"], "configuration": {"required": ["role", "origin", "title", "revision", "sources"], "optional": ["navigation"], "defaultEnvelope": "env.COMMERCE_CONFIGURATION is one nonempty JSON string decoding to exactly the factory configuration object", "invalidFactory": "TypeError", "invalidDefault": {"status": 503, "json": {"error": "configuration-unavailable"}}}, "routing": {"originMismatch": {"status": 421, "json": {"error": "misdirected-request"}}, "bazaar": ["/", "/offers", "/compare", "/discovery.json", "/v1/discovery/search", "/v1/discovery/compare", "/mcp"], "market": ["/", "/markets/discovery.json", "/markets/observations", "/markets/venues", "/markets/mcp"], "merchant": "All other Market paths call env.MERCHANT.fetch(original Request) and return its actual Response; missing binding yields503merchant-unavailable", "sourceBindings": "Only source descriptor binding names resolve in env; absent binding refuses without HTTPS fallback"}, "forms": {"search": {"id": "navigation-search", "method": "get", "action": "/", "fields": [{"name": "q", "label": "Search", "kind": "search"}, {"name": "source", "label": "Source", "kind": "select", "allSourcesValue": ""}], "submitterLabel": "Search"}, "compare": {"id": "offer-comparison-form", "method": "get", "action": "/compare", "orderedNames": ["source", "id", "source", "id"], "sourceLabels": ["Offer 1 original source", "Offer 2 original source"], "idLabels": ["Offer 1 title and original identity", "Offer 2 title and original identity"], "submitterLabel": "Compare"}, "detailLink": "/offers?source=original-source-id&id=original-offer-id using URLSearchParams encoding"}, "mcp": {"bazaarTools": ["search_offers", "get_offer", "compare_offers"], "marketTools": ["list_markets", "read_observations"], "transport": "Original createMcpServer and mcpResource, sessions:false, allowedOrigins containing canonical origin", "publicDomainCarrier": "Plain {code,message} thrown object; original MCP encodes result"}, "observedBoundaries": ["Source Request GET/manual/credentials omit/signal without guest headers", "SHA256 uses portable globalThis.crypto.subtle over exact fetched bytes", "now called for each source completion and after settled reads for projection", "Display source-scope tile retains consent fields and discovery link", "Market uses configured navigation and actual source venue links", "TUFTE item source facet array; query source facet scalar"]}
 
 - `native-receiving-question-resolution` | Original native compiler and receiving design producer | receiving-attempt-001 | native-receipt:ni:///sha-256;xWVKjRU6yUUi8q9UGk7AbZCKp3a-SoVGIJ5uZVqIdf0 | Bounded correction of two receiving-contract contradictions, never target behavior | Original native clause derivation asked a genuine pre-source question, not a runtime failure. Scenario schema/relational admission errors are TypeError before target effects; an otherwise valid target HTML response exceeding original parser limits is an instrument RangeError propagated to the native receiver. A live sourceDate comes only from actual parsed body.sourceDate string; the three admitted runtime source fixtures contain no sourceDate, so expected coverage sourceDate is null. Their original bodyText bytes and SHA256 digests remain unchanged; no publisher date is invented from the pure observation fixture. Eight examples and all other schemas/expected fields and mandatory runtime obligations remain unchanged.
+
+- `exact-observation-selection` | Independently received Web Engineering measuring-instrument design | receiving-attempt-002 | native-receipt:ni:///sha-256;KFfFC08bqCKXyiV5teGvKvGNNIdulEtTE5FB2ZVszHU | Bounded optional actual-snapshot selection only; no production change | Optional test-only observe is a bounded list of {id,path}. It selects only actual JSON snapshot values and never changes target behavior, parsed form submission or public schemas. Every selector ID is nonempty and unique; validate all selector shapes/IDs/bounds before constructing or invoking the target. Malformed selectors or duplicate IDs throw instrument TypeError before target effects. Path starts at the complete actual original receiving output object. At each segment apply to every current value in order, starting from [snapshot]: a string key other than * selects an own property of a non-array JSON object; a nonnegative integer selects that existing array index; * expands actual array elements in order; {field,equals} applies only to an actual array and expands its non-array object rows whose own field value is exactly equal to the supplied JSON primitive, without coercion. Missing keys/indices, incompatible value kinds and no matching row contribute no values. Apply no eval, dotted syntax, prototype traversal, JSONPath expression, fixture expected-value substitution, sorting or target recomputation. Path exhaustion returns the ordered actual values; a terminal array remains one array value unless * explicitly expands it. Primitive equality is strict equality of same primitive type/value, with JSON zero and negative zero equal. Copy selected JSON values without mutating the snapshot or scenario. If observe is absent, return exactly the original full output, with no added fields; all original eight examples and existing receiver inputs remain valid unchanged. If observe is present, return exactly {exception,observations,sourceReads,merchant,clockCalls,events}, where observations is the selector-order array of {id,values}; all other fields are unchanged actual snapshot fields. Do not return the responses array in selected mode, but keep the complete response cache internally so responseIndex and native form submission work identically. Empty/missing paths never turn into a pass verdict; they return values:[] and the receiver's exact expected output determines whether that is correct. Always fully parse each actual Response and native HTML forms before selection; parser failures and instrument errors still propagate, never disappear by selecting fewer fields. Full response headers/anchors/forms remain observable whenever requested by paths or by omitting observe. The admitted directory selection demonstrates own keys, array index, ordered wildcard, exact primitive record filtering and missing path. The mandatory human receiving cases can select actual hrefs, method/action, ordered control names/labels/options or submitter labels, then submit the actual form and inspect actual resulting original identities without inventing complete incidental renderer snapshots. Submitter kind is the effective lowercase control type: submit for button with absent/submit type and input submit; non-submit buttons are not usable submitters. This only settles the measuring field, not target rendering. Every existing mandatory runtime case, source-scope/navigation, malformed/unsafe action, native MCP error/schema, partial/all outage, advancing/backward clock and original merchant identity remains required; selected observations never establish live domain or commerce acceptance.
 
 ## Open questions
 none
@@ -308,352 +310,611 @@ none
               "maxLength": 4096
             },
             "maxItems": 32
+          },
+          "observe": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "path"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "path": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 16,
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1024
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "field",
+                          "equals"
+                        ],
+                        "properties": {
+                          "field": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 256
+                          },
+                          "equals": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "maxLength": 4096
+                              },
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "boolean"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
           }
         }
       },
       "outputSchema": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "exception",
-          "responses",
-          "sourceReads",
-          "merchant",
-          "clockCalls",
-          "events"
-        ],
-        "properties": {
-          "exception": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "responses": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "status",
-                "headers",
-                "json",
-                "textChecks",
-                "anchors",
-                "forms",
-                "requestUrl"
-              ],
-              "properties": {
-                "status": {
-                  "type": "integer"
-                },
-                "headers": {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "prefixItems": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "string"
-                      }
-                    ],
-                    "minItems": 2,
-                    "maxItems": 2,
-                    "items": false
-                  },
-                  "maxItems": 64
-                },
-                "json": {},
-                "textChecks": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "needle",
-                      "present"
-                    ],
-                    "properties": {
-                      "needle": {
-                        "type": "string"
-                      },
-                      "present": {
-                        "type": "boolean"
-                      }
-                    }
-                  }
-                },
-                "anchors": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "href",
-                      "text"
-                    ],
-                    "properties": {
-                      "href": {
-                        "type": "string"
-                      },
-                      "text": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                },
-                "forms": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "action",
-                      "method",
-                      "controls",
-                      "submitters"
-                    ],
-                    "properties": {
-                      "action": {
-                        "type": "string"
-                      },
-                      "method": {
-                        "type": "string"
-                      },
-                      "controls": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "additionalProperties": false,
-                          "required": [
-                            "name",
-                            "kind",
-                            "value",
-                            "options",
-                            "label"
-                          ],
-                          "properties": {
-                            "name": {
-                              "type": "string"
-                            },
-                            "kind": {
-                              "type": "string"
-                            },
-                            "value": {
-                              "type": "string"
-                            },
-                            "options": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "additionalProperties": false,
-                                "required": [
-                                  "value",
-                                  "label",
-                                  "selected"
-                                ],
-                                "properties": {
-                                  "value": {
-                                    "type": "string"
-                                  },
-                                  "label": {
-                                    "type": "string"
-                                  },
-                                  "selected": {
-                                    "type": "boolean"
-                                  }
-                                }
-                              }
-                            },
-                            "label": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      },
-                      "submitters": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "additionalProperties": false,
-                          "required": [
-                            "label",
-                            "name",
-                            "value",
-                            "kind"
-                          ],
-                          "properties": {
-                            "label": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "value": {
-                              "type": "string"
-                            },
-                            "kind": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "requestUrl": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "sourceReads": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "url",
-                "method",
-                "headers",
-                "redirect",
-                "signalPresent"
-              ],
-              "properties": {
-                "url": {
-                  "type": "string"
-                },
-                "method": {
-                  "type": "string"
-                },
-                "headers": {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "prefixItems": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "string"
-                      }
-                    ],
-                    "minItems": 2,
-                    "maxItems": 2,
-                    "items": false
-                  },
-                  "maxItems": 64
-                },
-                "redirect": {
-                  "type": "string"
-                },
-                "signalPresent": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
-          "merchant": {
+        "anyOf": [
+          {
             "type": "object",
             "additionalProperties": false,
             "required": [
-              "calls",
-              "sameRequest",
-              "sameResponse",
-              "bodyUnusedAtBinding",
-              "url",
-              "headers",
-              "bodyBase64"
+              "exception",
+              "responses",
+              "sourceReads",
+              "merchant",
+              "clockCalls",
+              "events"
             ],
             "properties": {
-              "calls": {
-                "type": "integer"
-              },
-              "sameRequest": {
-                "type": [
-                  "boolean",
-                  "null"
-                ]
-              },
-              "sameResponse": {
-                "type": [
-                  "boolean",
-                  "null"
-                ]
-              },
-              "bodyUnusedAtBinding": {
-                "type": [
-                  "boolean",
-                  "null"
-                ]
-              },
-              "url": {
+              "exception": {
                 "type": [
                   "string",
                   "null"
                 ]
               },
-              "headers": {
+              "responses": {
                 "type": "array",
                 "items": {
-                  "type": "array",
-                  "prefixItems": [
-                    {
-                      "type": "string"
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "status",
+                    "headers",
+                    "json",
+                    "textChecks",
+                    "anchors",
+                    "forms",
+                    "requestUrl"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer"
                     },
-                    {
+                    "headers": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "string"
+                          }
+                        ],
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "items": false
+                      },
+                      "maxItems": 64
+                    },
+                    "json": {},
+                    "textChecks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "needle",
+                          "present"
+                        ],
+                        "properties": {
+                          "needle": {
+                            "type": "string"
+                          },
+                          "present": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    },
+                    "anchors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "href",
+                          "text"
+                        ],
+                        "properties": {
+                          "href": {
+                            "type": "string"
+                          },
+                          "text": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "forms": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "action",
+                          "method",
+                          "controls",
+                          "submitters"
+                        ],
+                        "properties": {
+                          "action": {
+                            "type": "string"
+                          },
+                          "method": {
+                            "type": "string"
+                          },
+                          "controls": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": [
+                                "name",
+                                "kind",
+                                "value",
+                                "options",
+                                "label"
+                              ],
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "kind": {
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "type": "string"
+                                },
+                                "options": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "required": [
+                                      "value",
+                                      "label",
+                                      "selected"
+                                    ],
+                                    "properties": {
+                                      "value": {
+                                        "type": "string"
+                                      },
+                                      "label": {
+                                        "type": "string"
+                                      },
+                                      "selected": {
+                                        "type": "boolean"
+                                      }
+                                    }
+                                  }
+                                },
+                                "label": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "submitters": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": [
+                                "label",
+                                "name",
+                                "value",
+                                "kind"
+                              ],
+                              "properties": {
+                                "label": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "type": "string"
+                                },
+                                "kind": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "requestUrl": {
                       "type": "string"
                     }
-                  ],
-                  "minItems": 2,
-                  "maxItems": 2,
-                  "items": false
-                },
-                "maxItems": 64
+                  }
+                }
               },
-              "bodyBase64": {
-                "type": [
-                  "string",
-                  "null"
-                ]
+              "sourceReads": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "url",
+                    "method",
+                    "headers",
+                    "redirect",
+                    "signalPresent"
+                  ],
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    },
+                    "method": {
+                      "type": "string"
+                    },
+                    "headers": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "string"
+                          }
+                        ],
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "items": false
+                      },
+                      "maxItems": 64
+                    },
+                    "redirect": {
+                      "type": "string"
+                    },
+                    "signalPresent": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              "merchant": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "calls",
+                  "sameRequest",
+                  "sameResponse",
+                  "bodyUnusedAtBinding",
+                  "url",
+                  "headers",
+                  "bodyBase64"
+                ],
+                "properties": {
+                  "calls": {
+                    "type": "integer"
+                  },
+                  "sameRequest": {
+                    "type": [
+                      "boolean",
+                      "null"
+                    ]
+                  },
+                  "sameResponse": {
+                    "type": [
+                      "boolean",
+                      "null"
+                    ]
+                  },
+                  "bodyUnusedAtBinding": {
+                    "type": [
+                      "boolean",
+                      "null"
+                    ]
+                  },
+                  "url": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "headers": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "prefixItems": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ],
+                      "minItems": 2,
+                      "maxItems": 2,
+                      "items": false
+                    },
+                    "maxItems": 64
+                  },
+                  "bodyBase64": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "clockCalls": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "kind",
+                    "url",
+                    "at"
+                  ],
+                  "properties": {
+                    "kind": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "at": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           },
-          "clockCalls": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "events": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "kind",
-                "url",
-                "at"
-              ],
-              "properties": {
-                "kind": {
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "exception",
+              "observations",
+              "sourceReads",
+              "merchant",
+              "clockCalls",
+              "events"
+            ],
+            "properties": {
+              "exception": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "sourceReads": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "url",
+                    "method",
+                    "headers",
+                    "redirect",
+                    "signalPresent"
+                  ],
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    },
+                    "method": {
+                      "type": "string"
+                    },
+                    "headers": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "string"
+                          }
+                        ],
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "items": false
+                      },
+                      "maxItems": 64
+                    },
+                    "redirect": {
+                      "type": "string"
+                    },
+                    "signalPresent": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              "merchant": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "calls",
+                  "sameRequest",
+                  "sameResponse",
+                  "bodyUnusedAtBinding",
+                  "url",
+                  "headers",
+                  "bodyBase64"
+                ],
+                "properties": {
+                  "calls": {
+                    "type": "integer"
+                  },
+                  "sameRequest": {
+                    "type": [
+                      "boolean",
+                      "null"
+                    ]
+                  },
+                  "sameResponse": {
+                    "type": [
+                      "boolean",
+                      "null"
+                    ]
+                  },
+                  "bodyUnusedAtBinding": {
+                    "type": [
+                      "boolean",
+                      "null"
+                    ]
+                  },
+                  "url": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "headers": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "prefixItems": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ],
+                      "minItems": 2,
+                      "maxItems": 2,
+                      "items": false
+                    },
+                    "maxItems": 64
+                  },
+                  "bodyBase64": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "clockCalls": {
+                "type": "array",
+                "items": {
                   "type": "string"
-                },
-                "url": {
-                  "type": [
-                    "string",
-                    "null"
-                  ]
-                },
-                "at": {
-                  "type": "string"
+                }
+              },
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "kind",
+                    "url",
+                    "at"
+                  ],
+                  "properties": {
+                    "kind": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "at": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "observations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "id",
+                    "values"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "values": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  }
                 }
               }
             }
           }
-        }
+        ]
       }
     }
   ],
@@ -1692,6 +1953,158 @@ none
           }
         ]
       }
+    },
+    {
+      "name": "select-actual-directory-fields-without-implicit-values",
+      "operation": "run-commerce-receiving-case",
+      "input": {
+        "adapter": "factory",
+        "configuration": {
+          "role": "bazaar",
+          "origin": "https://bazaar.561.group",
+          "title": "Receiving fixture",
+          "revision": "receiving-1",
+          "sources": []
+        },
+        "hostConfiguration": null,
+        "bindings": [],
+        "clock": {
+          "start": "2026-10-20T23:00:00.000Z",
+          "stepMilliseconds": 0
+        },
+        "sourceFixtures": [],
+        "merchantResponse": {
+          "status": 202,
+          "headers": [
+            [
+              "content-type",
+              "application/octet-stream"
+            ],
+            [
+              "x-original-signature",
+              "signed-fixture"
+            ]
+          ],
+          "bodyBase64": "AP9B"
+        },
+        "steps": [
+          {
+            "kind": "request",
+            "request": {
+              "url": "https://bazaar.561.group/discovery.json",
+              "method": "GET",
+              "headers": [],
+              "bodyBase64": null
+            },
+            "responseIndex": null,
+            "actionPath": null,
+            "values": []
+          }
+        ],
+        "textNeedles": [],
+        "observe": [
+          {
+            "id": "canonical-origin",
+            "path": [
+              "responses",
+              0,
+              "json",
+              "origin"
+            ]
+          },
+          {
+            "id": "native-post-endpoint",
+            "path": [
+              "responses",
+              0,
+              "json",
+              "endpoints",
+              {
+                "field": "method",
+                "equals": "POST"
+              },
+              "path"
+            ]
+          },
+          {
+            "id": "ordered-tools",
+            "path": [
+              "responses",
+              0,
+              "json",
+              "tools",
+              "*"
+            ]
+          },
+          {
+            "id": "first-endpoint",
+            "path": [
+              "responses",
+              0,
+              "json",
+              "endpoints",
+              0,
+              "path"
+            ]
+          },
+          {
+            "id": "missing-field",
+            "path": [
+              "responses",
+              0,
+              "json",
+              "notPresent"
+            ]
+          }
+        ]
+      },
+      "output": {
+        "exception": null,
+        "sourceReads": [],
+        "merchant": {
+          "calls": 0,
+          "sameRequest": null,
+          "sameResponse": null,
+          "bodyUnusedAtBinding": null,
+          "url": null,
+          "headers": [],
+          "bodyBase64": null
+        },
+        "clockCalls": [],
+        "events": [],
+        "observations": [
+          {
+            "id": "canonical-origin",
+            "values": [
+              "https://bazaar.561.group"
+            ]
+          },
+          {
+            "id": "native-post-endpoint",
+            "values": [
+              "/mcp"
+            ]
+          },
+          {
+            "id": "ordered-tools",
+            "values": [
+              "search_offers",
+              "get_offer",
+              "compare_offers"
+            ]
+          },
+          {
+            "id": "first-endpoint",
+            "values": [
+              "/"
+            ]
+          },
+          {
+            "id": "missing-field",
+            "values": []
+          }
+        ]
+      }
     }
   ],
   "dependencies": {
@@ -1714,11 +2127,11 @@ none
 ]
 ```
 ## Traceability
-- `receiving-input-admission` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-target-boundary` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-source-clock` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-response-html` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-form-flow` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-merchant-identity` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-isolation-restoration` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-no-bypass` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-input-admission` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-target-boundary` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-source-clock` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-response-html` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-form-flow` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-merchant-identity` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-isolation-restoration` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-no-bypass` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
