@@ -12,11 +12,11 @@
       "provenance": {
         "type": "ArtifactFabricationSourceProvenance",
         "locator": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/content/text/documents/articles/specifications/2026-10-20-commerce-navigation-receiving-source-free-work-order.md",
-        "digest": "sha256:70f285f2aa2cda332e6502c842dec1325402eb45e3481eeb9e3c41b42d8a2452",
+        "digest": "sha256:745a6c9e6df97c8753b07891daec138bf5090017f8b6c1b253c80c1bfbd37a7a",
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
           "startLine": 1,
-          "endLine": 1722
+          "endLine": 1724
         }
       }
     },
@@ -43,8 +43,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 34,
-          "endLine": 34
+          "startLine": 36,
+          "endLine": 36
         },
         "groundedOn": []
       },
@@ -64,8 +64,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 35,
-          "endLine": 35
+          "startLine": 37,
+          "endLine": 37
         },
         "groundedOn": []
       },
@@ -85,8 +85,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 36,
-          "endLine": 36
+          "startLine": 38,
+          "endLine": 38
         },
         "groundedOn": []
       },
@@ -106,8 +106,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 38,
-          "endLine": 38
+          "startLine": 40,
+          "endLine": 40
         },
         "groundedOn": []
       }
@@ -117,7 +117,7 @@
         "type": "ArtifactFabricationRequirement",
         "version": 2,
         "id": "receiving-input-admission",
-        "statement": "Consume the exact scenario JSON schema and relational instrument contract; malformed scenario, invalid step pairing, duplicate binding names or fixture URLs, invalid clock or unbounded parser workload throws TypeError before any target effect. Target configuration stays deliberately unconstrained JSON for actual target refusal assays. Preserve input values.",
+        "statement": "Consume the exact scenario JSON schema and relational instrument contract; malformed scenario, invalid step pairing, duplicate binding names or fixture URLs, or invalid clock throws TypeError before any target effect. Otherwise schema-valid actual HTML exceeding an original parser bound throws instrument RangeError during response observation, never an input TypeError or target exception field. Target configuration stays deliberately unconstrained JSON for actual target refusal assays. Preserve input values.",
         "parameters": [],
         "claimIds": [],
         "sourceSpan": {
@@ -492,6 +492,24 @@
           "type": "ArtifactFabricationSourceSpan",
           "startLine": 29,
           "endLine": 29
+        }
+      },
+      {
+        "type": "ArtifactFabricationConstraint",
+        "version": 2,
+        "id": "native-receiving-question-resolution",
+        "kind": "standard",
+        "authority": "Original native compiler and receiving design producer",
+        "revision": "receiving-attempt-001",
+        "locator": "native-receipt:ni:///sha-256;xWVKjRU6yUUi8q9UGk7AbZCKp3a-SoVGIJ5uZVqIdf0",
+        "applicability": "Bounded correction of two receiving-contract contradictions, never target behavior",
+        "statement": "Original native clause derivation asked a genuine pre-source question, not a runtime failure. Scenario schema/relational admission errors are TypeError before target effects; an otherwise valid target HTML response exceeding original parser limits is an instrument RangeError propagated to the native receiver. A live sourceDate comes only from actual parsed body.sourceDate string; the three admitted runtime source fixtures contain no sourceDate, so expected coverage sourceDate is null. Their original bodyText bytes and SHA256 digests remain unchanged; no publisher date is invented from the pure observation fixture. Eight examples and all other schemas/expected fields and mandatory runtime obligations remain unchanged.",
+        "parameters": [],
+        "claimIds": [],
+        "sourceSpan": {
+          "type": "ArtifactFabricationSourceSpan",
+          "startLine": 31,
+          "endLine": 31
         }
       }
     ],
@@ -1698,7 +1716,7 @@
                           "url": "https://market.561.group/v1/catalog",
                           "status": "current",
                           "observedAt": "2026-10-20T23:00:00.000Z",
-                          "sourceDate": "publisher edition seven",
+                          "sourceDate": null,
                           "digest": "sha256:43e16f0c9a2434c7e28fc32c83948c1714dcb1218fa468f08eca268a007f9953",
                           "reason": null
                         }
@@ -1893,7 +1911,7 @@
                           "url": "https://market.561.group/v1/catalog",
                           "status": "current",
                           "observedAt": "2026-10-20T23:00:10.000Z",
-                          "sourceDate": "publisher edition seven",
+                          "sourceDate": null,
                           "digest": "sha256:43e16f0c9a2434c7e28fc32c83948c1714dcb1218fa468f08eca268a007f9953",
                           "reason": null
                         }
@@ -2088,7 +2106,7 @@
                           "url": "https://market.561.group/v1/catalog",
                           "status": "refused",
                           "observedAt": "2026-10-20T23:00:00.000Z",
-                          "sourceDate": "publisher edition seven",
+                          "sourceDate": null,
                           "digest": "sha256:43e16f0c9a2434c7e28fc32c83948c1714dcb1218fa468f08eca268a007f9953",
                           "reason": "observation-from-future"
                         }
@@ -2161,8 +2179,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 41,
-          "endLine": 1700
+          "startLine": 43,
+          "endLine": 1702
         }
       }
     ],
@@ -2179,8 +2197,8 @@
         ],
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 1702,
-          "endLine": 1713
+          "startLine": 1704,
+          "endLine": 1715
         }
       }
     ],
@@ -2195,6 +2213,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2223,6 +2242,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2251,6 +2271,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2279,6 +2300,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2307,6 +2329,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2335,6 +2358,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2363,6 +2387,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2391,6 +2416,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2410,13 +2436,13 @@
         ]
       }
     ],
-    "specificationDigest": "ni:///sha-256;yf0c1rgM5PPutS0S9mnsa7XuThF5TIB3o-dRnoi3pA8"
+    "specificationDigest": "ni:///sha-256;1TCH4Q-iZVdxbcv6GBKzQADRm7gAdN5Wzr_cpv_7eZM"
   },
   "plan": {
     "type": "ArtifactFabricationRealizationPlan",
     "version": 1,
     "artifactId": "commerce-navigation-independent-receiving-modules",
-    "specificationDigest": "ni:///sha-256;yf0c1rgM5PPutS0S9mnsa7XuThF5TIB3o-dRnoi3pA8",
+    "specificationDigest": "ni:///sha-256;1TCH4Q-iZVdxbcv6GBKzQADRm7gAdN5Wzr_cpv_7eZM",
     "projectionIds": [
       "jsnode-modules"
     ],
@@ -2434,6 +2460,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2462,6 +2489,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2490,6 +2518,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2518,6 +2547,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2546,6 +2576,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2574,6 +2605,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2602,6 +2634,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
@@ -2630,6 +2663,7 @@
           "instrument-global-parser-bounds",
           "measured-html-supplier",
           "measured-target-entry",
+          "native-receiving-question-resolution",
           "original-custody",
           "target-default-worker-single-configuration",
           "target-deterministic-projection-contract",
