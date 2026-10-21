@@ -1,12 +1,12 @@
 {
   "type": "JsnodeModuleFabricationPlan",
   "version": 1,
-  "workOrderSpecificationDigest": "ni:///sha-256;vJAL9wct9FAkSUU1N6hi7DDmOOf5JD-7UH0gual9L9A",
+  "workOrderSpecificationDigest": "ni:///sha-256;p8D3ZybdVSAl51ELEOtUv-fASdoBMd3LcP7toUl3wE8",
   "realizationPlan": {
     "type": "ArtifactFabricationRealizationPlan",
     "version": 1,
     "artifactId": "commerce-navigation-independent-receiving-modules",
-    "specificationDigest": "ni:///sha-256;vJAL9wct9FAkSUU1N6hi7DDmOOf5JD-7UH0gual9L9A",
+    "specificationDigest": "ni:///sha-256;p8D3ZybdVSAl51ELEOtUv-fASdoBMd3LcP7toUl3wE8",
     "projectionIds": [
       "jsnode-modules"
     ],
@@ -20,6 +20,7 @@
         "requirementId": "receiving-input-admission",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-binding-role-dispatch",
           "exact-fixture-request-body-ports",
           "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
@@ -53,6 +54,7 @@
         "requirementId": "receiving-target-boundary",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-binding-role-dispatch",
           "exact-fixture-request-body-ports",
           "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
@@ -86,6 +88,7 @@
         "requirementId": "receiving-source-clock",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-binding-role-dispatch",
           "exact-fixture-request-body-ports",
           "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
@@ -119,6 +122,7 @@
         "requirementId": "receiving-response-html",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-binding-role-dispatch",
           "exact-fixture-request-body-ports",
           "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
@@ -152,6 +156,7 @@
         "requirementId": "receiving-form-flow",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-binding-role-dispatch",
           "exact-fixture-request-body-ports",
           "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
@@ -185,6 +190,7 @@
         "requirementId": "receiving-merchant-identity",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-binding-role-dispatch",
           "exact-fixture-request-body-ports",
           "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
@@ -218,6 +224,7 @@
         "requirementId": "receiving-isolation-restoration",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-binding-role-dispatch",
           "exact-fixture-request-body-ports",
           "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
@@ -251,6 +258,7 @@
         "requirementId": "receiving-no-bypass",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-binding-role-dispatch",
           "exact-fixture-request-body-ports",
           "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",

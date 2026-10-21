@@ -38,6 +38,8 @@
 
 - `exact-fixture-request-body-ports` | Original native compiler and measuring-instrument design owner | receiving-attempt-005 | native-receipt:ni:///sha-256;pk8DycOd8riYQ9YtgJ6UanUMoyh6ZbcKegpfwpEMCWw | Complete existing source/merchant/request body constructor and observation semantics only | Apply one consistent body-descriptor law across all declared fixture/request ports. Source response statuses204/205/304 require bodyText empty and construct null body, as exact-fixture-stream-lifecycle already specifies. Merchant response statuses204/205/304 require bodyBase64 exactly empty string and construct one actual null-body Response; nonempty bodyBase64 for those statuses is constructor-invalid instrument TypeError before target effects, never silently discarded. For every other permitted merchant status, the standard Base64 string decodes to exact Uint8Array body, including an empty byte array for empty string. Merchant fixtures have no source stream, source-start/completion/abort or completeAt behavior; they still return the one preconstructed actual Response by identity. Incoming request descriptors use bodyBase64:null for an actual null body. GET/HEAD require bodyBase64:null; a string body for GET/HEAD, including an empty string, is constructor-invalid instrument TypeError before target effects. Other incoming methods use null or exact decoded string bytes as declared. Base64 input is canonical RFC4648 standard alphabet and padding, without whitespace or URL-safe spelling; empty string is admitted. Decode then standard re-encode must be identical to the declared string. Malformed or noncanonical encoding is instrument TypeError before target effects, not repaired. Native Request/Response/Header constructor-invalid values become the already-defined instrument TypeError, while actual HTML parser bound exhaustion remains RangeError. Read target returned Response clones exactly: null/empty actual body gives json:null, and the usual local navigator HEAD is empty because that target actually constructs null. Never suppress an actual supplied merchant Response body, headers or JSON solely due incoming HEAD method. Actual merchant forwarding must preserve the same Response object and its bytes; the instrument must not alter that behavior to enforce an assumed HTTP body. All nine admitted examples, schemas/dependencies, target/artifact/carrier/profile remain unchanged. Host fake clock stores epoch milliseconds. Parse explicit-timezone clock.start and fixture.completeAt into their exact instants; every returned/emitted timestamp uses captured OriginalDate(epochMilliseconds).toISOString(), hence UTC Z with millisecond precision. Applying completeAt assigns that exact instant, including backwards values, without extra clock-read events. Signed step is unchanged; no clamping or preservation of incidental offset spelling.
 
+- `exact-binding-role-dispatch` | Actual received native source interface and independent instrument source review | receiving-native-006-review | source-sha256:f20cd7b3e8be752d438fde14a9ae8dc3b189fefea9771db98679c021bc12c837 | Distinguish configured fixed source calls from original merchant forwarding without target replacement | A service binding name is an address, not an instrument role. In particular actual Bazaar uses binding MERCHANT for the original fixed x402 catalog GET, while actual Market uses MERCHANT for untouched original incoming-request forwarding. The receiving host must distinguish those calls instead of sending every MERCHANT call to merchantResponse. For each available named binding, apply this deterministic precedence: if the name is MERCHANT and the binding argument is the exact current incoming target Request object, invoke the original merchant fixture and capture original Request/Response identity; otherwise if the argument is a Fetch Request and a host-configured source descriptor has both binding equal to this name and url equal to request.url, invoke the source-fixture hook on that same Request; otherwise a MERCHANT call invokes the merchant fixture and records sameRequest:false as applicable; every other unmatched named-binding call is an instrument TypeError under exact-instrument-error-origin. In source mode record sourceReads/source-start/completion/abort and return the exact URL-keyed source fixture; do not increment merchant.calls, set merchant identity fields or use merchantResponse. The fixed source match does not depend on whether the binding name is SHOP, MERCHANT, BAZAAR or another host-supplied name. Unbound fetchImpl is always a source-fixture hook. Source method/manual-redirect/signal/headers are measured from the actual same Request and never repaired. Host descriptors for matching are read only from the exact scenario factory configuration object, or from a JSON object parsed solely for measurement from the exact default hostConfiguration string; absent/malformed/non-object host data supplies no descriptors. This parsing never replaces, admits, repairs or changes the configuration passed to the actual target and never uses public guest query data. No target URL router, commerce mapper or source reader is implemented in the instrument. Exact current incoming identity takes precedence even if an original forwarded URL equals a configured source URL. Remaining cloned/non-identical MERCHANT forwarding is still measured as identity failure unless it is an actual configured fixed-source request under the stated match. Validate neither fixture coverage nor target routing before calls: actual unknown source fixture requests retain the existing first-instrument-failure law; metadata/configuration/origin refusals can correctly perform no reads. The added admitted Bazaar binding example preserves the same original source row, bytes/digest, source request and projection while merchant remains untouched. All previous nine examples and operation schemas/dependencies remain unchanged. This closes an ambiguous receiving-host collision; it does not change the target runtime, production configuration, immutable artifact, carrier dependency graph or trusted isolation policy. Mandatory runtime receiving must exercise actual production SHOP/MERCHANT/BAZAAR names as well as generic named-source coverage.
+
 ## Open questions
 none
 ## Claims
@@ -2111,6 +2113,204 @@ none
           }
         ]
       }
+    },
+    {
+      "name": "bazaar-fixed-source-get-through-merchant-binding-is-source-read",
+      "operation": "run-commerce-receiving-case",
+      "input": {
+        "adapter": "factory",
+        "configuration": {
+          "role": "bazaar",
+          "origin": "https://bazaar.561.group",
+          "title": "Receiving fixture",
+          "revision": "receiving-1",
+          "sources": [
+            {
+              "id": "x",
+              "kind": "x402-catalog",
+              "url": "https://market.561.group/v1/catalog",
+              "publisher": "Publisher",
+              "consent": {
+                "status": "house-publication",
+                "evidence": "grant:fixture",
+                "revision": "grant-1",
+                "expiresAt": null
+              },
+              "maxAgeSeconds": 300,
+              "maxBytes": 1024,
+              "timeoutMs": 1000,
+              "binding": "MERCHANT"
+            }
+          ]
+        },
+        "hostConfiguration": null,
+        "bindings": [
+          "MERCHANT"
+        ],
+        "clock": {
+          "start": "2026-10-20T23:00:00.000Z",
+          "stepMilliseconds": 0
+        },
+        "sourceFixtures": [
+          {
+            "url": "https://market.561.group/v1/catalog",
+            "behavior": "response",
+            "status": 200,
+            "headers": [
+              [
+                "content-type",
+                "application/json"
+              ]
+            ],
+            "bodyText": "{\"settlement\":{\"scheme\":\"exact\",\"asset\":\"asset\",\"network\":\"network\"},\"offers\":[{\"sku\":\"one\",\"name\":\"Original\",\"method\":\"GET\",\"url\":\"https://127.0.0.1/private\",\"amountAtomic\":\"01\",\"keywords\":[\"Needle\"],\"price\":\"$1\"},{\"listed\":false}]}",
+            "completeAt": null
+          }
+        ],
+        "merchantResponse": {
+          "status": 202,
+          "headers": [
+            [
+              "content-type",
+              "application/octet-stream"
+            ],
+            [
+              "x-original-signature",
+              "signed-fixture"
+            ]
+          ],
+          "bodyBase64": "AP9B"
+        },
+        "steps": [
+          {
+            "kind": "request",
+            "request": {
+              "url": "https://bazaar.561.group/v1/discovery/search?q=%20%20NEEDLE%20%20&source=x",
+              "method": "GET",
+              "headers": [],
+              "bodyBase64": null
+            },
+            "responseIndex": null,
+            "actionPath": null,
+            "values": []
+          }
+        ],
+        "textNeedles": []
+      },
+      "output": {
+        "exception": null,
+        "responses": [
+          {
+            "status": 200,
+            "headers": [
+              [
+                "cache-control",
+                "no-store"
+              ],
+              [
+                "content-type",
+                "application/json"
+              ]
+            ],
+            "json": {
+              "role": "bazaar",
+              "origin": "https://bazaar.561.group",
+              "revision": "receiving-1",
+              "coverage": [
+                {
+                  "sourceId": "x",
+                  "url": "https://market.561.group/v1/catalog",
+                  "status": "current",
+                  "observedAt": "2026-10-20T23:00:00.000Z",
+                  "sourceDate": null,
+                  "digest": "sha256:43e16f0c9a2434c7e28fc32c83948c1714dcb1218fa468f08eca268a007f9953",
+                  "reason": null
+                }
+              ],
+              "items": [
+                {
+                  "sourceId": "x",
+                  "id": "one",
+                  "publisher": "Publisher",
+                  "seller": null,
+                  "title": "Original",
+                  "description": "",
+                  "url": null,
+                  "protocol": "x402",
+                  "status": "live",
+                  "edition": null,
+                  "price": null,
+                  "qualification": "source-listed",
+                  "original": {
+                    "sku": "one",
+                    "name": "Original",
+                    "method": "GET",
+                    "url": "https://127.0.0.1/private",
+                    "amountAtomic": "01",
+                    "keywords": [
+                      "Needle"
+                    ],
+                    "price": "$1"
+                  }
+                }
+              ],
+              "comparison": null,
+              "venues": [],
+              "limitations": [
+                "Coverage is limited to the configured original sources.",
+                "Independent external Shop consent, qualified selection and completed commerce are not established by this projection."
+              ]
+            },
+            "textChecks": [],
+            "anchors": [],
+            "forms": [],
+            "requestUrl": "https://bazaar.561.group/v1/discovery/search?q=%20%20NEEDLE%20%20&source=x"
+          }
+        ],
+        "sourceReads": [
+          {
+            "url": "https://market.561.group/v1/catalog",
+            "method": "GET",
+            "headers": [],
+            "redirect": "manual",
+            "signalPresent": true
+          }
+        ],
+        "merchant": {
+          "calls": 0,
+          "sameRequest": null,
+          "sameResponse": null,
+          "bodyUnusedAtBinding": null,
+          "url": null,
+          "headers": [],
+          "bodyBase64": null
+        },
+        "clockCalls": [
+          "2026-10-20T23:00:00.000Z",
+          "2026-10-20T23:00:00.000Z"
+        ],
+        "events": [
+          {
+            "kind": "source-start",
+            "url": "https://market.561.group/v1/catalog",
+            "at": "2026-10-20T23:00:00.000Z"
+          },
+          {
+            "kind": "source-complete",
+            "url": "https://market.561.group/v1/catalog",
+            "at": "2026-10-20T23:00:00.000Z"
+          },
+          {
+            "kind": "clock-read",
+            "url": null,
+            "at": "2026-10-20T23:00:00.000Z"
+          },
+          {
+            "kind": "clock-read",
+            "url": null,
+            "at": "2026-10-20T23:00:00.000Z"
+          }
+        ]
+      }
     }
   ],
   "dependencies": {
@@ -2133,11 +2333,11 @@ none
 ]
 ```
 ## Traceability
-- `receiving-input-admission` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-target-boundary` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-source-clock` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-response-html` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-form-flow` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-merchant-identity` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-isolation-restoration` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
-- `receiving-no-bypass` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-input-admission` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-binding-role-dispatch`, `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-target-boundary` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-binding-role-dispatch`, `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-source-clock` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-binding-role-dispatch`, `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-response-html` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-binding-role-dispatch`, `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-form-flow` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-binding-role-dispatch`, `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-merchant-identity` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-binding-role-dispatch`, `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-isolation-restoration` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-binding-role-dispatch`, `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
+- `receiving-no-bypass` -> projection `jsnode-modules`; acceptance `native-instrument-assays`; constraints `exact-binding-role-dispatch`, `exact-fixture-request-body-ports`, `exact-fixture-stream-lifecycle`, `exact-instrument-error-origin`, `exact-observation-selection`, `native-receiving-question-resolution`, `measured-target-entry`, `target-exact-mcp-supplier-boundary`, `instrument-global-parser-bounds`, `original-custody`, `exact-instrument-contract`, `complete-target-behavior`, `measured-html-supplier`, `target-host-navigation-source-scope`, `target-native-mcp-domain-selected-correction`, `target-deterministic-projection-contract`, `target-default-worker-single-configuration`, `target-optional-source-normalization`, `target-exact-reader-clock-ports`, `target-pure-empty-selection-intersections`, `target-measured-tufte-query-facet`
