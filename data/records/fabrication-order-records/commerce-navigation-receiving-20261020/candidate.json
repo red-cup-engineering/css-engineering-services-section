@@ -11,11 +11,11 @@
     "provenance": {
       "type": "ArtifactFabricationSourceProvenance",
       "locator": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/content/text/documents/articles/specifications/2026-10-20-commerce-navigation-receiving-source-free-work-order.md",
-      "digest": "sha256:032df90bad16cea3e15b073aa8bfbd98bc44d2ac5c6ac13cfe1edd29048c20f8",
+      "digest": "sha256:8deee2b3aeca263c1a70ae0b1796b56c477510e9599123858a14e2090307ae72",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 1,
-        "endLine": 2343
+        "endLine": 2384
       }
     }
   },
@@ -36,8 +36,8 @@
       "quantity": null,
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
-        "startLine": 46,
-        "endLine": 46
+        "startLine": 48,
+        "endLine": 48
       },
       "basis": {
         "type": "ArtifactFabricationMeasuredBasis",
@@ -56,8 +56,8 @@
       "quantity": null,
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
-        "startLine": 47,
-        "endLine": 47
+        "startLine": 49,
+        "endLine": 49
       },
       "basis": {
         "type": "ArtifactFabricationMeasuredBasis",
@@ -76,8 +76,8 @@
       "quantity": null,
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
-        "startLine": 48,
-        "endLine": 48
+        "startLine": 50,
+        "endLine": 50
       },
       "basis": {
         "type": "ArtifactFabricationMeasuredBasis",
@@ -96,8 +96,8 @@
       "quantity": null,
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
-        "startLine": 50,
-        "endLine": 50
+        "startLine": 52,
+        "endLine": 52
       },
       "basis": {
         "type": "ArtifactFabricationMeasuredBasis",
@@ -596,6 +596,24 @@
         "startLine": 41,
         "endLine": 41
       }
+    },
+    {
+      "type": "ArtifactFabricationConstraint",
+      "version": 2,
+      "id": "exact-observation-only-mode",
+      "kind": "standard",
+      "authority": "Original native compiler and independently received measuring-output design",
+      "revision": "receiving-attempt-007",
+      "locator": "native-receipt:ni:///sha-256;SyPYbytdAdnc_oBJRs9tfCx-i_JotEVBiyCSamBhTw8",
+      "applicability": "Select meaningful actual concurrent-source outcomes without asserting incidental trace interleavings",
+      "statement": "Optional observationOnly is a measuring-output mode, never target behavior or scheduling. Absent or false preserves exactly all prior input behavior and full/selected output shapes. True requires observe present; true without observe, non-boolean values or other malformed mode input is instrument TypeError before target effects. Always perform the complete normal actual target execution, concurrent source reads, response cloning, full native HTML parsing, real form submission, first-instrument-failure propagation, source/merchant identity measurement, clock calls and chronological trace capture before selecting output. With observe present and observationOnly true, return exactly {exception,observations}: the same actual target exception field and selector-order list of actual snapshot {id,values}; no other top-level fields. The full snapshot remains the input to all selectors, so sourceReads, merchant, clockCalls, events or complete response records are still observable by explicit path. Do not sort events, reorder source/target execution, serialize concurrent sources, inject deterministic completion, normalize away actual chronology, clamp clock, recompute target behavior or return expected values/verdicts. A partial-availability or multiple-publisher clause may select actual ordered coverage/source identities, resulting items/venues, status/reason and other determined data using observationOnly, without asserting an invented completion order. Such cases must select meaningful successful/refused source coverage and identities, not merely exception:null or an empty list. Full output mode retains exact real chronological effects for independent receiving; deterministic single-source advancing/backward-clock assays retain full traces. All existing runtime duties and actual production binding cases remain mandatory. Ten existing examples and every previous input/output schema remain unchanged except the additive optional input and third output union branch; target artifact, carrier graph and host policy are unchanged. This closes the native exact-output oracle gap identified by receiving007; no supplier scheduling guarantee is fabricated.",
+      "parameters": [],
+      "claimIds": [],
+      "sourceSpan": {
+        "type": "ArtifactFabricationSourceSpan",
+        "startLine": 43,
+        "endLine": 43
+      }
     }
   ],
   "projections": [
@@ -942,6 +960,9 @@
                       }
                     }
                   }
+                },
+                "observationOnly": {
+                  "type": "boolean"
                 }
               }
             },
@@ -1452,6 +1473,42 @@
                           }
                         }
                       }
+                    },
+                    "observations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "id",
+                          "values"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "values": {
+                            "type": "array",
+                            "items": {}
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "exception",
+                    "observations"
+                  ],
+                  "properties": {
+                    "exception": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
                     },
                     "observations": {
                       "type": "array",
@@ -2873,8 +2930,8 @@
       },
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
-        "startLine": 53,
-        "endLine": 2321
+        "startLine": 55,
+        "endLine": 2362
       }
     }
   ],
@@ -2891,8 +2948,8 @@
       "statement": "Native test-before-source assays exercise the registered receiving operation and complete source-free instrument contracts against the exact selected published target dependency in the original trusted isolated host. Retain every original runtime scenario including valid, alternate, refusal, advancing/backward clocks, actual native human forms, original MCP envelopes and original merchant Request/Response identity. Native success is test-driver/source candidate evidence; independent root receives complete results and live delivery remains separately mandatory.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
-        "startLine": 2323,
-        "endLine": 2334
+        "startLine": 2364,
+        "endLine": 2375
       }
     }
   ],
@@ -2908,6 +2965,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-observation-only-mode",
         "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
@@ -2942,6 +3000,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-observation-only-mode",
         "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
@@ -2976,6 +3035,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-observation-only-mode",
         "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
@@ -3010,6 +3070,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-observation-only-mode",
         "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
@@ -3044,6 +3105,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-observation-only-mode",
         "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
@@ -3078,6 +3140,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-observation-only-mode",
         "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
@@ -3112,6 +3175,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-observation-only-mode",
         "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
@@ -3146,6 +3210,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-observation-only-mode",
         "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
