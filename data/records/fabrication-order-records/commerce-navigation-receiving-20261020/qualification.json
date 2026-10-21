@@ -12,11 +12,11 @@
       "provenance": {
         "type": "ArtifactFabricationSourceProvenance",
         "locator": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/content/text/documents/articles/specifications/2026-10-20-commerce-navigation-receiving-source-free-work-order.md",
-        "digest": "sha256:311133a58782e577063f71768305c53b31c2f9013db9876a6a84b0f0e5464774",
+        "digest": "sha256:4fe1effa3c3c5237d23fdd5e9625f6ab7009fb219456091dd9b8e839e219962c",
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
           "startLine": 1,
-          "endLine": 2137
+          "endLine": 2139
         }
       }
     },
@@ -43,8 +43,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 38,
-          "endLine": 38
+          "startLine": 40,
+          "endLine": 40
         },
         "groundedOn": []
       },
@@ -64,8 +64,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 39,
-          "endLine": 39
+          "startLine": 41,
+          "endLine": 41
         },
         "groundedOn": []
       },
@@ -85,8 +85,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 40,
-          "endLine": 40
+          "startLine": 42,
+          "endLine": 42
         },
         "groundedOn": []
       },
@@ -106,8 +106,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 42,
-          "endLine": 42
+          "startLine": 44,
+          "endLine": 44
         },
         "groundedOn": []
       }
@@ -528,6 +528,24 @@
           "type": "ArtifactFabricationSourceSpan",
           "startLine": 33,
           "endLine": 33
+        }
+      },
+      {
+        "type": "ArtifactFabricationConstraint",
+        "version": 2,
+        "id": "exact-instrument-error-origin",
+        "kind": "standard",
+        "authority": "Original native compiler and independently received instrument design",
+        "revision": "receiving-attempt-003",
+        "locator": "native-receipt:ni:///sha-256;1UE-_AsCPR5zHo2fza_wHcSViTS1IywDqw-yyAxV1e4",
+        "applicability": "Exact measuring failure names and retention across target catch boundaries only",
+        "statement": "Instrument schema/relational admission failures are TypeError before target effects. Every measuring-instrument failure is TypeError, including constructor-invalid source fixtures or request descriptors; invalid response index or action; missing or ambiguous usable native form; invalid successful-control mapping or unavailable option; missing usable submitter; unknown fixed source fixture URL; malformed selectors or duplicate selector IDs; a source/binding hook receiving anything other than the required constructed Fetch Request; and every otherwise unspecified instrument failure. A missing selector path remains normal values:[] under exact-observation-selection. The sole error-name exception is actual original HTML parser bound exhaustion, which propagates RangeError. These errors are thrown to the native receiver, never recorded as target exception and never converted into ordinary source-unavailable output. Original parser node/depth/attribute bound failure remains the original instrument RangeError. Keep one host-local firstInstrumentFailure initially null. Before throwing an instrument failure from any callback, retain that exact error object if none was retained. If the target catches a fixture-hook error internally, immediately after its awaited call settles check and rethrow the retained first instrument failure; also check before recording a target-thrown exception or returning either observation mode. This retention/rethrow is required: the target source reader deliberately catches fetch failures, and cannot erase instrument invalidity. The finally restoration of all fake globals runs before propagation. Ordinary target construction/request exceptions with no retained instrument failure remain the original observed exception field and preserve completed observations. Intentional scenario source behavior network-error or until-aborted is NOT instrument failure: it is passed through the actual target source reader and observed as its genuine source refusal; never put these deliberate fixture failures in firstInstrumentFailure. The actual target determines public HTTP/MCP source codes. Nothing here repairs target state, changes target source/refusal precedence, conceals an effect or creates a new production error API. All nine admitted example inputs/outputs and operation schemas/dependencies remain unchanged. Input/schema/relational instrument errors knowable solely from the scenario refuse before target effects. Runtime measuring failures such as an actual unexpected source Request or unusable returned form may arise after real target effects; retain and propagate their instrument TypeError after the target call settles. Do not universally reject missing source fixture coverage at input admission: legitimate target configuration, origin or metadata refusals may perform no source read. Only an actual attempted unregistered source URL establishes that runtime instrument failure. The original admitted example dialect requires name/operation/input/output and has no throws field; native derived clause data separately admits throws. Therefore the unknown-fixture/swallowed-fetch regression is required as native clause data expecting throws TypeError, not a fabricated successful output example. Nine admitted examples remain unchanged.",
+        "parameters": [],
+        "claimIds": [],
+        "sourceSpan": {
+          "type": "ArtifactFabricationSourceSpan",
+          "startLine": 35,
+          "endLine": 35
         }
       }
     ],
@@ -2608,8 +2626,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 45,
-          "endLine": 2115
+          "startLine": 47,
+          "endLine": 2117
         }
       }
     ],
@@ -2626,8 +2644,8 @@
         ],
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 2117,
-          "endLine": 2128
+          "startLine": 2119,
+          "endLine": 2130
         }
       }
     ],
@@ -2639,6 +2657,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -2669,6 +2688,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -2699,6 +2719,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -2729,6 +2750,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -2759,6 +2781,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -2789,6 +2812,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -2819,6 +2843,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -2849,6 +2874,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -2873,13 +2899,13 @@
         ]
       }
     ],
-    "specificationDigest": "ni:///sha-256;ApcOIXg5ZOYtYDztzyy7zecEhVx2yPMh1fx9ZseXPf0"
+    "specificationDigest": "ni:///sha-256;RYBY3w3tXug3nDxTKC6Lnmx7WH3DrXu8hzs642LicQU"
   },
   "plan": {
     "type": "ArtifactFabricationRealizationPlan",
     "version": 1,
     "artifactId": "commerce-navigation-independent-receiving-modules",
-    "specificationDigest": "ni:///sha-256;ApcOIXg5ZOYtYDztzyy7zecEhVx2yPMh1fx9ZseXPf0",
+    "specificationDigest": "ni:///sha-256;RYBY3w3tXug3nDxTKC6Lnmx7WH3DrXu8hzs642LicQU",
     "projectionIds": [
       "jsnode-modules"
     ],
@@ -2894,6 +2920,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -2924,6 +2951,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -2954,6 +2982,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -2984,6 +3013,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -3014,6 +3044,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -3044,6 +3075,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -3074,6 +3106,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
@@ -3104,6 +3137,7 @@
         "constraintIds": [
           "complete-target-behavior",
           "exact-instrument-contract",
+          "exact-instrument-error-origin",
           "exact-observation-selection",
           "instrument-global-parser-bounds",
           "measured-html-supplier",
