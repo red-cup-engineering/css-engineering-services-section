@@ -1,6 +1,6 @@
 # Commerce navigation independent receiving module — 2026-10-20
 
-Status: source-owned receiving-design proposal; executable work order awaits the actual immutable candidate artifact and its observed factory/default-export interfaces. No fabricated dependency receipt or native qualification is asserted. Original production obligation remains Market #19 / Coesite #5 and Group market-bazaar-shop-agentic-composable-enterprise. Production source-free order: the attempt-002 refinement in 2026-10-20-market-bazaar-source-free-work-order.md, SHA256 33028d1f1f634f4a5c08fbf9f09ef8d391c9a6045f16c7812cf6561f34dbb213, qualified specification ni:///sha-256;_0tFakkcHILoTVk7dYRJcq1HoHKDKRx7bchNsaP1m3Q. The preceding accepted source is Engineering main 625f615598d3088a695bff6c82d958be53fc40de; this revision awaits independent source receiving. Root independently receives runtime effects; pure projection tests alone do not satisfy this boundary.
+Status: source-owned receiving-design proposal; executable work order awaits the actual immutable candidate artifact and its observed factory/default-export interfaces. No fabricated dependency receipt or native qualification is asserted. Original production obligation remains Market #19 / Coesite #5 and Group market-bazaar-shop-agentic-composable-enterprise. Production source-free order: the attempt-002 refinement in 2026-10-20-market-bazaar-source-free-work-order.md, SHA256 e7618c12a2361208cc15f250e03a2979359f53c7f1d7ff53667ca42742b4e855, qualified specification ni:///sha-256;eT8tygxQ_5cQoLdkBiCL7DOymrKu0fSnNYoNPGwk0QM. The preceding accepted source is Engineering main 625f615598d3088a695bff6c82d958be53fc40de; this revision awaits independent source receiving. Root independently receives runtime effects; pure projection tests alone do not satisfy this boundary.
 
 ## Artifact custody and lawful realization
 
@@ -36,3 +36,7 @@ Derive the receiving-driver clause cases before its source using the native sepa
 ## Remaining factual inputs for the final work order
 
 The exact candidate package name/version/registry tarball/integrity; its actual commerce-navigation export and factory clock/default Worker signatures; the qualified host dependency-entry capture and native test-driver materialization custody. These are concrete pending supplier observations, not permission to abandon the production obligation. All other behavioral cases above are determined and retained for final native order assembly immediately after the original candidate exists.
+
+## Source-reader clock ordering boundary
+
+The finalized production port now() returns an explicit-timezone ISO string. Add an advancing fake-clock scenario: source completion instants exceed request-entry time; final projection instant is taken after all reads settle, so fresh complete sources stay current. Independently retain a genuine future-clock refusal, no clamping, fixed single-Request fetchImpl shape, named-binding missing refusal, native MCP encoded domain error versus navigation HTTP status distinction, and default host-envelope refusal. Candidate imports remain pending genuine immutable artifact.
