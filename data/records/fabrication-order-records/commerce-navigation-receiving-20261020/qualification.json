@@ -12,11 +12,11 @@
       "provenance": {
         "type": "ArtifactFabricationSourceProvenance",
         "locator": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/content/text/documents/articles/specifications/2026-10-20-commerce-navigation-receiving-source-free-work-order.md",
-        "digest": "sha256:4fe1effa3c3c5237d23fdd5e9625f6ab7009fb219456091dd9b8e839e219962c",
+        "digest": "sha256:0b350dcdec30d2e74513ce161f508e2773b7934c8f4b50c083d406f2d154e8cc",
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
           "startLine": 1,
-          "endLine": 2139
+          "endLine": 2141
         }
       }
     },
@@ -43,8 +43,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 40,
-          "endLine": 40
+          "startLine": 42,
+          "endLine": 42
         },
         "groundedOn": []
       },
@@ -64,8 +64,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 41,
-          "endLine": 41
+          "startLine": 43,
+          "endLine": 43
         },
         "groundedOn": []
       },
@@ -85,8 +85,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 42,
-          "endLine": 42
+          "startLine": 44,
+          "endLine": 44
         },
         "groundedOn": []
       },
@@ -106,8 +106,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 44,
-          "endLine": 44
+          "startLine": 46,
+          "endLine": 46
         },
         "groundedOn": []
       }
@@ -546,6 +546,24 @@
           "type": "ArtifactFabricationSourceSpan",
           "startLine": 35,
           "endLine": 35
+        }
+      },
+      {
+        "type": "ArtifactFabricationConstraint",
+        "version": 2,
+        "id": "exact-fixture-stream-lifecycle",
+        "kind": "standard",
+        "authority": "Original native compiler and measuring-instrument design owner",
+        "revision": "receiving-attempt-004",
+        "locator": "native-receipt:ni:///sha-256;7JcAZBbuOntOtgCCqO5Ed2Igip00RcHpuJsCS2qT1wk",
+        "applicability": "Determined source fixture streaming, cancellation and clock effects only",
+        "statement": "Response fixture bodies are lazy consumer-driven standard Fetch ReadableStreams with queue strategy highWaterMark zero, never eager enqueue/close in start or fetch construction. Source-start is recorded when the fixture hook receives the actual Request. For a response with a permitted body, the first actual consumer pull yields exactly one Uint8Array containing all UTF-8 bodyText bytes; if there are no bytes, that first pull instead performs EOF completion. After a nonempty chunk, the next actual consumer pull performs EOF completion. EOF completion closes the stream, applies non-null completeAt to host clock, then records exactly one source-complete at that clock, in that order. Do not complete at response creation, enqueue, header inspection, consumer cancellation, releaseLock, or queued producer work. Thus response refusal before body consumption, including redirect/payment/MIME/HTTP refusal, has no source-complete and never applies completeAt. Body cancel alone is inert for source-complete/source-abort/clock; it permanently prevents later EOF completion. A target byte-limit abort after the sole chunk also has no source-complete and leaves completeAt unapplied. Request.signal abort records exactly one source-abort at current host time, cancels further fixture delivery and prevents EOF completion; repeated cancellation/abort does not duplicate it. A cancellation without signal abort emits no source-abort. Deliberate network-error rejects before a Response and never emits source-complete or applies completeAt. Deliberate until-aborted never supplies a Response or body, records its single source-abort only when the actual signal aborts, then rejects as abort stimulus without setting instrumentFailure; completeAt is unapplied. Native body-forbidden response statuses204/205/304 use actual null body, require empty bodyText at instrument admission, and never emit source-complete or apply completeAt; a nonempty bodyText for such a status is constructor-invalid fixture TypeError. These constants describe the existing Fetch Response constructor, not target status policy. Complete consumed invalid JSON or invalid payload DOES reach EOF, so source-complete/time occur before the actual target parsing refusal. Source refusal codes, timestamp-at-read-finish and projection timing remain solely the original target's behavior. Clock-read events are still exclusively real target now calls (or default Date without arguments), with the existing signed step; stream lifecycle uses host clock without an extra clock-read. All nine existing example inputs/outputs, schemas/dependencies, target artifact, installed carrier and trusted profile remain unchanged.",
+        "parameters": [],
+        "claimIds": [],
+        "sourceSpan": {
+          "type": "ArtifactFabricationSourceSpan",
+          "startLine": 37,
+          "endLine": 37
         }
       }
     ],
@@ -2626,8 +2644,8 @@
         },
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 47,
-          "endLine": 2117
+          "startLine": 49,
+          "endLine": 2119
         }
       }
     ],
@@ -2644,8 +2662,8 @@
         ],
         "sourceSpan": {
           "type": "ArtifactFabricationSourceSpan",
-          "startLine": 2119,
-          "endLine": 2130
+          "startLine": 2121,
+          "endLine": 2132
         }
       }
     ],
@@ -2656,6 +2674,7 @@
         "requirementId": "receiving-input-admission",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -2687,6 +2706,7 @@
         "requirementId": "receiving-target-boundary",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -2718,6 +2738,7 @@
         "requirementId": "receiving-source-clock",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -2749,6 +2770,7 @@
         "requirementId": "receiving-response-html",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -2780,6 +2802,7 @@
         "requirementId": "receiving-form-flow",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -2811,6 +2834,7 @@
         "requirementId": "receiving-merchant-identity",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -2842,6 +2866,7 @@
         "requirementId": "receiving-isolation-restoration",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -2873,6 +2898,7 @@
         "requirementId": "receiving-no-bypass",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -2899,13 +2925,13 @@
         ]
       }
     ],
-    "specificationDigest": "ni:///sha-256;RYBY3w3tXug3nDxTKC6Lnmx7WH3DrXu8hzs642LicQU"
+    "specificationDigest": "ni:///sha-256;eUZlGlrjj313EtHDfuhv8wYFEDkxwFzomPpm9mz54WA"
   },
   "plan": {
     "type": "ArtifactFabricationRealizationPlan",
     "version": 1,
     "artifactId": "commerce-navigation-independent-receiving-modules",
-    "specificationDigest": "ni:///sha-256;RYBY3w3tXug3nDxTKC6Lnmx7WH3DrXu8hzs642LicQU",
+    "specificationDigest": "ni:///sha-256;eUZlGlrjj313EtHDfuhv8wYFEDkxwFzomPpm9mz54WA",
     "projectionIds": [
       "jsnode-modules"
     ],
@@ -2919,6 +2945,7 @@
         "requirementId": "receiving-input-admission",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -2950,6 +2977,7 @@
         "requirementId": "receiving-target-boundary",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -2981,6 +3009,7 @@
         "requirementId": "receiving-source-clock",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -3012,6 +3041,7 @@
         "requirementId": "receiving-response-html",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -3043,6 +3073,7 @@
         "requirementId": "receiving-form-flow",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -3074,6 +3105,7 @@
         "requirementId": "receiving-merchant-identity",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -3105,6 +3137,7 @@
         "requirementId": "receiving-isolation-restoration",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -3136,6 +3169,7 @@
         "requirementId": "receiving-no-bypass",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",

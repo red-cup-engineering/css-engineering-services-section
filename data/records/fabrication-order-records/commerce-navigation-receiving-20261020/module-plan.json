@@ -1,12 +1,12 @@
 {
   "type": "JsnodeModuleFabricationPlan",
   "version": 1,
-  "workOrderSpecificationDigest": "ni:///sha-256;RYBY3w3tXug3nDxTKC6Lnmx7WH3DrXu8hzs642LicQU",
+  "workOrderSpecificationDigest": "ni:///sha-256;eUZlGlrjj313EtHDfuhv8wYFEDkxwFzomPpm9mz54WA",
   "realizationPlan": {
     "type": "ArtifactFabricationRealizationPlan",
     "version": 1,
     "artifactId": "commerce-navigation-independent-receiving-modules",
-    "specificationDigest": "ni:///sha-256;RYBY3w3tXug3nDxTKC6Lnmx7WH3DrXu8hzs642LicQU",
+    "specificationDigest": "ni:///sha-256;eUZlGlrjj313EtHDfuhv8wYFEDkxwFzomPpm9mz54WA",
     "projectionIds": [
       "jsnode-modules"
     ],
@@ -20,6 +20,7 @@
         "requirementId": "receiving-input-admission",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -51,6 +52,7 @@
         "requirementId": "receiving-target-boundary",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -82,6 +84,7 @@
         "requirementId": "receiving-source-clock",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -113,6 +116,7 @@
         "requirementId": "receiving-response-html",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -144,6 +148,7 @@
         "requirementId": "receiving-form-flow",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -175,6 +180,7 @@
         "requirementId": "receiving-merchant-identity",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -206,6 +212,7 @@
         "requirementId": "receiving-isolation-restoration",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
@@ -237,6 +244,7 @@
         "requirementId": "receiving-no-bypass",
         "constraintIds": [
           "complete-target-behavior",
+          "exact-fixture-stream-lifecycle",
           "exact-instrument-contract",
           "exact-instrument-error-origin",
           "exact-observation-selection",
