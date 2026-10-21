@@ -31,7 +31,7 @@
 	url = https://github.com/red-cup-engineering/web-tufte-gui-services-section.git
 [submodule "hugo-publisher"]
 	path = services/website-system-engineering-services-section/services/hugo-engineering-services-section/apps/hugo-publisher
-	url = https://github.com/emsenn/hugo-theme.git
+	url = https://github.com/red-cup-engineering/hugo-publisher.git
 	branch = main
 [submodule "services/web-platform-services-section/services/web2-platform-services-section/services/neocities-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/neocities-services-section
