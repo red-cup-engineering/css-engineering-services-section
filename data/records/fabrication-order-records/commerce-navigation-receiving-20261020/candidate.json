@@ -11,11 +11,11 @@
     "provenance": {
       "type": "ArtifactFabricationSourceProvenance",
       "locator": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/content/text/documents/articles/specifications/2026-10-20-commerce-navigation-receiving-source-free-work-order.md",
-      "digest": "sha256:c3c51eaa4916786d5dbcd9049d67070382ac18fe10cdff96f831834f67247857",
+      "digest": "sha256:032df90bad16cea3e15b073aa8bfbd98bc44d2ac5c6ac13cfe1edd29048c20f8",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 1,
-        "endLine": 2143
+        "endLine": 2343
       }
     }
   },
@@ -36,8 +36,8 @@
       "quantity": null,
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
-        "startLine": 44,
-        "endLine": 44
+        "startLine": 46,
+        "endLine": 46
       },
       "basis": {
         "type": "ArtifactFabricationMeasuredBasis",
@@ -56,8 +56,8 @@
       "quantity": null,
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
-        "startLine": 45,
-        "endLine": 45
+        "startLine": 47,
+        "endLine": 47
       },
       "basis": {
         "type": "ArtifactFabricationMeasuredBasis",
@@ -76,8 +76,8 @@
       "quantity": null,
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
-        "startLine": 46,
-        "endLine": 46
+        "startLine": 48,
+        "endLine": 48
       },
       "basis": {
         "type": "ArtifactFabricationMeasuredBasis",
@@ -96,8 +96,8 @@
       "quantity": null,
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
-        "startLine": 48,
-        "endLine": 48
+        "startLine": 50,
+        "endLine": 50
       },
       "basis": {
         "type": "ArtifactFabricationMeasuredBasis",
@@ -577,6 +577,24 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 39,
         "endLine": 39
+      }
+    },
+    {
+      "type": "ArtifactFabricationConstraint",
+      "version": 2,
+      "id": "exact-binding-role-dispatch",
+      "kind": "standard",
+      "authority": "Actual received native source interface and independent instrument source review",
+      "revision": "receiving-native-006-review",
+      "locator": "source-sha256:f20cd7b3e8be752d438fde14a9ae8dc3b189fefea9771db98679c021bc12c837",
+      "applicability": "Distinguish configured fixed source calls from original merchant forwarding without target replacement",
+      "statement": "A service binding name is an address, not an instrument role. In particular actual Bazaar uses binding MERCHANT for the original fixed x402 catalog GET, while actual Market uses MERCHANT for untouched original incoming-request forwarding. The receiving host must distinguish those calls instead of sending every MERCHANT call to merchantResponse. For each available named binding, apply this deterministic precedence: if the name is MERCHANT and the binding argument is the exact current incoming target Request object, invoke the original merchant fixture and capture original Request/Response identity; otherwise if the argument is a Fetch Request and a host-configured source descriptor has both binding equal to this name and url equal to request.url, invoke the source-fixture hook on that same Request; otherwise a MERCHANT call invokes the merchant fixture and records sameRequest:false as applicable; every other unmatched named-binding call is an instrument TypeError under exact-instrument-error-origin. In source mode record sourceReads/source-start/completion/abort and return the exact URL-keyed source fixture; do not increment merchant.calls, set merchant identity fields or use merchantResponse. The fixed source match does not depend on whether the binding name is SHOP, MERCHANT, BAZAAR or another host-supplied name. Unbound fetchImpl is always a source-fixture hook. Source method/manual-redirect/signal/headers are measured from the actual same Request and never repaired. Host descriptors for matching are read only from the exact scenario factory configuration object, or from a JSON object parsed solely for measurement from the exact default hostConfiguration string; absent/malformed/non-object host data supplies no descriptors. This parsing never replaces, admits, repairs or changes the configuration passed to the actual target and never uses public guest query data. No target URL router, commerce mapper or source reader is implemented in the instrument. Exact current incoming identity takes precedence even if an original forwarded URL equals a configured source URL. Remaining cloned/non-identical MERCHANT forwarding is still measured as identity failure unless it is an actual configured fixed-source request under the stated match. Validate neither fixture coverage nor target routing before calls: actual unknown source fixture requests retain the existing first-instrument-failure law; metadata/configuration/origin refusals can correctly perform no reads. The added admitted Bazaar binding example preserves the same original source row, bytes/digest, source request and projection while merchant remains untouched. All previous nine examples and operation schemas/dependencies remain unchanged. This closes an ambiguous receiving-host collision; it does not change the target runtime, production configuration, immutable artifact, carrier dependency graph or trusted isolation policy. Mandatory runtime receiving must exercise actual production SHOP/MERCHANT/BAZAAR names as well as generic named-source coverage.",
+      "parameters": [],
+      "claimIds": [],
+      "sourceSpan": {
+        "type": "ArtifactFabricationSourceSpan",
+        "startLine": 41,
+        "endLine": 41
       }
     }
   ],
@@ -2648,6 +2666,204 @@
                 }
               ]
             }
+          },
+          {
+            "name": "bazaar-fixed-source-get-through-merchant-binding-is-source-read",
+            "operation": "run-commerce-receiving-case",
+            "input": {
+              "adapter": "factory",
+              "configuration": {
+                "role": "bazaar",
+                "origin": "https://bazaar.561.group",
+                "title": "Receiving fixture",
+                "revision": "receiving-1",
+                "sources": [
+                  {
+                    "id": "x",
+                    "kind": "x402-catalog",
+                    "url": "https://market.561.group/v1/catalog",
+                    "publisher": "Publisher",
+                    "consent": {
+                      "status": "house-publication",
+                      "evidence": "grant:fixture",
+                      "revision": "grant-1",
+                      "expiresAt": null
+                    },
+                    "maxAgeSeconds": 300,
+                    "maxBytes": 1024,
+                    "timeoutMs": 1000,
+                    "binding": "MERCHANT"
+                  }
+                ]
+              },
+              "hostConfiguration": null,
+              "bindings": [
+                "MERCHANT"
+              ],
+              "clock": {
+                "start": "2026-10-20T23:00:00.000Z",
+                "stepMilliseconds": 0
+              },
+              "sourceFixtures": [
+                {
+                  "url": "https://market.561.group/v1/catalog",
+                  "behavior": "response",
+                  "status": 200,
+                  "headers": [
+                    [
+                      "content-type",
+                      "application/json"
+                    ]
+                  ],
+                  "bodyText": "{\"settlement\":{\"scheme\":\"exact\",\"asset\":\"asset\",\"network\":\"network\"},\"offers\":[{\"sku\":\"one\",\"name\":\"Original\",\"method\":\"GET\",\"url\":\"https://127.0.0.1/private\",\"amountAtomic\":\"01\",\"keywords\":[\"Needle\"],\"price\":\"$1\"},{\"listed\":false}]}",
+                  "completeAt": null
+                }
+              ],
+              "merchantResponse": {
+                "status": 202,
+                "headers": [
+                  [
+                    "content-type",
+                    "application/octet-stream"
+                  ],
+                  [
+                    "x-original-signature",
+                    "signed-fixture"
+                  ]
+                ],
+                "bodyBase64": "AP9B"
+              },
+              "steps": [
+                {
+                  "kind": "request",
+                  "request": {
+                    "url": "https://bazaar.561.group/v1/discovery/search?q=%20%20NEEDLE%20%20&source=x",
+                    "method": "GET",
+                    "headers": [],
+                    "bodyBase64": null
+                  },
+                  "responseIndex": null,
+                  "actionPath": null,
+                  "values": []
+                }
+              ],
+              "textNeedles": []
+            },
+            "output": {
+              "exception": null,
+              "responses": [
+                {
+                  "status": 200,
+                  "headers": [
+                    [
+                      "cache-control",
+                      "no-store"
+                    ],
+                    [
+                      "content-type",
+                      "application/json"
+                    ]
+                  ],
+                  "json": {
+                    "role": "bazaar",
+                    "origin": "https://bazaar.561.group",
+                    "revision": "receiving-1",
+                    "coverage": [
+                      {
+                        "sourceId": "x",
+                        "url": "https://market.561.group/v1/catalog",
+                        "status": "current",
+                        "observedAt": "2026-10-20T23:00:00.000Z",
+                        "sourceDate": null,
+                        "digest": "sha256:43e16f0c9a2434c7e28fc32c83948c1714dcb1218fa468f08eca268a007f9953",
+                        "reason": null
+                      }
+                    ],
+                    "items": [
+                      {
+                        "sourceId": "x",
+                        "id": "one",
+                        "publisher": "Publisher",
+                        "seller": null,
+                        "title": "Original",
+                        "description": "",
+                        "url": null,
+                        "protocol": "x402",
+                        "status": "live",
+                        "edition": null,
+                        "price": null,
+                        "qualification": "source-listed",
+                        "original": {
+                          "sku": "one",
+                          "name": "Original",
+                          "method": "GET",
+                          "url": "https://127.0.0.1/private",
+                          "amountAtomic": "01",
+                          "keywords": [
+                            "Needle"
+                          ],
+                          "price": "$1"
+                        }
+                      }
+                    ],
+                    "comparison": null,
+                    "venues": [],
+                    "limitations": [
+                      "Coverage is limited to the configured original sources.",
+                      "Independent external Shop consent, qualified selection and completed commerce are not established by this projection."
+                    ]
+                  },
+                  "textChecks": [],
+                  "anchors": [],
+                  "forms": [],
+                  "requestUrl": "https://bazaar.561.group/v1/discovery/search?q=%20%20NEEDLE%20%20&source=x"
+                }
+              ],
+              "sourceReads": [
+                {
+                  "url": "https://market.561.group/v1/catalog",
+                  "method": "GET",
+                  "headers": [],
+                  "redirect": "manual",
+                  "signalPresent": true
+                }
+              ],
+              "merchant": {
+                "calls": 0,
+                "sameRequest": null,
+                "sameResponse": null,
+                "bodyUnusedAtBinding": null,
+                "url": null,
+                "headers": [],
+                "bodyBase64": null
+              },
+              "clockCalls": [
+                "2026-10-20T23:00:00.000Z",
+                "2026-10-20T23:00:00.000Z"
+              ],
+              "events": [
+                {
+                  "kind": "source-start",
+                  "url": "https://market.561.group/v1/catalog",
+                  "at": "2026-10-20T23:00:00.000Z"
+                },
+                {
+                  "kind": "source-complete",
+                  "url": "https://market.561.group/v1/catalog",
+                  "at": "2026-10-20T23:00:00.000Z"
+                },
+                {
+                  "kind": "clock-read",
+                  "url": null,
+                  "at": "2026-10-20T23:00:00.000Z"
+                },
+                {
+                  "kind": "clock-read",
+                  "url": null,
+                  "at": "2026-10-20T23:00:00.000Z"
+                }
+              ]
+            }
           }
         ],
         "dependencies": {
@@ -2657,8 +2873,8 @@
       },
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
-        "startLine": 51,
-        "endLine": 2121
+        "startLine": 53,
+        "endLine": 2321
       }
     }
   ],
@@ -2675,8 +2891,8 @@
       "statement": "Native test-before-source assays exercise the registered receiving operation and complete source-free instrument contracts against the exact selected published target dependency in the original trusted isolated host. Retain every original runtime scenario including valid, alternate, refusal, advancing/backward clocks, actual native human forms, original MCP envelopes and original merchant Request/Response identity. Native success is test-driver/source candidate evidence; independent root receives complete results and live delivery remains separately mandatory.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
-        "startLine": 2123,
-        "endLine": 2134
+        "startLine": 2323,
+        "endLine": 2334
       }
     }
   ],
@@ -2692,6 +2908,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
         "exact-instrument-error-origin",
@@ -2725,6 +2942,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
         "exact-instrument-error-origin",
@@ -2758,6 +2976,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
         "exact-instrument-error-origin",
@@ -2791,6 +3010,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
         "exact-instrument-error-origin",
@@ -2824,6 +3044,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
         "exact-instrument-error-origin",
@@ -2857,6 +3078,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
         "exact-instrument-error-origin",
@@ -2890,6 +3112,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
         "exact-instrument-error-origin",
@@ -2923,6 +3146,7 @@
         "native-instrument-assays"
       ],
       "constraintIds": [
+        "exact-binding-role-dispatch",
         "exact-fixture-request-body-ports",
         "exact-fixture-stream-lifecycle",
         "exact-instrument-error-origin",
