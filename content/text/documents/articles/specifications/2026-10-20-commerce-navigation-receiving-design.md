@@ -1,6 +1,6 @@
 # Commerce navigation independent receiving module — 2026-10-20
 
-Status: source-owned receiving-design proposal; executable work order awaits the actual immutable candidate artifact and its observed factory/default-export interfaces. No fabricated dependency receipt or native qualification is asserted. Original production obligation remains Market #19 / Coesite #5 and Group market-bazaar-shop-agentic-composable-enterprise. Production source-free order: the attempt-002 refinement in 2026-10-20-market-bazaar-source-free-work-order.md, SHA256 9993d7741790ca622387c4cfccc3d3424449106b0d730da14f4131c487de98ed, qualified specification ni:///sha-256;CUm3w8isPR834d0OulLCtWwwpNjZXQbkfo5MSqeZSes. The preceding accepted source is Engineering main 625f615598d3088a695bff6c82d958be53fc40de; this revision awaits independent source receiving. Root independently receives runtime effects; pure projection tests alone do not satisfy this boundary.
+Status: source-owned receiving-design proposal; executable work order awaits the actual immutable candidate artifact and its observed factory/default-export interfaces. No fabricated dependency receipt or native qualification is asserted. Original production obligation remains Market #19 / Coesite #5 and Group market-bazaar-shop-agentic-composable-enterprise. Production source-free order: the attempt-002 refinement in 2026-10-20-market-bazaar-source-free-work-order.md, SHA256 f0b933a02de8e6952c2fc56c690104b32d5496e664abfdf46ca71ffafdda9794, qualified specification ni:///sha-256;KNpsmPhWk_DKs0538OOgFeNBEjhn7UWIC0wwtbq28uQ. The preceding accepted source is Engineering main 625f615598d3088a695bff6c82d958be53fc40de; this revision awaits independent source receiving. Root independently receives runtime effects; pure projection tests alone do not satisfy this boundary.
 
 ## Artifact custody and lawful realization
 
@@ -46,3 +46,11 @@ The finalized production port now() returns an explicit-timezone ISO string. Add
 Receive actual HTTP GET form and native MCP optional source cases with omitted source, exact empty string and a known source; missing/empty mean no filter, while nonempty unknown refuses. Required detail/comparison source identities never normalize away. Direct pure source input is unchanged.
 
 Human comparison receiving must start at actual home/detail HTML, observe the reachable native GET repeated-pair form, select labelled original source/id options and submit through its actual action/control values. Verify both original records and no presentation-ID leakage; a direct hand-constructed /compare URL alone does not discharge this UI case.
+
+## Pure intersection receiving
+
+Preserve unknown observation/query-source TypeError and Market nonempty-selection TypeError. Valid unknown/missing selected pairs are comparison evidence, not input error; empty sources plus nonempty Bazaar selection yields an empty selected-offer-not-found comparison. Partial missing selection retains found items before q/source filtering. These source contract cases remain distinct from HTTP/MCP semantic not-found transport behavior.
+
+## Candidate006 source receiving corrections
+
+Receive actual native domain error CODE: message from a plain object; native uniqueItems schema must reject duplicate nested selected tuples before any source read, including property-order variants. Top-level source/get_offer source keeps INVALID_SOURCE; nested unknown/missing compare refs use OFFER_NOT_FOUND only after current-source availability, with all-source failure SOURCE_UNAVAILABLE first. Receive actual Market/Bazaar/Shop/original-source anchors from host navigation/descriptor data, and visible public consent status/evidence/revision/expiry next to freshness, including outage. Missing optional navigation stays compatible; invalid navigation TypeError/default503 before effects. The actual complete B/M/P/R contract must be in the source writer input, not only referenced by unavailable document path.
