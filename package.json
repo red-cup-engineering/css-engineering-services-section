@@ -1,5 +1,5 @@
 {
-  "name": "@red-cup-engineering/css-engineering-services-section",
+  "name": "@red-cup-engineering/css-services-section",
   "version": "0.1.4",
   "type": "module",
   "description": "Web-tier home for CSS packages: cascade computation and checks, plus a computed theming system built on top of it. Sibling to the web html-services-section; together they carry the rendering stack that used to live inside the file-format HTML codec.",
