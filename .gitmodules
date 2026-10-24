@@ -20,7 +20,7 @@
 	branch = main
 [submodule "assisted-browser-services-section"]
 	path = services/assisted-browser-services-section
-	url = https://github.com/red-cup-engineering/assisted-browser-services-section.git
+	url = https://github.com/red-cup-engineering/assisted-browser-engineering-services-section.git
 	branch = main
 [submodule "zelo"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/apps/zelo
@@ -28,14 +28,14 @@
 	branch = main
 [submodule "services/web-tufte-gui-services-section"]
 	path = services/web-tufte-gui-services-section
-	url = https://github.com/red-cup-engineering/web-tufte-gui-services-section.git
+	url = https://github.com/red-cup-engineering/web-tufte-gui-engineering-services-section.git
 [submodule "hugo-publisher"]
 	path = services/website-system-engineering-services-section/services/hugo-engineering-services-section/apps/hugo-publisher
 	url = https://github.com/red-cup-engineering/hugo-publisher.git
 	branch = main
 [submodule "services/web-platform-services-section/services/web2-platform-services-section/services/neocities-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/neocities-services-section
-	url = https://github.com/red-cup-engineering/neocities-services-section.git
+	url = https://github.com/red-cup-engineering/neocities-engineering-services-section.git
 	branch = main
 [submodule "services/web-platform-services-section/services/web2-platform-services-section/services/fastmail-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/fastmail-services-section
@@ -47,23 +47,23 @@
 	branch = main
 [submodule "web3-gambling-platform-services-section"]
 	path = services/web-platform-services-section/services/web3-platform-services-section/web3-gambling-platform-services-section
-	url = https://github.com/red-cup-engineering/web3-gambling-platform-services-section.git
+	url = https://github.com/red-cup-engineering/web3-gambling-platform-engineering-services-section.git
 	branch = main
 [submodule "tips-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-payment-platform-services-section/services/tips-services-section
-	url = https://github.com/red-cup-engineering/tips-services-section.git
+	url = https://github.com/red-cup-engineering/tips-engineering-services-section.git
 	branch = main
 [submodule "stripe-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-payment-platform-services-section/services/stripe-services-section
-	url = https://github.com/red-cup-engineering/stripe-services-section.git
+	url = https://github.com/red-cup-engineering/stripe-engineering-services-section.git
 	branch = main
 [submodule "digital-goods-storefront-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-payment-platform-services-section/services/digital-goods-storefront-services-section
-	url = https://github.com/red-cup-engineering/digital-goods-storefront-services-section.git
+	url = https://github.com/red-cup-engineering/digital-goods-storefront-engineering-services-section.git
 	branch = main
 [submodule "alpaca-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section
-	url = https://github.com/red-cup-engineering/alpaca-services-section.git
+	url = https://github.com/red-cup-engineering/alpaca-engineering-services-section.git
 	branch = main
 [submodule "github-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-software-platform-services-section/services/github-services-section
@@ -71,19 +71,19 @@
 	branch = main
 [submodule "mastodon-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-social-platform-services-section/services/mastodon-services-section
-	url = https://github.com/red-cup-engineering/mastodon-services-section.git
+	url = https://github.com/red-cup-engineering/mastodon-engineering-services-section.git
 	branch = main
 [submodule "discord-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-social-platform-services-section/services/discord-services-section
-	url = https://github.com/red-cup-engineering/discord-services-section.git
+	url = https://github.com/red-cup-engineering/discord-engineering-services-section.git
 	branch = main
 [submodule "visual-asset-generation-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-media-platform-services-section/services/visual-asset-generation-services-section
-	url = https://github.com/red-cup-engineering/visual-asset-generation-services-section.git
+	url = https://github.com/red-cup-engineering/visual-asset-generation-engineering-services-section.git
 	branch = main
 [submodule "social-publication-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-media-platform-services-section/services/social-publication-services-section
-	url = https://github.com/red-cup-engineering/social-publication-services-section.git
+	url = https://github.com/red-cup-engineering/social-publication-engineering-services-section.git
 	branch = main
 [submodule "programmable-community-response-service"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/discord-engineering-services-section/services/programmable-community-response-service
@@ -147,7 +147,7 @@
 	branch = main
 [submodule "561-group-hive-blockchain-services-section"]
 	path = services/web-platform-services-section/services/web3-platform-services-section/services/561-group-hive-blockchain-services-section
-	url = https://github.com/red-cup-engineering/561-group-hive-blockchain-services-section.git
+	url = https://github.com/red-cup-engineering/hive-blockchain-engineering-services-section.git
 	branch = main
 [submodule "slack-engineering-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/slack-engineering-services-section
@@ -159,19 +159,19 @@
 	branch = main
 [submodule "internet-archive-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/internet-archive-services-section
-	url = https://github.com/red-cup-engineering/internet-archive-services-section.git
+	url = https://github.com/red-cup-engineering/internet-archive-engineering-services-section.git
 	branch = main
 [submodule "crowdfunding-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/crowdfunding-services-section
-	url = https://github.com/red-cup-engineering/crowdfunding-services-section.git
+	url = https://github.com/red-cup-engineering/crowdfunding-engineering-services-section.git
 	branch = main
 [submodule "buttondown-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/buttondown-services-section
-	url = https://github.com/red-cup-engineering/buttondown-services-section.git
+	url = https://github.com/red-cup-engineering/buttondown-engineering-services-section.git
 	branch = main
 [submodule "tailscale-services-section"]
 	path = services/web-platform-services-section/services/cloud-services-section/services/tailscale-services-section
-	url = https://github.com/red-cup-engineering/tailscale-services-section.git
+	url = https://github.com/red-cup-engineering/tailscale-engineering-services-section.git
 	branch = main
 [submodule "hugging-face-cpu-compute-provider"]
 	path = services/web-platform-services-section/services/cloud-services-section/services/hugging-face-cpu-compute-provider
@@ -183,15 +183,15 @@
 	branch = main
 [submodule "gcloud-services-section"]
 	path = services/web-platform-services-section/services/cloud-services-section/services/gcloud-services-section
-	url = https://github.com/red-cup-engineering/gcloud-services-section.git
+	url = https://github.com/red-cup-engineering/gcloud-engineering-services-section.git
 	branch = main
 [submodule "cloudflare-services-section"]
 	path = services/web-platform-services-section/services/cloud-services-section/services/cloudflare-services-section
-	url = https://github.com/red-cup-engineering/cloudflare-services-section.git
+	url = https://github.com/red-cup-engineering/cloudflare-engineering-services-section.git
 	branch = main
 [submodule "web-mesh-services-section"]
 	path = services/web-protocol-services-section/services/web-mesh-services-section
-	url = https://github.com/red-cup-engineering/web-mesh-services-section.git
+	url = https://github.com/red-cup-engineering/web-mesh-engineering-services-section.git
 	branch = main
 [submodule "computing-with-the-web"]
 	path = services/web-protocol-services-section/services/computing-with-the-web
