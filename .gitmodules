@@ -39,7 +39,7 @@
 	branch = main
 [submodule "services/web-platform-services-section/services/web2-platform-services-section/services/fastmail-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/fastmail-services-section
-	url = https://github.com/red-cup-engineering/fastmail-services-section.git
+	url = https://github.com/red-cup-engineering/fastmail-engineering-services-section.git
 	branch = main
 [submodule "services/web-platform-services-section/services/web2-platform-services-section/services/web2-media-platform-services-section/services/youtube-engineering-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-media-platform-services-section/services/youtube-engineering-services-section
@@ -67,7 +67,7 @@
 	branch = main
 [submodule "github-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-software-platform-services-section/services/github-services-section
-	url = https://github.com/red-cup-engineering/github-services-section.git
+	url = https://github.com/red-cup-engineering/github-engineering-services-section.git
 	branch = main
 [submodule "mastodon-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/web2-social-platform-services-section/services/mastodon-services-section
