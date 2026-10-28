@@ -29,10 +29,6 @@
 [submodule "services/web-tufte-gui-services-section"]
 	path = services/web-tufte-gui-services-section
 	url = https://github.com/red-cup-engineering/web-tufte-gui-engineering-services-section.git
-[submodule "hugo-publisher"]
-	path = services/website-system-engineering-services-section/services/hugo-engineering-services-section/apps/hugo-publisher
-	url = https://github.com/red-cup-engineering/hugo-publisher.git
-	branch = main
 [submodule "services/web-platform-services-section/services/web2-platform-services-section/services/neocities-services-section"]
 	path = services/web-platform-services-section/services/web2-platform-services-section/services/neocities-services-section
 	url = https://github.com/red-cup-engineering/neocities-engineering-services-section.git
@@ -208,4 +204,8 @@
 [submodule "moose"]
 	path = apps/moose
 	url = https://github.com/red-cup-engineering/moose.git
+	branch = main
+[submodule "website-engineering-services-section"]
+	path = services/website-engineering-services-section
+	url = https://github.com/red-cup-engineering/website-engineering-services-section.git
 	branch = main
