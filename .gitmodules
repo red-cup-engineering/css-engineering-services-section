@@ -1,4 +1,4 @@
-[submodule "web-theming-service"]
+[submodule "services/web-theming-service"]
 	path = services/web-theming-service
 	url = https://github.com/red-cup-engineering/web-theming-service.git
 	branch = main
