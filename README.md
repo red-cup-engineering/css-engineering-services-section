@@ -9,6 +9,6 @@
 
 Web-tier home for CSS packages: cascade computation and checks, plus a computed theming system built on top of it. Sibling to the web html-services-section; together they carry the rendering stack that used to live inside the file-format HTML codec.
 
-The web-services-section home for CSS packages: `src/css-style-resolution.mjs` resolves each node's styles by picking the winning declaration among those addressed to that node and serializes the settled styles to CSS text, and `services/web-theming-service` derives light/dark palettes with numerical token-pair contrast and color scarcity checks and a shared stylesheet from design tokens on top of it.
+The web-engineering-services-section home for CSS packages: `src/css-style-resolution.mjs` resolves each node's styles by picking the winning declaration among those addressed to that node and serializes the settled styles to CSS text, and `services/web-theming-service` derives light/dark palettes with numerical token-pair contrast and color scarcity checks and a shared stylesheet from design tokens on top of it.
 
 Sibling to `../html-services-section` (the web one, not the file-format `html-services-section` under `serialization-services-section`) — together the two carry the rendering stack that used to live inside `html-structural-projection-service`.
