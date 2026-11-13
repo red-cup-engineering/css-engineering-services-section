@@ -10,11 +10,11 @@ import {
   cssTextFromResolvedStyles,
   nodeIdSet,
   firstDuplicate,
-} from "../src/css-style-resolution.mjs";
+} from "@red-cup-engineering/css-engineering-services-section/css-style-resolution";
 import {
   intZero,
   intOne,
-} from "@red-cup-engineering/exact-number-data-service/exact-number";
+} from "@red-cup-engineering/metrologic/number/exact-number";
 
 // A three-node carrier tree: a > b, a > c (parentage is not modeled by this
 // package at all -- CssCarrierNode carries only a nodeId -- so "inheritance"

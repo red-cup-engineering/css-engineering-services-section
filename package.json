@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/css-engineering-services-section",
-  "version": "0.1.4",
+  "version": "0.1.5-dev.0",
   "type": "module",
   "description": "Web-tier home for CSS packages: cascade computation and checks, plus a computed theming system built on top of it. Sibling to the web html-services-section; together they carry the rendering stack that used to live inside the file-format HTML codec.",
   "repository": {
@@ -8,13 +8,10 @@
     "url": "git+https://github.com/red-cup-engineering/css-engineering-services-section.git"
   },
   "dependencies": {
-    "@red-cup-engineering/computer-content-address-engineering-services-section": "0.2.0",
-    "@red-cup-engineering/computer-content-engineering-services-section": "0.1.0",
-    "@red-cup-engineering/computer-data-engineering-services-section": "0.2.0",
-    "@red-cup-engineering/exact-number-data-service": "0.1.1",
-    "@red-cup-engineering/metrologic": "0.4.0",
-    "@red-cup-engineering/signcell": "0.2.0",
-    "@red-cup-engineering/xml-document-rendering-service": "0.1.7"
+    "@red-cup-engineering/computer-content-engineering-services-section": "0.2.1-dev.1",
+    "@red-cup-engineering/metrologic": "0.22.2",
+    "@red-cup-engineering/signcell": "0.17.5",
+    "@red-cup-engineering/xml-document-rendering-service": "0.3.2-dev.0"
   },
   "exports": {
     "./css-style-resolution": "./src/css-style-resolution.mjs",
@@ -33,11 +30,16 @@
     "package.json",
     "README*",
     "LICENSE*",
-    "src"
+    "src",
+    "test"
   ],
   "license": "MIT",
   "funding": {
     "type": "individual",
     "url": "https://github.com/561-group/.github/blob/main/TIPS.md"
-  }
+  },
+  "receivingTests": [
+    "test/css-style-resolution.test.mjs",
+    "test/public-module-closure.test.mjs"
+  ]
 }
