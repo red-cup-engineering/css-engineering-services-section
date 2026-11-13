@@ -12,9 +12,9 @@
  * @packageDocumentation
  */
 import { define } from "@red-cup-engineering/computer-content-engineering-services-section/typed-resource-classification";
-import { count } from "@red-cup-engineering/metrologic/number/exact-number";
+import { count } from "@red-cup-engineering/exact-number-data-service/exact-number";
 import { closeOrdinalProcess, closureProcess, closureStabilizationSearchHorizon, stabilizingSup } from "@red-cup-engineering/metrologic/articulation/predicating/positing/settling/closure";
-import { coincides } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address-system";
+import { coincides } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
 import { knowledgeNameOf, readingToVisual, readingVisualCssBundle } from "@red-cup-engineering/xml-document-rendering-service/svg/visual-valuation";
 
 /** A CSS specificity vector `[ids, classes/attributes/pseudo-classes, types/pseudo-elements]`. */
