@@ -7,7 +7,7 @@ import {
   quadraticFromInts,
   quadraticMultiply,
   quadraticRational,
-} from "@red-cup-engineering/exact-number-data-service/quadratic";
+} from "@red-cup-engineering/metrologic/number/quadratic";
 import { knowledgeNameOf } from "@red-cup-engineering/xml-document-rendering-service/svg/visual-valuation";
 
 import { finiteOrdinal, finiteOrdinalJudgment } from "@red-cup-engineering/metrologic/articulation/predicating/positing/settling/closure";
@@ -15,7 +15,7 @@ import {
   fromCount,
   fromRatio,
   toCount,
-} from "@red-cup-engineering/exact-number-data-service/exact-number";
+} from "@red-cup-engineering/metrologic/number/exact-number";
 
 const roleType = {
   subject: Object.freeze({ weight: 700, case: "preserve" }),

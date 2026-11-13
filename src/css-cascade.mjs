@@ -12,9 +12,9 @@
  * @packageDocumentation
  */
 import { define } from "@red-cup-engineering/computer-content-engineering-services-section/typed-resource-classification";
-import { count } from "@red-cup-engineering/exact-number-data-service/exact-number";
-import { closeOrdinalProcess, closureProcess, closureStabilizationSearchHorizon, stabilizingSup } from "@red-cup-engineering/metrologic/articulation/predicating/positing/settling/closure";
-import { coincides } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
+import { count } from "@red-cup-engineering/metrologic/number/exact-number";
+import { closeOrdinalProcess, closureProcess, closureSearchPlan } from "@red-cup-engineering/metrologic/articulation/predicating/positing/settling/closure";
+import { coincides } from "@red-cup-engineering/signcell/content-address";
 import { knowledgeNameOf, readingToVisual, readingVisualCssBundle } from "@red-cup-engineering/xml-document-rendering-service/svg/visual-valuation";
 
 /** A CSS specificity vector `[ids, classes/attributes/pseudo-classes, types/pseudo-elements]`. */
@@ -496,11 +496,15 @@ const inheritOnce = (
   return inherited.length === 0 ? current : joinState(current, state(current.processed, inherited), profile);
 };
 
-/** Close visual declarations under the CSS cascade using the ordinal closure workbench. */
+/** Search for a finite cascade fixed point; return the canonical closure result.
+ * searchOptions forwards the workbench evaluation budget. The finite allowance
+ * is an operational bound, not a convergence or continuity proof.
+ */
 export function closeCascade(
   declarations,
   input = Object.freeze([]),
   profile = livingWebIndieWebProfile,
+  searchOptions = {},
 ) {
   const normalizedProfile = normalizeProfile(profile);
   const assignmentSet = isLocusList(input)
@@ -515,7 +519,6 @@ export function closeCascade(
     leq: (left, right) => leqState(left, right, normalizedProfile),
     join: (left, right) => joinState(left, right, normalizedProfile),
     eq: sameState,
-    sup: stabilizingSup({ eq: sameState }),
   };
   const endomorphism = (current) => {
     const next = ordered[current.processed];
@@ -528,8 +531,8 @@ export function closeCascade(
   return closeOrdinalProcess(closureProcess(
     lattice,
     endomorphism,
-    closureStabilizationSearchHorizon(toNatural(ordered.length + inheritanceBound + 2), toNatural(0)),
-  ));
+    closureSearchPlan(toNatural(ordered.length + inheritanceBound + 2), []),
+  ), searchOptions);
 }
 
 const emitDeclaration = (declaration) => {
@@ -599,12 +602,16 @@ const emitStylesheet = (
 export function assignmentSetToStylesheet(
   input,
   profile = livingWebIndieWebProfile,
+  searchOptions = {},
 ) {
   const normalizedProfile = normalizeProfile(profile);
   const assignmentSet = normalizeAssignmentSet(input);
   const declarations = visualValuationDeclarations(assignmentSet, normalizedProfile);
-  const closure = closeCascade(declarations, assignmentSet, normalizedProfile);
-  return emitStylesheet(closure.value.declarations, normalizedProfile);
+  const closure = closeCascade(declarations, assignmentSet, normalizedProfile, searchOptions);
+  if (closure.kind !== "ordinal.closure.least-finite") {
+    throw new Error("css: cascade search exhausted without a finite fixed point", { cause: closure });
+  }
+  return emitStylesheet(closure.fixedPoint.value.declarations, normalizedProfile);
 }
 
 /** The CSS textual boundary as a filesystem projector. */
