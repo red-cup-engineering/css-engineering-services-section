@@ -237,7 +237,7 @@ export function cascadeSettling(system, bound = 8) {
  * @param {CssSystem} system
  * @returns {ClosureRegimeName}
  */
-export const completionRegimeOf = (system) => cascadeSettling(system).regime;
+export const completionModeOf = (system) => cascadeSettling(system).regime;
 
 /**
  * The cascade settles to an idempotent visual valuation over carrier nodes.
