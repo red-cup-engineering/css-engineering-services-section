@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "es2023",
+    "skipLibCheck": true,
+    "rootDir": ".",
+    "outDir": "."
+  },
+  "include": ["src/**/*.mjs"],
+  "exclude": ["node_modules"]
+}

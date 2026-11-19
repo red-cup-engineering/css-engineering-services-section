@@ -1,0 +1,153 @@
+/**
+ * codecs/text/css/theme-tokens — the theme design-token vocabulary.
+ *
+ * A palette is data, not an opaque CSS string: `ThemeTokens` names a fixed
+ * 19-role vocabulary (colour roles ink/surface/accent/…, type/layout roles
+ * sans/measure/…) with one canonical CSS custom-property mapping
+ * (`tokenVar`) at this lower CSS owner. The colour math itself — `derivePalette`'s perceptual OKLCH
+ * derivation from seed colours, `deriveDark`'s dark-scheme synthesis, and
+ * the whole hex/OKLCH pipeline underneath them — lives once, in
+ * `@red-cup-engineering/web-theming-service`; this codec adds only the
+ * MetroPlat-specific projection of a `ThemePalette` into this package's own
+ * cascade engine (`assignmentSetToStylesheet`/`CssAuthoredRule`) — no
+ * separate CSS string emitter lives here.
+ *
+ * @packageDocumentation
+ */
+const TOKEN_VARS = Object.freeze({
+    ink: "--ink",
+    inkSoft: "--ink-soft",
+    surface: "--surface",
+    surfaceDeep: "--surface-deep",
+    surfaceEdge: "--surface-edge",
+    rule: "--rule",
+    tint: "--tint",
+    tintStrong: "--tint-strong",
+    selection: "--selection",
+    accent: "--accent",
+    alarm: "--alarm",
+    visited: "--visited",
+    sans: "--sans",
+    serif: "--serif",
+    mono: "--mono",
+    gutter: "--gutter",
+    max: "--max",
+    measure: "--measure",
+    radius: "--radius"
+});
+/**
+ * Colour roles, derived perceptually in OKLCH from ink/surface/accent seeds.
+ * @typedef {{
+ *   ink?: string, inkSoft?: string, surface?: string, surfaceDeep?: string, surfaceEdge?: string,
+ *   rule?: string, tint?: string, tintStrong?: string, selection?: string, accent?: string,
+ *   alarm?: string, visited?: string,
+ * }} ColorTokens
+ */
+
+/**
+ * Non-colour token roles a full palette also carries: type stacks and layout.
+ * @typedef {{
+ *   sans?: string, serif?: string, mono?: string, gutter?: string, max?: string, measure?: string, radius?: string,
+ * }} TypeTokens
+ */
+
+/**
+ * The canonical theme design-token vocabulary: every role a theme may declare.
+ * @typedef {ColorTokens & TypeTokens} ThemeTokens
+ */
+
+/**
+ * A palette: a default (`light`) token set, optional `dark` overrides, and named `variants`.
+ * @typedef {{
+ *   light: ThemeTokens,
+ *   dark?: ThemeTokens,
+ *   variants?: Readonly<Record<string, ThemeTokens>>,
+ * }} ThemePalette
+ */
+
+/**
+ * The canonical token roles, in render order.
+ * @type {readonly (keyof ThemeTokens)[]}
+ */
+export const THEME_TOKEN_ROLES = /** @type {readonly (keyof ThemeTokens)[]} */ (Object.freeze(Object.keys(TOKEN_VARS)));
+
+/**
+ * The canonical CSS custom-property name for a token role (e.g. `inkSoft` becomes `--ink-soft`).
+ * @param {keyof ThemeTokens} role
+ * @returns {string}
+ */
+export function tokenVar(role) {
+    return TOKEN_VARS[role];
+}
+import { assignmentSetToStylesheet } from "./css-cascade.mjs";
+
+
+/**
+ * Merge palette layers left-to-right; a later layer's defined token wins.
+ * @param {...(ThemeTokens | undefined)} layers
+ * @returns {Readonly<ThemeTokens>}
+ */
+export function composeTokens(...layers) {
+  /** @type {ThemeTokens} */
+  const out = {};
+  for (const layer of layers) {
+    if (layer === undefined) continue;
+    for (const role of THEME_TOKEN_ROLES) {
+      const value = layer[role];
+      if (value !== undefined) out[role] = value;
+    }
+  }
+  return Object.freeze(out);
+}
+
+/** @param {ThemeTokens} tokens */
+function tokenDeclarations(tokens) {
+  /** @type {Record<string, string>} */
+  const out = {};
+  for (const role of THEME_TOKEN_ROLES) {
+    const value = tokens[role];
+    if (value !== undefined) out[tokenVar(role)] = value;
+  }
+  return out;
+}
+
+/**
+ * Project a `ThemePalette` into `CssAuthoredRule`s: base `:root`, dark `@media`, and `[data-theme]` switches.
+ * @param {ThemePalette} palette
+ * @returns {readonly Readonly<{ selector: string, declarations: Readonly<Record<string, string>>, condition?: Readonly<{ media: string }> }>[]}
+ */
+export function paletteToCssRules(palette) {
+  const rules = [Object.freeze({ selector: ":root", declarations: Object.freeze(tokenDeclarations(palette.light)) })];
+  if (palette.dark !== undefined) {
+    const dark = composeTokens(palette.light, palette.dark);
+    rules.push(Object.freeze({
+      selector: ":root",
+      declarations: Object.freeze(tokenDeclarations(dark)),
+      condition: Object.freeze({ media: "(prefers-color-scheme: dark)" }),
+    }));
+    rules.push(Object.freeze({ selector: '[data-theme="light"]', declarations: Object.freeze(tokenDeclarations(palette.light)) }));
+    rules.push(Object.freeze({ selector: '[data-theme="dark"]', declarations: Object.freeze(tokenDeclarations(dark)) }));
+  }
+  if (palette.variants !== undefined) {
+    for (const [name, tokens] of Object.entries(palette.variants)) {
+      rules.push(Object.freeze({
+        selector: `[data-theme="${name}"]`,
+        declarations: Object.freeze(tokenDeclarations(composeTokens(palette.light, tokens))),
+      }));
+    }
+  }
+  return Object.freeze(rules);
+}
+
+/**
+ * Render a `ThemePalette` to CSS text through this codec's own cascade engine.
+ * @param {ThemePalette} palette
+ * @param {unknown} [profile]
+ * @returns {string}
+ */
+export function paletteCss(palette, profile) {
+  const rules = paletteToCssRules(palette);
+  return profile === undefined
+    ? assignmentSetToStylesheet({ loci: [], fibers: [], rules })
+    : assignmentSetToStylesheet({ loci: [], fibers: [], rules }, profile);
+}

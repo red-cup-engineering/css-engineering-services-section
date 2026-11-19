@@ -1,0 +1,4747 @@
+/*
+================================================================================
+  emsenn — design-system.css
+  The emsenn visual language, consolidated to one file.
+================================================================================
+
+  This file is the single build of the emsenn visual language: every token,
+  device, type rule, grid, mark, component, and template the kit ships,
+  concatenated in dependency order from the working source at
+  tools/emsenn-source/emsenn-language/*.css (draft v0.3, 2026-05-01).
+
+  It supersedes, for VALUES, the earlier v0.1 prose-spec-doc generation of
+  the same kit (concepts/, code/structures/, code/transformers/, prose/) —
+  see ../DESIGN-SYSTEM.md "Provenance" for why, and for what the earlier
+  generation still contributes (the philosophy layer, unchanged).
+
+  Nothing below has been redesigned. It is the existing @ems-* source,
+  reordered into one file and left otherwise verbatim, including each
+  resource's own decorator block (@ems-id, @ems-kind, @ems-status,
+  @ems-cites, @ems-cited-by, @@purpose, @@required, @@permitted,
+  @@forbidden, @@geometry, @@values, @@color, @@behavior, @@conflicts,
+  @@test, @@rationale). Read a block before touching the rules under it —
+  the comment is the spec; the CSS is its proof.
+
+  Build order (each section cites only sections above it):
+    1.  tokens/color        6.  devices/rule      11. type/prose
+    2.  tokens/space        7.  devices/beam       12. type/citations
+    3.  tokens/type         8.  devices/spine       13. grid/page
+    4.  tokens/rule         9.  devices/block       14. grid/density
+    5.  type/scale         10.  devices/triad       15. grid/reservoir
+    16. marks/wordmark
+    17. components/masthead      21. components/breadcrumb
+    18. components/citation      22. components/tag-stack
+    19. components/footnote      23. components/letter
+    20. components/colophon      24. components/spec-doc
+                                  25. components/library-page
+    26. access/specification
+    27. print/specification
+    28. governance/extension  (procedural — no rendered rules)
+    29. voice/copy             (editorial — no rendered rules)
+
+  Governance (governance/extension, §28): this kit accretes, it does not
+  refactor. A resource's contract (token name, class name, grid column
+  name) does not change without reading every entry in its @ems-cited-by
+  list first. Retired resources are marked retired, never deleted. A new
+  resource earns its place after three independent, cited uses.
+================================================================================
+*/
+
+/*
+@ems-id      tokens/color
+@ems-kind    token-set
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   none
+@ems-cited-by  tokens/rule, devices/rule, devices/beam, devices/spine,
+               type/stack, type/prose, type/citations,
+               grid/page, grid/density,
+               components/masthead, components/citation, components/footnote,
+               components/colophon, components/letter, components/spec-doc
+
+@ems-prose
+@@purpose
+The color palette. Seven named inks plus two grounds. Inks are named
+by structural role (paper, ink, ink-soft, plus three jewels) so that
+substitution downstream is a role swap, not a hue swap. The palette
+is closed: a ninth color is a defect, not an extension.
+
+@@values
+Grounds (large fill surfaces):
+  paper        · #efe9dc · L*=92, warm bone, slight yellow shift
+  paper-deep   · #e3dccb · L*=87, one half-step into shadow
+
+Inks (figure on ground):
+  ink          · #1a1814 · L*=11, warm near-black, never #000
+  ink-soft     · #4a443a · L*=29, warm dark gray for secondary text
+
+Jewels (single-mark figures, max one per artifact):
+  teal         · #0e3a3a · the SIGNAL verb (current state, link, focus)
+  oxblood      · #6b1e1a · the EMPHASIZE verb (masthead, opening anchor)
+  indigo       · #1c2752 · the CITE verb (citations, archive, footnotes)
+
+Hex values are canonical. RGB-space conversion for print: use the
+@@rationale ICC profile (US Sheetfed Coated v2) and convert to CMYK
+with rendering intent = relative colorimetric, black point compensation
+on. Pantone references for two-color print:
+  ink     · Pantone Black 7 C (warm black) at 100%
+  oxblood · Pantone 7644 C
+  teal    · Pantone 5535 C
+  indigo  · Pantone 2767 C
+  paper   · stock (Mohawk Superfine Eggshell or equivalent)
+
+@@composition
+Every artifact uses exactly one ground and one ink as its base pair.
+The default pair is ink on paper. Inversion (paper on ink) is permitted
+only on mastheads, covers, and full-bleed structural assertions —
+never on running prose.
+
+A jewel may be added to the base pair as a single mark per artifact.
+Two jewels on the same artifact is a defect; the second use must move
+to its own artifact or surrender to the first.
+
+The three jewels are mutually exclusive on a given page-level
+artifact. Pages stack: a letter may have an oxblood masthead beam, an
+indigo citation cluster, and teal links — these are different
+artifacts on the same page.
+
+@@forbidden
+- Tints, shades, or fades of any token. The named hex is the only
+  rendering. Opacity below 100% on text or marks is a defect.
+- Pure #000 or #FFF on any surface — they read printed-on, not
+  printed-in.
+- Color used for decoration without a verb (the rendered mark must
+  trace to one of: signal, emphasize, cite, or the base pair).
+- Gradients of any form, including rule-color gradients on hover.
+
+@@behavior
+Hover (signal contexts): saturation does not change; the underline
+under linked text gains weight from 1px to 2px. Color is invariant
+across rest, hover, and focus states.
+
+Focus: the focus indicator is a teal beam (devices/beam --signal),
+not a recolor of the focused element. The element's own color stays
+fixed.
+
+Print: the seven inks render as listed Pantones in two-color and
+three-color work; in four-color (CMYK) work, oxblood compresses
+toward warmth (use the swatch values, not RGB→CMYK auto-conversion).
+
+Reduced motion: not applicable (color does not animate).
+
+Dark mode: the kit does not ship a dark mode. Inverted contexts
+(paper on ink) cover the legitimate use of dark surfaces; a separate
+dark theme would duplicate the palette without adding a verb.
+
+@@conflicts
+- Two jewels on one artifact: the EMPHASIZE jewel (oxblood) wins
+  over CITE (indigo) wins over SIGNAL (teal). Demote the loser to
+  its base pair (ink) for that artifact.
+- Inverted ground (paper on ink) and a jewel mark: the jewel renders
+  unchanged on paper (its own value); on the ink-grounded portion the
+  jewel becomes paper at the same geometry. Jewel saturation reads
+  too low against ink to function as a mark.
+- Long-form prose accidentally set in ink-soft: this is a structural
+  error in type/stack, not a color problem. Ink-soft is for citation
+  bodies and metadata margins, not paragraph runs.
+
+@@test
+Sample procedure for any rendered artifact:
+
+1. Count distinct rendered colors. If > 5 (the base pair plus up to
+   one jewel plus default ink-soft for metadata), find and remove the
+   surplus.
+2. For each rendered color, trace it to a token. A color that does
+   not match a token (within 1 unit per RGB channel for screen,
+   within ΔE 2.0 for print) is a defect.
+3. For each jewel mark, name the verb out loud. If the verb is not
+   one of signal / emphasize / cite, the mark is a defect.
+4. Print the artifact on the specified stock at 100% scale. Read at
+   30cm in 500 lux office light. All text must remain legible; all
+   marks must remain visible at 1m.
+
+@@rationale
+Roles, not hues, because the system survives substitution. A future
+revision can replace #6b1e1a with a different oxblood without
+breaking the contract any consumer of `--ems-color-oxblood`
+depends on. Substitution is the test of a token system: if a swap
+breaks anything, the system was leaking implementation into
+specification.
+
+Closed palette because Tufteian density requires consistent semantics.
+Every reader of every page learns three jewels and three verbs once;
+the learning amortizes across thousands of pages. An eighth color
+costs every reader a re-learning event.
+
+Off-pure inks because pure black on pure white is a screen artifact.
+Print, the ground truth of the kit, never produces pure white (paper
+has a tone) and rarely produces pure black (warm-shifted blacks
+read as blacks in context, while #000 reads as a hole). The
+slightly-warm palette renders as expected on screen and on press.
+
+Reference: Tufte, Envisioning Information (1990), §3 on color and
+information; ISO 15076-1:2010 (ICC.1) on color management; Pantone
+Solid Coated guide.
+@ems-end
+*/
+
+:root {
+  /* @ems-token color/paper       · ground   · warm bone, primary surface */
+  --ems-color-paper:      #efe9dc;
+
+  /* @ems-token color/paper-deep  · ground   · half-step into shadow */
+  --ems-color-paper-deep: #e3dccb;
+
+  /* @ems-token color/ink         · figure   · primary type and structure */
+  --ems-color-ink:        #1a1814;
+
+  /* @ems-token color/ink-soft    · figure   · long-form body, secondary metadata */
+  --ems-color-ink-soft:   #4a443a;
+
+  /* @ems-token color/teal        · jewel    · signal / current state / link */
+  --ems-color-teal:       #0e3a3a;
+
+  /* @ems-token color/oxblood     · jewel    · emphasis (one per artifact) */
+  --ems-color-oxblood:    #6b1e1a;
+
+  /* @ems-token color/indigo      · jewel    · citation / archive / depth */
+  --ems-color-indigo:     #1c2752;
+}
+
+/* @ems-pair contrast/ink-on-paper        · 14.8:1 · AAA · body & headings */
+/* @ems-pair contrast/ink-soft-on-paper   ·  7.4:1 · AAA · long-form prose */
+/* @ems-pair contrast/teal-on-paper       ·  9.1:1 · AAA · links, signals */
+/* @ems-pair contrast/oxblood-on-paper    ·  8.7:1 · AAA · emphasis */
+/* @ems-pair contrast/indigo-on-paper     ·  9.6:1 · AAA · citations */
+/* @ems-pair contrast/paper-on-ink        · 14.8:1 · AAA · inverted masthead */
+/* @ems-pair contrast/paper-deep-on-ink   · 11.2:1 · AAA · secondary on inverted */
+/*
+@ems-id      tokens/space
+@ems-kind    token-set
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   none
+@ems-cited-by  tokens/rule, devices/*, type/scale, type/prose,
+               grid/page, grid/density, grid/reservoir,
+               components/*
+
+@ems-prose
+@@purpose
+The spacing scale. One rhythm unit (8px) and seven multiples. Every
+margin, padding, gap, gutter, and offset in the kit resolves to one
+of these values. The scale is closed; sub-unit values are defects.
+
+@@values
+--ems-u   ·   8px · 0.5rem · 6pt · 2.12mm · base unit
+--ems-u2  ·  16px · 1rem   · 12pt · 4.23mm · paragraph rhythm
+--ems-u3  ·  24px · 1.5rem · 18pt · 6.35mm · component padding
+--ems-u4  ·  32px · 2rem   · 24pt · 8.47mm · component gap
+--ems-u5  ·  48px · 3rem   · 36pt · 12.7mm · section margin
+--ems-u6  ·  64px · 4rem   · 48pt · 16.93mm · page padding (screen)
+--ems-u7  ·  96px · 6rem   · 72pt · 25.4mm  · page padding (print top)
+--ems-u8  · 128px · 8rem   · 96pt · 33.87mm · cover/masthead margin
+
+The mm column is the print-true value at 1px = 0.265mm (96dpi).
+The pt column is the print-true value at 1px = 0.75pt.
+
+@@composition
+Spacing decisions select the closest unit to the structural intent.
+There is no "between u3 and u4" — the structure picks one.
+
+Common combinations:
+- Body line height: u3 (24px) at 16px body type (1.5 leading)
+- Heading-to-body offset: u3 above, u2 below
+- Paragraph spacing: u2 (no indent)
+- Section break: u5 above, u4 below
+- Component internal padding: u3 (default), u2 (dense), u4 (loose)
+- Page margin (screen): u6
+- Page margin (print): u7 top, u6 sides, u5 bottom
+
+@@forbidden
+- Any spacing value not in the scale. `padding: 12px` is a defect;
+  the correct value is u (8px) or u2 (16px).
+- Negative margins, except for kerning corrections inside a single
+  component (where the inner element overhangs its container by
+  design — masthead beam, drop cap).
+- `auto` margins on text columns (text alignment is by grid, not by
+  margin-auto).
+- Percent-based spacing values. The scale is in px because rhythm
+  is absolute, not relative.
+
+@@behavior
+Print: the px-to-pt mapping is exact (1px = 0.75pt at 96dpi). Print
+output uses the pt values; the rendered geometry is identical.
+
+Responsive: the scale does not change at small viewports. A page
+that does not fit at u6 page padding shrinks the page, not the
+padding. Below 360px viewport, the masthead may use u4 page padding
+(documented in grid/page).
+
+Reduced motion: not applicable.
+
+@@conflicts
+- Half-unit pressure (the layout "almost works" at 12px): the
+  underlying structure is wrong, not the unit. The fix is to
+  promote one element a full unit and accept the resulting rhythm.
+- Optical adjustment requests ("looks 2px off"): align by baseline,
+  not by margin. If a baseline adjustment is needed, it is a type
+  adjustment in type/scale, not a space adjustment.
+- Component nested in component: padding compounds. A card at u3
+  padding inside a section at u4 padding gives u7 total — this is
+  correct. Nest carefully or de-nest.
+
+@@test
+For any rendered artifact:
+
+1. Inspect every spacing value (margin, padding, gap, top, left,
+   right, bottom). Each must equal one of the eight tokens or 0.
+2. Sum the page margin plus first content offset; the result must
+   be a unit multiple.
+3. Print at 100% scale. Measure any spacing with a ruler to
+   confirm the mm value (e.g. u3 should measure 6.35mm ±0.2mm).
+4. Diff the rendered spacing against the design at 1.5× zoom. Any
+   visible deviation is a defect.
+
+@@rationale
+8px because (a) it is the largest unit that composes cleanly with
+12px and 16px type into integer line heights (24, 32, 40, 48, 56,
+64), (b) it survives the trip to print (8px = 6pt at 96dpi) without
+sub-pixel rounding, (c) it is small enough that even tight UI
+chrome (form controls, table cells) finds a home on the scale, and
+(d) the resulting eight-step octave is small enough to memorize.
+
+Closed scale because rhythm is the load-bearing property. A reader
+trained on u-multiples reads composition; a reader exposed to
+arbitrary values reads noise. The kit is designed for the trained
+reader.
+
+Reference: Müller-Brockmann, Grid Systems in Graphic Design (1981),
+ch. 4 on column construction; the 4pt/8pt grids in iOS HIG and
+Material Design (which we are not adopting wholesale, but which
+validate the choice).
+@ems-end
+*/
+
+:root {
+  /* @ems-token space/u   ·   8px · base rhythm */
+  --ems-u:   8px;
+  /* @ems-token space/u2  ·  16px · paragraph rhythm */
+  --ems-u2: 16px;
+  /* @ems-token space/u3  ·  24px · component padding */
+  --ems-u3: 24px;
+  /* @ems-token space/u4  ·  32px · component gap */
+  --ems-u4: 32px;
+  /* @ems-token space/u5  ·  48px · section margin */
+  --ems-u5: 48px;
+  /* @ems-token space/u6  ·  64px · screen page padding */
+  --ems-u6: 64px;
+  /* @ems-token space/u7  ·  96px · print top margin */
+  --ems-u7: 96px;
+  /* @ems-token space/u8  · 128px · cover margin */
+  --ems-u8: 128px;
+}
+/*
+@ems-id      tokens/type
+@ems-kind    token-set
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   none
+@ems-cited-by  type/scale, type/stack, type/prose, type/citations,
+               components/*
+
+@ems-prose
+@@purpose
+The type family. IBM Plex in three faces (Sans, Serif, Mono) plus
+the weight scale used across the kit. Plex is the only family;
+substitution is permitted only with metrically-compatible fallbacks
+in the same OFL family tree.
+
+@@values
+Family stacks (in order of preference):
+  --ems-type-sans  · "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif
+  --ems-type-serif · "IBM Plex Serif", "Iowan Old Style", Georgia, serif
+  --ems-type-mono  · "IBM Plex Mono", "SF Mono", "Menlo", monospace
+
+Weight tokens (Plex weight names):
+  --ems-weight-light    · 300
+  --ems-weight-regular  · 400 · default for body, mono data
+  --ems-weight-medium   · 500 · default for sans structure, mono labels
+  --ems-weight-semibold · 600 · reserved
+  --ems-weight-bold     · 700 · prose <strong> only
+
+Italic: serif italic at 400 only. No italic sans, no italic mono.
+
+@@composition
+Each typographic role (display, heading, body, lede, spec, spec-data)
+binds one face plus one weight. The bindings are fixed in type/stack
+and never overridden at the call site.
+
+Two weights per artifact is the discipline:
+- Sans+medium for structure (display, headings)
+- Serif+regular for body (paragraphs, lede)
+- Mono+medium for spec labels (uppercase, tracked)
+- Mono+regular for spec data (paths, dates, values)
+
+Bold (700) is reserved for <strong> inside prose, twice per page
+maximum. Light (300) and Semibold (600) are loaded but not bound to
+any role; they are reserved for future use under earned-addition
+governance.
+
+@@forbidden
+- Any family outside the Plex stack and its declared fallbacks.
+- Italic Sans or italic Mono (Plex ships them; the kit does not use
+  them).
+- Synthetic bold or synthetic italic (no `font-style: oblique` on
+  faces that ship a real italic).
+- Variable-axis settings beyond weight (no width, slant, optical
+  size variations).
+- Mixing weights within a single typographic role on a single page
+  (e.g. some h2s at 500 and others at 700).
+
+@@behavior
+Loading: Plex is loaded via @font-face from the kit's font directory
+(or an OFL CDN). `font-display: swap` is set so prose renders in the
+fallback during load and reflows when Plex arrives.
+
+The fallback metrics are tuned: Plex Sans pairs with Helvetica Neue
+(matching x-height within 3%), Plex Serif pairs with Iowan Old Style
+or Georgia (matching x-height within 5%), Plex Mono pairs with SF
+Mono or Menlo (identical advance width). Reflow on swap shifts
+layout by less than one rem.
+
+Print: Plex is embedded in every PDF (via subset embedding). Print
+output never falls back; the embedded subset must include all
+glyphs used on the page.
+
+Reduced motion: not applicable.
+
+@@conflicts
+- Body text accidentally set in sans: this is a stack misconfiguration
+  in type/stack, not a token override. Fix the stack binding.
+- Mono data in serif: same — fix the stack, not the call site.
+- Loaded weight not used: 300 and 600 ship but bind to nothing. They
+  remain in the file as a deliberate reservation and a default
+  subset.
+
+@@test
+1. Open the artifact in DevTools. For each text element, confirm:
+   - font-family resolves to a Plex face
+   - font-weight is one of {400, 500, 700}
+   - font-style is normal (or italic only inside prose <em>)
+2. Throttle the network to Slow 3G. Reload. Confirm prose is
+   readable in the fallback during the swap window (≤2s).
+3. Print to PDF. Open the PDF in a font-inspector. Confirm only
+   Plex faces are embedded.
+4. Count distinct (face, weight) pairs on a single artifact. Three
+   or fewer is correct. Four is a defect; trace each pair to its
+   role and remove the surplus.
+
+@@rationale
+Plex because (a) it is open-source under SIL OFL — the kit is not
+captured by a foundry's licensing terms, (b) it is maintained by
+IBM as an institutional commitment rather than a designer's
+side-project, ensuring decade-scale availability, (c) the three
+faces share x-height and metrics — they sit side by side without
+re-balancing, (d) Plex Mono is one of the few high-quality monos
+that pairs with a serif of the same family, which is the key
+typographic move of the kit (mono-as-spec, serif-as-body, sans-as-
+structure on the same page).
+
+Two weights because hierarchy comes from structure first. A page
+that needs four weights to read clearly has a structural problem
+that more weights only paper over.
+
+Reference: IBM Plex specimen and OFL license; Bringhurst, Elements
+of Typographic Style §3 on weight discipline; Apple HIG on font
+loading and fallback metrics.
+@ems-end
+*/
+
+:root {
+  /* @ems-token type/sans   · structural type */
+  --ems-type-sans:  "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  /* @ems-token type/serif  · body type */
+  --ems-type-serif: "IBM Plex Serif", "Iowan Old Style", Georgia, serif;
+  /* @ems-token type/mono   · spec type */
+  --ems-type-mono:  "IBM Plex Mono", "SF Mono", "Menlo", monospace;
+
+  /* @ems-token weight/light    · 300 · reserved */
+  --ems-weight-light:    300;
+  /* @ems-token weight/regular  · 400 · body, mono data */
+  --ems-weight-regular:  400;
+  /* @ems-token weight/medium   · 500 · sans structure, mono labels */
+  --ems-weight-medium:   500;
+  /* @ems-token weight/semibold · 600 · reserved */
+  --ems-weight-semibold: 600;
+  /* @ems-token weight/bold     · 700 · prose strong only */
+  --ems-weight-bold:     700;
+}
+/*
+@ems-id      tokens/rule
+@ems-kind    token-set
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color
+@ems-cited-by  devices/rule, devices/beam, devices/spine,
+               type/stack, components/*
+
+@ems-prose
+@@purpose
+Line-weight tokens. Two weights — hairline (1px) and beam (2px) —
+plus a print-equivalent value for each. All horizontal and vertical
+strokes in the kit (rules, dividers, beams, focus indicators,
+underlines under linked text) resolve to one of these two weights.
+
+@@values
+--ems-rule-hair · 1px (screen) · 0.25mm (print) · 0.71pt
+  · purpose: section breaks, table dividers, list separators
+  · color: ink (default), ink-soft (low-contrast contexts)
+
+--ems-rule-beam · 2px (screen) · 0.5mm (print) · 1.42pt
+  · purpose: marks (devices/beam), focus indicators, strong dividers
+  · color: oxblood / teal / indigo (jewels), ink (structural beam)
+
+Underline thickness:
+- Default link underline: hair (1px) at all sizes
+- Hover/focus link underline: beam (2px) at all sizes
+- Underline offset: text-underline-offset = 3px at body (16px),
+  scales with text-underline-offset = 0.18em at other sizes
+
+@@composition
+Hairlines compose with type and space; a hairline below a heading is
+the heading's lower bound, and the space between heading and rule
+follows tokens/space (typically u above, u2 below the rule).
+
+Beams are anchors. A beam declares an attachment point (top of
+masthead, focus indicator under input). Beams do not separate; they
+mark.
+
+@@forbidden
+- Any stroke weight not 1px or 2px (e.g. 0.5px hairlines, 3px
+  emphasis bars). Sub-pixel hairlines do not survive the trip to
+  print and read as inconsistent on Hi-DPI screens.
+- Dashed, dotted, or double rules. The kit uses solid only.
+- Drop shadows or glows on rules and beams.
+- Border-radius on rules or beams. Both terminate at sharp corners.
+
+@@behavior
+Print: the px-to-mm conversion is fixed. A 1px hairline prints at
+0.25mm (slightly heavier than a true hairline at 0.18mm) — this is
+deliberate; thinner rules disappear on uncoated stock at 100gsm.
+
+Hi-DPI: rules render at 1px CSS regardless of device-pixel-ratio.
+The browser rasterizes at the device resolution.
+
+Reduced motion: not applicable.
+
+@@conflicts
+- A beam adjacent to a hairline: the beam wins the visual hierarchy
+  by weight. If both are needed (e.g. masthead band + masthead
+  beam), they sit at different vertical offsets so the eye reads
+  them as two marks, not one ambiguous mass.
+- Underline collision with descenders: text-underline-offset stays
+  at 3px (body) regardless. If descenders are clipped, the type
+  size or leading is wrong, not the underline.
+
+@@test
+1. Inspect every horizontal or vertical stroke. Each must measure
+   1px or 2px in CSS.
+2. Print at 100% scale. Measure stroke widths with a 10× loupe;
+   confirm 0.25mm hair, 0.5mm beam.
+3. Toggle underline weights on a link by hovering. Confirm hair→beam
+   transition with no horizontal shift (text-underline-offset
+   constant).
+4. Render at devicePixelRatio = 1, 2, 3. Hairlines must remain
+   visible at all three.
+
+@@rationale
+Two weights, no more, because rule typography is a binary signal:
+this is a separator (hair) or this is a mark (beam). Three weights
+introduces a "medium" rule that has no semantic role and reads as
+visual noise.
+
+1px and 2px because they are the smallest pair that survives both
+screen rasterization (without anti-aliasing washout) and print
+(without disappearing on uncoated stock).
+
+Reference: Tufte, Visual Display of Quantitative Information (1983),
+ch. 4 on data-ink ratio; Bringhurst on rule weights in book design.
+@ems-end
+*/
+
+:root {
+  /* @ems-token rule/hair · 1px · section breaks, dividers */
+  --ems-rule-hair: 1px;
+  /* @ems-token rule/beam · 2px · marks, focus indicators */
+  --ems-rule-beam: 2px;
+}
+/*
+@ems-id      type/scale
+@ems-kind    token-set
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/space, tokens/type
+@ems-cited-by  type/stack, type/prose, type/citations, components/*
+
+@ems-prose
+@@purpose
+The kit's permitted type sizes and their paired leadings, expressed
+as tokens. Seven sizes only. Every size is an integer pixel value
+chosen so that lines of type land on the 8px rhythm of tokens/space
+without sub-pixel rounding.
+
+@@required
+Every text element on every page references one of these seven
+sizes through its role (type/stack). The page's grid (grid/page)
+assumes the leadings declared here when reserving vertical rhythm.
+
+@@permitted
+- Defining a new size on a page: only as a token alias of an
+  existing size. (--ems-size-page-title: var(--ems-size-h1)) is
+  permitted; redefining the value is not.
+
+@@forbidden
+- Eight or more sizes on the kit. When a layout calls for a new
+  size, the move is to assign the text a different role from
+  type/stack — size follows role, role follows function.
+- Fractional sizes (15.5px, 17px between body and lede). The scale
+  is intentionally coarse so the page reads as steps, not a gradient.
+- Decoupled leading. Each size is paired with a specific leading
+  here; the role that uses the size also uses its leading. Mixing
+  size from one row with leading from another is forbidden.
+- Overriding leading on a per-element basis to compensate for
+  cramped layouts. The fix is the layout, not the leading.
+
+@@values
+Each row is size · leading · primary use:
+
+  · display    · 96px · 0.9   · cover, masthead — block-as-mass
+  · h1         · 48px · 1.05  · page title
+  · h2         · 24px · 1.25  · section title
+  · lede       · 20px · 1.5   · opening paragraph, oversize body
+  · body       · 16px · 1.65  · default prose
+  · spec-data  · 14px · 1.55  · mono metadata values
+  · spec       · 12px · 1.5   · mono labels, all-caps tracked
+
+The display/h1 gap (48px) is intentional: display is structural
+mass, h1 is a title. Any size that wants to live between them is
+asking to be one or the other.
+
+The body/spec-data gap (2px) is the smallest legitimate step on
+the scale. It exists because the data role needs to read as smaller
+than the body without breaking line-height alignment in tables.
+
+@@behavior
+Tokens are static custom properties on :root. They cascade to every
+descendant. They do not respond to viewport size — the page does
+that through grid/density, which switches density mode rather than
+rescaling type.
+
+Print: sizes render as their pixel value mapped to points by the
+print stylesheet (1px = 0.75pt). At print, the scale is functionally
+identical; the kit does not introduce a separate print scale.
+
+@@conflicts
+- A page that needs an additional size between scale rows: the
+  resolution is to split the page into two pages, each one role
+  deeper. If that fails, the role itself needs reconsideration.
+- A diagram that needs micro-type below 12px: diagrams are
+  components, not type. Use the spec size and reduce the diagram's
+  density instead.
+
+@@test
+1. Audit every text element on the page. Confirm each one resolves
+   to exactly one of the seven sizes.
+2. Confirm each size carries its paired leading.
+3. Print the page and compare line spacing. Lines must land on a
+   regular vertical rhythm.
+
+@@rationale
+A coarse scale forces decisions to be made at the role layer, not
+the size layer. Designers who add an eighth size are usually
+solving a hierarchy problem with type weight when the right move
+is to rethink the hierarchy. Seven sizes is a constraint that makes
+the kit's hierarchy legible.
+
+Reference: Bringhurst, Elements of Typographic Style §3.1, on the
+classical scale; Tschichold, Asymmetric Typography, on the
+disciplined use of size; Tufte, Visual Display, on the cost of
+unjustified variation.
+@ems-end
+*/
+
+:root {
+  /* @ems-token size/display    · 96px · cover, masthead */
+  --ems-size-display:   96px;
+  /* @ems-token size/h1         · 48px · page title */
+  --ems-size-h1:        48px;
+  /* @ems-token size/h2         · 24px · section title */
+  --ems-size-h2:        24px;
+  /* @ems-token size/lede       · 20px · opening paragraph */
+  --ems-size-lede:      20px;
+  /* @ems-token size/body       · 16px · default prose */
+  --ems-size-body:      16px;
+  /* @ems-token size/spec-data  · 14px · mono metadata values */
+  --ems-size-spec-data: 14px;
+  /* @ems-token size/spec       · 12px · mono labels, tracked */
+  --ems-size-spec:      12px;
+
+  /* @ems-token lead/display    · 0.9  · letterforms-as-mass */
+  --ems-lead-display:   0.9;
+  /* @ems-token lead/h1         · 1.05 · tight, constructive */
+  --ems-lead-h1:        1.05;
+  /* @ems-token lead/h2         · 1.25 · readable section title */
+  --ems-lead-h2:        1.25;
+  /* @ems-token lead/lede       · 1.5  · generous opening */
+  --ems-lead-lede:      1.5;
+  /* @ems-token lead/body       · 1.65 · long-form serif */
+  --ems-lead-body:      1.65;
+  /* @ems-token lead/spec-data  · 1.55 · mono data */
+  --ems-lead-spec-data: 1.55;
+  /* @ems-token lead/spec       · 1.5  · mono label */
+  --ems-lead-spec:      1.5;
+}
+/*
+@ems-id      devices/rule
+@ems-kind    device
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/rule, tokens/space
+@ems-cited-by  components/letter, components/spec-doc, components/citation,
+               components/footnote, grid/density
+
+@ems-prose
+@@purpose
+The horizontal hairline rule. A 1px ink line, full column width,
+used to mark a hinge in the page — a place where one load ends and
+another begins. The rule is the page's most common separator; every
+other separator (beam, spine, block edge) does something more
+specific.
+
+@@required
+- Between two stacked sections of running prose with different
+  headings (h2-to-h2 transitions).
+- Above and below the citation cluster (components/citation).
+- Between rows in dense reference layouts (grid/density --spec) and
+  in library listings (grid/density --index).
+- Between the masthead and the page body when the masthead does not
+  end in its own bottom band.
+- Between the page body and the colophon.
+
+@@permitted
+- Inside long-form prose to mark a tonal break (a "section break"
+  inside a single chapter). One per 2000 words maximum.
+- Above a footnote cluster, separating it from the prose body.
+
+@@forbidden
+- As decoration around a region that is already separated by space.
+  Rule + u4 of whitespace is redundant; pick one.
+- Around an entire region (top + bottom + left + right). The rule
+  is a horizontal hinge; vertical work goes to devices/spine.
+- Colored. The rule is always ink (`--ems-color-ink`); a colored
+  horizontal stroke is a beam, not a rule.
+- Dashed, dotted, double, or with rounded ends.
+- More than three rules visible in any 800px viewport region. Above
+  three the eye stops reading them as separators.
+
+@@geometry
+- Stroke: `--ems-rule-hair` (1px screen, 0.25mm print).
+- Length: full width of the containing column.
+- Color: `--ems-color-ink` (default), `--ems-color-ink-soft` for
+  low-contrast in-prose breaks, `rgba(26,24,20,0.18)` for
+  intra-section dividers in dense lists.
+- Top margin: u2 (16px) above default; u3 (24px) when separating
+  major sections.
+- Bottom margin: u (8px) when followed by a heading; u2 (16px) when
+  followed by prose.
+
+@@color
+Default: `--ems-color-ink`. The rule's job is structural — full ink
+contrast.
+
+Soft variant: `rgba(26,24,20,0.18)` for dense intra-list dividers
+where a full-ink rule on every row would dominate the page. This is
+the only sanctioned use of an ink alpha in the kit; it earns its
+exception by appearing in tabular contexts where the rule is
+serving rhythm, not separation.
+
+Inverted (paper on ink ground): rule color becomes
+`--ems-color-paper` at the same hairline weight.
+
+@@behavior
+Hover: not applicable (rules are not interactive).
+Print: renders at 0.25mm on uncoated stock. Confirmed legible at
+30cm reading distance.
+Reduced motion: not applicable.
+
+@@conflicts
+- Rule directly above a beam: keep both, with u3 between them.
+  Reading order is rule (separator) → space → beam (mark). Mixing
+  them at the same vertical position reads as a thick rule.
+- Rule at the bottom of a column inside a grid that has its own
+  bottom border: remove the rule. The grid border serves the
+  separator role.
+- Rule inside a citation entry: rules separate entries, not
+  interiors.
+
+@@test
+1. Count rules in the viewport. If > 3 visible at any scroll
+   position, half are decorative; remove them.
+2. For each rule, identify what changes above vs. below. If nothing
+   changes, the rule is decorative.
+3. Print the page. Each rule must measure 0.25mm ±0.05mm with a
+   loupe and remain visible at 30cm reading distance.
+4. Disable the stylesheet. Confirm the page is still readable —
+   rules are visual reinforcement of structure, not the structure
+   itself.
+
+@@rationale
+The hairline is the lightest structural separator that survives both
+screen and print. Whitespace separates first; the rule arrives only
+when whitespace has finished its work and the page still wants to
+say "here, a hinge."
+
+Reference: Tschichold, The Form of the Book (1991), on the function
+of rules in book typography; Tufte on data-ink ratio.
+@ems-end
+*/
+
+.ems-rule {
+  display: block;
+  width: 100%;
+  height: 0;
+  border: 0;
+  border-top: var(--ems-rule-hair) solid var(--ems-color-ink);
+  margin: var(--ems-u2) 0;
+}
+
+/* @ems-variant rule/soft  · low-contrast intra-list divider */
+.ems-rule--soft {
+  border-top-color: rgba(26, 24, 20, 0.18);
+}
+
+/* @ems-variant rule/major · separates h2-level sections */
+.ems-rule--major {
+  margin: var(--ems-u3) 0 var(--ems-u2);
+}
+/*
+@ems-id      devices/beam
+@ems-kind    device
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/rule, tokens/space
+@ems-cited-by  components/masthead, components/letter, components/citation,
+               marks/wordmark, access/specification
+
+@ems-prose
+@@purpose
+The beam. A short, 2px, jewel-colored horizontal stroke that anchors
+a structural moment on the page (page declaration, focus state,
+citation opening). The beam is a mark, not a separator — it says
+"here, an anchor," and it carries one of three verbs based on its
+color.
+
+@@required
+By color/verb:
+
+oxblood beam (EMPHASIZE):
+- The masthead, attached to the wordmark.
+- The opening of every long-form letter (>800 words), under the lede.
+- The cover of any printed artifact (cards, books, papers).
+
+teal beam (SIGNAL):
+- The focus indicator under any focused interactive element.
+- The "current section" mark in navigation, when navigation is
+  present and shows current state.
+
+indigo beam (CITE):
+- The opening of every citation cluster (components/citation).
+- The opening of every footnotes block (components/footnote).
+- Above the metadata margin in scholar layouts when the margin
+  contains citations.
+
+@@permitted
+- Custom color beams are not permitted. The three jewels are the
+  full set.
+- A beam may appear at the start of a major section heading on a
+  spec-doc, in indigo, when the section is a citation-dense
+  reference (e.g. a bibliography section).
+
+@@forbidden
+- More than one oxblood beam per page (page-level scope; a printed
+  document with multiple pages may have one per page).
+- Two beams of different colors at the same vertical position. They
+  must be separated by at least u3.
+- Beams as separators between equal regions. A beam marks an anchor;
+  a separator between equal regions is a rule.
+- Beams on inverted backgrounds at jewel color. On ink-ground, beams
+  render at `--ems-color-paper` (preserving the mark, surrendering
+  the verb).
+- Vertical beams. The vertical structural element is the spine
+  (devices/spine).
+- Animated beams (no fade-in, no slide-in, no width transitions).
+- Beams with rounded ends or chamfered terminations. Sharp corners
+  only.
+
+@@geometry
+Stroke height: `--ems-rule-beam` (2px screen, 0.5mm print).
+Length: u3 (24px) | u4 (32px, default) | u5 (48px, masthead-scale).
+
+Position relative to anchored element:
+- Under wordmark: aligned to wordmark's baseline + 4px below
+- Under heading: aligned to heading's baseline + 8px below
+- Under input (focus): aligned to input's bottom edge, 0px gap
+- Above citation cluster: u above the cluster's first row
+- Above footnotes: u above the cluster's title
+
+Horizontal alignment: left-aligned with the anchored element's
+optical left edge (which equals the anchored element's left margin).
+The beam never centers; centered beams read as bowties or ornaments.
+
+@@color
+oxblood (`--ems-color-oxblood`, #6b1e1a) — EMPHASIZE
+teal    (`--ems-color-teal`, #0e3a3a) — SIGNAL
+indigo  (`--ems-color-indigo`, #1c2752) — CITE
+
+On inverted ground (paper on ink), all three beams collapse to
+`--ems-color-paper` (#efe9dc). The mark survives; the verb is
+carried by context (the masthead is still a masthead).
+
+@@behavior
+Hover: not applicable. The beam is rendered state, not a hover
+target.
+Focus: the teal beam IS the focus indicator. It appears on focus
+and disappears on blur. The transition is instantaneous (no
+animation duration).
+Print: renders at 0.5mm on coated and uncoated stock. The oxblood
+beam is the recommended single-jewel mark for two-color print
+(saves the second plate for emphasis).
+Reduced motion: the beam is already static. The focus beam appears/
+disappears on a single frame.
+
+@@conflicts
+- Multiple beams candidates on one artifact (e.g. a letter with
+  citations: oxblood under masthead + indigo under metadata margin).
+  This is correct: they belong to different page-level artifacts.
+  Place them at different vertical positions and the eye reads them
+  as two marks, two anchors.
+- Focus beam (teal) under an element near another beam (e.g. an
+  oxblood beam): the focus beam wins; the oxblood beam suppresses
+  for the duration of focus and restores on blur.
+- Beam on a colored background other than paper/paper-deep/ink:
+  not supported. The kit has no other backgrounds.
+
+@@test
+1. Identify every beam on the page. For each, name the verb out
+   loud (signal, emphasize, cite). If the verb does not match one
+   of three, the beam is a defect.
+2. Confirm at most one oxblood beam per page-level artifact.
+3. Measure beam length: must be exactly u3, u4, or u5 (24/32/48px).
+   Off-scale lengths are defects.
+4. Tab through every focusable element. Confirm a teal beam appears
+   under each on focus and disappears on blur, with no flash or
+   animation.
+5. Print the page. Each beam must measure 0.5mm ±0.1mm height and
+   the corresponding scale length ±0.5mm.
+
+@@rationale
+A beam carries a verb because verbs are the load-bearing semantics
+of the kit: this is signal, this is emphasis, this is a citation.
+A reader trained on the three verbs reads anchors instantly. Adding
+a fourth verb costs every reader a re-learning event, which is why
+the set is closed.
+
+Length is short by definition because a long bar reads as a rule
+(separator), not an anchor (mark). The 24-48px range is the
+threshold where a horizontal stroke reads as "a thing attached to
+that other thing," not as "a divider between regions."
+
+Reference: Bauhaus poster typography (Bayer, Tschichold) on
+constructivist anchor marks; ISO 14289-1 on focus indicator
+requirements.
+@ems-end
+*/
+
+.ems-beam {
+  display: block;
+  height: var(--ems-rule-beam);
+  width: var(--ems-u4);
+  background: var(--ems-color-oxblood);
+  margin: var(--ems-u2) 0;
+}
+
+/* @ems-variant beam/signal  · teal · current state, focus */
+.ems-beam--signal  { background: var(--ems-color-teal); }
+
+/* @ems-variant beam/archive · indigo · citation anchor */
+.ems-beam--archive { background: var(--ems-color-indigo); }
+
+/* @ems-variant beam/short · u3 · in-line with smaller type */
+.ems-beam--short { width: var(--ems-u3); }
+/* @ems-variant beam/long  · u5 · masthead-scale */
+.ems-beam--long  { width: var(--ems-u5); }
+/*
+@ems-id      devices/spine
+@ems-kind    device
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/rule, tokens/space, grid/page
+@ems-cited-by  grid/reservoir, components/letter, components/spec-doc
+
+@ems-prose
+@@purpose
+The spine. The vertical structural axis of a page. A spine is either
+an empty column (void spine) or a 1px ink rule (rule spine) running
+the full height of a content region. The spine holds the page open;
+metadata and prose balance around it.
+
+@@required
+- On every scholar-layout letter (components/letter): a void spine
+  between the metadata column (1/3) and the prose column (2/3).
+- On every spec-doc (components/spec-doc): a rule spine between the
+  numbered-section column (left) and the body column (right).
+- On any reservoir layout (grid/reservoir): a spine between the two
+  columns, void or rule per the layout's specification.
+
+@@permitted
+- A second spine on wide layouts (>1400px content width) splitting
+  the prose column itself for parallel content (translation,
+  question/answer).
+- A spine on a printed card when the card has both an obverse and
+  reverse layout printed on the same physical surface (rare).
+
+@@forbidden
+- Spines without a corresponding column structure on either side.
+  A vertical line in the middle of unbalanced content reads as a
+  decorative bar, not a structural axis.
+- Spines that do not run the full height of their content region.
+  Half-height spines read as forgotten borders.
+- Colored spines. The spine is always ink (rule) or void.
+- Spines as page borders (left or right edge of the page). The page
+  edge is the page edge.
+- More than two spines per page. The third spine is a column
+  structure, which is grid/page, not devices/spine.
+
+@@geometry
+Position (in column units of grid/page):
+- 1/3 mark · scholar layout · default. Metadata left, prose right.
+  Or its mirror: prose left, annotation right.
+- 1/2 mark · paired layout · symmetric content (source/translation).
+- 2/3 mark · annotation layout · prose left, sparse metadata right.
+
+Width (void spine): u3 (24px), u4 (32px, default), or u5 (48px).
+Width (rule spine): `--ems-rule-hair` (1px) ink line, with u3 of
+gutter on either side (so the rule visually sits at the column
+boundary with breathing room).
+
+Height: 100% of the content region. The spine begins at the top of
+the first content row and ends at the bottom of the last content
+row. It does not extend into page padding.
+
+@@color
+Void spine: no color (it is empty space).
+Rule spine: `--ems-color-ink` at hairline weight.
+Inverted ground: rule spine becomes `--ems-color-paper` at the same
+hairline weight.
+
+@@behavior
+Hover, focus, print, reduced motion: spines are static structural
+elements with no interactive states.
+
+Responsive: at viewport widths below 720px, the scholar and paired
+layouts collapse to a single column; the spine disappears. The
+collapsed layout uses devices/rule (horizontal hairline) between
+metadata and prose instead.
+
+@@conflicts
+- Spine plus dense horizontal rules (e.g. a spec-doc with hairlines
+  between every row): use the rule spine. The rule spine provides
+  the counter-axis the page needs.
+- Spine plus generous whitespace (e.g. a sparse letter): use the
+  void spine. The rule version reads as overdesign on a page that
+  is already structured by space.
+- Two spines proposed on a layout that does not have parallel
+  content: collapse to one. A second spine is a sign the columns
+  are arbitrary.
+
+@@test
+1. Identify the spine on the page. Confirm it sits at one of three
+   sanctioned positions (1/3, 1/2, 2/3).
+2. Measure the spine's height. It must equal the content region's
+   height (top of first row to bottom of last row), within ±2px.
+3. Check the columns on either side: each must be load-bearing
+   content, not a residual margin.
+4. At viewport < 720px, confirm the spine has collapsed and a
+   horizontal rule has taken its place between the (now stacked)
+   columns.
+
+@@rationale
+The spine is the kit's primary vertical structural device because
+the kit's pages are read top-to-bottom (prose) and side-to-side
+(metadata-to-prose). The reader's eye needs a vertical axis to
+hold the two reading directions in relation. Whitespace alone
+allows them to drift; a spine fixes their relationship.
+
+Void vs. rule because the page's existing density picks for you.
+A page already dense with horizontal rules needs the rule spine
+as counter-axis. A page sparse with rules has plenty of structural
+contrast already; a void spine carries the axis without adding
+ink.
+
+Reference: Tschichold, The Form of the Book, on the active
+margin; van de Velde and Bauhaus poster work on the spine as
+constructivist axis.
+@ems-end
+*/
+
+.ems-spine {
+  flex: 0 0 var(--ems-u4);
+  width: var(--ems-u4);
+  align-self: stretch;
+}
+
+/* @ems-variant spine/wide  · u5 · default for letters */
+.ems-spine--wide { flex-basis: var(--ems-u5); width: var(--ems-u5); }
+/* @ems-variant spine/narrow · u3 · dense layouts */
+.ems-spine--narrow { flex-basis: var(--ems-u3); width: var(--ems-u3); }
+/* @ems-variant spine/rule  · 1px ink rule with u3 gutters either side */
+.ems-spine--rule {
+  flex-basis: calc(var(--ems-u3) * 2 + 1px);
+  width: calc(var(--ems-u3) * 2 + 1px);
+  border-left: var(--ems-rule-hair) solid var(--ems-color-ink);
+  margin-left: var(--ems-u3);
+}
+/*
+@ems-id      devices/block
+@ems-kind    device
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/space, tokens/type, type/scale
+@ems-cited-by  components/masthead, components/letter, marks/wordmark
+
+@ems-prose
+@@purpose
+The block. Type-as-mass: a headline or paragraph that functions as a
+load-bearing rectangle in the composition. The block is structural
+matter that happens to also be readable. Two roles: block/beam (large
+display type as the page's primary mass) and block/reservoir (a dense
+paragraph as a counterweight in the layout).
+
+@@required
+block/beam:
+- The wordmark in the masthead.
+- The h1 of any page that does not have a masthead (rare: cards,
+  posters, single-screen prototypes).
+- The cover slug on any printed cover.
+
+block/reservoir:
+- The lede paragraph of every long-form letter.
+- The opening paragraph of every spec-doc, after the spec-band but
+  before the numbered sections.
+
+@@permitted
+- A second block/reservoir mid-letter, when a single dense paragraph
+  carries argumentative weight (e.g. the thesis statement of an
+  essay). Maximum two reservoir blocks per letter.
+
+@@forbidden
+- Block/beam at body or lede sizes. The minimum size for a beam-block
+  is h1 (48px); below that, the type is no longer reading as mass.
+- Decorative blocks (a heading set in display type just to fill a
+  hero region). Every block must carry meaning that earns its scale.
+- Center-aligned blocks. Both block roles align to the left margin.
+- Blocks with backgrounds or borders. The block holds its edges by
+  mass, not by frame.
+- Block/beam in serif. Display-as-mass is sans only; serif at display
+  size reads as ornament.
+
+@@geometry
+block/beam:
+- Type: --ems-type-sans, --ems-weight-medium
+- Size: 48px (h1), 96px (display); no other sizes
+- Leading: 1.05 at h1, 0.9 at display
+- Tracking: -0.03em at h1, -0.04em at display
+- Width: spans its column; never centered, never max-width-capped
+- Top margin: u4 (32px) above; u3 (24px) below
+
+block/reservoir:
+- Type: --ems-type-serif, --ems-weight-regular
+- Size: 16px (default), 20px (lede)
+- Leading: 1.65 at body, 1.5 at lede
+- Width: 32em-38em (single measure)
+- Top margin: u3 (24px); bottom margin: u4 (32px)
+
+@@color
+block/beam: --ems-color-ink (default), --ems-color-paper on inverted
+ground.
+block/reservoir: --ems-color-ink (default), --ems-color-ink-soft only
+when the block is a pulled-quote variant (rare; falls outside this
+device into type/prose blockquote).
+
+@@behavior
+Hover, focus, print, reduced motion: the block is static. No type
+animations.
+
+Print: blocks render as-typed. The display block is the most
+ink-heavy element on the page; ensure the press has clean coverage
+on the rendered area.
+
+@@conflicts
+- Block/beam adjacent to a colored beam (devices/beam): keep both
+  but separate by u3 minimum. The colored beam reads as anchor; the
+  block reads as mass.
+- Two block/reservoirs in adjacent paragraphs: collapse to one.
+  Reservoir is for paragraphs that bear argumentative weight; an
+  entire letter cannot be reservoir without losing the device.
+
+@@test
+1. Identify each block on the page (beam and reservoir).
+2. Confirm beam-blocks are sans-medium at h1 or display size.
+3. Confirm reservoir-blocks are serif-regular at body or lede size.
+4. Cover the type with your hand and look only at the rectangle the
+   block occupies. The block must read as a deliberate mass in the
+   composition, not as a residual region.
+5. Print and confirm display blocks render with even ink coverage.
+
+@@rationale
+The block is the kit's tribute to constructivist typography: type
+as building material. Bauhaus posters used letterforms as
+architectural elements; the kit uses display type the same way. The
+distinction between beam-block (sans, structural) and reservoir-
+block (serif, dense prose) preserves the verb separation: structure
+vs. read.
+
+Reference: Tschichold, Asymmetric Typography (1935); Bayer's Bauhaus
+posters; Tufte on the Cassandra/reservoir distinction in dense
+information design.
+@ems-end
+*/
+
+.ems-block-beam {
+  font-family: var(--ems-type-sans);
+  font-weight: var(--ems-weight-medium);
+  font-size: 72px;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--ems-color-ink);
+  display: block;
+}
+
+/* @ems-variant block-beam/h1      · 48px headline scale */
+.ems-block-beam--h1 { font-size: 48px; line-height: 1.05; letter-spacing: -0.03em; }
+
+.ems-block-reservoir {
+  font-family: var(--ems-type-serif);
+  font-weight: var(--ems-weight-regular);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ems-color-ink);
+  max-width: 38em;
+}
+
+/* @ems-variant block-reservoir/lede · 20px opening paragraph */
+.ems-block-reservoir--lede { font-size: 20px; line-height: 1.5; }
+/*
+@ems-id      devices/triad
+@ems-kind    device
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/space, tokens/type
+@ems-cited-by  components/masthead, components/colophon, components/tag-stack
+
+@ems-prose
+@@purpose
+The triad. Three sibling elements arranged with equal spacing — the
+smallest pattern the eye reads as rhythm rather than enumeration. The
+triad is the kit's preferred grouping when the content is a system
+of related elements (contact + license + support; date + author +
+venue) rather than an ordered list.
+
+@@required
+- The colophon (components/colophon): always a triad of metadata
+  clusters (contact · license · support).
+- The masthead band when the band carries three pieces of metadata
+  (path · date · license).
+- The tag stack (components/tag-stack) when fewer than four tags are
+  present (with four+ tags it becomes a wrapping list).
+
+@@permitted
+- Three top-level navigation items, when navigation has exactly three
+  destinations.
+- Three feature blocks on a printed card.
+
+@@forbidden
+- Triads of jewels (one teal, one oxblood, one indigo). The three
+  jewels carry distinct verbs and read as conflict in a triad.
+- Triads with mixed type roles (one mono label and two serif body
+  texts). All three elements must share role.
+- Two-element pairs styled as triads with empty third slots.
+  Two-element groups are pairs (devices/triad does not apply).
+- Four-element groups styled as triads with a fourth element nudged
+  smaller. Four elements is a list (or a 2x2 grid).
+
+@@geometry
+Layout: CSS grid with three equal columns OR flexbox with three
+flex:1 children.
+
+Gap between elements: u4 (32px) at default; u3 (24px) when the triad
+fits a constrained region (card, masthead band); u5 (48px) when the
+triad spans full page width on a sparse layout.
+
+Vertical alignment: baseline-aligned (every element's first line
+sits on the same baseline).
+
+Element widths: equal. The triad is symmetric by construction.
+
+@@color
+The triad does not introduce color. Each element renders in its own
+type role's color (typically ink for spec, ink-soft for spec-data,
+ink for body).
+
+@@behavior
+Responsive: at viewport < 720px, the triad collapses to a stack with
+u3 vertical gap between elements. The stacked form preserves the
+equal weighting; it does not promote any element.
+
+Hover, focus, print: the triad is layout, not interaction. Internal
+elements (links inside a triad cell) follow their own behavior.
+
+Reduced motion: not applicable.
+
+@@conflicts
+- Triad with a clear hierarchy (one element more important than the
+  others): wrong device. Use a heading + two siblings instead.
+- Triad with growing elements (one piece of content longer than the
+  other two): the triad still works because alignment is to the
+  first baseline; the longer element extends downward without
+  breaking the rhythm.
+
+@@test
+1. Identify the triad on the page. Confirm it has exactly three
+   elements with equal spacing and equal column widths.
+2. Confirm all three elements share a type role and color.
+3. Read the triad three times: as left-to-right, as right-to-left,
+   and as a whole. The triad must read consistently in all three.
+   If one element dominates, the triad has a hierarchy problem.
+4. Resize the viewport below 720px. Confirm the triad collapses to
+   a vertical stack with equal-weight elements.
+
+@@rationale
+Three reads as rhythm because of how the eye learns patterns. Two
+elements read as a pair (binary, comparative); three establish a
+beat the eye can confirm; four+ becomes a list (countable,
+sequential). The triad is the smallest pattern that carries rhythm
+without becoming arithmetic.
+
+Reference: Wagemans et al., A Century of Gestalt Psychology in
+Visual Perception (2012), on grouping principles and rhythm
+perception; Tufte, Envisioning Information, on small multiples
+(which extend triadic logic into N).
+@ems-end
+*/
+
+.ems-triad {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--ems-u4);
+  align-items: baseline;
+}
+
+/* @ems-variant triad/tight · u3 gap, for masthead bands and cards */
+.ems-triad--tight { gap: var(--ems-u3); }
+/* @ems-variant triad/wide  · u5 gap, for sparse full-page layouts */
+.ems-triad--wide  { gap: var(--ems-u5); }
+
+@media (max-width: 720px) {
+  .ems-triad,
+  .ems-triad--tight,
+  .ems-triad--wide {
+    grid-template-columns: 1fr;
+    gap: var(--ems-u3);
+  }
+}
+/*
+@ems-id      type/stack
+@ems-kind    type-system
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/type, tokens/color, tokens/space, type/scale
+@ems-cited-by  type/prose, type/citations, components/*
+
+@ems-prose
+@@purpose
+The four type ROLES of the kit. A role is a functional category —
+a job the text is doing on the page. Every text element on every
+page is exactly one of these four roles. Size, weight, and color
+follow from role; role does not follow from size.
+
+The four roles:
+  · display · primary structural mass (masthead, cover, page title)
+  · heading · section and subsection titles
+  · body    · long-form prose
+  · spec    · metadata, paths, dates, code, tags
+
+@@required
+Every visible text node on every page resolves to one of the four
+roles. The role determines the type family, the weight, the size
+range from type/scale, and the default color.
+
+display: one per page (the masthead beam-block, or the page title
+when there is no masthead).
+heading: present on any page with two or more sections.
+body: present on any page with prose.
+spec: present in every masthead band, every colophon cell, every
+date stamp, every tag.
+
+@@permitted
+- A page with only spec and body roles (the library index, the
+  archive). The display role is a privilege, not a requirement.
+- A subtitle expressed either as a lede body paragraph or as a spec
+  line. The heading carries its own context — a subtitle is a
+  separate decision.
+
+@@forbidden
+- A fifth role. The kit does not include "caption", "legend",
+  "label" as separate roles — those are spec or body in context.
+- Three levels of heading (h1 → h2 → h3). When content reaches for
+  a third level, the page splits into two pages, one heading deep
+  each.
+- Two display blocks on one page. Display is structural mass; two
+  masses compete and the page loses its weight.
+- Mixing roles within a sentence (a body sentence with a spec span
+  inside, set in mono mid-line). Cross-role references are made by
+  citation typography (type/citations), not by inline role mixing.
+- Display in serif. Display is sans-medium; serif at display size
+  reads as decoration, not mass.
+- Spec in a non-mono family. Spec is mono; spec in sans reads as a
+  caption, not as metadata.
+
+@@geometry
+display:
+- Family: --ems-type-sans · medium
+- Sizes: display (96px) or h1 (48px)
+- Leading: paired (0.9 / 1.05)
+- Tracking: -0.04em / -0.03em
+- Color: --ems-color-ink
+
+heading:
+- Family: --ems-type-sans · medium
+- Sizes: h1 (48px) or h2 (24px)
+- Leading: paired (1.05 / 1.25)
+- Tracking: -0.03em / -0.01em
+- Color: --ems-color-ink
+
+body:
+- Family: --ems-type-serif · regular
+- Sizes: body (16px) or lede (20px)
+- Leading: paired (1.65 / 1.5)
+- Tracking: 0
+- Color: --ems-color-ink
+- Measure: 38em (body), 34em (lede)
+
+spec:
+- Family: --ems-type-mono
+- Weight: medium for label form, regular for data form
+- Sizes: spec (12px) for labels, spec-data (14px) for values
+- Tracking: 0.16em on label form (uppercase), 0 on data form
+- Case: uppercase on label form, mixed case on data form
+- Color: --ems-color-ink-soft on label, --ems-color-ink on data
+
+@@behavior
+Hover, focus: roles are static. Interactive states belong to the
+component that contains the text (link, button), not to the role
+itself.
+
+Print: roles render as-typed. The body role at 16px maps to ~12pt,
+the kit's print body baseline.
+
+Reduced motion: not applicable.
+
+@@conflicts
+- Display and a colored beam adjacent: keep both, separate by u3.
+- A body paragraph with a long uppercase phrase: rewrite the prose.
+  Caps in body break the measure and the rhythm.
+- A spec line that wants emphasis: spec does not take emphasis.
+  If the line needs emphasis, it is the wrong role — promote it
+  to a heading or body sentence.
+
+@@test
+1. List every text element on the page. Confirm each one is exactly
+   one of: display, heading, body, spec.
+2. Confirm display appears at most once.
+3. Confirm headings appear in only two levels.
+4. Confirm spec is set in mono.
+5. Confirm body is set in serif.
+6. Confirm display is set in sans.
+7. Read the page once attending only to type roles, ignoring
+   content. The page must read as a clean composition of the four.
+
+@@rationale
+Roles are the kit's primary discipline. The temptation in any type
+system is to add sizes when content gets unruly; the kit's response
+is to add structure to the content instead. Four roles cover the
+work of long-form research writing: the page declares (display),
+organizes (heading), reads (body), and identifies (spec). Anything
+else is one of these four wearing the wrong costume.
+
+Reference: Bauhaus Typografie (Tschichold), on type as functional
+category; Bringhurst, on the rhetoric of typographic roles.
+@ems-end
+*/
+
+.ems-display {
+  font-family: var(--ems-type-sans);
+  font-weight: var(--ems-weight-medium);
+  font-size: var(--ems-size-display);
+  line-height: var(--ems-lead-display);
+  letter-spacing: -0.04em;
+  color: var(--ems-color-ink);
+  margin: 0;
+}
+
+.ems-h1 {
+  font-family: var(--ems-type-sans);
+  font-weight: var(--ems-weight-medium);
+  font-size: var(--ems-size-h1);
+  line-height: var(--ems-lead-h1);
+  letter-spacing: -0.03em;
+  color: var(--ems-color-ink);
+  margin: 0;
+}
+
+.ems-h2 {
+  font-family: var(--ems-type-sans);
+  font-weight: var(--ems-weight-medium);
+  font-size: var(--ems-size-h2);
+  line-height: var(--ems-lead-h2);
+  letter-spacing: -0.01em;
+  color: var(--ems-color-ink);
+  margin: 0;
+}
+
+.ems-body {
+  font-family: var(--ems-type-serif);
+  font-weight: var(--ems-weight-regular);
+  font-size: var(--ems-size-body);
+  line-height: var(--ems-lead-body);
+  color: var(--ems-color-ink);
+  text-wrap: pretty;
+  max-width: 38em;
+  margin: 0;
+}
+
+.ems-lede {
+  font-family: var(--ems-type-serif);
+  font-weight: var(--ems-weight-regular);
+  font-size: var(--ems-size-lede);
+  line-height: var(--ems-lead-lede);
+  color: var(--ems-color-ink);
+  text-wrap: pretty;
+  max-width: 34em;
+  margin: 0;
+}
+
+.ems-spec {
+  font-family: var(--ems-type-mono);
+  font-weight: var(--ems-weight-medium);
+  font-size: var(--ems-size-spec);
+  line-height: var(--ems-lead-spec);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ems-color-ink-soft);
+  margin: 0;
+}
+
+.ems-spec-data {
+  font-family: var(--ems-type-mono);
+  font-weight: var(--ems-weight-regular);
+  font-size: var(--ems-size-spec-data);
+  line-height: var(--ems-lead-spec-data);
+  color: var(--ems-color-ink);
+  margin: 0;
+}
+/*
+@ems-id      type/prose
+@ems-kind    type-system
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/type, tokens/color, tokens/space, type/scale, type/stack, devices/rule
+@ems-cited-by  components/letter, components/spec-doc, components/library-page
+
+@ems-prose
+@@purpose
+The treatment of long-form prose: paragraphs, lists, quotes, code,
+emphasis, links. The body role (type/stack) sets the type family
+and size; this resource specifies how prose composes within that
+role — measure, leading, paragraph break style, list markers,
+quote indent, code voice, and link affordance.
+
+@@required
+Every long-form passage (a letter, a spec section, a library
+listing's lead text) uses these conventions. The kit's letters and
+spec-docs build their reading experience on this resource.
+
+@@permitted
+- An epigraph at the head of a letter, set as a blockquote
+  immediately above the lede paragraph. One epigraph per letter.
+- A footnote-style aside set in spec-data inside a body passage,
+  separated by horizontal rules. Used sparingly; in research
+  letters, prefer footnotes (components/footnote).
+
+@@forbidden
+- Indented first lines on paragraphs. The kit separates paragraphs
+  by space, not by indent.
+- First-line indents combined with paragraph spacing. Pick one
+  break convention; the kit picks space.
+- Centered paragraphs. All prose aligns to the column's left edge.
+- Justified prose without proper hyphenation. The kit ships
+  ragged-right body; justification requires a hyphenation engine
+  the kit does not assume.
+- Emphasis stacked beyond two layers (italic + bold + caps). Two
+  layers maximum (italic OR bold; the rare phrase that wants both
+  becomes its own block).
+- Decorative bullets (•, ●, ★). The kit's unordered marker is the
+  em-dash; the ordered marker is decimal-leading-zero in mono.
+- Code blocks with backgrounds. Code reads through type, not
+  through fill. Hairline rules above and below the block delimit
+  it.
+
+@@measure
+Body paragraph: 38em maximum. Sweet spot ~32em. Below 24em prose
+becomes choppy; the eye loses the return-stroke.
+Lede paragraph: 34em maximum.
+Blockquote: 36em maximum (one indent unit narrower than body).
+List: 38em maximum, with the marker hung outside the column on the
+left.
+
+@@geometry
+PARAGRAPHS:
+- Separated by space (u2 = 16px below); never indented.
+- Maximum 38em wide, ragged right.
+
+LISTS:
+- Unordered marker: em-dash (—) in --ems-color-ink-soft, hung u3
+  outside the column.
+- Ordered marker: decimal-leading-zero (01, 02, 03…) set in mono
+  at spec-data size, hung u4 outside the column.
+- Item separation: u (8px) between list items.
+
+QUOTES:
+- Blockquote indented u3 from the spine, with a hairline rule on
+  the left edge.
+- Set in italic at body size, in --ems-color-ink-soft.
+- Attribution on its own line, set in spec voice.
+
+CODE:
+- Inline code: mono at 0.92em (relative to surrounding body), in
+  --ems-color-teal.
+- Code block: mono at spec-data size (14px), in --ems-color-ink,
+  bracketed top and bottom by hairline rules. Padding u3 vertical,
+  no horizontal padding.
+
+LINKS:
+- Body links: --ems-color-teal, underlined with the rule/hair
+  weight, offset 3px from the baseline.
+- On hover: underline thickens to rule/beam weight (2px). No color
+  change.
+
+EMPHASIS:
+- Italic: first introduction of a term, soft stress.
+- Bold (700): hard stress, twice per page maximum.
+
+@@color
+Body prose: --ems-color-ink.
+Blockquote prose: --ems-color-ink-soft.
+Inline code: --ems-color-teal.
+Links: --ems-color-teal.
+Markers (list bullets, citation marks): --ems-color-ink-soft.
+
+@@behavior
+Hover (links only): underline thickens from hair (1px) to beam
+(2px). No color change, no transition delay, no animation easing —
+the change is instant and binary.
+
+Focus: the same beam underline plus a 2px outline offset by 2px,
+in --ems-color-ink. Visible on keyboard navigation only.
+
+Print: code retains teal (the kit allows two-color print: black +
+oxblood; teal becomes black at print). Links lose underline and
+gain a parenthetical URL via :after pseudo-element.
+
+Reduced motion: not applicable. Prose has no animation.
+
+@@conflicts
+- A list with sub-lists: the kit allows one level of nesting at
+  most, and the nested list uses the opposite marker style
+  (ordered nested in unordered, or vice versa). Two levels of the
+  same marker style is forbidden.
+- A code block longer than a screen: split into multiple blocks
+  separated by body prose. The page is not a terminal.
+- A blockquote longer than four paragraphs: that's a pull-quote,
+  not a quote. Use components/letter's pull-quote treatment instead.
+
+@@test
+1. Read a paragraph aloud. Confirm the eye returns to the next
+   line without losing position (measure check).
+2. Audit list markers: every unordered list uses em-dash, every
+   ordered list uses decimal-leading-zero in mono.
+3. Audit emphasis: confirm bold appears at most twice on the page.
+4. Audit links: hover any link, confirm the underline thickens
+   without color change.
+5. Print the page. Confirm code blocks render with hairlines top
+   and bottom, no background fill.
+
+@@rationale
+Long-form prose is the medium emsenn writes in. The conventions
+here are the conventions of the printed scholarly essay: ragged
+right, paragraph space rather than indent, blockquote indented from
+the spine, footnotes in mono. The kit ports them to screen
+faithfully. The choice of em-dash for unordered marker echoes the
+hand-written list and the typographic dash; decimal-leading-zero
+ordered marker echoes the spec document.
+
+Reference: Bringhurst §3.2 (paragraph and indent); Tufte, on
+sparkline-density typography; Williams, Style: Lessons in Clarity,
+on the limits of stacked emphasis.
+@ems-end
+*/
+
+.ems-prose p {
+  font-family: var(--ems-type-serif);
+  font-size: var(--ems-size-body);
+  line-height: var(--ems-lead-body);
+  color: var(--ems-color-ink);
+  text-wrap: pretty;
+  max-width: 38em;
+  margin: 0 0 var(--ems-u2) 0;
+}
+
+.ems-prose p + p { margin-top: var(--ems-u2); }
+
+.ems-prose em { font-style: italic; color: var(--ems-color-ink); }
+.ems-prose strong { font-weight: var(--ems-weight-bold); }
+
+.ems-prose ul, .ems-prose ol {
+  list-style: none;
+  padding-left: var(--ems-u4);
+  margin: var(--ems-u2) 0;
+  max-width: 38em;
+}
+
+.ems-prose li {
+  font-family: var(--ems-type-serif);
+  font-size: var(--ems-size-body);
+  line-height: var(--ems-lead-body);
+  color: var(--ems-color-ink);
+  position: relative;
+  margin-bottom: var(--ems-u);
+}
+
+.ems-prose ul li::before {
+  content: "—";
+  position: absolute;
+  left: calc(-1 * var(--ems-u3));
+  color: var(--ems-color-ink-soft);
+}
+
+.ems-prose ol { counter-reset: ems-li; }
+.ems-prose ol li { counter-increment: ems-li; }
+.ems-prose ol li::before {
+  content: counter(ems-li, decimal-leading-zero) "  ";
+  position: absolute;
+  left: calc(-1 * var(--ems-u4));
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec-data);
+  color: var(--ems-color-ink-soft);
+}
+
+.ems-prose blockquote {
+  margin: var(--ems-u3) 0;
+  padding-left: var(--ems-u3);
+  border-left: var(--ems-rule-hair) solid var(--ems-color-ink);
+  color: var(--ems-color-ink-soft);
+  font-style: italic;
+  max-width: 36em;
+}
+.ems-prose blockquote p { color: inherit; font-style: inherit; }
+.ems-prose blockquote cite {
+  display: block;
+  margin-top: var(--ems-u);
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-style: normal;
+  color: var(--ems-color-ink-soft);
+}
+
+.ems-prose code {
+  font-family: var(--ems-type-mono);
+  font-size: 0.92em;
+  color: var(--ems-color-teal);
+}
+
+.ems-prose pre {
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec-data);
+  line-height: 1.6;
+  padding: var(--ems-u3) 0;
+  margin: var(--ems-u3) 0;
+  border-top: var(--ems-rule-hair) solid var(--ems-color-ink);
+  border-bottom: var(--ems-rule-hair) solid var(--ems-color-ink);
+  overflow-x: auto;
+  color: var(--ems-color-ink);
+}
+
+.ems-prose a {
+  color: var(--ems-color-teal);
+  text-decoration: underline;
+  text-decoration-thickness: var(--ems-rule-hair);
+  text-underline-offset: 3px;
+}
+.ems-prose a:hover { text-decoration-thickness: var(--ems-rule-beam); }
+/*
+@ems-id      type/citations
+@ems-kind    type-system
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/type, tokens/color, tokens/space, type/scale
+@ems-cited-by  components/citation, components/footnote, components/letter, components/spec-doc
+
+@ems-prose
+@@purpose
+The typography of citations. Three forms — inline, footnote,
+cluster — each carrying the indigo register (the kit's "cite" verb).
+This resource specifies how each form is set; the components
+(components/citation, components/footnote) compose them into the
+page furniture they belong to.
+
+@@required
+Every citation in every kit-rendered document uses one of the
+three forms.
+
+inline form: required when the citation supports a claim made in
+the body sentence and the reader benefits from the source being
+named in line. Author-year style.
+
+footnote form: required when the citation is supplementary — the
+body sentence stands without it, but the curious reader can follow
+the mark to a margin note.
+
+cluster form: required at the foot of any document with three or
+more citations.
+
+@@permitted
+- A document with a cluster only (no inline, no footnotes). Common
+  in research letters where citations are summative rather than
+  inline.
+- A footnote that elaborates without citing a source. The footnote
+  form covers both citation footnotes and elaboration footnotes;
+  the typography is identical.
+
+@@forbidden
+- Citations in a non-indigo color. The kit's "cite" verb is indigo;
+  every citation form carries this register.
+- Variation in citation color to imply hierarchy (primary citation
+  in dark indigo, secondary in light). Hierarchy comes from
+  position (inline / margin / foot), not from color shade.
+- Inline citations breaking measure. An inline citation that grows
+  too long for the line becomes a footnote.
+- Numeric inline citations (Tufte, p. 1990, [12]). The inline form
+  is author-year. Numeric forms are footnote-only.
+- Citations set in serif or sans. Citations are mono — the verb
+  is "cite", and the kit's mono register is what carries it.
+
+@@geometry
+inline:
+- Family: --ems-type-mono
+- Size: --ems-size-spec-data (14px)
+- Color: --ems-color-indigo
+- white-space: nowrap (the citation does not break across lines)
+- Format: (Author Year) — e.g. (Tufte 1990); for two authors
+  (Tufte and Bringhurst 2006); for three or more (Wagemans et al.
+  2012)
+
+footnote mark (the superscript in body):
+- Family: --ems-type-mono
+- Size: 0.75em (relative to surrounding body)
+- vertical-align: super
+- Color: --ems-color-indigo
+- text-decoration: none
+- margin-left: 1px (sit close to the word it follows)
+
+footnote entry (the line in the margin or foot):
+- Family: --ems-type-mono
+- Size: --ems-size-spec-data (14px)
+- Leading: --ems-lead-spec-data (1.55)
+- Color: --ems-color-indigo
+- Layout: 2-column grid · u3 (24px) for number · 1fr for body
+- Gap: u (8px) between number column and body column
+
+cluster (the citation block at the foot of a document): see
+components/citation for the composed form. The typography of each
+row: mono key in indigo (left), serif body in ink (right). Hairline
+between rows.
+
+@@color
+All three forms render in --ems-color-indigo.
+
+The cluster's body text is the only exception: the human-readable
+description of each citation in the cluster is set in serif body
+color (--ems-color-ink), because that text is read as prose, not
+as identifier. The cluster's KEY (the mono identifier on the left)
+remains indigo.
+
+@@behavior
+Hover (footnote mark): the mark gains a beam-weight underline in
+indigo. No color shift, no animation.
+
+Focus: same as hover, plus a 2px outline offset by 2px.
+
+Click (footnote mark): scrolls smoothly to the corresponding
+footnote entry; the entry receives a u-wide indigo beam to the
+left of its row for 2 seconds, then fades.
+
+Print: inline citations and cluster keys remain indigo. Footnote
+marks lose hyperlink behavior; the print stylesheet renders them
+as plain superscript and the footnote entries appear at the foot
+of the page.
+
+Reduced motion: smooth scroll becomes instant; the indigo beam
+beside the entry remains (it is not motion).
+
+@@conflicts
+- A document with citations in two systems (parenthetical inline
+  AND numeric footnotes referring to the same sources): pick one.
+  The kit's convention is footnotes for supplementary, inline for
+  in-flow; a numeric inline form is forbidden.
+- A citation cluster with fewer than three entries: collapse to
+  inline citations or footnotes.
+
+@@test
+1. Audit every citation. Confirm each one is in one of three forms.
+2. Confirm every citation renders in indigo.
+3. Confirm every citation is set in mono.
+4. Hover a footnote mark. Confirm the beam underline appears
+   without color shift.
+5. Click a footnote mark. Confirm the page scrolls and the
+   corresponding entry receives a brief indigo beam.
+6. Print the page. Confirm citations remain indigo and footnote
+   entries appear at the foot.
+
+@@rationale
+The three forms map to three distinct citation needs in long-form
+research writing. Inline names the source as part of the argument;
+footnote acknowledges without disrupting the read; cluster collects
+the apparatus at the end. By assigning all three to a single color
+(indigo) and a single family (mono), the kit lets position do the
+work of hierarchy — the reader who sees indigo mono knows
+"reference"; the position tells them which kind.
+
+Reference: Chicago Manual of Style §14, on author-date and notes-
+bibliography systems; Tschichold, on the typography of the apparatus;
+Tufte, Visual Display, on small ink for high-density information.
+@ems-end
+*/
+
+.ems-cite-inline {
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec-data);
+  color: var(--ems-color-indigo);
+  white-space: nowrap;
+}
+
+.ems-cite-footnote-mark {
+  font-family: var(--ems-type-mono);
+  font-size: 0.75em;
+  vertical-align: super;
+  color: var(--ems-color-indigo);
+  text-decoration: none;
+  margin-left: 1px;
+}
+
+.ems-cite-footnote-entry {
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec-data);
+  line-height: var(--ems-lead-spec-data);
+  color: var(--ems-color-indigo);
+  display: grid;
+  grid-template-columns: var(--ems-u3) 1fr;
+  gap: var(--ems-u);
+  margin-bottom: var(--ems-u);
+}
+/*
+@ems-id      grid/page
+@ems-kind    layout
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/space, devices/spine, devices/rule
+@ems-cited-by  grid/reservoir, grid/density, components/letter, components/spec-doc, components/library-page
+
+@ems-prose
+@@purpose
+Page geometry. The page is a column system anchored by a spine. This
+resource defines the three legal page geometries (scholar, paired,
+index) and the page's outer padding rules across the kit's three
+output surfaces (screen, print, card).
+
+@@required
+Every kit-rendered page selects exactly one of the three geometries.
+The geometry is declared at page level and inherited by every
+component below it.
+
+scholar geometry: required for letters, essays, papers — any
+single-author, single-thread document with metadata and prose.
+
+paired geometry: required for genuinely parallel content — source
+text with translation, question with answer, original with
+annotation.
+
+index geometry: required for archive listings, tables of contents,
+glossaries — pages whose primary read is scan, not flow.
+
+@@permitted
+- A scholar page that drops its metadata column on viewports below
+  720px. The metadata stacks above the prose; the spine becomes a
+  horizontal rule.
+- An index page that uses 6 columns instead of 12 on small
+  viewports. The metric stays divisible.
+
+@@forbidden
+- A fourth geometry. Pages that resist the three are usually doing
+  too much; split them.
+- Mixing geometries within a single page. A page is one geometry
+  end-to-end. (A page can contain components that themselves use
+  triads, paired layouts, etc — those are component layouts, not
+  page geometries.)
+- Centered page layouts. The kit aligns to the left margin; centered
+  pages break the spine.
+- Asymmetric padding to compensate for content imbalance. The fix
+  is the geometry choice, not the padding.
+
+@@geometry
+scholar:
+- Two columns: minmax(160px, 1fr) for the metadata margin · 2fr
+  for the prose column.
+- Gap between columns: u4 (32px)
+- Alignment: start (top-aligned, no centering)
+
+paired:
+- Two columns: 1fr · 1fr (equal)
+- Gap: u5 (48px) — wider than scholar to mark parallelism
+- Alignment: start
+
+index:
+- Twelve columns: repeat(12, 1fr)
+- Gap: u3 (24px)
+- The spine is implied by which column the metadata aligns to;
+  there is no rendered spine rule in this geometry.
+
+PAGE PADDING:
+- screen, default:    u6 outer (64px)
+- screen, compact:    u5 outer (48px), used on tag pages and indexes
+- print:              u7 top (96px) · u6 sides (64px) · u5 bottom
+                      (48px). Inner-edge sides get u7 instead of u6
+                      when binding allowance is needed.
+- card (business
+  card, postcard):    u3 (24px) on every edge
+
+@@behavior
+Geometries are static layout. They do not animate, transition, or
+respond to scroll.
+
+Responsive: scholar collapses metadata-above-prose at < 720px; index
+drops to 6 columns at < 960px and to a single-column list at
+< 600px. Paired stacks to single column at < 720px.
+
+Print: scholar and paired carry through unchanged. Index drops to
+6 or 8 columns depending on paper width.
+
+@@conflicts
+- A scholar page where the metadata column is empty: the geometry
+  loses its anchor. Either populate the column (date, tags, notes
+  count) or pick a different geometry.
+- An index page with rows that need wrapping: convert to a list
+  geometry inside scholar instead.
+
+@@test
+1. Identify the page's geometry. Confirm it is exactly one of:
+   scholar, paired, index.
+2. Confirm the spine sits at the geometry's natural anchor (left
+   third for scholar, midline for paired, implicit for index).
+3. Resize the viewport. Confirm the geometry collapses according to
+   its responsive rules.
+4. Print the page. Confirm padding adheres to the print column
+   (u7/u6/u5).
+
+@@rationale
+The three geometries cover the work the kit is built for: write
+(scholar), translate or compare (paired), index (index). A fourth
+geometry would mean a fourth kind of reading the kit supports;
+emsenn's research practice does not.
+
+The scholar geometry's 1:2 ratio (margin:prose) is borrowed from
+the codex tradition where the rubricated margin holds the apparatus
+and the body holds the text. The paired 1:1 is the textbook page
+of source-with-translation. The index 12-column metric is a print-
+typographer convention for typesetting reference matter.
+
+Reference: Hochuli & Kinross, Designing Books (1996), on the codex
+margin; Tschichold, on the paired page; Bringhurst §8 on the
+metric grid.
+@ems-end
+*/
+
+.ems-page {
+  background: var(--ems-color-paper);
+  min-height: 100%;
+  padding: var(--ems-u6);
+}
+
+.ems-page--compact { padding: var(--ems-u5); }
+.ems-page--print   { padding: var(--ems-u7) var(--ems-u6) var(--ems-u5); }
+
+/* @ems-grid scholar · 1/3 metadata · 2/3 prose */
+.ems-grid-scholar {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) 2fr;
+  gap: var(--ems-u4);
+  align-items: start;
+}
+
+/* @ems-grid paired · 1/2 + 1/2, gap u5 */
+.ems-grid-paired {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ems-u5);
+}
+
+/* @ems-grid index · 12 columns, u3 gap */
+.ems-grid-index {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--ems-u3);
+}
+
+@media (max-width: 720px) {
+  .ems-grid-scholar, .ems-grid-paired { grid-template-columns: 1fr; gap: var(--ems-u3); }
+}
+@media (max-width: 960px) {
+  .ems-grid-index { grid-template-columns: repeat(6, 1fr); }
+}
+@media (max-width: 600px) {
+  .ems-grid-index { grid-template-columns: 1fr; }
+}
+/*
+@ems-id      grid/density
+@ems-kind    layout
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/space, type/scale
+@ems-cited-by  components/letter, components/spec-doc, components/library-page
+
+@ems-prose
+@@purpose
+The kit's three density modes. Each mode is a coordinated reset of
+page padding, paragraph spacing, and prose measure — same vocabulary,
+three rhythms. A page declares its density once; every component
+below inherits it through CSS custom properties.
+
+@@required
+Every kit page declares a density. Unset is not a legal state.
+
+letter density: required for essays, correspondence, opinion writing,
+introductions. The mode the kit defaults to when the document is
+prose-led.
+
+spec density: required for technical specifications, formal papers,
+archive entries, reference documents. The mode the kit defaults to
+when the document is reference-led.
+
+index density: required for tables of contents, library listings,
+glossaries, search results. The mode the kit defaults to when the
+document is scan-led.
+
+@@permitted
+- A letter that contains a spec-density component (a citation cluster,
+  a metadata table). The component receives a `data-ems-density="spec"`
+  override on its container; the override is local to that subtree.
+- A spec-doc whose introduction is set in letter density. The
+  introduction receives a `data-ems-density="letter"` override; the
+  body of the spec returns to spec density.
+
+@@forbidden
+- An unset density. Every page declares one.
+- A fourth density mode. Pages that resist the three are usually
+  doing too much; split them by mode (an introduction in letter
+  density linking to a spec in spec density).
+- Per-element density overrides ("just this paragraph wants index
+  spacing"). Density is a regional property; element-level overrides
+  are forbidden.
+
+@@values
+Each density resets three custom properties:
+
+letter:
+- --ems-d-pad     u6 (64px) — page padding
+- --ems-d-gap     u3 (24px) — paragraph spacing
+- --ems-d-measure 32em      — prose measure
+
+spec:
+- --ems-d-pad     u4 (32px) — tighter padding for reference reads
+- --ems-d-gap     u  (8px)  — minimal paragraph spacing
+- --ems-d-measure 38em      — wider measure to fit longer technical lines
+
+index:
+- --ems-d-pad     u5 (48px) — comfortable scan padding
+- --ems-d-gap     u2 (16px) — listing-row spacing
+- --ems-d-measure none      — measure does not constrain scan reads
+
+@@behavior
+Densities are static. They do not animate or respond to scroll.
+
+The custom properties cascade through the document. Components that
+respect density read the variables; components that do not are
+explicitly density-agnostic (the masthead, the colophon — they look
+the same in every mode).
+
+Print: densities map directly. letter prints with generous margins;
+spec prints dense; index prints as a tabular reference.
+
+Reduced motion: not applicable.
+
+@@conflicts
+- Two density declarations on overlapping subtrees: the inner wins
+  (CSS custom property cascade), but this is a design smell. Reset
+  density at clear regional boundaries (a letter's introduction, a
+  spec's reference cluster), not mid-paragraph.
+- A density that wants letter measure with spec padding: this is a
+  fourth density. Either rewrite the content for one of the three,
+  or add the fourth as a deliberate kit extension via governance.
+
+@@test
+1. Identify the page's declared density (a class on .ems-page or a
+   data-ems-density attribute on the body).
+2. Confirm exactly one density declared at the page root.
+3. Audit components for unexpected local overrides. Any local
+   override must mark a clear regional boundary.
+4. Print the page. Confirm padding, paragraph spacing, and measure
+   match the declared density's print mapping.
+
+@@rationale
+A density mode is the coordinated answer to a question the kit
+gets asked again and again: "this page is the same vocabulary,
+how do I make it dense / sparse / scannable?" By naming the three
+answers the kit endorses, this resource removes the temptation to
+fiddle with padding and leading per-page. The page declares letter,
+spec, or index — the kit handles the rest.
+
+Reference: Müller-Brockmann, Grid Systems in Graphic Design, on
+modular density as a design discipline; Tufte, Visual Display, on
+density as a measure of information per unit ink.
+@ems-end
+*/
+
+.ems-density-letter { --ems-d-pad: var(--ems-u6); --ems-d-gap: var(--ems-u3); --ems-d-measure: 32em; }
+.ems-density-spec   { --ems-d-pad: var(--ems-u4); --ems-d-gap: var(--ems-u);  --ems-d-measure: 38em; }
+.ems-density-index  { --ems-d-pad: var(--ems-u5); --ems-d-gap: var(--ems-u2); --ems-d-measure: none; }
+
+[data-ems-density="letter"] { --ems-d-pad: var(--ems-u6); --ems-d-gap: var(--ems-u3); --ems-d-measure: 32em; }
+[data-ems-density="spec"]   { --ems-d-pad: var(--ems-u4); --ems-d-gap: var(--ems-u);  --ems-d-measure: 38em; }
+[data-ems-density="index"]  { --ems-d-pad: var(--ems-u5); --ems-d-gap: var(--ems-u2); --ems-d-measure: none; }
+/*
+@ems-id      grid/reservoir
+@ems-kind    layout
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/space, devices/spine, devices/block
+@ems-cited-by  components/letter, components/spec-doc
+
+@ems-prose
+@@purpose
+The reservoir layout. A two- or three-column composition: a spine on
+one or both sides carrying metadata, and a reservoir block (a dense
+prose paragraph or stack of paragraphs) carrying the read. The
+structural pattern of the scholar's page.
+
+The reservoir layout is the kit's primary expression of the spine
+and block devices working together: the spine holds the page open,
+the reservoir fills it.
+
+@@required
+Every long-form letter and every spec section uses the reservoir
+layout in one of its three positions.
+
+right position: required for the default scholarly page. Spine on
+the left (1/3 width), reservoir on the right (2/3 width).
+
+left position: required when the page is annotating an external
+work. Reservoir on the left (2/3, the work being annotated),
+spine on the right (1/3, the annotation metadata).
+
+split position: required for formal papers with significant
+apparatus. Reservoir centered (3/5 width), spines on both sides
+(each 1/5 width). The left spine carries reading metadata (date,
+section, citations); the right spine carries reader notes (in
+margin-note style).
+
+@@permitted
+- A reservoir that wraps multiple block/reservoir paragraphs
+  (devices/block). The wrapper is the layout; each paragraph is
+  the device.
+- An empty spine on a sparse page. The spine still exists; the
+  geometry holds even when the metadata is light.
+
+@@forbidden
+- A reservoir without a spine. The reservoir is defined by what it
+  is anchored against; without a spine, it becomes a loose body
+  paragraph (use type/prose).
+- A spine without a reservoir. The spine is structural support; with
+  nothing to support, it becomes decoration.
+- Reservoir layouts at non-prose roles. The reservoir holds prose;
+  using it for a button row, a navigation, or a gallery is a
+  category error.
+- Three or more reservoir layouts stacked vertically on a page.
+  The reservoir is the page's primary device; stacked reservoirs
+  read as repeated structure rather than continuous prose. Use a
+  single reservoir whose right column contains multiple paragraphs.
+
+@@geometry
+right (default):
+- grid-template-columns: 1fr 2fr
+- gap: u4 (32px)
+- align-items: start
+
+left (annotation):
+- grid-template-columns: 2fr 1fr
+- gap: u4
+- align-items: start
+
+split (formal):
+- grid-template-columns: 1fr 3fr 1fr
+- gap: u4
+- align-items: start
+
+In all three positions, the spine column may render a vertical rule
+on its inside edge (devices/spine — rule variant) or remain
+unmarked (the spine implied by alignment alone).
+
+@@behavior
+Static layout. The reservoir does not animate.
+
+Responsive: at viewport < 720px, all three positions collapse to a
+single column. The spine becomes a horizontal block above the
+reservoir; in split position, both spines stack above and below
+respectively.
+
+Print: carries through unchanged. The reservoir prints as the body
+of the page; the spine prints as the marginal apparatus.
+
+Reduced motion: not applicable.
+
+@@conflicts
+- A reservoir whose right column is shorter than its left (metadata
+  longer than prose): the geometry inverts visually. Either move
+  metadata into footnotes (components/footnote) or accept the
+  visual inversion as honest to the content.
+- A reservoir at index density: the layout is for prose-led pages,
+  not scan-led pages. Use grid/page.index instead.
+
+@@test
+1. Identify reservoir layouts on the page. For each, confirm
+   exactly one position (right, left, split).
+2. Confirm the spine column carries metadata and the reservoir
+   column carries prose.
+3. Resize the viewport below 720px. Confirm collapse to single
+   column with spine above (right/left) or above and below (split).
+4. Read the page. The eye should travel down the reservoir without
+   needing to consult the spine. The spine is referenced when the
+   reader pauses, not as part of the read.
+
+@@rationale
+The codex page anchors the body in a margin. The kit's reservoir
+layout is the codex page expressed in CSS grid: 1/3 apparatus, 2/3
+body. The three positions extend the pattern to the three modes
+of relation prose has to its apparatus — leading (right), following
+(left), or surrounded (split).
+
+The split position is the rarest because most kit documents are
+either composed (right) or annotated (left). When a paper has both
+its own reading apparatus (left spine) and a margin reserved for
+the reader's notes (right spine), the split position acknowledges
+that — the page is genuinely three-columned in use, not just in
+display.
+
+Reference: Hochuli & Kinross, Designing Books (1996), on margin and
+body in the codex tradition; Tufte's discussion of the marginal
+apparatus in Visual Explanations.
+@ems-end
+*/
+
+.ems-reservoir {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--ems-u4);
+  align-items: start;
+}
+
+.ems-reservoir--left  { grid-template-columns: 2fr 1fr; }
+.ems-reservoir--split { grid-template-columns: 1fr 3fr 1fr; }
+
+@media (max-width: 720px) {
+  .ems-reservoir,
+  .ems-reservoir--left,
+  .ems-reservoir--split {
+    grid-template-columns: 1fr;
+    gap: var(--ems-u3);
+  }
+}
+/*
+@ems-id      marks/wordmark
+@ems-kind    mark
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/type, tokens/color, devices/beam, devices/block
+@ems-cited-by  components/masthead, components/letter, components/library-page
+
+@ems-prose
+@@purpose
+The emsenn wordmark. Set in IBM Plex Sans Medium with a single
+oxblood beam to the right. The mark is composed of two devices —
+a block/beam (the word) and a beam (the rule) — assembled at
+specified geometry. It is set, not drawn. The SVG sidecar at
+marks/wordmark.svg is the rendered artifact; this file specifies
+the rule.
+
+@@required
+The wordmark appears once on every kit-rendered page that has a
+masthead (components/masthead). It does not appear inside the page
+body.
+
+@@permitted
+- The wordmark rendered standalone (no masthead) on covers, posters,
+  and the project's print colophon. In standalone use, the wordmark
+  may be sized up to 192px (display by 2) for cover applications.
+- The wordmark in inverted color (paper word on ink ground) for
+  applications printed on dark stock.
+
+@@forbidden
+- A wordmark drawn as a logo (custom letterforms, ligatures, glyphs).
+  The mark is set in Plex; never redrawn.
+- The beam in a color other than oxblood. The beam carries the
+  emphasis verb; teal or indigo break the verb assignment.
+- The beam removed. The mark is the word and the beam together.
+  The word alone is body type, not a mark.
+- Tracking other than minus 0.04em. The mark is set at display
+  tracking; any deviation breaks the established mass.
+- Italics, serif, or condensed forms. The mark is sans-medium-roman.
+- The wordmark on a colored ground other than paper, paper-deep,
+  or ink. No teal, oxblood, or indigo grounds.
+- Multiple wordmarks on a single page. One mark, one page.
+
+@@geometry
+Type:
+- Family: IBM Plex Sans
+- Weight: medium (500)
+- Size: --ems-size-display (96px) at default; up to 192px on cover
+  applications
+- Tracking: minus 0.04em
+- Leading: 0.9
+- Color: --ems-color-ink default; --ems-color-paper inverted
+
+Beam:
+- Width: 32px (the kit standard beam length)
+- Height: 2px (--ems-rule-beam)
+- Color: --ems-color-oxblood
+- Position: u3 (24px) to the right of the word last glyph,
+  vertically centered on the word x-height (approximately 38px
+  from the baseline at 96px size)
+
+Composition:
+- The word and the beam align on the x-height axis, not the
+  baseline. The beam reads as a horizontal stress at mid-letter
+  height.
+- The whole mark sits within a 320 by 80 viewBox at 96px word size.
+
+@@color
+Default: ink word, oxblood beam, paper ground.
+Inverted: paper word, oxblood beam, ink ground.
+Print one-color: ink word, ink beam (the beam loses its verb at
+one-color print; the kit accepts this trade).
+
+@@behavior
+Static. The mark does not animate, transition, or respond to
+hover. In a masthead it sits as a fixed element at the head of the
+page; in a cover it sits as a fixed element at cover position.
+
+Print: renders as set. At one-color print, the beam becomes ink.
+
+Reduced motion: not applicable.
+
+@@conflicts
+- A masthead band placed too close to the wordmark: the band must
+  sit at least u3 above and below the wordmark.
+- A page where the wordmark and the page display block (the h1
+  beam-block) appear adjacent: separate by u4 minimum, or move the
+  display block to a later position. Two structural masses
+  competing for top-of-page is forbidden.
+
+@@test
+1. Inspect the wordmark. Confirm it is set in Plex Sans Medium at
+   the specified tracking and size.
+2. Confirm the beam is exactly 32px by 2px in oxblood.
+3. Confirm the beam sits u3 to the right of the word and aligns
+   to x-height.
+4. Confirm the wordmark appears exactly once on the page.
+5. Print the page. Confirm the mark renders cleanly with even ink.
+
+@@rationale
+The mark is a composition of the kit primitives, not an external
+artifact. By forbidding the drawn logo, the kit holds itself to
+its own rules: the same Plex, the same beam device, the same
+oxblood verb that any letter or spec-doc gets. The mark is what
+the kit looks like when it identifies itself.
+
+The oxblood beam is the kit signature gesture: a single emphasis
+stroke. It distinguishes the wordmark from any other Plex-Medium-
+set word on the page.
+
+Reference: Bauhaus letterhead conventions (Bayer, Tschichold), in
+which the institution mark was constructed from the same
+typographic vocabulary as its body documents.
+@ems-end
+*/
+
+#ems-mark-wordmark .ems-mark-text {
+  font-family: var(--ems-type-sans);
+  font-weight: var(--ems-weight-medium);
+  font-size: 64px;
+  letter-spacing: -0.04em;
+  fill: var(--ems-color-ink);
+}
+/*
+@ems-id      components/masthead
+@ems-kind    component
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/space, tokens/type, type/scale, type/stack, devices/beam, devices/block, marks/wordmark
+@ems-cited-by  components/letter, components/spec-doc, components/library-page
+
+@ems-prose
+@@purpose
+The masthead. The page declaring itself. The masthead is the
+component the reader sees first; it identifies the publisher
+(emsenn), positions the page in the publisher's body of work
+(date, license, section), and establishes the visual register the
+page will read in. It is the kit's primary expression of the
+wordmark in context.
+
+@@required
+Every kit-rendered page that exists as a published artifact (a
+letter, a spec-doc, a library page, the homepage) carries a
+masthead at its top edge. The masthead always contains the
+wordmark; it always contains at least one spec-band of metadata.
+
+@@permitted
+- A masthead with one spec-band rather than two. Used on cover
+  pages and on documents whose metadata is light (a single date).
+- A masthead with a serif italic tag line below the wordmark. Used
+  only on the homepage and on covers; never on internal pages.
+- A masthead inverted (paper on ink) for pages that print on dark
+  stock or render on dark grounds. Inverted is a one-off mode, not
+  a theme.
+
+@@forbidden
+- A page without a masthead presented as a kit artifact. Internal
+  scratch pages may omit it; published pages may not.
+- A masthead with three or more spec-bands. The masthead has at
+  most two horizontal metadata strips.
+- A masthead with navigation. Navigation is a separate component
+  that stacks below the masthead; the masthead declares, navigation
+  directs.
+- A masthead with imagery (logo, icon, photo) other than the
+  wordmark. The wordmark is the only mark.
+- A masthead beam in a color other than oxblood.
+- A masthead with the wordmark centered. The wordmark aligns to
+  the left edge of the page or column.
+
+@@anatomy
+Three slots, in order, top to bottom:
+1. spec-band (top)   - path · date · license metadata
+2. mark              - the wordmark with its oxblood beam
+3. spec-band (bottom) - section nav text · issue/letter number
+
+The mark slot is u5 (48px) above and u4 (32px) below; spec-bands
+are u2 (16px) of vertical padding and a hairline rule below.
+
+@@geometry
+Container:
+- background: --ems-color-paper
+- display: flex column
+
+Spec-band:
+- padding: u2 (16px) vertical
+- border-bottom: hair (1px) ink
+- type: mono · 12px · uppercase · 0.16em tracking · ink-soft
+- layout: flex row, justify-content space-between
+
+Mark slot:
+- padding: u5 (48px) top · u4 (32px) bottom
+- layout: flex row, align-items baseline, justify-content
+  space-between, gap u3
+- The wordmark itself follows marks/wordmark geometry: 96px,
+  -0.04em tracking, ink color
+- The beam in this slot is u5 wide (48px), 2px tall, oxblood,
+  align-self: center
+
+@@color
+Default: paper ground · ink wordmark · oxblood beam · ink-soft band text.
+Inverted: ink ground · paper wordmark · oxblood beam · paper-deep
+band text.
+
+@@behavior
+Static. No animation, no scroll-pinning, no shrink-on-scroll
+behavior. The masthead occupies the top of the page and the page
+scrolls past it.
+
+Print: renders as set. Spec-bands print without the hairline
+borders becoming heavier; the kit reserves print rule-weight
+explicitly via tokens/rule.
+
+Reduced motion: not applicable.
+
+@@conflicts
+- A masthead immediately followed by a display block (h1 beam-
+  block) on the page body: the two structural masses compete.
+  Either reduce the body's display block to h1 size, or accept
+  the visual emphasis if it is the page's deliberate move.
+- A masthead with very long spec-band text that wraps to a second
+  line: the spec-band must not wrap. Shorten the text or split
+  the content across the two bands.
+
+@@test
+1. Identify the masthead. Confirm it sits at the top of the page.
+2. Confirm it contains exactly one wordmark.
+3. Confirm the wordmark sits adjacent to an oxblood beam.
+4. Confirm spec-bands carry uppercase mono text in ink-soft.
+5. Confirm the masthead is not centered; the wordmark aligns to
+   the left edge of its container.
+6. Print the page. Confirm the masthead carries through with
+   hairline rules below each spec-band.
+
+@@rationale
+The codex tradition opens every book with a title page that
+identifies the work, names the publisher, and establishes the
+visual register. The masthead is the kit's title page rendered
+into the column system of a single page: the wordmark identifies,
+the spec-bands position, the beam stresses. By codifying the
+slots, the kit makes every page identifiable as emsenn at a
+glance.
+
+The two-band, mark-in-the-middle anatomy follows the masthead of
+mid-century scholarly journals (Hyphen, Ulm Journal) where the
+journal name sat between two strips of issue metadata.
+
+Reference: Hyphen Press masthead conventions; Tschichold's
+journal title-page geometries; Bringhurst on the page that
+declares the book.
+@ems-end
+*/
+
+.ems-masthead {
+  display: flex;
+  flex-direction: column;
+  background: var(--ems-color-paper);
+}
+
+.ems-masthead__band {
+  padding: var(--ems-u2) 0;
+  border-bottom: var(--ems-rule-hair) solid var(--ems-color-ink);
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ems-color-ink-soft);
+}
+
+.ems-masthead__mark {
+  padding: var(--ems-u5) 0 var(--ems-u4);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ems-u3);
+}
+
+.ems-masthead__name {
+  font-family: var(--ems-type-sans);
+  font-weight: var(--ems-weight-medium);
+  font-size: var(--ems-size-display);
+  line-height: var(--ems-lead-display);
+  letter-spacing: -0.04em;
+  color: var(--ems-color-ink);
+}
+
+.ems-masthead__beam {
+  display: block;
+  height: var(--ems-rule-beam);
+  width: var(--ems-u5);
+  background: var(--ems-color-oxblood);
+  align-self: center;
+}
+
+.ems-masthead__tag {
+  font-family: var(--ems-type-serif);
+  font-size: var(--ems-size-lede);
+  font-style: italic;
+  color: var(--ems-color-ink);
+  margin-top: var(--ems-u);
+}
+/*
+@ems-id      components/citation
+@ems-kind    component
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/space, tokens/type, type/scale, type/citations, devices/beam
+@ems-cited-by  components/letter, components/spec-doc
+
+@ems-prose
+@@purpose
+The citation cluster. The kit's bibliographic apparatus, set as
+a stack of rows at the foot of any document with three or more
+references. Each row pairs a mono key (the identifier the body
+text cites) with a serif body description (the human-readable
+reference). The cluster opens with an indigo beam — the kit's
+"cite" verb declared in full strength.
+
+@@required
+Every kit document with three or more cited sources carries a
+citation cluster at its foot, immediately above the colophon.
+
+@@permitted
+- A cluster on a page with only inline citations (the inline
+  citations name the source briefly; the cluster carries the
+  full reference). This is the default scholarly convention.
+- A cluster split across two columns on wide print pages. The
+  split is by row count, with hairline rules continuing across
+  the column gap.
+
+@@forbidden
+- A cluster with fewer than three rows. Two or fewer references
+  belong inline (type/citations) or as footnotes
+  (components/footnote).
+- A cluster without the opening indigo beam. The beam is the
+  cluster's identification — without it the cluster reads as a
+  generic list.
+- A cluster with rows in a color other than the kit's citation
+  color rules: keys in indigo, body in ink. Variation here breaks
+  the verb assignment of type/citations.
+- A cluster with row backgrounds. The cluster reads through type
+  and rules; not through fill.
+- A cluster set in serif keys. Keys are mono; bodies are serif.
+  This pairing is the cluster's typographic signature.
+
+@@anatomy
+- Container: flex column with an indigo beam-weight rule on top
+  and u2 (16px) of padding below the beam.
+- Each row: 2-column grid (key column + body column) with u8
+  (128px) for the key and 1fr for the body, separated by a u2
+  gap.
+- Row separator: hairline rule at 15% ink opacity below each
+  row except the last.
+
+@@geometry
+Container:
+- border-top: beam (2px) indigo
+- padding-top: u2 (16px)
+- display: flex column
+
+Row:
+- display: grid
+- grid-template-columns: u8 (128px) 1fr
+- gap: u2 (16px)
+- padding: u2 (16px) vertical
+- border-bottom: hair ink at 15% opacity (last row no rule)
+
+Key column:
+- font: mono · 12px · uppercase · 0.12em tracking
+- color: indigo
+- padding-top: 2px (optical alignment with serif body baseline)
+
+Body column:
+- font: serif · 14px · 1.55 leading
+- color: ink
+- italic on cited title (cite element)
+
+@@color
+Beam: --ems-color-indigo (the cluster's opening verb).
+Keys: --ems-color-indigo (the kit's citation register).
+Bodies: --ems-color-ink (the description is read as prose).
+Row separators: --ems-color-ink at 15% opacity (hairline whisper).
+
+@@behavior
+Static layout. No animation.
+
+Hover (on a key, when the key is a link to a source URL): the key
+gains a beam-weight underline in indigo. No color shift. Bodies
+do not become links; the key carries the link affordance.
+
+Focus: same as hover plus a 2px indigo outline, 2px offset.
+
+Print: renders as set. The opening beam prints in oxblood at one-
+color print (the kit's print stylesheet maps cite-color to the
+print emphasis ink).
+
+Reduced motion: not applicable.
+
+@@conflicts
+- A cluster placed inside a reservoir's right column rather than
+  at the page foot: this is permitted only when the cluster is
+  scoped to a section rather than the whole page. Section-scoped
+  clusters drop the opening beam (the section heading already
+  marks the boundary).
+- A cluster with a single row that happens to need the apparatus
+  of a cluster (a long bibliographic description that won't fit
+  inline): elevate to a cluster. The minimum-three rule is for
+  page architecture; bibliographic substance overrides it when
+  the substance demands it.
+
+@@test
+1. Identify the citation cluster. Confirm it sits at the foot of
+   the document, immediately above the colophon.
+2. Confirm it opens with an indigo beam-weight rule.
+3. Confirm every key is set in mono indigo.
+4. Confirm every body is set in serif ink.
+5. Confirm row separators are hairlines at low opacity.
+6. Hover any key. If the key is a link, confirm the underline
+   thickens to beam weight without color change.
+7. Print the page. Confirm the cluster carries through.
+
+@@rationale
+The cluster is the kit's tribute to scholarly apparatus. By giving
+it consistent typographic identity (mono key + serif body, indigo
+verb) the kit ensures that every emsenn document closes with the
+same shape of evidence. The reader who has read several emsenn
+documents recognizes the cluster instantly; the reader who is
+arriving for the first time learns its shape and carries the
+expectation forward.
+
+Reference: Chicago Manual of Style §14.2 (works-cited form);
+Bringhurst §1.7 on the typographic apparatus; Hochuli on the
+foot-of-page references convention.
+@ems-end
+*/
+
+.ems-citations {
+  display: flex;
+  flex-direction: column;
+  border-top: var(--ems-rule-beam) solid var(--ems-color-indigo);
+  padding-top: var(--ems-u2);
+}
+
+.ems-citation {
+  display: grid;
+  grid-template-columns: var(--ems-u8) 1fr;
+  gap: var(--ems-u2);
+  padding: var(--ems-u2) 0;
+  border-bottom: var(--ems-rule-hair) solid rgba(26, 24, 20, 0.15);
+}
+
+.ems-citation:last-child { border-bottom: 0; }
+
+.ems-citation__key {
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ems-color-indigo);
+  padding-top: 2px;
+}
+
+.ems-citation__body {
+  font-family: var(--ems-type-serif);
+  font-size: var(--ems-size-spec-data);
+  line-height: var(--ems-lead-spec-data);
+  color: var(--ems-color-ink);
+}
+
+.ems-citation__body cite { font-style: italic; }
+/*
+@ems-id      components/footnote
+@ems-kind    component
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/space, tokens/type, type/scale, type/citations
+@ems-cited-by  components/letter, components/spec-doc
+
+@ems-prose
+@@purpose
+The footnote system. A pair of typographic forms — the inline mark
+in the body and the entry in the margin or foot — that together
+let a reader follow a supplementary note without leaving the read.
+
+The footnote is the kit's preferred form for citations that
+support but do not name a source in flow, and for asides that
+elaborate on a body sentence without disrupting it.
+
+@@required
+Every kit document that uses footnote-form citations or footnote-
+form asides instantiates this component once per document, at the
+foot of the page (single-column layout) or in the right margin of
+the spine column (scholar layout).
+
+@@permitted
+- Footnotes that elaborate without citing a source. The form is
+  identical for citation footnotes and elaboration footnotes.
+- A footnote section with its own heading ("Notes") set in spec
+  voice. The heading is required when the footnote section sits
+  in the foot of the page (single-column); it is optional when
+  the footnote section sits in the margin of a scholar layout.
+- A footnote that itself contains an inline citation (Tufte 1990).
+  The inline citation form (type/citations) embeds inside the
+  footnote entry without conflict.
+
+@@forbidden
+- Footnote marks set in any color other than indigo. The kit's
+  citation register is indigo; footnotes inherit this register.
+- Footnote marks set in a non-mono family. Marks are mono.
+- Footnote entries with row backgrounds. Entries read through type
+  and an opening indigo hairline; not through fill.
+- Footnote entries set in serif. Entries are mono — the verb is
+  cite-or-elaborate, the register is mono.
+- Footnotes split across pages or screens (entry separated from
+  its document body by a page break). The footnote section sits
+  with its document; if the document spans pages in print, the
+  section sits at the foot of the last page or repeats at the
+  foot of every page (the kit accepts both conventions; choose
+  one and apply consistently).
+
+@@anatomy
+Inline mark (in body):
+- A numeric superscript in indigo mono, sitting close to the word
+  it follows.
+
+Entry section:
+- An optional "Notes" heading in spec voice.
+- A list of entry rows.
+- Each entry row: a numeric column (right-aligned) and a body
+  column (the note text).
+
+@@geometry
+Inline mark:
+- Family: mono
+- Size: 0.75em (relative to surrounding body)
+- vertical-align: super
+- Color: indigo
+- text-decoration: none
+- margin-left: 1px
+
+Entry section container:
+- margin-top: u4 (32px) — clear separation from body
+- padding-top: u2 (16px)
+- border-top: hair (1px) indigo
+- display: flex column
+- gap: u (8px) between entries
+
+Entry section heading:
+- Family: mono · 12px · uppercase · 0.16em tracking · medium weight
+- Color: indigo
+- margin-bottom: u (8px)
+
+Entry row:
+- display: grid
+- grid-template-columns: u3 (24px) for number · 1fr for body
+- gap: u (8px)
+- Family: mono · 14px · 1.55 leading
+
+Entry number column:
+- text-align: right
+- color: indigo
+
+Entry body column:
+- color: ink (the body text reads as prose, not as identifier)
+
+@@color
+Marks: --ems-color-indigo.
+Entry section opening rule: --ems-color-indigo.
+Entry numbers: --ems-color-indigo.
+Entry bodies: --ems-color-ink.
+
+@@behavior
+Inline mark:
+- Hover: gains a beam-weight indigo underline. No color shift.
+- Focus: same as hover plus a 2px indigo outline at 2px offset.
+- Click: scrolls smoothly to the corresponding entry; the entry
+  receives a u-wide indigo beam to its left for 2 seconds, then
+  fades.
+
+Entry:
+- No native interaction. The entry is a destination, not a control.
+- An entry that contains a link follows type/prose link behavior.
+
+Print:
+- Inline marks lose link affordance and render as plain
+  superscript.
+- The entry section appears at the foot of the page (single-column)
+  or in the margin (scholar layout). The opening indigo rule
+  prints unchanged.
+
+Reduced motion:
+- Smooth scroll on click becomes instant scroll.
+- The entry's brief indigo beam remains (it is not motion).
+
+@@conflicts
+- A footnote that grows beyond two paragraphs: promote to a body
+  section with a heading. Footnotes are short.
+- A footnote whose mark and entry are separated by more than one
+  scroll-screen: this is acceptable; the smooth-scroll behavior
+  bridges the distance. If the document is print-only, ensure
+  marks and entries land on the same printed page.
+
+@@test
+1. Identify every footnote mark in the body. Confirm each is mono,
+   indigo, superscript.
+2. Confirm a corresponding entry exists for every mark.
+3. Confirm the entry section opens with an indigo hairline.
+4. Confirm entries are set in mono with indigo numbers and ink
+   bodies.
+5. Click any mark. Confirm the page scrolls to the entry and the
+   entry briefly receives a left indigo beam.
+6. Print the page. Confirm marks render as plain superscript and
+   entries appear at the foot.
+
+@@rationale
+Footnotes are the scholarly form for "this note is here for the
+reader who wants it; it is not part of the argument." The kit
+preserves this distinction by making the footnote register
+deliberately quieter than the body — mono spec-data size, indigo
+identification — so the reader's eye can either follow or pass.
+
+Reference: Chicago Manual §14, on notes-bibliography form;
+Bringhurst §1.7 on the apparatus; Hochuli, Detail in Typography,
+on the typographic difference between marginal and footed notes.
+@ems-end
+*/
+
+.ems-footnotes {
+  margin-top: var(--ems-u4);
+  padding-top: var(--ems-u2);
+  border-top: var(--ems-rule-hair) solid var(--ems-color-indigo);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ems-u);
+}
+
+.ems-footnotes__title {
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ems-color-indigo);
+  margin-bottom: var(--ems-u);
+}
+
+.ems-footnote {
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec-data);
+  line-height: var(--ems-lead-spec-data);
+  color: var(--ems-color-indigo);
+  display: grid;
+  grid-template-columns: var(--ems-u3) 1fr;
+  gap: var(--ems-u);
+}
+
+.ems-footnote__num {
+  text-align: right;
+  color: var(--ems-color-indigo);
+}
+
+.ems-footnote__body {
+  color: var(--ems-color-ink);
+}
+/*
+@ems-id      components/colophon
+@ems-kind    component
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/space, tokens/type, type/scale, type/stack, devices/triad, devices/rule
+@ems-cited-by  components/letter, components/spec-doc, components/library-page
+
+@ems-prose
+@@purpose
+The colophon. The page closing itself. A triad of metadata cells
+at the foot of every page, each cell pairing a mono label with a
+mono data value. The colophon is the kit's final declaration on
+each page: how to reach the publisher, under what license the work
+sits, what made the work possible.
+
+@@required
+Every kit-rendered published page closes with one colophon at the
+foot of its primary content, above any browser furniture. The
+colophon is the page's footer.
+
+@@permitted
+- A colophon with three cells (the default triad).
+- A colophon with a fourth cell on documents that warrant explicit
+  acknowledgement (commissioned work, collaborations). The fourth
+  cell breaks the triad; this is permitted when the content
+  demands it.
+- A colophon where one cell is empty (the page genuinely has no
+  acknowledgement): the cell remains as a layout slot; the data
+  value is omitted but the label is present.
+
+@@forbidden
+- A page without a colophon presented as published. Internal scratch
+  pages may omit; published pages may not.
+- A colophon set in serif. Colophons are spec voice — mono.
+- A colophon with backgrounds, borders, or boxes around cells.
+  The colophon reads through type and a single hairline above; not
+  through fill or frame.
+- A colophon centered. Cells align to the colophon's left edge,
+  spaced as a triad.
+- A colophon with logos, badges, social icons, or marketing text.
+  The colophon is metadata, not promotion.
+- A colophon below the browser fold without explicit margin. The
+  colophon needs at least u6 (64px) of clear space above it.
+
+@@anatomy
+Container:
+- A hairline rule on top.
+- u3 (24px) of padding below the rule.
+- u6 (64px) of margin above the rule (the colophon sits clear of
+  the document body).
+
+Cells:
+- Three equal columns, u4 (32px) gap between cells.
+- Each cell is a vertical pair: a mono uppercase label above a
+  mono mixed-case value, separated by u (8px).
+
+@@geometry
+Container:
+- border-top: hair (1px) ink
+- padding-top: u3 (24px)
+- margin-top: u6 (64px)
+- display: grid · grid-template-columns: repeat(3, 1fr) · gap: u4
+
+Cell:
+- display: flex column · gap: u (8px)
+
+Label:
+- Family: mono · medium · 12px · 0.16em tracking · uppercase
+- Color: ink-soft
+
+Value:
+- Family: mono · regular · 14px · 1.55 leading
+- Color: ink
+
+Responsive: at viewport < 720px, cells stack vertically with u3
+gap; the triad collapses (devices/triad responsive rule).
+
+@@color
+Hairline: --ems-color-ink.
+Labels: --ems-color-ink-soft (the label is quieter than the value).
+Values: --ems-color-ink (the value is the data the page is
+declaring).
+
+@@behavior
+Static. No animation.
+
+Links inside colophon values (an email address, a URL): inherit
+type/prose link behavior — teal underline, hover thickens to beam.
+
+Print:
+- The colophon prints at the foot of the last page.
+- Hairline above prints unchanged.
+- Email and URL values print plain (no underline) with a small
+  parenthetical reproduction of the URL after each link.
+
+Reduced motion: not applicable.
+
+@@conflicts
+- A colophon competing with the citation cluster (components/citation)
+  at the foot of the page: the cluster sits above the colophon,
+  separated by u4. Both are required on documents with three or
+  more references; their order is fixed.
+- A colophon on a page with extreme density (spec mode, deep
+  reference): the colophon's u6 top margin still applies. Density
+  affects body spacing, not page-foot architecture.
+
+@@test
+1. Identify the colophon. Confirm it sits at the foot of the page.
+2. Confirm it has exactly three cells (or four when explicitly
+   warranted; see permitted).
+3. Confirm each cell pairs a mono uppercase label with a mono
+   mixed-case value.
+4. Confirm the colophon opens with a hairline rule.
+5. Resize the viewport below 720px. Confirm cells stack vertically.
+6. Print the page. Confirm the colophon appears at the foot of
+   the last page with the hairline carrying through.
+
+@@rationale
+The colophon is an old form: the printer's identification at the
+back of the book. The kit's colophon updates the form for digital
+documents while preserving its function — to declare, at the close,
+who made the work and under what terms.
+
+The triad shape (devices/triad) gives the colophon equal-weight
+identity for its three pieces of metadata. The reader does not
+encounter "contact" as more important than "license"; both stand
+together as the page's terms.
+
+Reference: Hochuli & Kinross on the colophon as the page's closure;
+the Chicago Manual on copyright and licensing notation; Tufte on
+the small-ink high-density information block.
+@ems-end
+*/
+
+.ems-colophon {
+  border-top: var(--ems-rule-hair) solid var(--ems-color-ink);
+  padding-top: var(--ems-u3);
+  margin-top: var(--ems-u6);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ems-u4);
+}
+
+.ems-colophon__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ems-u);
+}
+
+.ems-colophon__label {
+  font-family: var(--ems-type-mono);
+  font-weight: var(--ems-weight-medium);
+  font-size: var(--ems-size-spec);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ems-color-ink-soft);
+}
+
+.ems-colophon__value {
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec-data);
+  color: var(--ems-color-ink);
+  line-height: var(--ems-lead-spec-data);
+}
+
+@media (max-width: 720px) {
+  .ems-colophon { grid-template-columns: 1fr; gap: var(--ems-u3); }
+}
+/*
+@ems-id      components/breadcrumb
+@ems-kind    component
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/space, tokens/type, type/scale, type/stack
+@ems-cited-by  components/library-page
+
+@ems-prose
+@@purpose
+The breadcrumb. A linear identification of where the current page
+sits in the library hierarchy. Domains are separated by a spaced
+single guillemet (›). The breadcrumb is set in spec voice — mono,
+uppercase, tracked — so it reads as positional metadata, not as
+prose.
+
+@@required
+Every page nested two or more levels below the library root carries
+a breadcrumb at the top of its body, immediately below the
+masthead. Pages at the library root or one level below it omit the
+breadcrumb (the masthead carries enough position metadata).
+
+@@permitted
+- A breadcrumb that wraps to a second line on narrow viewports.
+  Items wrap with the guillemet preserved between them.
+- A breadcrumb whose final item is the current page (a non-link
+  terminal segment). The terminal segment renders without link
+  affordance and in slightly heavier weight to mark its
+  current-position role.
+
+@@forbidden
+- A breadcrumb on a page one level below root. The masthead's
+  spec-band already states the section.
+- A breadcrumb in serif. Breadcrumbs are mono.
+- A breadcrumb at body-size. Breadcrumbs are spec-size (12px).
+- A breadcrumb with arrow icons (→, ▸, ⟩). The kit's separator is
+  the typographic guillemet; arrows are not in the vocabulary.
+- A breadcrumb with home-icon (a house glyph) prepended. The first
+  segment is the word "library" (or the appropriate root domain),
+  set as text.
+- Color shifts to indicate hierarchy depth (darker for closer to
+  root, lighter for current). Hierarchy is communicated by
+  position, not color.
+
+@@anatomy
+- A horizontal flex row, baseline-aligned.
+- Each segment is either a link (anchor) or a span (terminal).
+- Between segments: a separator span (the guillemet).
+- Items wrap if the row exceeds container width.
+
+@@geometry
+Container:
+- display: flex · align-items: baseline · gap: u (8px)
+- flex-wrap: wrap (allows multi-line on narrow viewports)
+- padding: u2 (16px) vertical
+- font: mono · 12px · 0.14em tracking · uppercase
+- color: ink-soft
+
+Segment (link):
+- color: ink-soft
+- text-decoration: none
+- hover: color teal (no underline)
+
+Separator:
+- the character ›
+- opacity: 0.5 (visually quieter than the segments themselves)
+
+Terminal segment (current page):
+- weight: medium (slightly heavier than link weight)
+- color: ink (one shade darker than the link segments)
+
+@@color
+Default segments: --ems-color-ink-soft.
+Hover (links): --ems-color-teal.
+Separator: inherits ink-soft at 50% opacity.
+Terminal segment: --ems-color-ink.
+
+@@behavior
+Hover (links): color shifts to teal. No underline. No background
+change.
+
+Focus: 2px outline at 2px offset in --ems-color-ink. Outline color
+matches the terminal segment.
+
+Print: renders as set. Hover state does not apply.
+
+Reduced motion: not applicable.
+
+@@conflicts
+- A breadcrumb on a page that also has a left-side navigation
+  showing the same hierarchy: redundant. Either remove the
+  breadcrumb (left-nav suffices on application-style pages) or
+  remove the left-nav (breadcrumb suffices on document-style
+  pages). Breadcrumbs are the kit's canonical position marker on
+  document pages.
+- A breadcrumb that wraps to three or more lines: the page is
+  nested too deeply. Reorganize the library to flatten the path.
+
+@@test
+1. Identify the breadcrumb. Confirm it sits at the top of the page
+   body, below the masthead.
+2. Confirm segments are mono · uppercase · tracked at 0.14em.
+3. Confirm the separator is the spaced single guillemet.
+4. Hover any link segment. Confirm color shifts to teal without
+   underline.
+5. Resize the viewport. Confirm the breadcrumb wraps cleanly.
+6. Print the page. Confirm the breadcrumb renders as plain text
+   with separator guillemets intact.
+
+@@rationale
+The breadcrumb is the page's positional declaration: "you are
+here, in this hierarchy, at this depth." By setting it in spec
+voice the kit marks it as metadata — the reader's eye registers
+the position and moves on to the document body.
+
+The choice of single guillemet (›) over arrow (→) is typographic:
+the guillemet is a punctuation mark in the same family as the body
+type (Plex Mono ships it as a real glyph), and reads as part of
+the typographic vocabulary rather than as a UI icon.
+
+Reference: classical scholarly indexing conventions; Hochuli on
+the typography of the apparatus; Tufte's chartjunk principle
+applied to navigation.
+@ems-end
+*/
+
+.ems-breadcrumb {
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ems-color-ink-soft);
+  display: flex;
+  align-items: baseline;
+  gap: var(--ems-u);
+  flex-wrap: wrap;
+  padding: var(--ems-u2) 0;
+}
+
+.ems-breadcrumb a {
+  color: var(--ems-color-ink-soft);
+  text-decoration: none;
+}
+
+.ems-breadcrumb a:hover { color: var(--ems-color-teal); }
+.ems-breadcrumb__sep { opacity: 0.5; }
+
+/* @ems-variant breadcrumb/terminal · the current-page final segment */
+.ems-breadcrumb__terminal {
+  color: var(--ems-color-ink);
+  font-weight: var(--ems-weight-medium);
+}
+/*
+@ems-id      components/tag-stack
+@ems-kind    component
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/space, tokens/type, type/scale, type/stack, devices/triad
+@ems-cited-by  components/letter, components/library-page
+
+@ems-prose
+@@purpose
+A vertical stack of tags. Tags are coordinates into the archive —
+each one names a relation the document participates in. They are
+set in spec voice (mono) and indigo (the kit's "cite" verb)
+because they carry the same archival function as citations: they
+let a reader move from a single document to the corpus of related
+work.
+
+@@required
+Every letter and every library entry carries a tag-stack in its
+metadata column (the spine of grid/reservoir, or the metadata
+margin of the masthead).
+
+@@permitted
+- A tag-stack with one tag. Single-tag documents are honest about
+  having a single primary relation.
+- A tag-stack with up to seven tags. Beyond seven, the document
+  is overcoded; reorganize the tags or split the document.
+- A tag-stack rendered horizontally (wrapping inline list) when
+  the metadata margin is unavailable, e.g. on the library page
+  where tags appear inline in a row.
+
+@@forbidden
+- Tags in serif. Tags are mono.
+- Tags in body color. Tags are indigo (the cite verb).
+- Tags with backgrounds (pill shapes, rounded boxes, badge fills).
+  Tags read through type and color; never through fill.
+- Tags with hash prefixes (#tag) or angle bracket prefixes
+  (<tag>). Tags are plain mono words.
+- Tags with bullet markers. The vertical stack uses line breaks
+  alone (or u-tight gap); markers would imply a list, and tags
+  are not enumerated, they are coordinates.
+- Variation in tag color or weight to imply hierarchy. All tags
+  on a document carry equal weight. If one tag is more important
+  than the others, it is the wrong list — pick a primary and
+  drop the rest, or split the document.
+
+@@anatomy
+- A flex column.
+- Tag items: each one a link, plain mono text.
+- Gap between items: 2px (a tight stack — tags read as a single
+  block of related coordinates).
+
+@@geometry
+Container:
+- display: flex column
+- gap: 2px (intentionally tighter than the kit's u; the stack
+  reads as a unit)
+- font: mono · 14px · 1.55 leading
+
+Tag link:
+- color: indigo
+- text-decoration: none
+- (no padding, no background, no border)
+
+Tag link hover:
+- color: teal
+- text-decoration: underline
+- text-underline-offset: 3px
+- text-decoration-thickness: hair (1px)
+
+@@color
+Tags: --ems-color-indigo.
+Hover: --ems-color-teal with hair underline.
+
+Why two colors on hover (indigo to teal): the cite verb is indigo;
+the action verb is teal. A tag at rest is a coordinate (cite); a
+tag under hover is an action (move to that coordinate's listing).
+The color shift names the affordance.
+
+@@behavior
+Hover (link): color shifts indigo to teal, underline appears.
+
+Focus: 2px outline in --ems-color-teal at 2px offset.
+
+Click: navigates to the tag's listing page (a library-page filtered
+to that tag).
+
+Print: tags render as set in indigo. Underline on hover does not
+apply.
+
+Reduced motion: not applicable.
+
+@@conflicts
+- A tag-stack inside a paragraph of body text: wrong placement.
+  Tags belong in the metadata column of the page; they do not
+  embed in body prose.
+- A tag-stack with tags that don't appear on any other document
+  in the archive: the tag is uncoordinated. Either rename to an
+  existing tag or accept that this document is the first of its
+  kind under that tag (acceptable on intentionally exploratory
+  letters).
+
+@@test
+1. Identify the tag-stack. Confirm it sits in the metadata column.
+2. Confirm tags are mono · 14px · indigo.
+3. Confirm tags carry no backgrounds, badges, or pill shapes.
+4. Confirm tags are not prefixed with hashes or brackets.
+5. Hover any tag. Confirm color shifts to teal with underline.
+6. Click any tag. Confirm navigation to that tag's listing.
+7. Print the page. Confirm tags render in indigo as plain text.
+
+@@rationale
+A tag in this kit is not a button. It is a coordinate. The mono
+register marks it as identifier (alongside dates, citations, and
+file paths); the indigo color marks it as a member of the
+archival apparatus. Treating tags as buttons (with backgrounds
+and hover-fills) would conflate "this is a label" with "this is
+an action"; the kit keeps them distinct.
+
+Reference: Hochuli on the typography of indexing keys; the
+classical bibliographic-key conventions of academic catalogues;
+the modern web's mistake (tags-as-pills) and the kit's
+deliberate departure from it.
+@ems-end
+*/
+
+.ems-tag-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec-data);
+  line-height: var(--ems-lead-spec-data);
+}
+
+.ems-tag-stack a {
+  color: var(--ems-color-indigo);
+  text-decoration: none;
+}
+
+.ems-tag-stack a:hover {
+  color: var(--ems-color-teal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* @ems-variant tag-stack/inline · horizontal wrapping form for library-page rows */
+.ems-tag-stack--inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--ems-u);
+}
+/*
+@ems-id      components/letter
+@ems-kind    template
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/space, grid/page, grid/reservoir, grid/density, devices/spine, devices/rule, devices/block, type/stack, type/prose, type/citations, components/masthead, components/tag-stack, components/footnote, components/colophon
+@ems-cited-by  none
+
+@ems-prose
+@@purpose
+The letter template. The kit's default page for emsenn.net writing:
+long-form prose with metadata in the scholar's margin. The letter
+is the form most kit documents take — essays, correspondence,
+reflections, opinion writing.
+
+The letter is a composition of: masthead, reservoir layout (right
+position) holding metadata in the spine and prose in the body, and
+colophon. It declares letter density (grid/density).
+
+@@required
+Pages presenting long-form prose with associated metadata (date,
+tags, footnotes) instantiate this template. The kit publishes
+every prose-led page using the letter template unless the page is
+explicitly a spec-doc or a library-page.
+
+@@permitted
+- A letter without footnotes. The footnote section is optional;
+  letters with no footnotes simply omit the section.
+- A letter with an epigraph above the lede. The epigraph is set
+  as a blockquote (type/prose) immediately above the lede
+  paragraph; one epigraph per letter.
+- A letter whose primary content is a single long paragraph (a
+  meditation, a single-thought piece). The reservoir's right
+  column may contain a single paragraph; the spine still carries
+  metadata.
+- A multi-section letter with internal h2 headings. The kit's
+  type/stack permits two heading levels; multi-section letters
+  use h1 for the title and h2 for sections.
+
+@@forbidden
+- A letter without a masthead.
+- A letter without a colophon.
+- A letter set in any density other than letter. Spec or index
+  density on a letter undermines its prose-led purpose.
+- A letter with three or more heading levels (h1, h2, h3). When a
+  letter wants a third level, it splits into two letters (one
+  heading deep each) or graduates to a spec-doc.
+- A letter using the paired or index page geometry. Letters use
+  the scholar geometry (or its reservoir layout, which is the
+  same shape).
+- A letter with imagery placed for decoration. Imagery in a letter
+  is load-bearing only — it carries information that the prose
+  cannot or that the prose explicitly references.
+
+@@composition
+Order, top to bottom:
+1. masthead (components/masthead)
+2. (optional) breadcrumb (components/breadcrumb), if the letter
+   sits more than two levels into the library
+3. reservoir layout (grid/reservoir, right position):
+   - spine column: date · tags (components/tag-stack) · footnote
+     entries (components/footnote)
+   - body column: h1 · lede · body prose (type/prose)
+4. (optional) citation cluster (components/citation), if the
+   letter has three or more cited sources
+5. colophon (components/colophon)
+
+Vertical rhythm:
+- u5 (48px) between the masthead and the reservoir
+- u4 (32px) between the reservoir and the citation cluster
+- u6 (64px) between the cluster (or reservoir, if no cluster) and
+  the colophon
+
+@@geometry
+Container:
+- background: --ems-color-paper
+- padding: u6 (letter density default)
+- display: flex column · gap: u5
+
+Head (the reservoir):
+- display: grid
+- grid-template-columns: 1fr 2fr
+- gap: u4
+- align-items: start
+
+Meta column (spine):
+- display: flex column · gap: u3
+
+Body column (reservoir):
+- display: flex column · gap: u3
+
+@@color
+Inherits from the kit's defaults: paper ground, ink prose, ink-soft
+metadata, indigo for tags and citations, oxblood reserved for
+emphasis (which appears in the masthead beam and rarely in body).
+
+@@behavior
+Static layout. No animation.
+
+Hover and focus inherit from the components composed inside (links
+in body prose, tags in the spine, masthead links).
+
+Print: the letter is the kit's print-native form. It prints with
+masthead at top, reservoir in body, colophon at foot. Print padding
+overrides letter padding (grid/page rules).
+
+Reduced motion: not applicable to the template; component-level
+behavior follows their own rules.
+
+@@conflicts
+- A letter that would benefit from a paired (translation) or index
+  (listing) layout: the document is not actually a letter. Use
+  the appropriate page geometry directly without the letter
+  template.
+- A letter whose metadata column is empty (no date, no tags, no
+  footnotes): the reservoir's spine becomes architectural rather
+  than informational. This is acceptable on some letter forms
+  (very short pieces, manifestos) where the spine is intentional
+  white-space.
+
+@@test
+1. Identify the letter. Confirm it has masthead, reservoir, and
+   colophon as direct children.
+2. Confirm the reservoir's spine column carries date, tags, or
+   footnotes (any one of the three is sufficient).
+3. Confirm the reservoir's body column carries h1, lede, and body
+   prose.
+4. Confirm letter density (grid/density) is declared at the
+   container.
+5. Confirm at most two heading levels appear in the body.
+6. Confirm a single masthead and a single colophon are present.
+7. Print the page. Confirm the letter renders as a single
+   continuous document with appropriate page breaks at the foot
+   of each printed page.
+
+@@rationale
+The letter is the kit's primary form because emsenn writes essays.
+The template codifies what the kit has decided is "an emsenn
+essay shape": metadata in the margin, prose in the body, citation
+cluster at the foot, colophon to close. By giving the shape a
+template, the kit ensures every essay gets the same architectural
+support without each one being designed from scratch.
+
+Reference: the codex letter tradition; Bringhurst on the page
+that houses long-form prose; Tschichold's mid-century essay-page
+designs (especially in the journal Hyphen).
+@ems-end
+*/
+
+.ems-letter {
+  background: var(--ems-color-paper);
+  padding: var(--ems-u6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ems-u5);
+}
+
+.ems-letter__head {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--ems-u4);
+  align-items: start;
+}
+
+.ems-letter__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ems-u3);
+}
+
+.ems-letter__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ems-u3);
+}
+
+@media (max-width: 720px) {
+  .ems-letter__head { grid-template-columns: 1fr; gap: var(--ems-u3); }
+}
+/*
+@ems-id      components/spec-doc
+@ems-kind    template
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/space, grid/page, grid/density, devices/rule, devices/spine, devices/block, type/stack, type/prose, type/citations, components/masthead, components/citation, components/colophon
+@ems-cited-by  none
+
+@ems-prose
+@@purpose
+The spec-doc template. The kit's form for dense reference
+documents: technical specifications (this very document is one),
+formal papers, standards, methodology notes, design system rules.
+The spec-doc is the form the kit uses when the page is a
+reference, not a read.
+
+The spec-doc is a composition of: masthead, status spec-band,
+title and lede, numbered sections separated by hairlines, citation
+cluster, colophon. It declares spec density (grid/density).
+
+@@required
+Pages presenting normative or reference content (rules, standards,
+formal definitions) instantiate this template. The kit publishes
+every reference-led page using the spec-doc template.
+
+@@permitted
+- A spec-doc with up to fifteen numbered sections. Beyond fifteen,
+  split into multiple linked spec-docs (each one a chapter).
+- A spec-doc with sub-sections within a numbered section, where
+  the sub-sections are set as h2 headings within the section's
+  body. Sub-sections are unnumbered (the parent section's number
+  carries the position).
+- A spec-doc with embedded code blocks, tables, and diagrams.
+  These compose inside section body content using their respective
+  type/prose treatments.
+- A spec-doc with a normative-language register (MUST, SHOULD,
+  MAY in small caps mono). The register is appropriate when the
+  spec is genuinely normative (rules others must follow); it is
+  not appropriate for descriptive specs (rules describing what
+  the kit does).
+
+@@forbidden
+- A spec-doc without a masthead.
+- A spec-doc without a colophon.
+- A spec-doc set in letter or index density. Spec-docs use spec
+  density.
+- A spec-doc with no section numbering. Spec-docs are addressable
+  by section; numbering is required.
+- A spec-doc with imagery for decoration. Imagery in a spec-doc is
+  diagrammatic (information-bearing) only.
+- A spec-doc that mixes normative-language register inconsistently
+  (some sections normative, some descriptive, no marker). Pick a
+  register and apply consistently; the status band declares it.
+
+@@composition
+Order, top to bottom:
+1. masthead (components/masthead)
+2. status spec-band (a horizontal strip of metadata: status ·
+   version · date)
+3. document h1 (the spec's title) and document lede (one paragraph
+   establishing scope)
+4. numbered sections, each composed of:
+   - section number column (mono spec, e.g. "§ 01")
+   - section content column (h2 heading + body prose, possibly
+     including type/prose lists, code, blockquotes)
+   - hairline rule below
+5. citation cluster (components/citation), if the spec cites three
+   or more sources
+6. colophon (components/colophon)
+
+Vertical rhythm:
+- u4 (32px) between the masthead and the status band
+- u3 (24px) between the status band and the title
+- u4 between the title-lede block and the first section
+- Each section is u3 above and u3 below its content, with a
+  hairline rule below
+- u6 (64px) between the last section (or citation cluster) and the
+  colophon
+
+@@geometry
+Container:
+- background: --ems-color-paper
+- padding: u4 (spec density default)
+- display: flex column · gap: u4
+
+Status spec-band:
+- display: flex row · justify-content: space-between
+- font: mono · 12px · 0.16em tracking · uppercase
+- color: ink-soft
+- padding: u (8px) vertical
+- border-bottom: hair ink
+
+Section row:
+- display: grid
+- grid-template-columns: u7 (96px) for number · 1fr for content
+- gap: u3
+- padding: u3 vertical
+- border-bottom: hair ink
+
+Section number column:
+- font: mono · 12px · 0.16em tracking · uppercase
+- color: ink-soft
+
+Section content column:
+- display: flex column · gap: u2
+
+@@color
+Inherits kit defaults: paper ground, ink for body, ink-soft for
+metadata bands and section numbers, indigo for citations, hairlines
+in ink (full opacity for section separators, since spec-docs are
+dense and the rule needs to register).
+
+@@behavior
+Static layout. No animation.
+
+Hover and focus inherit from composed components.
+
+Print: spec-doc is print-native. The numbered structure prints
+without modification; section breaks may align with page breaks
+when convenient (the kit does not force page-break-after on
+sections; the printer's judgment).
+
+Reduced motion: not applicable.
+
+@@conflicts
+- A spec-doc that would read better as a letter (the content is
+  prose-led, not reference-led): the document is not a spec-doc.
+  Use the letter template instead.
+- A spec-doc with sections of wildly varying length (one long
+  section among many short ones): consider splitting the long
+  section into its own spec-doc. The kit's section numbering
+  expects approximately balanced sections.
+
+@@test
+1. Identify the spec-doc. Confirm it has masthead, status band,
+   title-lede, numbered sections, and colophon.
+2. Confirm spec density is declared.
+3. Confirm every section has a number, a heading, and body content.
+4. Confirm hairlines separate sections.
+5. Confirm at most fifteen numbered sections (or split into
+   multiple linked spec-docs).
+6. Print the page. Confirm the document renders as a continuous
+   reference with section numbers preserved.
+
+@@rationale
+The spec-doc is the kit's tribute to the formal specification —
+documents like RFCs, ISO standards, design system rule books.
+By giving every spec-doc the same shape (numbered sections,
+hairline separators, status band at top, citation cluster at
+foot) the kit makes its reference documents addressable: a
+reader can cite "spec-doc/letter §3.2" and another reader knows
+exactly where to look.
+
+The visible numbered structure is a discipline against
+prose-bloat: a section that does not have a clear function gets
+cut, because every section earns its number.
+
+Reference: ISO/IEC standards typography; the IETF RFC tradition;
+Tschichold and Hochuli on the typography of reference matter;
+Tufte on the high-density typographic page.
+@ems-end
+*/
+
+.ems-spec-doc {
+  background: var(--ems-color-paper);
+  padding: var(--ems-u4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ems-u4);
+}
+
+.ems-spec-doc__band {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ems-color-ink-soft);
+  padding: var(--ems-u) 0;
+  border-bottom: var(--ems-rule-hair) solid var(--ems-color-ink);
+}
+
+.ems-spec-doc__section {
+  display: grid;
+  grid-template-columns: var(--ems-u7) 1fr;
+  gap: var(--ems-u3);
+  padding: var(--ems-u3) 0;
+  border-bottom: var(--ems-rule-hair) solid var(--ems-color-ink);
+}
+
+.ems-spec-doc__num {
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ems-color-ink-soft);
+}
+
+.ems-spec-doc__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ems-u2);
+}
+
+@media (max-width: 720px) {
+  .ems-spec-doc__section { grid-template-columns: 1fr; gap: var(--ems-u); }
+}
+/*
+@ems-id      components/library-page
+@ems-kind    template
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/space, grid/page, grid/density, devices/rule, type/stack, type/scale, components/masthead, components/breadcrumb, components/tag-stack, components/colophon
+@ems-cited-by  none
+
+@ems-prose
+@@purpose
+The library-page template. The kit's form for scan-mode pages: the
+writing index, tag-filtered listings, archive enumerations, search
+results. The library-page is the form the kit uses when the page
+is a map, not a read.
+
+The library-page is a composition of: masthead, breadcrumb, page
+title (the listing's name), index rows (date · title · tags), and
+colophon. It declares index density (grid/density).
+
+@@required
+Pages presenting a list of resources to scan instantiate this
+template. The library root, every tag-filtered page, archive
+listings by year, and search results pages all use the library-page
+template.
+
+@@permitted
+- A library-page with section dividers (e.g. by year, by tag).
+  Dividers render as a heading row in spec voice with a heavier
+  rule above (rule/beam instead of rule/hair).
+- A library-page with a sort indicator in the masthead spec-band
+  (e.g. "sort: date desc"). The indicator is metadata, not a
+  control — the kit's library is statically generated.
+- A library-page with rich row metadata (excerpt, reading time,
+  status). Rich rows extend the row's columns; the canonical
+  three (date · title · tags) remain the lead.
+
+@@forbidden
+- A library-page without a masthead.
+- A library-page without a colophon.
+- A library-page set in letter or spec density. Library-pages use
+  index density.
+- A library-page with row backgrounds, alternating row fills, or
+  hover backgrounds. Rows read through type and hairlines.
+- A library-page with imagery in rows (thumbnails, avatars).
+  Library rows are typographic only; imagery would conflate scan
+  with browse.
+- A library-page with a centered layout. Rows align to the page's
+  left margin.
+- A library-page paginated at fewer than 50 rows. The kit's
+  archive is dense and meant for scan; pagination at small page
+  sizes defeats the purpose. If the listing exceeds ~200 rows,
+  split by section (year, tag) before paginating.
+
+@@composition
+Order, top to bottom:
+1. masthead (components/masthead)
+2. breadcrumb (components/breadcrumb), if the library-page sits
+   more than one level into the library
+3. h1 (the listing's title — "writing", "tag: relationality",
+   "archive 2026")
+4. (optional) lede paragraph (a one-sentence description of what
+   the listing contains)
+5. index list:
+   - container with a hairline rule on top
+   - rows: each a 3-column grid (date · title · tags), with a
+     hairline rule below at low opacity
+6. colophon (components/colophon)
+
+Vertical rhythm:
+- u4 (32px) between the masthead and the breadcrumb
+- u3 (24px) between breadcrumb and h1
+- u3 between h1 (or lede if present) and the index list
+- u6 (64px) between the index list and the colophon
+
+@@geometry
+Container:
+- background: --ems-color-paper
+- padding: u5 (index density default)
+- display: flex column · gap: u4
+
+Index list:
+- display: flex column
+- border-top: hair ink
+
+Index row:
+- display: grid
+- grid-template-columns: u7 (96px) for date · 1fr for title · u8
+  (128px) for tags
+- gap: u3
+- padding: u2 (16px) vertical
+- align-items: baseline
+- border-bottom: hair ink at 15% opacity
+
+Date column:
+- font: mono · 14px
+- color: ink-soft
+
+Title column:
+- font: serif · 16px
+- color: ink
+- text-decoration: none
+- hover: color teal (no underline; the row's hairline carries the
+  affordance)
+
+Tags column:
+- font: mono · 14px
+- color: indigo
+- text-align: right
+
+@@color
+Inherits kit defaults: paper ground, ink for titles, ink-soft for
+dates, indigo for tags, hairlines at 15% opacity for row separators
+(the library-page is dense, so row rules whisper rather than shout).
+
+@@behavior
+Hover (row title): title color shifts to teal. No underline, no
+background change, no row highlight.
+
+Focus (row title): 2px outline at 2px offset in --ems-color-teal.
+
+Click (row title): navigates to the document.
+
+Click (any tag): navigates to that tag's filtered library-page.
+
+Print: library-page prints as a tabular index. Hover does not
+apply. The masthead and colophon print at their usual positions.
+
+Reduced motion: not applicable.
+
+@@conflicts
+- A library-page with rows that need imagery (a portfolio
+  presentation): the page is not actually a library-page. Use
+  a different page form; the kit does not currently include a
+  portfolio template.
+- A library-page that would benefit from being a spec-doc (the
+  listing has commentary mixed with rows): split into a letter
+  introducing the listing followed by a clean library-page with
+  the rows themselves.
+
+@@test
+1. Identify the library-page. Confirm it has masthead, breadcrumb
+   (if applicable), h1, index list, and colophon.
+2. Confirm index density is declared.
+3. Confirm every row is a 3-column grid (date · title · tags).
+4. Confirm row rules are hairlines at low opacity.
+5. Confirm dates are mono ink-soft, titles are serif ink, tags are
+   mono indigo.
+6. Hover any row title. Confirm color shifts to teal without
+   background change.
+7. Print the page. Confirm rows render as a clean tabular index.
+
+@@rationale
+The library-page is the kit's tribute to the printed catalogue —
+the index at the back of a book, the card catalogue of a library,
+the contents page of a journal. By giving every listing the same
+shape (date · title · tags, hairlines between, dense scan-mode
+typography) the kit makes its archive scannable as a unit.
+
+The choice of typographic-only rows (no thumbnails, no rich cards)
+is a deliberate departure from the contemporary web. The kit's
+position: a thumbnail invites browse, which slows scan; a clean
+typographic row invites scan, which is what the archive is for.
+The reader who wants to browse opens the document; the reader who
+wants to scan stays on the library-page.
+
+Reference: classical library catalogue conventions; Tschichold's
+journal contents-page designs; Tufte's tabular-information
+principles in The Visual Display of Quantitative Information.
+@ems-end
+*/
+
+.ems-library {
+  background: var(--ems-color-paper);
+  padding: var(--ems-u5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ems-u4);
+}
+
+.ems-library__list {
+  display: flex;
+  flex-direction: column;
+  border-top: var(--ems-rule-hair) solid var(--ems-color-ink);
+}
+
+.ems-library__row {
+  display: grid;
+  grid-template-columns: var(--ems-u7) 1fr var(--ems-u8);
+  gap: var(--ems-u3);
+  padding: var(--ems-u2) 0;
+  align-items: baseline;
+  border-bottom: var(--ems-rule-hair) solid rgba(26, 24, 20, 0.15);
+  font-family: var(--ems-type-mono);
+  font-size: var(--ems-size-spec-data);
+  line-height: var(--ems-lead-spec-data);
+}
+
+.ems-library__date {
+  color: var(--ems-color-ink-soft);
+}
+
+.ems-library__title {
+  color: var(--ems-color-ink);
+  font-family: var(--ems-type-serif);
+  font-size: var(--ems-size-body);
+  text-decoration: none;
+}
+
+.ems-library__title:hover { color: var(--ems-color-teal); }
+
+.ems-library__tags {
+  color: var(--ems-color-indigo);
+  text-align: right;
+}
+
+@media (max-width: 720px) {
+  .ems-library__row {
+    grid-template-columns: 1fr;
+    gap: var(--ems-u);
+  }
+  .ems-library__tags { text-align: left; }
+}
+/*
+@ems-id      access/specification
+@ems-kind    access
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/space, tokens/rule, type/scale, type/stack
+@ems-cited-by  components/masthead, components/letter, components/spec-doc, components/library-page
+
+@ems-prose
+@@purpose
+The kit's accessibility specification. Contrast pairs, minimum
+sizes, focus indicators, semantic markup, plain-text fallback,
+and reduced-motion conformance. Accessibility is a kit-wide
+contract; this resource specifies the floor every kit page meets.
+
+@@required
+Every kit-rendered page meets every rule in this resource. The
+kit treats accessibility failures as bugs equivalent to broken
+layout; they do not ship.
+
+@@permitted
+- Variations in styling that exceed the floor (a color contrast
+  pair that is AAA when AA would suffice, a focus indicator more
+  prominent than the minimum). The kit's defaults exceed the
+  floor in most places.
+- Stylesheet disabled rendering that drops the kit's typographic
+  rhythm. Plain-text fallback is functional, not visually
+  identical.
+
+@@forbidden
+- Color as the only carrier of meaning. Where color marks a verb
+  (oxblood for emphasis, indigo for cite, teal for signal), the
+  meaning is also carried typographically (size, weight, position)
+  or by an explicit text label.
+- Body text below 16px. Spec-data text below 14px. Spec-label text
+  below 12px. The kit's minimum sizes are floor values; smaller
+  is forbidden.
+- Focus indicators removed (outline: none) without a replacement.
+  Every focusable element has a visible focus state.
+- Headings out of source order (h1 followed by h3 with no h2
+  between). The kit's two-level heading discipline (type/stack)
+  prevents this when followed.
+- Buttons rendered as <a> tags or <div>s. Interactive elements use
+  semantic HTML.
+- Tags rendered without rel="tag". Tags are <a rel="tag">
+  semantically.
+- Animation triggered without consideration of
+  prefers-reduced-motion. The kit is largely static, but any
+  animation present checks the media query.
+- Live regions for status changes without aria-live attributes.
+
+@@values
+CONTRAST. All seven inks paired with both grounds (paper,
+paper-deep) meet WCAG AAA at body sizes (4.5:1 minimum, 7:1 for
+text below 18px). The contrast pairs are documented in
+tokens/color.
+
+The kit's high-contrast pairs:
+- ink on paper: 14.2:1 (AAA at any size)
+- ink on paper-deep: 12.8:1 (AAA at any size)
+- ink-soft on paper: 7.8:1 (AAA at any size)
+- ink-soft on paper-deep: 7.0:1 (AAA at body and above; AA at
+  spec sizes)
+- teal on paper: 9.4:1 (AAA at any size)
+- oxblood on paper: 8.9:1 (AAA at any size)
+- indigo on paper: 11.2:1 (AAA at any size)
+- paper on ink (inverted): 14.2:1 (AAA at any size)
+
+MINIMUM SIZES.
+- Body: 16px (Plex Serif).
+- Lede: 20px.
+- Headings (h1, h2): 24px and above.
+- Spec-data: 14px (Plex Mono).
+- Spec-label: 12px (Plex Mono, tracked, uppercase). The combination
+  of tracking, uppercase form, and AAA contrast keeps these
+  legible at 12px.
+
+FOCUS INDICATOR. A 2px outline in --ems-color-teal at 2px offset.
+The teal beam matches the signal verb. The indicator appears on
+keyboard focus only (:focus-visible) — pointer focus does not
+trigger it.
+
+The focus indicator is positive presence: the focused element
+gains a mark, the same mark every time. The kit does not use
+focus-color shifts (the element's own color does not change on
+focus); the indicator is added.
+
+SEMANTICS.
+- Headings: <h1>, <h2> in source order.
+- Lists: <ul> for unordered, <ol> for ordered, <dl> for definition.
+- Buttons: <button> for actions, <a> for navigation.
+- Citations: <cite> within the appropriate role.
+- Tags: <a rel="tag">.
+- Footnote marks: <a> with href to the entry's id.
+- Block quotations: <blockquote> with optional <cite>.
+- Spec metadata: plain text (no <abbr>, no <time> unless the
+  date is a machine-readable datetime).
+- Page landmarks: <header> for masthead, <main> for body, <nav>
+  for breadcrumb and navigation, <footer> for colophon.
+- Skip link to <main> at the top of every page (visible on focus).
+
+PLAIN-TEXT FALLBACK. Every page reads cleanly with stylesheet
+disabled. The kit's HTML structure is semantic enough that the
+no-CSS fallback is intelligible:
+- Spec-bands become plain mono lines.
+- Reservoirs become plain stacked sections.
+- The masthead becomes the heading "emsenn — on relations and
+  things" on its own line.
+- Lists keep their list semantics; tags keep their link semantics.
+- Footnote marks remain <a> links; the entries remain a list.
+
+REDUCED MOTION. The kit is static by design. The few animations
+(footnote-mark scroll, footnote-entry brief beam highlight) check
+prefers-reduced-motion and degrade to instant equivalents.
+
+SCREEN READER.
+- The wordmark has aria-label="emsenn".
+- The breadcrumb is wrapped in <nav aria-label="breadcrumb">.
+- The colophon is wrapped in <footer aria-label="colophon">.
+- The footnote section heading is read by the screen reader as
+  the section name.
+
+@@behavior
+Accessibility behaviors are largely passive (semantic markup,
+contrast). Active behaviors:
+- :focus-visible adds the teal outline.
+- prefers-reduced-motion: reduce disables the smooth-scroll on
+  footnote-mark click and the brief beam on footnote-entry.
+- Skip link receives focus on tab from the document body's start.
+
+Print: accessibility carries through. Plain-text fallback applies
+to PDFs read by screen readers.
+
+@@conflicts
+- A page that wants subtle text below the kit's minimum sizes
+  (a tiny credit line, a watermark): elevate to spec size or
+  remove. The minimums are floor values.
+- A focus indicator that conflicts with the design (the teal
+  outline reads as too bright on a teal-themed page): the kit
+  does not currently ship a teal-themed page, so the conflict
+  does not arise. If it did, the indicator would shift to a
+  different jewel for that page only.
+
+@@test
+1. Audit color usage. Confirm every text/ground pair meets AAA
+   at the relevant size.
+2. Audit text sizes. Confirm no body below 16px, no spec-data
+   below 14px, no spec-label below 12px.
+3. Tab through the page. Confirm every focusable element shows
+   a 2px teal outline.
+4. Disable the stylesheet. Confirm the page reads as a
+   well-structured document.
+5. Activate prefers-reduced-motion. Confirm animations degrade
+   to instant.
+6. Run an automated accessibility checker (axe-core, WAVE).
+   Confirm no errors.
+
+@@rationale
+Accessibility is a baseline, not a feature. The kit treats it as
+a typographic discipline: contrast pairs are color tokens,
+focus indicators are device variations, semantic markup is
+copy voice. By specifying it at the same fidelity as the rest
+of the kit, the kit ensures accessibility is not added at the
+end but designed in from the start.
+
+Reference: WCAG 2.1, AA and AAA conformance levels; Inclusive
+Components by Heydon Pickering, on the typographic-semantic
+overlap; the print-tradition's long-running care for legibility,
+which accessibility on screen is the continuation of.
+@ems-end
+*/
+
+:root {
+  /* @ems-token a11y/focus-color · teal beam, the signal verb */
+  --ems-a11y-focus-color: var(--ems-color-teal);
+  /* @ems-token a11y/focus-width · 2px, the beam weight */
+  --ems-a11y-focus-width: var(--ems-rule-beam);
+  /* @ems-token a11y/focus-offset · 2px outside the element */
+  --ems-a11y-focus-offset: 2px;
+}
+
+:focus-visible {
+  outline: var(--ems-a11y-focus-width) solid var(--ems-a11y-focus-color);
+  outline-offset: var(--ems-a11y-focus-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}
+/*
+@ems-id      print/specification
+@ems-kind    print
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   tokens/color, tokens/space, tokens/rule, type/scale, grid/page, grid/density
+@ems-cited-by  components/letter, components/spec-doc, components/library-page
+
+@ems-prose
+@@purpose
+The kit's print specification. The kit is print-native; screen is
+one rendering of it. This resource defines paper stocks, ink
+systems, page sizes, margin conventions, folio rules, and PDF
+output expectations for kit documents that move from screen to
+press or PDF.
+
+@@required
+Every kit document that is printed (letter, spec-doc, library-
+page, business card, postcard) follows these rules. The kit's
+@media print stylesheet implements them automatically; designer-
+prepared print files (PDFs sent to press) check against them.
+
+@@permitted
+- Single-color print (ink only) when budget or production
+  constraints prevent two-color. The kit's emphasis verb (oxblood
+  beam) becomes ink in single-color print; the kit accepts the
+  flattening.
+- Custom paper stocks for special editions (handmade paper,
+  archival cotton, colored stock) with the kit's color tokens
+  reinterpreted as appropriate for the stock. Reinterpretation
+  is the press's discretion; the kit specifies preferred stocks
+  but does not forbid alternatives.
+
+@@forbidden
+- Glossy or coated body stocks for letters and spec-docs. Coated
+  stocks reflect ambient light and undermine the kit's matte,
+  scholarly register.
+- Print files in RGB color space. Press files are CMYK or
+  spot-color; the kit specifies CMYK builds for each token.
+- Hairlines below 0.25pt at press. Below this weight, hairlines
+  drop out on uncoated stocks. The kit's hair rule (1px on screen)
+  maps to 0.5pt at press.
+- PDFs without embedded fonts. Plex must be embedded in every PDF
+  the kit produces; subset embedding is acceptable; reference-only
+  is forbidden.
+- Single-sided printing of multi-page documents intended for
+  binding. Documents bound (saddle-stitched, perfect-bound) print
+  double-sided with binding allowance on the inner margin.
+
+@@values
+PAPER STOCK:
+- Letters and short documents: uncoated text stock, 80gsm.
+- Spec-docs and bound papers: uncoated text stock, 100gsm.
+- Cards: uncoated cover stock, 250-300gsm.
+- Cream or warm white preferred. The token --ems-color-paper-deep
+  is the printed reference for cream; --ems-color-paper for warm
+  white.
+- Fully coated stocks reserved for cards and covers when the
+  application calls for durability.
+
+INKS:
+- Two-color print: ink (CMYK 60/55/65/80, dense black with warm
+  shift) plus one jewel — typically oxblood (Pantone 7644 C as
+  spot-color reference; CMYK build 35/85/75/40).
+- Single-color print: ink only. The oxblood beam becomes ink.
+- Full-color print: the seven-ink palette renders as CMYK builds
+  documented in tokens/color.
+
+PAGE SIZES:
+- Letter (US): 8.5 x 11 in. Default for correspondence and
+  spec-docs.
+- A4: 210 x 297 mm. International correspondence and papers.
+- Card: 3.5 x 2 in (US business card). Letterpress and digital.
+- Postcard: 4 x 6 in.
+
+MARGINS:
+- Letter and A4: u7 top (96px equivalent), u6 sides (64px), u5
+  bottom (48px). Inner side gains u7 instead of u6 when binding
+  allowance is needed.
+- Cards: u3 (24px equivalent) on every edge.
+
+FOLIO (page number):
+- Position: bottom margin, centered horizontally between the
+  margins (not centered on the page).
+- Type: mono spec (12px equivalent) at 10pt at print.
+- Color: ink-soft.
+- Format: bare numeral (1, 2, 3...). No "Page" prefix; no total
+  count ("1 of 24") unless the document is bound and exceeds
+  twenty pages.
+- Folio omitted on first page (cover) and on single-page documents
+  (cards).
+
+PDF:
+- One PDF per document.
+- Embedded fonts: Plex Sans, Plex Serif, Plex Mono, weights used
+  in the document.
+- Bookmarks: appear when the document exceeds eight pages and
+  mirror the heading structure (h1, h2) exactly.
+- Links: PDF links are preserved with their teal color
+  (subdued at print to print-teal: CMYK 80/40/55/40).
+- Metadata: title, author (M.), subject (one sentence), keywords
+  (the document's tags).
+
+@@behavior
+Print is static. The @media print stylesheet hides screen-only
+elements (the tour chrome, the source-toggle button, edit-mode
+controls), restores the kit's print padding and folio, and
+collapses any density-mode-specific layout to its print mapping.
+
+Reduced motion: not applicable.
+
+@@conflicts
+- A document with imagery that requires full-color print but
+  whose body needs two-color economy: split into a two-color
+  body section and a four-color insert. The kit's print
+  stylesheet supports this via a section attribute
+  (data-ems-print="full-color").
+- A bound document longer than 64 pages: split into two volumes.
+  The kit's saddle-stitched bind tops out at 64 pages; perfect-
+  bound tops out at 256.
+
+@@test
+1. Open a kit document for print. Confirm screen-only elements
+   are hidden.
+2. Confirm margins resolve to u7/u6/u5 on letter and A4 sizes.
+3. Confirm folios appear in the bottom margin from page 2 onward,
+   in mono ink-soft.
+4. Print to PDF. Confirm Plex fonts are embedded.
+5. Open the PDF. Confirm bookmarks mirror heading structure for
+   documents over eight pages.
+6. Inspect a printed sample. Confirm hairlines render cleanly
+   (no drop-out) on the chosen stock.
+
+@@rationale
+Most digital design treats print as an export format — an
+afterthought that hopefully doesn't break too badly. The kit
+treats print as the primary form and screen as one rendering.
+This inversion is consistent with emsenn's research practice
+(letters, papers, archive documents are written to be printable)
+and with the kit's overall debt to print-typography traditions.
+
+By specifying paper, ink, sizes, margins, and folio at the same
+fidelity as the screen tokens, the kit ensures a printed
+document feels like the screen document feels — same vocabulary,
+same rhythm, different surface.
+
+Reference: Hochuli & Kinross, Designing Books, on the print
+production of the codex; Tschichold's Penguin design rules;
+Bringhurst on the digital-to-press continuum; ISO 216 for paper
+sizes.
+@ems-end
+*/
+
+@media print {
+  .ems-page, .ems-letter, .ems-spec-doc, .ems-library {
+    padding: var(--ems-u7) var(--ems-u6) var(--ems-u5);
+    background: var(--ems-color-paper);
+  }
+  /* hide screen-only chrome */
+  .tour-cover, .tour-toc, .tour-resource__source-toggle,
+  .tour-resource__source { display: none !important; }
+}
+/*
+@ems-id      governance/extension
+@ems-kind    governance
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   none
+@ems-cited-by  none
+
+@ems-prose
+@@purpose
+How the language extends, versions, retires, and accretes. This
+resource specifies the rules the kit applies to itself when
+adding new resources, modifying existing ones, or sunsetting
+ones that no longer serve. Governance is the meta-rule: the rule
+about how rules change.
+
+The kit is a research vault, not a product. It accretes; it does
+not refactor.
+
+@@required
+Every modification to the kit observes these rules.
+
+@@permitted
+- Status changes within a resource without bumping version when
+  the change is editorial (typo, prose tightening, decoration
+  example clarification).
+- Adding a new variant (@ems-variant) to an existing resource
+  without bumping the resource's major version. Variants extend;
+  they do not modify.
+- Adding new entries to the citation graph (a new component cites
+  an existing token) without modifying either resource's content.
+
+@@forbidden
+- Adding a resource on speculation. The kit's earned-addition
+  rule: a resource enters the graph after an existing artifact
+  has needed it three times and worked around it three times.
+  The third workaround is the resource's first draft.
+- Modifying a stable resource's contract (its public API: token
+  names, class names, grid column names) without first reading
+  every entry in its @ems-cited-by list and updating each
+  cite-side accordingly.
+- Deleting a retired resource. Retirement preserves the file;
+  removal breaks the graph for readers who walked an old path
+  to it.
+- Versioning the kit as a whole below resource granularity.
+  Resources version themselves; the cover declares the kit's
+  current draft version (v0.3) which corresponds to the highest
+  version any single resource has reached.
+- Refactoring resources for tidiness. Tidiness is not a goal; the
+  graph's history is. Old resources stay as they were when they
+  were superseded.
+
+@@values
+EARNED ADDITION. A new resource enters when an existing artifact
+has needed it three times and worked around it three times. The
+third workaround is the new resource's first draft. The kit
+treats the second workaround as evidence; the third as the new
+resource's @@purpose section.
+
+VERSIONING. Each resource carries @ems-status as
+"<status> · v<version> · <date>". Status values: draft, stable,
+deprecated, retired. Version numbers are major.minor (no patch).
+
+A major version bump signals a contract change: token rename,
+device geometry change, component anatomy change. A minor bump
+signals a non-contract change: prose tightening, additional
+example, new variant.
+
+CITATION GRAPH. Every resource declares @ems-cites (its
+dependencies) and @ems-cited-by (its dependents). The two together
+form a directed graph; the kit's tour walks this graph as its
+primary navigation. A change to a resource's contract requires
+reading every cited-by entry first and updating each cite-side
+accordingly.
+
+RETIREMENT. A resource is retired by setting status to
+"retired · <date> · superseded-by <id>". The file remains; the
+graph remains walkable backwards. The archive keeps every layer.
+
+A resource may be deprecated (status "deprecated · <date>")
+before retirement. Deprecation marks the resource as no longer
+preferred for new work; existing dependents continue to work but
+should migrate. Retirement marks the resource as no longer the
+canonical answer; the cited-by side should be updated to cite the
+superseding resource directly, but the retired resource remains
+on disk.
+
+NAMING. Resource ids are namespaced (token/, device/, type/, etc.)
+and lowercase-hyphenated. Once published, an id is permanent;
+renaming is forbidden. A resource that wants a different name is
+a different resource (retire the old, create the new with the
+new name).
+
+@@behavior
+Governance is procedural, not visual. The rules apply when the
+kit is being modified; they do not render on the page.
+
+@@conflicts
+- A resource that has been needed twice and worked around twice
+  (one short of the earned-addition threshold): document the
+  workarounds in the candidate-resource's notes and wait. The
+  third instance is the trigger.
+- A resource whose contract changes are demanded by an external
+  constraint (e.g. a printer's color requirements force a token
+  value change): the change is permitted with a major version
+  bump and a propagated update across the cited-by side. Document
+  the external constraint in the resource's status line.
+
+@@test
+1. Audit the @ems-cites and @ems-cited-by lines of every resource.
+   Confirm the graph is bidirectionally consistent (if A cites B,
+   B's cited-by includes A).
+2. Audit the status line of every resource. Confirm it follows the
+   "<status> · v<version> · <date>" form.
+3. Confirm no retired resource has been deleted from disk.
+4. Confirm no resource has been renamed; renaming creates a new
+   resource and retires the old.
+
+@@rationale
+The kit is an archival project. Its discipline against speculation
+(earned addition), against forgetting (retirement preserves the
+file), and against renaming (ids are permanent) are all the same
+discipline: every state the kit has ever been in remains
+addressable. A future reader can walk the graph backwards from
+v0.7 to v0.3 to v0.1 and see what the kit thought at each layer.
+
+This is the inverse of conventional software practice (refactor,
+rename, delete). The kit's premise is that the language itself is
+the artifact, and an artifact's history is part of its value.
+
+Reference: Christopher Alexander, A Pattern Language, on the
+ethics of small additions to a shared corpus; the Internet
+Archive's preservation principles; Tschichold's late writings on
+the typographic tradition as a continuous accretion.
+@ems-end
+*/
+/*
+@ems-id      voice/copy
+@ems-kind    voice
+@ems-status  draft · v0.3 · 2026-05-01
+@ems-cites   none
+@ems-cited-by  components/masthead, components/breadcrumb, components/colophon, components/letter, components/spec-doc, components/library-page
+
+@ems-prose
+@@purpose
+The kit's voice. The rules for how text on every page sounds —
+casing, sentence shape, vocabulary, dating, naming. Voice is a
+typographic and editorial discipline together; this resource
+specifies the editorial half (the typographic half lives in
+type/stack).
+
+@@required
+Every word the kit renders follows these rules: every masthead
+band, every colophon cell, every body paragraph, every button label,
+every empty state, every error message.
+
+@@permitted
+- Quoted text in its original casing and punctuation, even when
+  inconsistent with kit voice. Quotes are the source's voice;
+  kit voice applies to the surrounding prose.
+- Names, including emsenn's, in their preferred form. The kit
+  defaults to lowercase but defers to a person's chosen
+  capitalization.
+- Technical terms in their established casing (HTML, CSS, JSON,
+  PDF). The kit does not lowercase acronyms.
+
+@@forbidden
+- Title Case in headings or labels. Sentence case for prose,
+  lowercase for labels, ALL CAPS only on tracked mono spec.
+- Date formats other than ISO 8601 (2026-05-01). No "May 1, 2026",
+  no "5/1/26", no "1 May 2026". The format itself declares the
+  field as a date and sorts unambiguously across locales.
+- Marketing voice. No exclamation marks, no "amazing", no second
+  person sales register. The kit writes scholarly correspondence,
+  not landing pages.
+- Bolded honorifics or pronouns. M. and they/them appear as
+  ordinary text. Special casing them would emphasize the form
+  over the person.
+- Latinate when an Anglo-Saxon synonym is available and equally
+  precise (use "begin" not "commence"; "end" not "terminate";
+  "use" not "utilize"). Latinate is permitted when precision
+  requires it (specify, refute, abrogate).
+- Sentences with two or more main ideas joined by semicolons or
+  comma splices. One idea per sentence; if two ideas need joining,
+  they need two sentences.
+- Em-dashes used as comma replacements. Em-dashes mark a sharp
+  aside; commas mark continuation. Mixing them flattens the
+  rhythm of the prose.
+
+@@values
+Casing:
+- Sentence case: prose, page titles, section headings.
+- lowercase: tag names, link labels in body, button labels.
+- ALL CAPS, tracked: spec voice (mono labels in masthead bands,
+  colophon cells, footnote section titles).
+
+Dates:
+- ISO 8601: 2026-05-01.
+- For ranges: 2026-05-01 / 2026-05-08.
+- For partial dates: 2026-05 (month), 2026 (year).
+
+Honorific and pronouns:
+- M. (full stop) for emsenn's name in formal contexts.
+- they/them for emsenn's pronouns.
+- Honorifics for others: defer to the person.
+
+Sentence shape:
+- One idea per sentence.
+- Average sentence length: 15-20 words.
+- Maximum sentence length: 30 words.
+- Compound sentences: maximum two clauses, joined by a coordinator
+  (and, but, or). Subordinating clauses are permitted but
+  parsimoniously.
+
+Vocabulary:
+- Anglo-Saxon when available.
+- Latinate when precision requires it.
+- No jargon without definition; define on first use, then use
+  freely.
+
+Buttons and links:
+- Read as the action: "read more", "open the letter", "return to
+  library".
+- No "click here", no "more", no bare "→".
+
+Empty states:
+- Read as a sentence: "no letters yet under this tag".
+- Lowercase, no period at end (the empty state is a status, not
+  a statement).
+
+Errors:
+- Read as a sentence with a path: "the page at
+  /library/onomastics could not be found".
+- Lowercase, with period at end (the error is a statement).
+- Never blame the reader: "could not be found" not "you mistyped".
+
+@@behavior
+Voice does not animate. The page reads at rest.
+
+Print: voice carries through unchanged. The kit's voice is
+typographic and editorial, not interactive — print and screen
+read the same.
+
+@@conflicts
+- A button label that should be a sentence and reads as a fragment
+  ("read"): expand to a sentence-fragment action ("read the
+  letter").
+- An error that wants to elaborate ("the page at /library/onomastics
+  could not be found because the document was retired in 2024"):
+  the elaboration is a body sentence, not part of the error. Move
+  it below the error in body voice.
+
+@@test
+1. Audit every word on the page. Confirm casing matches the rule
+   for that role.
+2. Confirm every date is ISO 8601.
+3. Confirm no exclamation marks in non-quoted text.
+4. Confirm no Title Case headings.
+5. Confirm sentences are one idea each; flag any over 30 words
+   for a rewrite pass.
+6. Confirm buttons and links read as their action.
+
+@@rationale
+Voice is the kit's editorial signature. By codifying it as a
+specifiable resource — and by specifying it at the same fidelity
+as type and color — the kit treats writing as a typographic
+choice. A page in kit voice sounds like emsenn whether the
+specific words were written by emsenn or by someone writing
+within the kit.
+
+The lowercase default is a deliberate departure from web
+defaults (Title Case headings, sentence-case body). It comes from
+a long tradition of Bauhaus and post-Bauhaus typographers
+(Tschichold, Bayer) who used lowercase to mark the page as
+constructed, not declaimed.
+
+Reference: Strunk and White, Elements of Style; Williams, Style:
+Lessons in Clarity and Grace; Hochuli, Detail in Typography on
+the editorial-typographic boundary; ISO 8601 for date format.
+@ems-end
+*/
