@@ -11,8 +11,8 @@
 import {
   coloringFactorMap,
 } from "@red-cup-engineering/metrologic/articulation/predicating/positing/settling/analysis/coloring";
-import { closureRegimeName } from "@red-cup-engineering/metrologic/articulation/predicating/positing/settling/closure";
-import { ofNat, regimeOfOrdinal } from "@red-cup-engineering/metrologic/articulation/predicating/positing/settling/analysis/ordinal-closure";
+import { closureModeName } from "@red-cup-engineering/metrologic/articulation/predicating/positing/settling/closure";
+import { ofNat, modeOfOrdinal } from "@red-cup-engineering/metrologic/articulation/predicating/positing/settling/analysis/ordinal-closure";
 
 /* ── carrier shape ──────────────────────────────────────────────────────────
  * A minimal structural carrier shape, not the full `HtmlCarrierOf` witness
@@ -225,7 +225,7 @@ export function cascadeSettling(system, bound = 8) {
     current = resolvedSystemOf(current, valuation);
     const next = resolveNodeStyles(current);
     if (sameVisualValuation(valuation, next)) {
-      return Object.freeze({ valuation, settledAt: stage, regime: closureRegimeName(regimeOfOrdinal(ofNat(stage), true, true)) });
+      return Object.freeze({ valuation, settledAt: stage, regime: closureModeName(modeOfOrdinal(ofNat(stage), true, true)) });
     }
     valuation = next;
   }
