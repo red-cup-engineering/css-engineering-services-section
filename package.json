@@ -8,9 +8,9 @@
     "url": "git+https://github.com/red-cup-engineering/css-engineering-services-section.git"
   },
   "dependencies": {
-    "@red-cup-engineering/computer-content-engineering-services-section": "^0.2.2",
-    "@red-cup-engineering/metrologic": "^0.22.4",
-    "@red-cup-engineering/xml-document-rendering-service": "^0.3.3",
+    "@red-cup-engineering/computer-content-engineering-services-section": "^0.2.2 || 0.3.1-dev.0",
+    "@red-cup-engineering/metrologic": "^0.22.4 || 0.22.12-dev.0",
+    "@red-cup-engineering/xml-document-rendering-service": "^0.3.3 || 0.3.10-dev.0",
     "@red-cup-engineering/semiotic-content-address-system": "0.1.7-dev.1 || 0.1.7 || 0.1.8-dev.0"
   },
   "devDependencies": {
