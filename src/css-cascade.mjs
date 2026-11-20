@@ -46,7 +46,7 @@ const pointOf = (value) => value.evidence ?? value.reading;
 
 /** The closed stylesheet. */
 
-const defaultMode = "living-Web/IndieWeb";
+const defaultRegime = "living-Web/IndieWeb";
 const defaultLayers = Object.freeze(["base", "relations", "overrides"]);
 const defaultInheritedProperties = Object.freeze([
   "color",
@@ -66,7 +66,7 @@ const defaultInheritedProperties = Object.freeze([
 /** Living-Web / IndieWeb defaults for the target regime. */
 export const livingWebIndieWebProfile = Object.freeze({
   kind: "rendering.css.profile",
-  regime: defaultMode,
+  regime: defaultRegime,
   rootSelector: ":root",
   layers: defaultLayers,
   defaultLayer: "relations",
@@ -80,12 +80,12 @@ const CSS_LAYER_NAME = /^[_a-zA-Z][-_a-zA-Z0-9]*(?:\.[_a-zA-Z][-_a-zA-Z0-9]*)*$/
 const cssString = (value) =>
   `"${value.replace(/\\/gu, "\\\\").replace(/"/gu, "\\\"").replace(/\n/gu, "\\a ")}"`;
 
-const defaultSelectorForLocation = (location) => `[data-metroplat-locus=${cssString(location)}]`;
+const defaultSelectorForLocus = (locus) => `[data-metroplat-locus=${cssString(locus)}]`;
 
-const normalizeLocation = (location) =>
-  typeof location === "string" ? Object.freeze({ id: location }) : location;
+const normalizeLocus = (locus) =>
+  typeof locus === "string" ? Object.freeze({ id: locus }) : locus;
 
-const locationKey = (location) => location.id;
+const locusKey = (locus) => locus.id;
 const labelOf = (value) => (typeof value === "string" ? value : JSON.stringify(value));
 /** A valuation: a list of SignCell cells. */
 const isValuation = (value) => Array.isArray(value);
@@ -97,9 +97,9 @@ const assignmentSetFromValuation = (valuation) => {
   for (const at of valuation) if (!predicates.some((p) => coincides(p, at.predicate))) predicates.push(at.predicate);
   const fibers = predicates.map((predicate) => {
     const assignments = valuation.filter((at) => coincides(at.predicate, predicate)).map((at) => {
-      const location = labelOf(at.subject);
-      loci.set(location, Object.freeze({ id: location }));
-      return Object.freeze({ locus: location, evidence: Object.freeze({ for: at.for, against: at.against }) });
+      const locus = labelOf(at.subject);
+      loci.set(locus, Object.freeze({ id: locus }));
+      return Object.freeze({ locus, evidence: Object.freeze({ for: at.for, against: at.against }) });
     });
     return Object.freeze({ id: labelOf(predicate), assignments: Object.freeze(assignments) });
   });
@@ -129,7 +129,7 @@ const normalizeProfile = (profile = livingWebIndieWebProfile
   const layers = Object.freeze([...(profile.layers ?? defaultLayers)]);
   return Object.freeze({
     kind: "rendering.css.profile",
-    regime: profile.regime ?? defaultMode,
+    regime: profile.regime ?? defaultRegime,
     rootSelector: profile.rootSelector ?? ":root",
     layers,
     defaultLayer: profile.defaultLayer ?? "relations",
@@ -345,19 +345,19 @@ const isInheritedProperty = (property, profile) =>
 const normalizeAssignmentSet = (input) =>
   isValuation(input) ? assignmentSetFromValuation(input) : input;
 
-const isLocationList = (
+const isLocusList = (
   value,
 ) => Array.isArray(value);
 
 const normalizedLoci = (assignmentSet) =>
-  Object.freeze([...assignmentSet.loci].map(normalizeLocation).sort((left, right) => locationKey(left).localeCompare(locationKey(right))));
+  Object.freeze([...assignmentSet.loci].map(normalizeLocus).sort((left, right) => locusKey(left).localeCompare(locusKey(right))));
 
-const selectorByLocation = (
+const selectorByLocus = (
   loci,
   profile,
 ) => {
-  const selectorForLocation = profile.selectorForLocus ?? defaultSelectorForLocation;
-  return new Map(loci.map((location) => [location.id, location.selector ?? selectorForLocation(location.id)]));
+  const selectorForLocus = profile.selectorForLocus ?? defaultSelectorForLocus;
+  return new Map(loci.map((locus) => [locus.id, locus.selector ?? selectorForLocus(locus.id)]));
 };
 
 const assignmentSortKey = (assignment) =>
@@ -419,19 +419,19 @@ export function visualValuationDeclarations(
   const normalizedProfile = normalizeProfile(profile);
   const assignmentSet = normalizeAssignmentSet(input);
   const loci = normalizedLoci(assignmentSet);
-  const selectors = selectorByLocation(loci, normalizedProfile);
+  const selectors = selectorByLocus(loci, normalizedProfile);
   const bundle = visualBundle(normalizedProfile);
   const declarations = [];
   let generatedOrder = 0;
 
   for (const fiber of [...assignmentSet.fibers].sort((left, right) => left.id.localeCompare(right.id))) {
     for (const assignment of [...fiber.assignments].sort((left, right) => assignmentSortKey(left).localeCompare(assignmentSortKey(right)))) {
-      const location = assignment.locus ?? fiber.id;
-      const selector = assignment.selector ?? selectors.get(location) ?? (normalizedProfile.selectorForLocus ?? defaultSelectorForLocation)(location);
+      const locus = assignment.locus ?? fiber.id;
+      const selector = assignment.selector ?? selectors.get(locus) ?? (normalizedProfile.selectorForLocus ?? defaultSelectorForLocus)(locus);
       const reading = knowledgeNameOf(pointOf(assignment));
       const seed = {
         ...assignment,
-        locus: location,
+        locus,
         selector,
         fiber: fiber.id,
         reading,
@@ -445,10 +445,10 @@ export function visualValuationDeclarations(
   }
 
   for (const rule of [...(assignmentSet.rules ?? []), ...(normalizedProfile.rules ?? [])].sort((left, right) => ruleSortKey(left).localeCompare(ruleSortKey(right)))) {
-    const location = rule.locus ?? rule.selector;
+    const locus = rule.locus ?? rule.selector;
     const seed = {
       ...rule,
-      locus: location,
+      locus,
       selector: rule.selector,
       fiber: rule.fiber ?? "authored",
       reading: pointOf(rule) === undefined ? "authored" : knowledgeNameOf(pointOf(rule)),
@@ -486,7 +486,7 @@ const inheritOnce = (
   const inherited = [];
   for (const child of loci) {
     if (child.parent === undefined) continue;
-    const childSelector = selectors.get(child.id) ?? defaultSelectorForLocation(child.id);
+    const childSelector = selectors.get(child.id) ?? defaultSelectorForLocus(child.id);
     for (const declaration of current.declarations) {
       if (declaration.locus !== child.parent) continue;
       if (!isInheritedProperty(declaration.property, profile)) continue;
@@ -507,11 +507,11 @@ export function closeCascade(
   searchOptions = {},
 ) {
   const normalizedProfile = normalizeProfile(profile);
-  const assignmentSet = isLocationList(input)
+  const assignmentSet = isLocusList(input)
     ? Object.freeze({ kind: "rendering.css.assignmentSet", loci: input, fibers: Object.freeze([]) })
     : normalizeAssignmentSet(input);
   const loci = normalizedLoci(assignmentSet);
-  const selectors = selectorByLocation(loci, normalizedProfile);
+  const selectors = selectorByLocus(loci, normalizedProfile);
   const ordered = [...declarations].sort((left, right) => compareCascadeRank(left, right, normalizedProfile));
   const bottom = state(0, []);
   const lattice = {

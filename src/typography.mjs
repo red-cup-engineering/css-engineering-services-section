@@ -60,7 +60,7 @@ export function scaleStepForOrdinal(ordinal) {
   return scale;
 }
 
-function locationElement(cell, role) {
+function locusElement(cell, role) {
   switch (role) {
     case "subject": return cell.subject;
     case "predicate": return cell.predicate;
@@ -68,20 +68,20 @@ function locationElement(cell, role) {
   }
 }
 
-export function typographyLocation(cell, role) {
+export function typographyLocus(cell, role) {
   return Object.freeze({
     kind: "metroplat.projections.typography.locus",
     cell,
     role,
-    element: locationElement(cell, role),
+    element: locusElement(cell, role),
   });
 }
 
 export function typographyLociForCell(cell) {
   return Object.freeze([
-    typographyLocation(cell, "subject"),
-    typographyLocation(cell, "predicate"),
-    typographyLocation(cell, "object"),
+    typographyLocus(cell, "subject"),
+    typographyLocus(cell, "predicate"),
+    typographyLocus(cell, "object"),
   ]);
 }
 
@@ -91,13 +91,13 @@ function styleOf(value) {
 
 /** A typography fiber: a locus with its point (told evidence, or a reading's name), scaled in an order. */
 export function typographyFiber(
-  location,
+  locus,
   point,
   order = "knowledge",
 ) {
   return Object.freeze({
     kind: "metroplat.projections.typography.fiber",
-    locus: location,
+    locus,
     point,
     order,
     ordinal: typeScaleOrdinalForReading(knowledgeNameOf(point), order),
@@ -106,7 +106,7 @@ export function typographyFiber(
 
 /** The typography fibers of a cell: one per role, each with the cell's evidence. */
 export function typographyFibersForCell(at, order = "knowledge") {
-  return Object.freeze(typographyLociForCell(at).map((location) => typographyFiber(location, at, order)));
+  return Object.freeze(typographyLociForCell(at).map((locus) => typographyFiber(locus, at, order)));
 }
 
 /** The typography fibers of a valuation (a cell list). */
