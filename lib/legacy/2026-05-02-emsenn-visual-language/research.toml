@@ -1,0 +1,23 @@
+title = "emsenn Visual Language"
+  description = "A working visual language for emsenn's writing, software, and printed matter — assembled as a resource graph, governed by refusal lists, and written in the language it describes. v.0.1, living document. Specializes the visual-engineering parent theory to one author's published surface."
+  edition = "v.0.1"
+  status = "living"
+  drafted = "2026-05-02"
+
+  lib_dirs = [
+    "concepts",
+    "objects",
+    "morphisms",
+    "theorems",
+    "examples",
+    "narratives",
+    "questions",
+    "references",
+  ]
+
+  bib = "references.bib"
+
+  [validation]
+  min_body_chars = 200
+  require_frontmatter = ["type"]
+  

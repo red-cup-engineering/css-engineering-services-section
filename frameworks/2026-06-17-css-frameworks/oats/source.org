@@ -1,0 +1,189 @@
+#+TITLE: Oats CSS
+#+DESCRIPTION: A CSS stylesheet
+#+OPTIONS: toc:nil ':nil h:6 f:t num:nil
+#+HUGO_BASE_DIR: ~/dev/personal-website/
+#+HUGO_SECTION: computer-instruction-sets
+#+HUGO_TAGS: css
+#+HTML_DOCTYPE: html5
+#+HTML_CONTAINER: section
+* Introduction
+*/Oats/* is a simple and neutral CSS theme created by [[https://emsenn.net][emsenn]].
+** License and Editorial Information
+This document and the source code it contains are released under the
+MIT License and maintained at [[https://git.sr.ht/~emsenn/oats]].
+#+TOC: headlines 3
+* Design Philosophy
+The /Oats/ theme is based on my own [[https://emsenn.net/projects/brutstrap/][/Brutstrap/]], which claims to style
+content as it's constructed.
+
+However, /Brutstrap/ is catered toward a rather stark aesthetic, to
+make it more readily match the [[https://brutalist-web.design][brutalism]] advocated by [[https://naildrivin5.com/][David Bryant
+Copeland]].
+
+/Oats/ tries to be a little softer and more friendly. While
+nothing about the stylesheet contradicts the brutalist priciples
+Copeland provides, it does a little more styling than is strictly necessary.
+* CSS Rules
+  :PROPERTIES:
+  :header-args: :tangle ./build/oats/oats.css :padline no
+  :END:
+All of /Oats/ CSS lives in a single style-sheet, ~oats.css~.
+** Base Rules
+The theme's */base rules/* are those that go with HTML tags directly.
+*** HTML Tag Rules
+Document-wide settings, including those relevant to font-styling, are
+declared in the ~html~ rule.
+#+BEGIN_SRC css
+  html {
+    color: #444;
+    background-color: #eee;
+#+END_SRC
+These colors are the lowest-contrast, three-digit hex codes that still
+pass [[https://www.w3.org/TR/WCAG20/][WCAG2 AAA]].
+#+BEGIN_SRC css
+    hyphens: auto;
+    font-family: sans-serif;
+    letter-spacing: .03em;
+    word-spacing: .05em;
+    line-height: 1.4;
+    font-size: 1.3rem;
+  }
+#+END_SRC
+Adding some spacing between letters and words helps make the document
+feel a little more "friendly," and makes it a little safer to use more
+distinctive fonts in your body text.
+*** Body Tag Rules
+#+BEGIN_SRC css
+  body {
+    margin: 0;
+  }
+#+END_SRC
+*** Header Tag Rules
+#+BEGIN_SRC css
+  header {
+    overflow: hidden;
+    padding: 1rem 0 3rem 0;
+  }
+#+END_SRC
+*** Main Tag Rules
+#+BEGIN_SRC css
+  main{
+    width: 85vw;
+    max-width: 40rem;
+    margin: -4rem auto -6rem;
+    padding: 3rem 2rem 6rem;
+  }
+#+END_SRC
+*** Footer Tag Rules
+#+begin_src css
+  footer {
+    padding: 4rem 1rem 1rem;
+  }
+#+end_src
+*** Headline Tag Rules
+**** H1 Tag Rules
+#+BEGIN_SRC css
+  h1 {
+    font-weight: normal;
+    font-size: 2.8em;
+    text-shadow: .08em .03em .03em rgba(68,68,68,.3);
+    margin: 0;
+    padding: 0 .5em;
+  }
+#+END_SRC
+**** H2 through H6 Tag Rules
+#+BEGIN_SRC css
+  h2,h3,h4,h5,h6,h7,h8,h9 {
+    text-align: center;
+    font-style: bold;
+    letter-spacing: 0.1em;
+  }
+#+END_SRC
+*** Link Tag Rules
+#+BEGIN_SRC css
+  a {
+    color: #31B;
+    text-decoration: underline dotted #4447;
+    text-shadow: 0 0 .1em rgba(68,68,68,.2);
+  }
+  a:visited {
+    color: #718;
+  }
+  a:hover {
+    color: #42C;
+    outline-style: none;
+    text-decoration: underline solid #42c3;
+    text-shadow: 0 0 .1em #31b7;
+  }
+  a:focus {
+    color: #42C;
+    outline-style: none;
+    text-decoration: underline solid #42c3;
+    text-shadow: 0 0 .1em #31b7;
+  }
+  a:visited:hover, a:visited:focus {
+    color: #918;
+    text-decoration: underline solid #9183;
+    text-shadow: 0 0 .1em #7187;
+  }
+#+END_SRC
+*** Image Tag Rules
+#+begin_src css
+  img {
+    max-width: 100%;
+    max-height: 20em;
+  }
+#+end_src
+** Partials Rules
+*** Skip-to-Content Rules
+#+BEGIN_SRC css
+  .skipToContentLink {
+    opacity: 0;
+    position: absolute;
+  }
+  .skipToContentLink:focus{
+    opacity:1
+  }
+#+END_SRC
+** State Rules
+*** Selection Rules
+#+BEGIN_SRC css
+  ::selection {
+    color: #222;
+    background-color: #777;
+  }
+#+END_SRC
+* Demonstration HTML Document
+#+BEGIN_SRC html :tangle ./build/oats/index.html
+  <!DOCTYPE html>
+  <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+      <link href="https://gmpg.org/xfn/11" rel="profile">
+      <meta charset="UTF-8">
+      <meta name="description" content="Oats is a simple and neutral CSS theme.">
+      <meta name="keywords" content="oats, css, theme">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" type="text/css" href="./oats.css">
+      <title>Oats</title>
+    </head>
+    <body>
+      <a class="skipToContentLink" href="#content">Skip to Content</a>
+      <header>
+	<h1>Oats</h1>
+      </header>
+      <main id="content">
+	<p>
+	  Oats is a simple and neutral CSS theme.
+	</p>
+	<section id="features">
+	  <h2>Features</h2>
+	  <ul>
+	    <li>
+	      <strong>Very little,</strong> honestly.
+	    </li>
+	  </ul>
+	</section>
+      </main>
+    </body>
+  </html>
+#+END_SRC

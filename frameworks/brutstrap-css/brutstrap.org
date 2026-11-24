@@ -1,0 +1,258 @@
+#+SETUPFILE: ./base-setup.inc
+#+SETUPFILE: ./brutstrap.inc
+#+OPTIONS: html-style:nil
+#+TITLE: Brutstrap
+#+EXPORT_FILE_NAME: ../pub/brutstrap
+#+MACRO: document-type CSS theme
+#+MACRO: assumed-knowledge how to read [[https://en.wikipedia.org/wiki/Cascading_Style_Sheets][cascading style sheets]] (CSS) and [[https://en.wikipedia.org/wiki/HTML][HTML]]
+#+INDEX: software!by type!CSS theme!*Brutstrap*
+#+INDEX: software!by language!CSS!*Brutstrap*
+#+INDEX: CSS!theme!*Brutstrap
+#+INDEX: brutalism!*Brutstrap*
+#+INDEX: Brutstrap!*Brutstrap*
+#+TOC: headlines local 1
+* Introduction
+#+INCLUDE: "./plates.inc::draft"
+#+INCLUDE: "./plates.inc::assumes-knowledge"
+In this document I explain the design philosophy and implementation of
+my *Brutstrap* CSS theme: one where the webpage, as shown in the
+browser, is an accurate representation of the HTML document it is
+displaying.
+#+INCLUDE: "./plates.inc::default-eli"
+#+INCLUDE: "./plates.inc::acknowledgements"
+#+INCLUDE: "./plates.inc::literate-programming"
+* Brutstrap
+  :PROPERTIES:
+  :CUSTOM_ID: contents
+  :END:
+*/Brutstrap/* is a CSS theme based on David Bryant Copeland's
+[[https://brutalist-web.design/]["Guidelines for Brutalist Web Design,"]] which advocates "/raw content
+true to its construction/."
+#+TOC: headlines local 1
+** Principles
+- */The website people see is the website in the HTML file./* As David
+  Byant Copeland says in his definition, brutalist websites should be
+  "raw content, true to [their] construction." Here, that means the
+  content is represented as a single column, flowing left to right and
+  top to bottom.
+- */Only links, inputs and buttons should respond to interaction./* A
+  website should allow two points of interaction: a hyperlink that
+  brings you to a destination, and form which submits information to a
+  server. Those elements, and only those elements, should respond to
+  being clicked, focused, or hovered-over.
+- */Components should be named what they are./* Classes should be
+  named what they are, not what they're for.
+- */Design should be helpful./* Styling should be to help reinforce
+  the context that your content has.
+** Usage
+*Brutstrap*'s stylesheet is available at
+[[file:./build/brutstrap/brutstrap.css][=./build/brutstrap/brutstrap.css=]], but please don't hotlink to it. You
+can also view the stylesheet under the [[#supplements-complete-stylesheet]["Complete Stylesheet"]] section.
+#+INCLUDE: "./plates.inc::use-org"
+** Implementation
+   :PROPERTIES:
+   :header-args: :tangle ./build/brutstrap/brutstrap.css :padline no
+   :END:
+*/NOTE:/* Because I use Org-mode, this CSS is written with rules
+compatible with its naming scheme.
+#+TOC: headlines local 2
+*** Document Framing
+**** Body
+#+BEGIN_SRC css
+  body {
+    position: relative;
+    background-color: #eee;
+    color: #444;
+    font-family: serif;
+    margin: 0 auto;
+    padding-bottom: 6rem;
+    min-height: 100%;
+    font-size: 1.4em;
+  }
+#+END_SRC
+**** Header & Title
+#+BEGIN_SRC css
+header, h1 {
+  font-family: sans-serif;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+.title { font-size: 3.2rem; }
+.subtitle { font-size: 2.2rem; }
+#+END_SRC
+**** Content Container
+#+BEGIN_SRC css
+main, #content {
+  width: 75vw;
+  max-width: 40em;
+  margin: 0 auto;
+  line-height: 1.6;
+  margin-bottom: 8rem;
+}
+#+END_SRC
+**** Footer
+#+BEGIN_SRC css
+footer, #postamble {
+  padding: 1em 0;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+#+END_SRC
+*** Block Design
+**** Section
+#+BEGIN_SRC css
+section {
+  border-bottom: 0.1em solid #444;
+  margin-bottom: 1em;
+}
+#+END_SRC
+**** Blockquote
+#+BEGIN_SRC css
+
+blockquote {
+  padding: 0.5rem;
+  border-left: 0.1em solid #444;
+}
+#+END_SRC
+
+**** Table
+#+BEGIN_SRC css
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    border: 0.1em solid #444;
+}
+thead { font-family: sans-serif; }
+td {
+  padding: 0 0.3em;
+  border: 0.01em solid #444;
+}
+#+END_SRC
+*** Typography
+**** Headlines
+#+BEGIN_SRC css
+h2, h3, h4, h5, h6 {
+  font-family: sans-serif;
+  margin: 0.5em;
+}
+#+END_SRC
+**** Links
+#+BEGIN_SRC css
+a {
+  text-decoration: none;
+  color: #3ac;
+  display: inline-block;
+  position: relative;
+  border-bottom: 0.1rem dotted;
+  line-height: 1.2;
+  transition: border 0.3s;
+}
+a:hover {
+  color: #5ce;
+  outline-style: none;
+  border-bottom: 0.1rem solid;
+}
+a:visited { color: #b8c; }
+a:visited:hover { color: #dae; }
+a:focus {
+  outline-style: none;
+  border-bottom: 0.1rem solid;
+}
+#+END_SRC
+*** State Rules
+**** Selection Rules
+#+BEGIN_SRC css
+::selection { background-color: #777; color: #eee; }
+a::selection { background-color: #ccc; }
+#+END_SRC
+*** Class Rules
+**** Code Block Rules
+#+BEGIN_SRC css
+pre, .src {
+  padding: 0.5em;
+  border: 0.1em solid #444;
+  white-space: pre-wrap;
+  overflow-x: scroll;
+  text-overflow: clip;
+}
+#+END_SRC
+* Supplements
+#+TOC: headlines local 1
+** Acknowledgements
+   :PROPERTIES:
+   :CUSTOM_ID: supplements-acknowledgements
+   :END:
+- [[https://naildrivin4.com][David Bryant Copeland]] defined "brutalist web design," inspiring this
+  project.
+- Whoever made the [[https://motherfuckingwebsite.com][motherfucking website]].
+- [[https://www.matthewgraybosch.com][Matthew Graybosch]], whose [[https://codepen.io/demifiend/pen/EENKNN][variation]] on the motherfucking website made
+  learning HTML and CSS seem feasible and worthwhile.
+** Contribute
+   :PROPERTIES:
+   :CUSTOM_ID: supplements-contribute
+   :END:
+#+INCLUDE: "./plates.inc::personal-contribute"
+** Document History
+|       Date | Event                                                   |
+|------------+---------------------------------------------------------|
+| 2018-07-09 | Created first draft                                     |
+| 2018-07-11 | Added introduction for readers from [[https://news.ycombinator.com][/Hacker News/]]       |
+| 2018-07-31 | Removed introduction for /Hacker News/                  |
+| 2019-04-29 | Re-implemented as a literately-programmed Org-mode file |
+** License
+   :PROPERTIES:
+   :CUSTOM_ID: supplements-license
+   :END:
+#+INCLUDE: "./plates.inc::mit-license"
+** Complete Stylesheet
+   :PROPERTIES:
+   :CUSTOM_ID: supplements-complete-stylesheet
+   :END:
+#+INCLUDE: "./build/brutstrap/brutstrap.css" src css
+** Demonstration HTML
+   :PROPERTIES:
+   :CUSTOM_ID: demonstration-html
+   :END:
+#+BEGIN_SRC html :tangle ./build/brutstrap/index.html
+  <!doctype html>
+  <html lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="./brutstrap.css">
+  </head>
+  <body>
+    <header>
+      <h1 role="banner">Brutstrap</h1>
+      <h2>CSS for bootstrapping a brutalist website.</h2>
+      <nav role="navigation">
+	<ul>
+	  <li><a href="#principles">Principles</a></li>
+	  <li><a href="#usage">Usage</a></li>
+	  <li><a href="#features">Features</a></li>
+	</ul>
+      </nav>
+    </header>
+    <main role="main">
+	<h3>Summary</h3>
+	<p>
+	  <strong>Brutstrap</strong> is a CSS theme for building a
+	  brutalist website: one where the website, as shown in your
+	  browser, is an accurate representation of the HTML document it
+	  is displaying.
+	</p>
+      </section>
+    </main>
+    <footer>
+      <section>
+        <p>
+	  This is a demonstration of an HTML document and not meant for public use.
+        </p>
+      </section>
+    </footer>
+  </body>
+  </html>
+#+END_SRC

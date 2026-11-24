@@ -1,0 +1,1395 @@
+#+TITLE: Bellybrush CSS
+#+EXPORT_FILE_NAME: ./bellybrush-css
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="bellybrush.css" />
+#+HUGO_SECTION: software
+#+HUGO_BASE_DIR: ~/dev/personal-website/
+#+HUGO_TAGS: CSS Teraum
+#+HUGO_CUSTOM_FRONT_MATTER: :css bellybrush :predecolonial true
+* Introduction
+*/Bellybrush Theme/* is a CSS theme for styling /Teraum/ reference
+books and other materials.
+* Bellybrush Theme
+** Design Philosophy
+The /Bellybrush Theme/ theme is based on my own *Oats*, which is based
+on another of my themes, *Brutstrap* which claims to style content as
+it's constructed.
+
+However, /Brutstrap/ is catered toward a rather stark aesthetic, to make
+it more readily match the [[https://brutalist-web.design][brutalism]] advocated by [[https://naildrivin5.com/][David Bryant
+Copeland]].
+
+Bellybrush is more light-hearted. It's designed to be used for a set
+of reference books I'm written for a funny fantasy setting, and so
+hopefully reflects that.
+** CSS Rules
+   :PROPERTIES:
+   :header-args: :tangle bellybrush.css :padline no
+   :END:
+*** Base Rules
+The theme's */base rules/* are those that go with HTML tags directly.
+**** HTML Tag Rules
+Document-wide settings, including those relevant to font-styling, are
+declared in the ~html~ rule.
+#+BEGIN_SRC css
+  html {
+      color: #444;
+      background-color: #eee;
+      hyphens: auto;
+      font-family: sans-serif;
+      letter-spacing: .03em;
+      word-spacing: .05em;
+      line-height: 1.4;
+      font-size: 1.3rem;
+  }
+#+END_SRC
+These colors are the lowest-contrast, three-digit hex codes that still
+pass [[https://www.w3.org/TR/WCAG20/][WCAG2 AAA]]. Adding some spacing between letters and words helps
+make the document feel a little more "friendly," and makes it a little
+safer to use more distinctive fonts in your body text.
+**** Body Tag Rules
+#+BEGIN_SRC css
+  body {
+      width:85vw;
+      max-width:40rem;
+      margin:0 2rem;
+      padding:3rem 2rem 6rem;}
+    }
+#+END_SRC
+**** Header Tag Rules
+#+BEGIN_SRC css
+  header {
+      overflow: hidden;
+      padding: 1rem 0 3rem 0;
+      background: linear-gradient(to bottom, #eeef 92%, #eee0);
+  }
+#+END_SRC
+**** Main Tag Rules
+#+BEGIN_SRC css
+  main{
+      width: 80vw;
+      max-width: 40rem;
+      margin: -4rem 1em -6rem;
+      padding: 3rem 2rem 6rem;
+      background: linear-gradient(to right, #eee0, #eeef 02%, #eeef 98%, #eee0);
+  }
+#+END_SRC
+**** Footer Tag Rules
+#+begin_src css
+  footer {
+      padding: 4rem 1rem 1rem;
+      background: linear-gradient(to top, #eeef 97%, #eee0);
+  }
+#+end_src
+**** Headline Tag Rules
+***** H1 Tag Rules
+#+BEGIN_SRC css
+  h1 {
+      font-weight: normal;
+      font-size: 2.8em;
+      margin: 0 auto;
+      text-align: left;
+      padding: 0 .5em;
+  }
+#+END_SRC
+***** H2 through H6 Tag Rules
+#+BEGIN_SRC css
+    h2 {
+      font-size: 2.3em;
+    }
+    h3 {
+      font-size: 2.1em;
+    }
+    h4 {
+      font-size: 1.9em;
+    }
+    h5 {
+      font-size: 1.7em;
+    }
+    h6 {
+      font-size: 1.5em;
+    }
+#+END_SRC
+**** Link Tag Rules
+#+BEGIN_SRC css
+  a {
+    color: #31B;
+    text-decoration: underline dotted #4447;
+    text-shadow: 0 0 .1em rgba(68,68,68,.2);
+  }
+  a:visited {
+    color: #718;
+  }
+  a:hover {
+    color: #42C;
+    outline-style: none;
+    text-decoration: underline solid #42c3;
+    text-shadow: 0 0 .1em #31b7;
+  }
+  a:focus {
+    color: #42C;
+    outline-style: none;
+    text-decoration: underline solid #42c3;
+    text-shadow: 0 0 .1em #31b7;
+  }
+  a:visited:hover, a:visited:focus {
+      color: #918;
+      text-decoration: underline solid #9183;
+      text-shadow: 0 0 .1em #7187;
+  }
+#+END_SRC
+**** Image Tag Rules
+#+begin_src css
+  img {
+      max-width: 100%;
+      max-height: 20em;
+  }
+#+end_src
+*** Partials Rules
+**** Skip-to-Content Rules
+#+BEGIN_SRC css
+  .skipToContentLink {
+    opacity: 0;
+    position: absolute;
+  }
+  .skipToContentLink:focus{
+      opacity:1
+  }
+#+END_SRC
+**** Table Rules
+#+BEGIN_SRC css
+#+END_SRC
+*** State Rules
+**** Selection Rules
+#+BEGIN_SRC css
+  ::selection {
+      color: #222;
+      background-color: #777;
+  }
+#+END_SRC
+
+## Additional material from the Google Drive library
+
+#+TITLE: Brutstrap CSS
+#+DATE: 2018-09-17
+#+AUTHOR: emsenn
+#+EXPORT_FILE_NAME: ./brutstrap-css
+#+HUGO_BASE_DIR: ~/dev/personal-website/
+#+HUGO_SECTION: software
+#+HUGO_TAGS: CSS brutalism
+#+HUGO_CUSTOM_FRONT_MATTER: :css brutstrap :predecolonial true
+#+MACRO: document-type CSS theme
+#+TOC: headlines local 3
+* Introduction
+  :PROPERTIES:
+  :CUSTOM_ID: introduction
+  :END:
+In this document I explain the design philosophy and implementation of
+my *Brutstrap* CSS theme: one where the webpage, as shown in the
+browser, is an accurate representation of the HTML document it is
+displaying.
+
+* Brutstrap CSS
+#+INDEX: CSS!"Brutstrap CSS Overview"
+*/Brutstrap/* is my CSS theme based on David Bryant Copeland's [[https://brutalist-web.design/]["Guidelines for Brutalist Web Design,"]] which advocates "/raw content true to its construction/."
+** Principles
+- */The website people see is the website in the HTML file./* As David Byant Copeland says in his definition, brutalist websites should be "raw content, true to [their] construction." Here, that means the content is represented as a single column, flowing left to right and top to bottom.
+- */Only links, inputs and buttons should respond to interaction./* A website should allow two points of interaction: a hyperlink that brings you to a destination, and form which submits information to a server. Those elements, and only those elements, should respond to being clicked, focused, or hovered-over.
+- */Components should be named what they are./* Classes should be named what they are, not what they're for.
+- */Design should be helpful./* Styling should be to help reinforce the context that your content has.
+** Implementation
+   :PROPERTIES:
+   :header-args: :tangle ./css/brutstrap.css :padline no
+   :END:
+*/NOTE:/* Because I use Org-mode, this CSS is written with rules
+compatible with its naming scheme.
+*** Document Framing
+**** Body
+#+name: brutstrap-body
+#+BEGIN_SRC css
+  body {
+    position: relative;
+    background-color: #eee;
+    color: #444;
+    font-family: serif;
+    margin: 0 auto;
+    padding-bottom: 6rem;
+    min-height: 100%;
+    font-size: 1.2em;
+  }
+#+END_SRC
+**** Header & Title
+#+name: brutstrap-header
+#+BEGIN_SRC css
+header, h1 {
+  font-family: sans-serif;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+.title { font-size: 3.2rem; }
+.subtitle { font-size: 2.2rem; }
+#+END_SRC
+**** Content Container
+#+name: brutstrap-content
+#+BEGIN_SRC css
+main, #content {
+  width: 75vw;
+  max-width: 40em;
+  margin: 0 0 0 2em;
+  line-height: 1.6;
+  margin-bottom: 8rem;
+}
+#+END_SRC
+**** Footer
+#+name: brutstrap-footer
+#+BEGIN_SRC css
+footer, #postamble {
+  padding: 1em 0;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+#+END_SRC
+*** Block Design
+**** Section
+#+name: brutstrap-section
+#+BEGIN_SRC css
+section {
+  border-bottom: 0.1em solid #444;
+  margin-bottom: 1em;
+}
+.outline-3 {
+  border-bottom: 0.1rem dotted #444;
+}
+#+END_SRC
+**** Blockquote
+#+name: brutstrap-blockquote
+#+BEGIN_SRC css
+blockquote {
+  padding: 0.5rem;
+  border-left: 0.1em solid #444;
+}
+#+END_SRC
+**** Table
+#+name: brutstrap-table
+#+BEGIN_SRC css
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    border: 0.1em solid #444;
+}
+thead { font-family: sans-serif; }
+td {
+  padding: 0 0.3em;
+  border: 0.01em solid #444;
+}
+#+END_SRC
+**** Images
+#+name: brutstrap-images
+#+BEGIN_SRC css
+img {
+  max-width: 80vw;
+  vertical-align: middle;
+}
+#+END_SRC
+**** Code
+#+name: brutstrap-code
+#+BEGIN_SRC css
+pre, .src {
+  padding: 0.5em;
+  border: 0.1em solid #444;
+  white-space: pre-wrap;
+  overflow-x: scroll;
+  text-overflow: clip;
+}
+#+END_SRC
+**** Dictionary List
+#+name: brutstrap-dictionary-list
+#+begin_src css
+dt {
+  font-weight: normal;
+  display: inline-block;
+  border-bottom: 0.1rem dotted #444;
+}
+#text-index dt { border-bottom: none; }
+#+end_src
+*** Typography
+**** Headlines
+#+name: brutstrap-headlines
+#+BEGIN_SRC css
+h2, h3, h4, h5, h6, h7, h8, h9, h10 {
+  display: block;
+  font-family: sans-serif;
+  margin: 0.5em;
+}
+h2 {
+  text-align: center;
+}
+h2 { font-size: 2em; }
+h3 {
+  font-size: 1.8em;
+}
+h4 {
+  font-size: 1.6em;
+}
+h5 {
+  font-size: 1.4em;
+  margin: 0.5em 0 0.2em 10%;
+}
+h6 {
+  font-size: 1.2em;
+  margin: 0.5em 0 0.2em 30%;
+}
+#+END_SRC
+**** Links
+#+name: brutstrap-links
+#+BEGIN_SRC css
+a {
+  text-decoration: none;
+  color: #3ac;
+  display: inline;
+  position: relative;
+  border-bottom: 0.1rem dotted;
+  line-height: 1.2;
+  transition: border 0.3s;
+}
+a:hover {
+  color: #5ce;
+  outline-style: none;
+  border-bottom: 0.1rem solid;
+}
+a:visited { color: #b8c; }
+a:visited:hover { color: #dae; }
+a:focus {
+  outline-style: none;
+  border-bottom: 0.1rem solid;
+}
+#+END_SRC
+*** State Rules
+**** Selection Rules
+#+name: brutstrap-selection
+#+BEGIN_SRC css
+::selection { background-color: #777; color: #eee; }
+a::selection { background-color: #ccc; }
+#+END_SRC
+*** Class Rules
+**** TODO
+#+name: brutstrap-todo
+#+begin_src css
+.todo {
+  background-color: #ddd;
+  color: #333;
+  font-size: .8rem;
+  float: right;
+}
+#+end_src
+**** Example under Source
+#+name: brutstrap-example-under-source
+#+begin_src css
+.org-src-container + .example {
+  margin-left: 8em;
+}
+#+end_src
+**** Listing Captions
+#+name: brutstrap-listing-captions
+#+begin_src css
+label.org-src-name {
+  margin: 0 0 0 3em;
+  font-family: sans-serif;
+  font-size: 1rem;
+  line-height: 0;
+}
+#+end_src
+** Acknowledgements
+   :PROPERTIES:
+   :CUSTOM_ID: supplements-acknowledgements
+   :END:
+- [[https://naildrivin4.com][David Bryant Copeland]] defined "brutalist web design," inspiring this
+  project.
+- Whoever made the [[https://motherfuckingwebsite.com][motherfucking website]].
+- [[https://www.matthewgraybosch.com][Matthew Graybosch]], whose [[https://codepen.io/demifiend/pen/EENKNN][variation]] on the motherfucking website made
+  learning HTML and CSS seem feasible and worthwhile.
+
+* Supplements
+  :PROPERTIES:
+  :CUSTOM_ID: supplements
+  :END:
+** Document History
+|       Date | Event                                                   |
+|------------+---------------------------------------------------------|
+| 2018-07-09 | Created first draft                                     |
+| 2018-07-11 | Added introduction for readers from [[https://news.ycombinator.com][/Hacker News/]]       |
+| 2018-07-31 | Removed introduction for /Hacker News/                  |
+| 2019-04-29 | Re-implemented as a literately-programmed Org-mode file |
+** Example Texts
+*** Complete Stylesheet
+   :PROPERTIES:
+   :CUSTOM_ID: complete-stylesheet
+   :END:
+#+INCLUDE: "./css/brutstrap.css" src css
+*** Demonstration HTML
+   :PROPERTIES:
+   :CUSTOM_ID: demonstration-html
+   :END:
+#+BEGIN_SRC html
+  <!doctype html>
+  <html lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="./brutstrap.css">
+  </head>
+  <body>
+    <header>
+      <h1 role="banner">Brutstrap</h1>
+      <h2>CSS for bootstrapping a brutalist website.</h2>
+      <nav role="navigation">
+	<ul>
+	  <li><a href="#principles">Principles</a></li>
+	  <li><a href="#usage">Usage</a></li>
+	  <li><a href="#features">Features</a></li>
+	</ul>
+      </nav>
+    </header>
+    <main role="main">
+	<h3>Summary</h3>
+	<p>
+	  <strong>Brutstrap</strong> is a CSS theme for building a
+	  brutalist website: one where the website, as shown in your
+	  browser, is an accurate representation of the HTML document it
+	  is displaying.
+	</p>
+      </section>
+    </main>
+    <footer>
+      <section>
+        <p>
+	  This is a demonstration of an HTML document and not meant for public use.
+        </p>
+      </section>
+    </footer>
+  </body>
+  </html>
+#+END_SRC
+** Index
+- Brutalism ::
+- Brutstrap CSS ::
+- CSS ::
+- HTML ::
+** Org-mode Block for Tangling as Org-Mode HTML Header
+#+begin_src org :tangle ./org/brutstrap-css.inc :noweb yes
+#+HTML_HEAD: <style>
+#+HTML_HEAD: <<brutstrap-body>>
+#+HTML_HEAD: <<brutstrap-header>>
+#+HTML_HEAD: <<brutstrap-content>>
+#+HTML_HEAD: <<brutstrap-footer>>
+#+HTML_HEAD: <<brutstrap-section>>
+#+HTML_HEAD: <<brutstrap-blockquote>>
+#+HTML_HEAD: <<brutstrap-table>>
+#+HTML_HEAD: <<brutstrap-images>>
+#+HTML_HEAD: <<brutstrap-code>>
+#+HTML_HEAD: <<brutstrap-dictionary-list>>
+#+HTML_HEAD: <<brutstrap-headlines>>
+#+HTML_HEAD: <<brutstrap-links>>
+#+HTML_HEAD: <<brutstrap-selection>>
+#+HTML_HEAD: <<brutstrap-todo>>
+#+HTML_HEAD: <<brutstrap-example-under-source>>
+#+HTML_HEAD: <<brutstrap-listing-captions>>
+#+HTML_HEAD: </style>
+#+end_src
+** README
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: ../README
+   :END:
+*** {{{title}}}
+#+INCLUDE: "./source.org::#introduction" :only-contents t
+
+## Additional material from the Google Drive library
+
+#+TITLE: emsAlpha CSS
+#+AUTHOR: emsenn
+#+EXPORT_FILE_NAME: ./emsalpha-css
+#+HUGO_BASE_DIR: ~/dev/personal-website/
+#+HUGO_SECTION: software
+#+HUGO_TAGS: CSS
+#+HUGO_CUSTOM_FRONT_MATTER: :css emsalpha :predecolonial true
+#+MACRO: document-type CSS Theme
+#+TOC: headlines local 4
+* Introduction
+  :PROPERTIES:
+  :CUSTOM_ID: introduction
+  :END:
+
+In this document I explain the design philosophy and implementation of
+my *emsAlpha* CSS theme.
+
+* emsAlpha
+** Implementation
+#+begin_src css :tangle ./css/emsalpha.css
+/* http://emsenn.net/style.css
+*/
+html {
+  color: rgba(44,44,44,1); background-color: rgba(242,242,242,1);
+  hyphens: auto;
+  font-family: sans-serif;
+  letter-spacing: 0.025em; word-spacing: 0.045em;
+  transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+  animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+body {
+  max-width: 40rem;
+  margin: auto;
+  padding-top: 1em;
+}
+main {
+  animation: animation-drop-in 0.5s;
+}
+h1 { font-weight: normal; font-size: 2em; margin: 0.5em 0 0 0; }
+h2 { text-align: center; font-weight: normal; }
+footer {
+  font-size: .8em; letter-spacing: 0em; word-spacing: 0em;
+  color: rgba(117,117,117,1);
+  text-align: right;
+
+}
+sup.ordinal { font-style: italic; }
+a {
+  color: rgba(117,117,117,1);
+  display: inline-block;
+  position: relative;
+  text-decoration: none;
+  transition: color 0.3s;
+  background: linear-gradient(to left, rgba(242,242,242,1) 50%, rgba(117,117,117,0.2) 50%);
+  background-size: 200% 100%;
+  background-position:right bottom;
+  transition: background 0.3s;
+}
+a:before {
+  background: rgba(117,117,117,1);
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -0.1em;
+  height: 0.1em;
+  width: 100%;
+  transition: all 0.3s;
+}
+a:visited {
+  color: rgba(88,88,88,1);
+}
+a:hover {
+  outline-style: none;
+  animation-delay: 0.3s;
+  animation: animation-pulse 0.8s infinite;
+  background-position:left bottom;
+}
+a:hover:before, a:focus:before {
+  width: 0em;
+}
+a:focus {
+  outline-style: none;
+  animation-delay: 0.3s;
+  background: none;
+  animation: animation-pulse-heavy 1.2s infinite;
+}
+::selection {
+  color: rgba(44,44,44,01); background-color: rgba(117,117,117,0.5);
+
+}
+.blockquote {
+  margin: 1em 2em;
+  padding: 1em;
+  font-size: 0.8em;
+  border-left: 0.2em solid rgba(117,117,117,1);
+}
+.blockquote li { margin-left: 2em;}
+.verbose { font-size: 0.8em; margin-left: 2em; margin-right: 2em;}
+.letter{
+  text-align: justify;
+  margin: 0 2em 0 2em;
+  font-size: 1.3em;
+}
+.letter__complimentary {
+  font-size: 1.5em;
+}
+.letter__signature {
+  font-size: 2.2em;
+  margin: 0.5em;
+  margin-left: 2em;
+}
+
+
+.timeline {
+  border-left: 0.1em solid rgba(44,44,44,1);
+  margin-left: 2em;
+  padding-left: 1.75em;
+}
+.timeline__entry {
+  position: relative;
+  margin-bottom: 1.2em;
+}
+.timeline__mark {
+  width: 1em; height: 1em;
+  position: absolute;
+  border: 0.2em solid rgba(117,117,117,1);
+  left: -2.5em;
+  background-color: rgba(242,242,242,1);
+  border-radius: 50%;
+}
+.timeline__title{
+  font-size: 1em;
+  letter-spacing: 0;
+  font-weight: bold;
+  margin-left: -0.5em;
+}
+.timeline__period {
+  font-style: italic;
+  font-size: 0.5em;
+}
+.timeline__details {
+  font-size: 0.8em;
+}
+.table {
+  width: 100%;
+}
+.table__header {
+  background: rgba(44,44,44,1);
+  color: rgba(242,242,242,1);
+  text-align: center;
+  font-size: 1em;
+}
+.table__row {
+  display: table-row;
+}
+
+.table__cell {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 1em 0;
+}
+.table__cell[data-title="brief"] {
+  float: right;
+}
+.footer__meta {
+  float: left;
+}
+@keyframes animation-drop-in {
+  0% {
+    transform: translateY(50vw) scale(0.7);
+    opacity: 0;
+  }
+  40% { transform: translatey(0) scale(0.7); opacity: 0.05; }
+  80% { transform: scale(0.7); opacity: 1; }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes animation-pulse {
+  from, 50%,
+  to { background-color: rgba(117,117,117,0.2)); }
+  50% { background-color: rgba(117,117,117,0.1); }
+}
+
+@keyframes animation-pulse-heavy {
+  from, 50%,
+  to { background-color: rgba(117,117,117,0.3)); }
+  50% { background-color: rgba(117,117,117,0.2); }
+}
+
+@media (max-width: 512px) {
+  body { padding: 1.2em; }
+  section { padding: 0.3em; }
+  .history__timeline__details {
+    margin-left: -2em;
+  }
+  .letter { margin: 0 0.5em 0 0.5em; text-align: left; }
+}
+@media (min-width: 512px) { html { font-size: large; } }
+@media (min-width: 1200px) { .content { max-width: 1024px; } }
+#+end_src
+* Supplements
+** Example Texts
+*** Example HTML Document
+#+begin_src html :tangle ./html/index.html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>emsenn</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="emsenn is a writer & developer. This is their website.">
+    <meta name="keywords" content="emsenn, morgan sennhauser">
+    <meta name="author" content="emsenn">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/emsalpha.css">
+    <!-- <base href="https://emsenn.net/" target="_blank"> -->
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <main class="content">
+        <h1>
+          My name is emsenn.
+        </h1>
+        <div class="letter">
+          <p>
+            I have an interest in the things that shape our interaction with technology, like software documentation and project governance.
+          </p>
+          <p>
+            I want to contribute to projects aligned with this interest. This includes helping businesses develop, implement, and document their technical and operational processes.
+          </p>
+          <p>
+            <a class="cta" href="offer/">Click here to learn if we should work together.</a>
+          </p>
+        </div>
+      <footer>
+        <div class="footer__stamp">
+          This document was last updated June 25<sup>th</sup>, 2018.
+        </div>
+      </footer>
+    </main>
+    </div>
+  </body>
+</html>
+#+end_src
+** Index
+- emsAlpha ::
+- CSS ::
+- HTML ::
+
+## Additional material from the Google Drive library
+
+#+TITLE: Oats CSS
+#+DESCRIPTION: A CSS stylesheet
+#+OPTIONS: toc:nil ':nil h:6 f:t num:nil
+#+HUGO_BASE_DIR: ~/dev/personal-website/
+#+HUGO_SECTION: computer-instruction-sets
+#+HUGO_TAGS: css
+#+HTML_DOCTYPE: html5
+#+HTML_CONTAINER: section
+* Introduction
+*/Oats/* is a simple and neutral CSS theme created by [[https://emsenn.net][emsenn]].
+** License and Editorial Information
+This document and the source code it contains are released under the
+MIT License and maintained at [[https://git.sr.ht/~emsenn/oats]].
+#+TOC: headlines 3
+* Design Philosophy
+The /Oats/ theme is based on my own [[https://emsenn.net/projects/brutstrap/][/Brutstrap/]], which claims to style
+content as it's constructed.
+
+However, /Brutstrap/ is catered toward a rather stark aesthetic, to
+make it more readily match the [[https://brutalist-web.design][brutalism]] advocated by [[https://naildrivin5.com/][David Bryant
+Copeland]].
+
+/Oats/ tries to be a little softer and more friendly. While
+nothing about the stylesheet contradicts the brutalist priciples
+Copeland provides, it does a little more styling than is strictly necessary.
+* CSS Rules
+  :PROPERTIES:
+  :header-args: :tangle ./build/oats/oats.css :padline no
+  :END:
+All of /Oats/ CSS lives in a single style-sheet, ~oats.css~.
+** Base Rules
+The theme's */base rules/* are those that go with HTML tags directly.
+*** HTML Tag Rules
+Document-wide settings, including those relevant to font-styling, are
+declared in the ~html~ rule.
+#+BEGIN_SRC css
+  html {
+    color: #444;
+    background-color: #eee;
+#+END_SRC
+These colors are the lowest-contrast, three-digit hex codes that still
+pass [[https://www.w3.org/TR/WCAG20/][WCAG2 AAA]].
+#+BEGIN_SRC css
+    hyphens: auto;
+    font-family: sans-serif;
+    letter-spacing: .03em;
+    word-spacing: .05em;
+    line-height: 1.4;
+    font-size: 1.3rem;
+  }
+#+END_SRC
+Adding some spacing between letters and words helps make the document
+feel a little more "friendly," and makes it a little safer to use more
+distinctive fonts in your body text.
+*** Body Tag Rules
+#+BEGIN_SRC css
+  body {
+    margin: 0;
+  }
+#+END_SRC
+*** Header Tag Rules
+#+BEGIN_SRC css
+  header {
+    overflow: hidden;
+    padding: 1rem 0 3rem 0;
+  }
+#+END_SRC
+*** Main Tag Rules
+#+BEGIN_SRC css
+  main{
+    width: 85vw;
+    max-width: 40rem;
+    margin: -4rem auto -6rem;
+    padding: 3rem 2rem 6rem;
+  }
+#+END_SRC
+*** Footer Tag Rules
+#+begin_src css
+  footer {
+    padding: 4rem 1rem 1rem;
+  }
+#+end_src
+*** Headline Tag Rules
+**** H1 Tag Rules
+#+BEGIN_SRC css
+  h1 {
+    font-weight: normal;
+    font-size: 2.8em;
+    text-shadow: .08em .03em .03em rgba(68,68,68,.3);
+    margin: 0;
+    padding: 0 .5em;
+  }
+#+END_SRC
+**** H2 through H6 Tag Rules
+#+BEGIN_SRC css
+  h2,h3,h4,h5,h6,h7,h8,h9 {
+    text-align: center;
+    font-style: bold;
+    letter-spacing: 0.1em;
+  }
+#+END_SRC
+*** Link Tag Rules
+#+BEGIN_SRC css
+  a {
+    color: #31B;
+    text-decoration: underline dotted #4447;
+    text-shadow: 0 0 .1em rgba(68,68,68,.2);
+  }
+  a:visited {
+    color: #718;
+  }
+  a:hover {
+    color: #42C;
+    outline-style: none;
+    text-decoration: underline solid #42c3;
+    text-shadow: 0 0 .1em #31b7;
+  }
+  a:focus {
+    color: #42C;
+    outline-style: none;
+    text-decoration: underline solid #42c3;
+    text-shadow: 0 0 .1em #31b7;
+  }
+  a:visited:hover, a:visited:focus {
+    color: #918;
+    text-decoration: underline solid #9183;
+    text-shadow: 0 0 .1em #7187;
+  }
+#+END_SRC
+*** Image Tag Rules
+#+begin_src css
+  img {
+    max-width: 100%;
+    max-height: 20em;
+  }
+#+end_src
+** Partials Rules
+*** Skip-to-Content Rules
+#+BEGIN_SRC css
+  .skipToContentLink {
+    opacity: 0;
+    position: absolute;
+  }
+  .skipToContentLink:focus{
+    opacity:1
+  }
+#+END_SRC
+** State Rules
+*** Selection Rules
+#+BEGIN_SRC css
+  ::selection {
+    color: #222;
+    background-color: #777;
+  }
+#+END_SRC
+* Demonstration HTML Document
+#+BEGIN_SRC html :tangle ./build/oats/index.html
+  <!DOCTYPE html>
+  <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+      <link href="https://gmpg.org/xfn/11" rel="profile">
+      <meta charset="UTF-8">
+      <meta name="description" content="Oats is a simple and neutral CSS theme.">
+      <meta name="keywords" content="oats, css, theme">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" type="text/css" href="./oats.css">
+      <title>Oats</title>
+    </head>
+    <body>
+      <a class="skipToContentLink" href="#content">Skip to Content</a>
+      <header>
+	<h1>Oats</h1>
+      </header>
+      <main id="content">
+	<p>
+	  Oats is a simple and neutral CSS theme.
+	</p>
+	<section id="features">
+	  <h2>Features</h2>
+	  <ul>
+	    <li>
+	      <strong>Very little,</strong> honestly.
+	    </li>
+	  </ul>
+	</section>
+      </main>
+    </body>
+  </html>
+#+END_SRC
+
+## Additional material from the Google Drive library
+
+#+OPTIONS: toc:nil ':nil h:6 f:t num:nil
+#+TITLE: YDwarf
+#+AUTHOR: emsenn
+#+description: a CSS stylesheet
+#+export_file_name: ydwarf
+#+html_doctype: html5
+#+html_container: section
+#+html_head: <link rel="stylesheet" type="text/css" href="./build/ydwarf.css">
+#+hugo_base_dir: ~/dev/personal-website/
+#+hugo_section: software
+#+hugo_custom_front_matter: :css ydwarf
+#+hugo_tags: CSS
+* Introduction
+*/YDwarf/* is a minimal and cold blue CSS theme created by [[https://emsenn.net][emsenn]].
+** License and Editorial Information
+This document and the source code it contains are released under the
+MIT License and maintained at [[https://git.sr.ht/~emsenn/ydwarf]]
+#+toc: headlines 3
+* Design Philosophy
+The /YDwarf/ theme is based on a client's request for a website which
+would have a landing page containing a sales-letter, a second
+sales-letter, and finally a link to a form page.
+* CSS Rules
+All of /YDwarf/'s CSS lives in a single style-sheet, ~ydwarf.css~.
+** Base Rules
+The theme's */base rules/* are those that go with HTML tags directly.
+*** HTML Tag Rules
+Document-wide settings, including those relevant to font-styling, are
+declared in the ~html~ rule.
+#+begin_src css :tangle ydwarf.css
+  html {
+    background-color: #123;
+    background-image: url("data:image/svg+xml,%3Csvg width='84' height='48' viewBox='0 0 84 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h12v6H0V0zm28 8h12v6H28V8zm14-8h12v6H42V0zm14 0h12v6H56V0zm0 8h12v6H56V8zM42 8h12v6H42V8zm0 16h12v6H42v-6zm14-8h12v6H56v-6zm14 0h12v6H70v-6zm0-16h12v6H70V0zM28 32h12v6H28v-6zM14 16h12v6H14v-6zM0 24h12v6H0v-6zm0 8h12v6H0v-6zm14 0h12v6H14v-6zm14 8h12v6H28v-6zm-14 0h12v6H14v-6zm28 0h12v6H42v-6zm14-8h12v6H56v-6zm0-8h12v6H56v-6zm14 8h12v6H70v-6zm0 8h12v6H70v-6zM14 24h12v6H14v-6zm14-8h12v6H28v-6zM14 8h12v6H14V8zM0 8h12v6H0V8z' fill='%23349' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");
+    color: #def;
+#+end_src
+#+begin_src css :tangle ydwarf.css
+  hyphens: auto;
+  font-family: sans-serif;
+  line-height: 1.4;
+  font-size: 1.2rem;
+#+end_src
+#+begin_src css :tangle ydwarf.css
+    transition-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+#+end_src
+*** Body Tag Rules
+#+begin_src css :tangle ydwarf.css
+  body {
+    max-width: 60rem;
+    width: 80vw;
+    margin: 2em auto;
+    background-color: #eee9;
+    border-radius: 2em;
+    color: #12202d;
+    box-shadow: 0 0 0.5em #52a5cd, 0 1px 2px #52a5cd;
+  }
+#+end_src
+*** Section Tag Rules
+#+begin_src css :tangle ydwarf.css
+  section {
+    background-color: #eee;
+    border-radius: 2em;
+    padding: .1em 1em;
+    box-shadow: 0 0 .5em #eee;
+  }
+#+end_src
+*** Headline Tag Rules
+**** H1 Tag Rules
+#+begin_src css :tangle ydwarf.css
+  h1 {
+    background-color: #eee;
+    border-radius: 2em;
+    box-shadow: 0 0 .5em #eee;
+    margin: 0 auto;
+    font-weight: normal;
+    font-size: 2.4em;
+    text-align: center;
+    text-shadow: 0 .05em .03em rgba(68,68,68,.3);
+  }
+#+end_src
+**** H2 through H6 Tag Rules
+#+begin_src css :tangle ydwarf.css
+  h2,h3,h4,h5,h6 {
+    text-align: center;
+    text-shadow: 0 .1em .03em rgba(68,68,68,.3);
+  }
+#+end_src
+*** Link Tag Rules
+#+begin_src css :tangle ydwarf.css
+  a {
+    color: #222;
+    text-decoration: underline dotted rgba(68,68,68,.6);
+    text-shadow: 0 .1em .01em rgba(68,68,68,.2);
+  }
+  a:visited {
+    color: #444;
+  }
+  a:hover {
+    outline-style: none;
+    text-decoration: underline solid;
+    animation-delay: 0.3s;
+    animation: animation-pulse 0.8s infinite;
+  }
+  a:focus {
+    outline-style: none;
+    text-decoration: underline solid;
+    animation-delay: 0.3s;
+    animation: animation-pulse-heavy 1.2s infinite;
+  }
+#+end_src
+*** Paragraph Tag Rules
+#+begin_src css :tangle ydwarf.css
+  p {
+    background-color: #eee;
+    border-radius: 2em;
+    padding: .1em 1em;
+    box-shadow: 0 0 .5em #eee;
+  }
+#+end_src
+*** Blockquote Tag Rules
+#+begin_src css :tangle ydwarf.css
+  blockquote {
+      border-left: solid 0.2rem #52a5cd;
+      border-radius: 0.2em;
+      color: #035a85;
+      font-size: 1.0em;
+      line-height: 1.2em;
+      max-width: 90%;
+      margin-left: 2em;
+      padding-left: 0.8rem}
+#+end_src
+** Partials Rules
+*** Brief Rules
+#+begin_src css :tangle ydwarf.css
+  .brief {
+    font-size: 1.2em;
+    max-width: 65%;
+    font-style: italic;
+    margin: auto
+  }
+#+end_src
+*** Button Rules
+#+begin_src css :tangle ydwarf.css
+  .button {
+    max-width: 60vw;
+    margin: auto;
+    background-color: #52a5cd;
+    color: #dedede;
+    border: none;
+    padding: 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center
+  }
+  .button:hover {
+    animation: animation-pulse-primary 2s infinite
+  }
+#+end_src
+*** Clickbait Rules
+#+begin_src css :tangle ydwarf.css
+  .clickbait {
+    font-weight: bold;
+    font-size: 1.1em;
+    background-color: #12202d;
+    background: linear-gradient(to bottom right, #12202d, #035a85);
+    border-radius: 2em;
+    color: #52a5cd;
+    padding: 1em;
+    margin: 1em auto;
+  }
+  .clickbait__lead {
+    max-width: 70%
+  }
+  .clickbait__close {
+    font-style: italic;
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: 0
+  }
+#+end_src
+*** Emphasize Rules
+#+begin_src css :tangle ydwarf.css
+  .emphasized {
+    max-width: 20em;
+    margin-left: 0.3em;
+    font-size: 1.1em;
+    font-style: italic
+  }
+#+end_src
+*** Entrance Rules
+#+begin_src css :tangle ydwarf.css
+  .entrance {
+    text-align: center;
+    font-size: 1.8em;
+    text-shadow: 0 3px 3px rgba(44, 44, 44, 0.48)
+  }
+#+end_src
+*** Eyecatcher Rules
+#+begin_src css :tangle ydwarf.css
+  .eyecatcher {
+    font-weight: bold;
+    font-size: 1.1em;
+    background-color: #12202d;
+    background: linear-gradient(to bottom right, rgba(82, 165, 205, 0.5), rgba(3, 90, 133, 0.5));
+    border-radius: 2em;
+    color: #12202d;
+    padding: 1em;
+    margin: auto;
+    margin-top: 1em;
+    margin-bottom: 1em
+  }
+#+end_src
+*** Nameplate Rules
+#+begin_src css :tangle ydwarf.css
+  .nameplate {
+    max-width: 80%;
+    width: 80%;
+    margin: auto;
+    height: auto;
+    margin-bottom: 1em
+  }
+#+end_src
+*** Signature Rules
+#+begin_src css :tangle ydwarf.css
+  .signature {
+    margin-top: 2em;
+    margin-left: 1em;
+    font-size: 1.4em
+  }
+  .signature__complimentary {
+    padding: 0;
+    margin: 0
+  }
+
+  .signature__name {
+    margin-left: 1em;
+    font-size: 1.2em;
+    font-style: italic;
+    margin-top: 0em;
+    margin-bottom: 0
+  }
+  .signature__credentials {
+    margin-left: 2em;
+    font-size: 0.8em;
+    padding: 0;
+    margin-top: 0;
+    padding-top: 0
+  }
+#+end_src
+*** Survey Rules
+#+begin_src css :tangle ydwarf.css
+  .survey {
+    max-width: 30em;
+    margin: 1em auto;
+    padding: 1em;
+    font-family: sans-serif
+  }
+  .survey ul {
+    list-style: none;
+    padding: 0;
+    margin: 0
+  }
+  .survey li {
+    display: block;
+    border: 0.2em solid #12202d;
+    margin-bottom: 1.5rem
+  }
+  .survey li:last-child {
+    border: none;
+    text-align: center;
+    margin-bottom: 2em
+  }
+  .survey li>label {
+    background: #12202d;
+    display: block;
+    margin: 0 auto;
+    color: #f2f2f2;
+    font-size: 1.2em;
+    padding: 0.2rem
+  }
+  .survey li>span {
+    background: #12202d;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    color: #f2f2f2;
+    font-size: 1em;
+    padding: 0.2rem
+  }
+  .survey li>input,
+  .survey li>textarea {
+    font-family: serif;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 90%;
+    outline: none;
+    border: none;
+    font-size: 1.3em;
+    margin: 0.5rem;
+    left: 10%;
+    background-color: #f2f2f2
+  }
+  .survey li>textarea {
+    resize: none;
+    max-width: 100%;
+    width: 200em;
+    height: 12em
+  }
+  .survey li>.-submitButton {
+    border: none;
+    background: #12202d;
+    color: #f2f2f2;
+    font-family: sans-serif;
+    font-weight: bold;
+    padding: 0.5em 3em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    margin-bottom: 0
+  }
+#+end_src
+*** Skip-to-Content Rules
+#+begin_src css :tangle ydwarf.css
+  .skipToContentLink {
+    opacity: 0;
+    position: absolute;
+  }
+  .skipToContentLink:focus{
+    opacity:1
+  }
+#+end_src
+*** Video Rules
+#+begin_src css :tangle ydwarf.css
+  .videoContainer {
+    margin: 0 auto;
+    width: 80vw;
+    max-width: 60rem
+  }
+  .video {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 25px;
+    height: 0
+  }
+  .video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%
+  }
+#+end_src
+** State Rules
+*** Selection Rules
+#+begin_src css :tangle ydwarf.css
+  ::selection {
+    color: #222;
+    background-color: #777;
+  }
+#+end_src
+** Animation Rules
+#+begin_src css :tangle ydwarf.css
+  @keyframes animation-pulse-primary {
+    from,
+    50%,
+    to {
+        background-color: #035a85
+    }
+    50% {
+        background-color: rgba(18, 32, 45, 0.5)
+    }
+  }
+#+end_src
+* Demonstration HTML Document
+#+begin_src html :tangle demo.html
+  <!DOCTYPE html>
+  <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+      <link href="https://gmpg.org/xfn/11" rel="profile">
+      <meta charset="UTF-8">
+      <meta name="description" content="YDwarf is a minimal and cold-blue CSS theme.">
+      <meta name="keywords" content="ydwarf, css, theme">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" type="text/css" href="./ydwarf.css">
+      <title>YDwarf</title>
+    </head>
+    <body>
+      <a class="skipToContentLink" href="#content">Skip to Content</a>
+      <header>
+        <h1>YDwarf</h1>
+      </header>
+      <main id="content">
+        <p>
+	YDwarf is a minimal and cold blue CSS theme.
+        </p>
+        <section id="features">
+	<h2>Features</h2>
+	<ul>
+	  <li>
+	    <strong>Very little,</strong> honestly. <a href="">A link</a>
+	  </li>
+	</ul>
+	<blockquote>
+	"Butts?" -- Chaos
+	</blockquote>
+	<section class="brief">
+	 What the <span class="emphasized">fuck</span> is a brief, what are these class names, fucking useless.
+	 </section>
+	 <a id="right-here" href="#right-here" class="button">Right here!</a>
+	 <section class="clickbait">
+	   <section class="clickbait__lead">
+	     Knock knock
+	   </section>
+	   <section class="clickbait__close">
+	     Who's there
+	   </section>
+	   <section class="clickbait__lead">
+	     Cantelope
+	   </section>
+	   <section class="clickbait__close">
+	     Can't elope tonight, my dad locked up the ladder!
+	   </section>
+	 </section>
+         <section class="entrance">
+	 I'm a rebel putting my entrance halfway down the page eh
+         </section>
+         <section class="eyecatcher">
+	 <code>Demonstration code eh </code>
+         </section>
+        </section>
+      </main>
+    </body>
+  </html>
+#+end_src
