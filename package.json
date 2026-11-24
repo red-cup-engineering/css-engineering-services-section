@@ -24,8 +24,7 @@
   },
   "scripts": {
     "build:types": "find src -name \"*.d.mts\" -delete && tsc -p tsconfig.types.json",
-    "build": "npm run build:types",
-    "test": "node --test test/suppliers.test.mjs"
+    "build": "npm run build:types"
   },
   "private": false,
   "files": [
